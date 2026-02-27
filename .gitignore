@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Keys — NEVER commit private keys
+keys/
+*.private.pem
+*.private.key
+
+# Dataset files — too large for git
+*.zip
+*.tar.gz
+*.dat
+UCI HAR Dataset/
+PAMAP2_Dataset/
+s2s_dataset/
+
+# Recorded sensor data — personal
+dataset/
+*.s2s
+
+# Registry with device info
+s2s_device_registry.json
+
+# Environment
+.env
+.venv
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp

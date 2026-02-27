@@ -1,0 +1,7 @@
+# Generate server signing key (once):
+python3 -m s2s_standard_v1_3.s2s_signing_v1_3 keygen --out keys/server
+
+# Start API with signing + registry:
+python3 -m s2s_standard_v1_3.s2s_api_v1_3 --port 8080 \
+    --sign-key keys/server.private.pem \
+    --registry registry.json
