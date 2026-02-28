@@ -182,4 +182,6 @@ Validated on real iPhone 11 IMU data. SILVER certified, 4/4 physics laws passing
 **Domain Classifier:** 81% accuracy (5-fold CV), trained on 9,004 certified records
 from UCI HAR + PAMAP2. Run: `python3 train_classifier.py --dataset s2s_dataset/ --test`
 
+**Preprint:** [hal-05531246v1](https://hal.science/hal-05531246v1) — HAL Open Science, February 28, 2026
+
 Open to hardware partnerships and research collaborations.
