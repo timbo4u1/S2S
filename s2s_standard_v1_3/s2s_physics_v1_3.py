@@ -392,21 +392,43 @@ def check_jerk(imu_raw: Dict) -> Tuple[bool,int,Dict]:
 
     dt = statistics.mean([ts[i+1]-ts[i] for i in range(min(len(ts)-1,50))])*1e-9 if len(ts)>1 else 1/240
 
+    # Windowed jerk: split into 2.56s windows, compute P95 per window,
+    # take median across windows. Prevents activity-transition spikes in
+    # long recordings (e.g. 235s PAMAP2 iron) from dominating the result.
+    WINDOW_SAMPLES = max(20, int(2.56 / dt)) if dt > 0 else 256
+
     all_jerk = []
-    for axis in range(min(3,len(accel[0]))):
-        sig_raw = [accel[i][axis] for i in range(len(accel))]
-        sig_s   = _smooth(sig_raw, w=JERK_SMOOTH_WINDOW)  # MUST smooth first
+    window_p95s = []
+    n = len(accel)
+
+    for axis in range(min(3, len(accel[0]))):
+        sig_raw = [accel[i][axis] for i in range(n)]
+        sig_s   = _smooth(sig_raw, w=JERK_SMOOTH_WINDOW)
         vel     = _diff(sig_s, dt)
         if vel:
             vel_s = _smooth(vel, w=JERK_SMOOTH_WINDOW)
             jerk  = _diff(vel_s, dt)
             all_jerk.extend(jerk)
 
+            # Compute P95 per window for this axis
+            for w_start in range(0, len(jerk), WINDOW_SAMPLES):
+                w = [abs(j) for j in jerk[w_start:w_start+WINDOW_SAMPLES]]
+                if len(w) >= 10:
+                    w.sort()
+                    window_p95s.append(w[int(len(w)*0.95)])
+
     if not all_jerk: d["skip"]="COULD_NOT_COMPUTE"; return True,50,d
 
     peak_j = max(abs(j) for j in all_jerk)
     rms_j  = _rms(all_jerk)
-    p95_j  = sorted([abs(j) for j in all_jerk])[int(len(all_jerk)*0.95)]
+    # Use median of per-window P95s — robust against transition spikes
+    if window_p95s:
+        window_p95s.sort()
+        p95_j = window_p95s[len(window_p95s)//2]
+    else:
+        p95_j = sorted([abs(j) for j in all_jerk])[int(len(all_jerk)*0.95)]
+    d["window_samples"] = WINDOW_SAMPLES
+    d["n_windows"] = len(window_p95s)
 
     d.update({"peak_jerk_ms3":round(peak_j,1),"rms_jerk_ms3":round(rms_j,1),
                "p95_jerk_ms3":round(p95_j,1),"human_limit_ms3":JERK_MAX_MS3,
