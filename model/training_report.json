@@ -1,0 +1,34 @@
+{
+  "model_type": "GaussianNB",
+  "n_features": 4,
+  "feature_names": [
+    "log_jerk/4",
+    "coupling_norm",
+    "score/100",
+    "duration/30"
+  ],
+  "n_classes": 2,
+  "classes": [
+    "DAILY_LIVING",
+    "LOCOMOTION"
+  ],
+  "n_train": 9004,
+  "train_accuracy": 0.8096,
+  "domain_profiles": {
+    "DAILY_LIVING": {
+      "jerk_center_ms3": 2.6,
+      "coupling_r_center": -0.1482,
+      "score_center": 56.0
+    },
+    "LOCOMOTION": {
+      "jerk_center_ms3": 24.1,
+      "coupling_r_center": -0.1805,
+      "score_center": 54.8
+    }
+  },
+  "science_basis": {
+    "jerk": "Flash-Hogan 1985: minimum jerk theorem",
+    "coupling": "Bernstein 1967: motor synergies",
+    "score": "S2S biomechanical physics certification"
+  }
+}

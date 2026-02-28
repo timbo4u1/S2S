@@ -96,6 +96,27 @@ for dom, info in MOTION_DOMAINS.items():
     for act in info["actions"]:
         ACTION_DOMAIN[act] = dom
 
+ACTION_DOMAIN.update({
+    "laying": "DAILY_LIVING",
+    "lying": "DAILY_LIVING",
+    "sitting": "DAILY_LIVING",
+    "standing": "DAILY_LIVING",
+    "house_cleaning": "DAILY_LIVING",
+    "sit_down": "LOCOMOTION",
+    "stand_up": "LOCOMOTION",
+})
+
+# Fix missing labels from UCI HAR and PAMAP2 datasets
+ACTION_DOMAIN.update({
+    "laying":          "DAILY_LIVING",   # UCI HAR: lying down
+    "lying":           "DAILY_LIVING",   # PAMAP2: lying down
+    "sitting":         "DAILY_LIVING",   # PAMAP2: seated posture
+    "standing":        "DAILY_LIVING",   # PAMAP2: upright posture
+    "house_cleaning":  "DAILY_LIVING",   # PAMAP2: general cleaning
+    "sit_down":        "LOCOMOTION",     # UCI HAR: transition
+    "stand_up":        "LOCOMOTION",     # UCI HAR: transition
+})
+
 # ═══════════════════════════════════════════════════════════════════
 #  DATASET LABEL MAPS
 # ═══════════════════════════════════════════════════════════════════
