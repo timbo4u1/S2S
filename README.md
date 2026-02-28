@@ -179,7 +179,7 @@ Commercial licensing: timur.davkarayev@gmail.com
 v1.3 — 12 modules, zero dependencies, production ready.
 Validated on real iPhone 11 IMU data. SILVER certified, 4/4 physics laws passing.
 
-Open to hardware partnerships and research collaborations.
+**Domain Classifier:** 81% accuracy (5-fold CV), trained on 9,004 certified records
+from UCI HAR + PAMAP2. Run: `python3 train_classifier.py --dataset s2s_dataset/ --test`
 
----
-*If you use S2S in research, please cite this repository.*
+Open to hardware partnerships and research collaborations.
