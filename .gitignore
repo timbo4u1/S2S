@@ -20,7 +20,6 @@ keys/
 *.dat
 UCI HAR Dataset/
 PAMAP2_Dataset/
-s2s_dataset/
 
 # Recorded sensor data — personal
 dataset/
