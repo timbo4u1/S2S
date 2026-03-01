@@ -42,3 +42,4 @@ venv/
 .DS_Store
 **/.DS_Store
 **/.DS_Store
+s2s_dataset/
