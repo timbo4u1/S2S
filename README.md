@@ -48,7 +48,6 @@ Based on Flash-Hogan 1985, Bernstein 1967, Fitts 1954, Wolpert 1998 (MOSAIC mode
 | Domain | Jerk ≤ | Coupling r ≥ | Robot use |
 |--------|--------|--------------|-----------|
 | PRECISION | 80 m/s³ | 0.30 | Surgical robots, prosthetic hands, assembly |
-| POWER | 200 m/s³ | 0.30 | Warehouse arms, exoskeletons, industrial |
 | SOCIAL | 180 m/s³ | 0.15 | Service robots, HRI |
 | LOCOMOTION | 300 m/s³ | 0.15 | Bipedal robots, prosthetic legs |
 | DAILY_LIVING | 150 m/s³ | 0.20 | Home robots, elder care |
@@ -129,7 +128,9 @@ s2s_standard_v1_3/
 └── convert_to_s2s.py            CSV → .s2s binary format
 
 collect_action.py                Record labeled actions from phone
-s2s_dataset_adapter.py          Convert public datasets (UCI HAR, PAMAP2, Berkeley MHAD)
+s2s_dataset_adapter.py          Convert public datasets (UCI HAR, PAMAP2)
+wisdm_adapter.py                Convert WISDM dataset (51 subjects, 18 activities, phone+watch)
+train_classifier.py             Train domain classifier (Gaussian Naive Bayes, 5 domains)
 ```
 
 ## Certification Tiers
@@ -147,7 +148,7 @@ s2s_dataset_adapter.py          Convert public datasets (UCI HAR, PAMAP2, Berkel
 |---------|----------|------------|-----|-----------|
 | UCI HAR | 30 | 6 | 50 | ✅ |
 | PAMAP2 | 9 | 18 | 100 | ✅ |
-| Berkeley MHAD | 12 | 11 | 100 | ✅ |
+| WISDM 2019 | 51 | 18 | 20 | ✅ |
 | MoVi | 90 | 20 | 120 | ✅ |
 | Your iPhone | 1 | any | 100 | ✅ |
 
@@ -179,8 +180,7 @@ Commercial licensing: timur.davkarayev@gmail.com
 v1.3 — 12 modules, zero dependencies, production ready.
 Validated on real iPhone 11 IMU data. SILVER certified, 4/4 physics laws passing.
 
-**Domain Classifier:** 81% accuracy (5-fold CV), trained on 9,004 certified records
-from UCI HAR + PAMAP2. Run: `python3 train_classifier.py --dataset s2s_dataset/ --test`
+**Domain Classifier:** 65.9% accuracy (5-fold CV), trained on 103,331 certified records from UCI HAR + PAMAP2 + WISDM across 5 domains (LOCOMOTION, DAILY_LIVING, PRECISION, SOCIAL, SPORT). Run: `python3 train_classifier.py --dataset s2s_dataset/ --test`
 
 **Preprint:** [hal-05531246v1](https://hal.science/hal-05531246v1) — HAL Open Science, February 28, 2026
 
