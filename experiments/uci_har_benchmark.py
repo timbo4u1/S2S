@@ -173,11 +173,11 @@ def extract_feature_vector(record):
         return None
 
     physics = record.get('physics', {})
-    tier    = record.get('tier', 'REJECTED')
-    score   = float(record.get('physical_law_score', 0))
+    tier    = record.get('physics_tier', record.get('tier', 'REJECTED'))
+    score   = float(record.get('physics_score', record.get('physical_law_score', 0)))
 
     # 7 law pass flags
-    laws_passed = set(record.get('laws_passed', []))
+    laws_passed = set(record.get('physics_laws_passed', record.get('laws_passed', [])))
     ALL_LAWS = [
         "Newton F=ma", "rigid_body_kinematics", "resonance_frequency",
         "jerk_bounds", "imu_consistency", "BCG heartbeat", "Joule heating"

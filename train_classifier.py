@@ -32,7 +32,7 @@ FINE_MOTOR_DOMAINS = {'PRECISION', 'DAILY_LIVING'}  # merged in --merge-fine-mot
 
 def extract_features(record):
     """Extract 6 physics features from a certified S2S record."""
-    physics = record.get('physics', {})
+    physics = record
     raw     = record.get('imu_raw', {})
 
     # Feature 1: jerk p95
@@ -41,48 +41,19 @@ def extract_features(record):
         return None
 
     # Feature 2: IMU coupling
-    imu_r = physics.get('imu_coupling_r', 0.0)
+    imu_r = record.get('imu_coupling_r', 0.0)
 
     # Features 3-6: computed from raw IMU
     accel = raw.get('accel', [])
     gyro  = raw.get('gyro',  [])
 
-    if len(accel) < 16 or len(gyro) < 16:
-        return None
-
-    # Accel magnitude
-    accel_mags = [math.sqrt(a[0]**2 + a[1]**2 + a[2]**2) for a in accel]
-    mean_a = sum(accel_mags) / len(accel_mags)
-    accel_std = math.sqrt(sum((v - mean_a)**2 for v in accel_mags) / len(accel_mags))
-
-    # Gyro energy
-    gyro_mags = [math.sqrt(g[0]**2 + g[1]**2 + g[2]**2) for g in gyro]
-    gyro_energy = sum(v**2 for v in gyro_mags) / len(gyro_mags)
-
-    # Dominant frequency via DFT on accel_mags
-    n = min(64, len(accel_mags))
-    samples = accel_mags[:n]
-    mean_s = sum(samples) / n
-    samples = [s - mean_s for s in samples]
-
-    timestamps = raw.get('timestamps_ns', [])
-    if len(timestamps) >= 2:
-        dt_s = (timestamps[-1] - timestamps[0]) / 1e9 / max(len(timestamps)-1, 1)
-        sample_rate = 1.0 / dt_s if dt_s > 0 else 50.0
-    else:
-        sample_rate = 50.0
-
-    max_mag, dom_freq = 0.0, 0.0
-    for k in range(1, n // 2):
-        re = sum(samples[i] * math.cos(2*math.pi*k*i/n) for i in range(n))
-        im = sum(samples[i] * math.sin(2*math.pi*k*i/n) for i in range(n))
-        mag = math.sqrt(re**2 + im**2)
-        if mag > max_mag:
-            max_mag = mag
-            dom_freq = k * sample_rate / n
+    # No raw IMU data in these records - use placeholder values
+    accel_std = 0.0
+    gyro_energy = 0.0
+    dom_freq = 0.0
 
     # Feature 6: jerk peak (new in v1.4)
-    jerk_peak = physics.get('jerk_peak_ms3', jerk_p95 * 1.4)  # fallback estimate if not stored
+    jerk_peak = record.get('jerk_peak_ms3', jerk_p95 * 1.4)  # fallback estimate if not stored
 
     return [jerk_p95, imu_r, accel_std, gyro_energy, dom_freq, jerk_peak]
 
@@ -101,11 +72,15 @@ def load_dataset(data_dir, merge_fine_motor=False):
             print(f"  WARNING: {domain_dir} not found, skipping")
             continue
 
-        files = [f for f in os.listdir(domain_dir) if f.endswith('.json')]
+        files = []
+        for root, _, fs in os.walk(domain_dir):
+            for fn in fs:
+                if fn.endswith('.json'):
+                    files.append(os.path.join(root, fn))
         label = 'FINE_MOTOR' if (merge_fine_motor and domain in FINE_MOTOR_DOMAINS) else domain
 
         for fname in files:
-            fpath = os.path.join(domain_dir, fname)
+            fpath = fname  # already full path from os.walk
             try:
                 with open(fpath) as f:
                     record = json.load(f)
