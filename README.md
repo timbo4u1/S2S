@@ -179,9 +179,9 @@ Commercial licensing: timur.davkarayev@gmail.com
 
 ## Status
 
-v1.3 — 12 modules, zero dependencies, production ready.
+v1.4 — 12 modules, zero dependencies, production ready.
 
-**Domain Classifier:** 65.9% accuracy (5-fold CV), trained on 103,331 certified records from UCI HAR + PAMAP2 + WISDM across 5 domains (LOCOMOTION, DAILY_LIVING, PRECISION, SOCIAL, SPORT).
+**Domain Classifier:** 76.6% accuracy (5-fold CV, FINE_MOTOR mode), trained on 103,352 certified records from UCI HAR + PAMAP2 + WISDM across 5 domains (LOCOMOTION, DAILY_LIVING, PRECISION, SOCIAL, SPORT).
 
 Validated on real iPhone 11 IMU data. SILVER certified, 4/4 physics laws passing.
 
