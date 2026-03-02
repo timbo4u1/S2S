@@ -1,0 +1,96 @@
+name: S2S CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Test PhysicsEngine import
+        run: python3 -c "from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine; print('PhysicsEngine OK')"
+
+      - name: Test PhysicsEngine certify
+        run: |
+          python3 << 'EOF'
+          import math, time
+          from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+
+          # Generate synthetic IMU data (1 second at 100Hz)
+          n = 100
+          dt = 1.0 / n
+          timestamps = [int(i * dt * 1e9) for i in range(n)]
+          accel = [[0.1 * math.sin(2 * math.pi * 2 * i * dt),
+                    0.1 * math.cos(2 * math.pi * 2 * i * dt),
+                    9.8] for i in range(n)]
+          gyro  = [[0.01 * math.sin(2 * math.pi * 10 * i * dt),
+                    0.01 * math.cos(2 * math.pi * 10 * i * dt),
+                    0.0] for i in range(n)]
+
+          result = PhysicsEngine().certify(
+              imu_raw={"timestamps_ns": timestamps, "accel": accel, "gyro": gyro},
+              segment="forearm"
+          )
+          assert result['tier'] in ['GOLD','SILVER','BRONZE','REJECTED'], "Bad tier"
+          assert 0 <= result['physical_law_score'] <= 100, "Score out of range"
+          print(f"Certify OK: {result['tier']} {result['physical_law_score']}/100")
+          EOF
+
+      - name: Test signing module
+        run: python3 -c "from s2s_standard_v1_3.s2s_signing_v1_3 import Signer; print('Signer OK')"
+
+      - name: Test classifier
+        run: |
+          python3 << 'EOF'
+          import json, os
+          model_path = 'model/s2s_domain_classifier.json'
+          if os.path.exists(model_path):
+              with open(model_path) as f:
+                  m = json.load(f)
+              print(f"Classifier OK: {m.get('accuracy','?')} accuracy, {m.get('n_records','?')} records")
+          else:
+              print("No model file — run train_classifier.py to generate")
+          EOF
+
+      - name: Test adapters import
+        run: |
+          python3 -c "import s2s_dataset_adapter; print('UCI/PAMAP2 adapter OK')"
+          python3 -c "import wisdm_adapter; print('WISDM adapter OK')"
+
+      - name: Test zero dependencies
+        run: |
+          python3 << 'EOF'
+          import ast, os, sys
+
+          allowed = set(sys.stdlib_module_names)
+          violations = []
+
+          for root, dirs, files in os.walk('s2s_standard_v1_3'):
+              for f in files:
+                  if not f.endswith('.py'): continue
+                  path = os.path.join(root, f)
+                  tree = ast.parse(open(path).read())
+                  for node in ast.walk(tree):
+                      if isinstance(node, (ast.Import, ast.ImportFrom)):
+                          names = [a.name for a in node.names] if isinstance(node, ast.Import) else [node.module]
+                          for name in names:
+                              if name and name.split('.')[0] not in allowed:
+                                  violations.append(f"{path}: imports {name}")
+
+          if violations:
+              print("FAIL — external dependencies found:")
+              for v in violations: print(" ", v)
+              sys.exit(1)
+          else:
+              print("Zero dependencies check passed")
+          EOF

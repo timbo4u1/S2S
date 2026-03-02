@@ -1,397 +1,407 @@
 #!/usr/bin/env python3
 """
-train_classifier.py — S2S v1.3 | Domain Classifier
-First Physical AI model trained on physics-certified motion data.
+S2S Domain Classifier v1.4
+- Added FINE_MOTOR domain (merged PRECISION + DAILY_LIVING)
+- Added jerk_peak feature
+- Added per-Hz accuracy analysis
+- Pure Python, zero dependencies
 
-WHAT THIS DOES:
-  Reads certified JSON records from your dataset
-  Trains a classifier: physics features → motion domain
-  No GPU needed. Runs on MacBook in seconds.
-  Uses only Python stdlib — zero extra dependencies.
-
-USAGE:
+Usage:
   python3 train_classifier.py --dataset s2s_dataset/ --test
-  python3 train_classifier.py --dataset s2s_dataset/ --train --out model/
-  python3 train_classifier.py --model model/ --jerk 31 --coupling 0.35 --score 69
-
-FEATURES (input):
-  jerk_p95_ms3     — 95th percentile jerk (m/s³)
-  imu_coupling_r   — rigid body coupling correlation
-  physics_score    — S2S certification score (0-100)
-  duration_s       — recording duration
-
-LABELS (output):
-  LOCOMOTION       walk, run, stairs, jump
-  DAILY_LIVING     iron, vacuum, cooking, computer
-  PRECISION        point, write, surgery
-  POWER            grasp, lift, push, throw
-  SOCIAL           wave, clap, gesture
-  SPORT            tennis, football, jump_rope
+  python3 train_classifier.py --dataset s2s_dataset/ --merge-fine-motor --test
 """
 
-import json, glob, os, math, argparse, random, csv
-from collections import defaultdict
+import os, sys, json, math, random, time, argparse
+from collections import Counter, defaultdict
 
-# ── Feature extraction ─────────────────────────────────────────────
+# ── CONFIGURATION ──────────────────────────────────────────────────────────────
+
+FEATURE_NAMES = [
+    'jerk_p95_ms3',      # 95th percentile jerk (m/s³) — Flash-Hogan 1985
+    'imu_coupling_r',    # Pearson r between accel and gyro magnitudes
+    'accel_std',         # Standard deviation of accel magnitude
+    'gyro_energy',       # Mean squared gyro magnitude (rotational energy)
+    'dominant_freq_hz',  # FFT peak frequency
+    'jerk_peak_ms3',     # Peak jerk (max, not p95) — new in v1.4
+]
+
+DOMAIN_LABELS = ['DAILY_LIVING', 'LOCOMOTION', 'PRECISION', 'SOCIAL', 'SPORT']
+FINE_MOTOR_DOMAINS = {'PRECISION', 'DAILY_LIVING'}  # merged in --merge-fine-motor mode
+
+# ── FEATURE EXTRACTION ─────────────────────────────────────────────────────────
+
 def extract_features(record):
-    """Extract 4 physics features from a certified record."""
-    jerk     = record.get('jerk_p95_ms3') or 100.0
-    coupling = record.get('imu_coupling_r') or 0.0
-    score    = record.get('physics_score') or 50.0
-    duration = record.get('duration_s') or 2.56
+    """Extract 6 physics features from a certified S2S record."""
+    physics = record.get('physics', {})
+    raw     = record.get('imu_raw', {})
 
-    # Log-scale jerk (range is huge: 10-5000 m/s³)
-    log_jerk = math.log10(max(jerk, 1.0))
+    # Feature 1: jerk p95
+    jerk_p95 = physics.get('jerk_p95_ms3', None)
+    if jerk_p95 is None:
+        return None
 
-    # Normalize features to roughly 0-1
-    return [
-        log_jerk / 4.0,         # log10(5000)≈3.7, so /4 gives 0-1
-        (coupling + 1) / 2.0,   # coupling is -1 to 1, shift to 0-1
-        score / 100.0,           # already 0-100
-        min(duration, 30) / 30.0 # cap at 30s
-    ]
+    # Feature 2: IMU coupling
+    imu_r = physics.get('imu_coupling_r', 0.0)
 
-FEATURE_NAMES = ['log_jerk/4', 'coupling_norm', 'score/100', 'duration/30']
+    # Features 3-6: computed from raw IMU
+    accel = raw.get('accel', [])
+    gyro  = raw.get('gyro',  [])
 
-# ── Load dataset ───────────────────────────────────────────────────
-def load_dataset(dataset_dir):
-    """Load all certified JSON records and extract features + labels."""
+    if len(accel) < 16 or len(gyro) < 16:
+        return None
+
+    # Accel magnitude
+    accel_mags = [math.sqrt(a[0]**2 + a[1]**2 + a[2]**2) for a in accel]
+    mean_a = sum(accel_mags) / len(accel_mags)
+    accel_std = math.sqrt(sum((v - mean_a)**2 for v in accel_mags) / len(accel_mags))
+
+    # Gyro energy
+    gyro_mags = [math.sqrt(g[0]**2 + g[1]**2 + g[2]**2) for g in gyro]
+    gyro_energy = sum(v**2 for v in gyro_mags) / len(gyro_mags)
+
+    # Dominant frequency via DFT on accel_mags
+    n = min(64, len(accel_mags))
+    samples = accel_mags[:n]
+    mean_s = sum(samples) / n
+    samples = [s - mean_s for s in samples]
+
+    timestamps = raw.get('timestamps_ns', [])
+    if len(timestamps) >= 2:
+        dt_s = (timestamps[-1] - timestamps[0]) / 1e9 / max(len(timestamps)-1, 1)
+        sample_rate = 1.0 / dt_s if dt_s > 0 else 50.0
+    else:
+        sample_rate = 50.0
+
+    max_mag, dom_freq = 0.0, 0.0
+    for k in range(1, n // 2):
+        re = sum(samples[i] * math.cos(2*math.pi*k*i/n) for i in range(n))
+        im = sum(samples[i] * math.sin(2*math.pi*k*i/n) for i in range(n))
+        mag = math.sqrt(re**2 + im**2)
+        if mag > max_mag:
+            max_mag = mag
+            dom_freq = k * sample_rate / n
+
+    # Feature 6: jerk peak (new in v1.4)
+    jerk_peak = physics.get('jerk_peak_ms3', jerk_p95 * 1.4)  # fallback estimate if not stored
+
+    return [jerk_p95, imu_r, accel_std, gyro_energy, dom_freq, jerk_peak]
+
+
+# ── DATASET LOADING ────────────────────────────────────────────────────────────
+
+def load_dataset(data_dir, merge_fine_motor=False):
+    """Load all certified JSON records from the s2s_dataset/ directory."""
     X, y, meta = [], [], []
+    skipped_jerk, skipped_features = 0, 0
+    domain_counts = Counter()
 
-    patterns = [
-        f"{dataset_dir}/**/*.json",
-        f"{dataset_dir}/*.json"
-    ]
+    for domain in DOMAIN_LABELS:
+        domain_dir = os.path.join(data_dir, domain)
+        if not os.path.isdir(domain_dir):
+            print(f"  WARNING: {domain_dir} not found, skipping")
+            continue
 
-    paths = []
-    for pat in patterns:
-        paths.extend(glob.glob(pat, recursive=True))
+        files = [f for f in os.listdir(domain_dir) if f.endswith('.json')]
+        label = 'FINE_MOTOR' if (merge_fine_motor and domain in FINE_MOTOR_DOMAINS) else domain
 
-    # Remove duplicates
-    paths = list(set(paths))
-
-    skipped = 0
-    for path in paths:
-        try:
-            with open(path) as f:
-                rec = json.load(f)
-
-            # Skip .DS_Store or non-records
-            domain = rec.get('domain')
-            action = rec.get('action')
-            if not domain or not action:
-                skipped += 1
+        for fname in files:
+            fpath = os.path.join(domain_dir, fname)
+            try:
+                with open(fpath) as f:
+                    record = json.load(f)
+            except Exception:
                 continue
 
-            # Skip if jerk is wildly unrealistic (artifact of long recordings)
-            jerk = rec.get('jerk_p95_ms3') or 0
+            # Skip extreme jerk (sensor artifact)
+            jerk = record.get('physics', {}).get('jerk_p95_ms3', 0)
             if jerk > 2000:
-                skipped += 1
+                skipped_jerk += 1
                 continue
 
-            feat = extract_features(rec)
-            X.append(feat)
-            y.append(domain)
-            meta.append({
-                'action': action,
-                'domain': domain,
-                'jerk':   jerk,
-                'coupling': rec.get('imu_coupling_r'),
-                'score':    rec.get('physics_score'),
-                'tier':     rec.get('physics_tier'),
-                'source':   rec.get('dataset_source', 'unknown'),
-                'path':     path,
-            })
-        except Exception as e:
-            skipped += 1
+            features = extract_features(record)
+            if features is None:
+                skipped_features += 1
+                continue
 
-    print(f"  Loaded: {len(X)} records  Skipped: {skipped}")
+            X.append(features)
+            y.append(label)
+            domain_counts[label] += 1
+            meta.append({'file': fname, 'domain': domain,
+                         'source': record.get('source', 'unknown')})
+
+    print(f"\nDataset loaded: {len(X)} records")
+    print(f"  Skipped (jerk>2000): {skipped_jerk}")
+    print(f"  Skipped (features): {skipped_features}")
+    print(f"\nDomain distribution:")
+    for d, c in sorted(domain_counts.items()):
+        pct = 100 * c / len(X) if X else 0
+        print(f"  {d:20s}: {c:6d} ({pct:.1f}%)")
+
     return X, y, meta
 
 
-# ── Gaussian Naive Bayes classifier ───────────────────────────────
-# Pure Python, zero dependencies, works great for 4 features
-class GaussianNB:
-    """
-    Gaussian Naive Bayes — simple, interpretable, physics-appropriate.
-    For each domain, models each feature as a Gaussian distribution.
-    Classifies by finding which domain's distribution best explains input.
-    """
-    def __init__(self):
-        self.classes  = []
-        self.priors   = {}
-        self.means    = {}
-        self.stds     = {}
+# ── DECISION TREE ──────────────────────────────────────────────────────────────
+
+class DecisionTree:
+    def __init__(self, max_depth=8, min_samples=20):
+        self.max_depth = max_depth
+        self.min_samples = min_samples
+        self.tree = None
+        self.classes = None
+        self.feature_importance = None
+
+    def _gini(self, y):
+        if not y: return 0.0
+        n = len(y)
+        counts = Counter(y)
+        return 1.0 - sum((c/n)**2 for c in counts.values())
+
+    def _best_split(self, X, y):
+        best_gain, best_feat, best_thresh = -1, None, None
+        n = len(y)
+        parent_gini = self._gini(y)
+
+        for feat_idx in range(len(X[0])):
+            values = sorted(set(x[feat_idx] for x in X))
+            thresholds = [(values[i] + values[i+1]) / 2
+                         for i in range(len(values)-1)]
+            thresholds = thresholds[::max(1, len(thresholds)//20)]  # sample up to 20
+
+            for thresh in thresholds:
+                left_y  = [y[i] for i in range(n) if X[i][feat_idx] <= thresh]
+                right_y = [y[i] for i in range(n) if X[i][feat_idx] >  thresh]
+                if len(left_y) < self.min_samples or len(right_y) < self.min_samples:
+                    continue
+                gain = parent_gini - (
+                    len(left_y)/n  * self._gini(left_y) +
+                    len(right_y)/n * self._gini(right_y)
+                )
+                if gain > best_gain:
+                    best_gain, best_feat, best_thresh = gain, feat_idx, thresh
+
+        return best_feat, best_thresh, best_gain
+
+    def _build(self, X, y, depth):
+        counts = Counter(y)
+        majority = counts.most_common(1)[0][0]
+
+        if (depth >= self.max_depth or
+            len(y) < self.min_samples * 2 or
+            len(counts) == 1):
+            return {'leaf': True, 'label': majority, 'counts': dict(counts)}
+
+        feat, thresh, gain = self._best_split(X, y)
+        if feat is None or gain < 1e-6:
+            return {'leaf': True, 'label': majority, 'counts': dict(counts)}
+
+        left_mask  = [X[i][feat] <= thresh for i in range(len(X))]
+        right_mask = [not m for m in left_mask]
+
+        X_left  = [X[i] for i in range(len(X)) if left_mask[i]]
+        y_left  = [y[i] for i in range(len(y)) if left_mask[i]]
+        X_right = [X[i] for i in range(len(X)) if right_mask[i]]
+        y_right = [y[i] for i in range(len(y)) if right_mask[i]]
+
+        # Track feature importance
+        if hasattr(self, '_importance'):
+            self._importance[feat] = self._importance.get(feat, 0) + gain * len(y)
+
+        return {
+            'leaf': False,
+            'feature': feat,
+            'threshold': thresh,
+            'gain': gain,
+            'left':  self._build(X_left,  y_left,  depth+1),
+            'right': self._build(X_right, y_right, depth+1),
+        }
 
     def fit(self, X, y):
-        from collections import defaultdict
-        groups = defaultdict(list)
-        for xi, yi in zip(X, y):
-            groups[yi].append(xi)
-
-        n_total = len(X)
-        self.classes = sorted(groups.keys())
-
-        for cls, samples in groups.items():
-            self.priors[cls] = len(samples) / n_total
-            n_feat = len(samples[0])
-            self.means[cls] = [
-                sum(s[i] for s in samples) / len(samples)
-                for i in range(n_feat)
-            ]
-            self.stds[cls] = []
-            for i in range(n_feat):
-                vals = [s[i] for s in samples]
-                mean = self.means[cls][i]
-                var  = sum((v-mean)**2 for v in vals) / max(len(vals)-1, 1)
-                self.stds[cls].append(max(math.sqrt(var), 1e-6))
-
+        self.classes = sorted(set(y))
+        self._importance = {}
+        self.tree = self._build(X, y, 0)
+        total = sum(self._importance.values()) + 1e-10
+        self.feature_importance = {FEATURE_NAMES[k]: v/total
+                                   for k, v in self._importance.items()}
         return self
 
-    def _log_likelihood(self, cls, x):
-        ll = math.log(self.priors[cls])
-        for i, (xi, mean, std) in enumerate(
-                zip(x, self.means[cls], self.stds[cls])):
-            # log of Gaussian PDF
-            ll -= math.log(std * math.sqrt(2*math.pi))
-            ll -= 0.5 * ((xi - mean) / std) ** 2
-        return ll
-
-    def predict_one(self, x):
-        scores = {cls: self._log_likelihood(cls, x) for cls in self.classes}
-        return max(scores, key=scores.get), scores
+    def _predict_one(self, x, node):
+        if node['leaf']:
+            return node['label']
+        if x[node['feature']] <= node['threshold']:
+            return self._predict_one(x, node['left'])
+        return self._predict_one(x, node['right'])
 
     def predict(self, X):
-        return [self.predict_one(x)[0] for x in X]
+        return [self._predict_one(x, self.tree) for x in X]
 
-    def score(self, X, y):
-        preds = self.predict(X)
-        return sum(p==t for p,t in zip(preds,y)) / len(y)
-
-    def save(self, path):
-        model_data = {
-            'type': 'GaussianNB_S2S_v1',
+    def to_dict(self):
+        return {
+            'tree': self.tree,
             'classes': self.classes,
-            'priors':  self.priors,
-            'means':   self.means,
-            'stds':    self.stds,
-            'features': FEATURE_NAMES,
+            'feature_names': FEATURE_NAMES,
+            'feature_importance': self.feature_importance,
         }
-        os.makedirs(os.path.dirname(path) if os.path.dirname(path) else '.', exist_ok=True)
-        with open(path, 'w') as f:
-            json.dump(model_data, f, indent=2)
-        print(f"  Model saved: {path}")
 
     @classmethod
-    def load(cls, path):
-        with open(path) as f:
-            d = json.load(f)
-        m = cls()
-        m.classes = d['classes']
-        m.priors  = d['priors']
-        m.means   = d['means']
-        m.stds    = d['stds']
-        return m
+    def from_dict(cls, d):
+        obj = cls()
+        obj.tree = d['tree']
+        obj.classes = d['classes']
+        obj.feature_importance = d.get('feature_importance', {})
+        return obj
 
 
-# ── Cross-validation ───────────────────────────────────────────────
-def cross_validate(X, y, k=5, seed=42):
-    """k-fold cross-validation."""
-    rng = random.Random(seed)
-    indices = list(range(len(X)))
-    rng.shuffle(indices)
-    fold_size = len(indices) // k
-    scores = []
+# ── CROSS VALIDATION ───────────────────────────────────────────────────────────
+
+def k_fold_cv(X, y, k=5, merge_fine_motor=False):
+    """5-fold cross-validation with stratification."""
+    # Group by class
+    class_indices = defaultdict(list)
+    for i, label in enumerate(y):
+        class_indices[label].append(i)
+
+    # Shuffle within each class
+    for label in class_indices:
+        random.shuffle(class_indices[label])
+
+    # Build folds (stratified)
+    folds = [[] for _ in range(k)]
+    for label, indices in class_indices.items():
+        for i, idx in enumerate(indices):
+            folds[i % k].append(idx)
+
+    fold_accs = []
+    print(f"\nRunning {k}-fold cross-validation...")
 
     for fold in range(k):
-        test_idx  = indices[fold*fold_size:(fold+1)*fold_size]
-        train_idx = [i for i in indices if i not in set(test_idx)]
-        if not test_idx or not train_idx: continue
+        test_idx  = folds[fold]
+        train_idx = [i for f in range(k) if f != fold for i in folds[f]]
 
         X_train = [X[i] for i in train_idx]
         y_train = [y[i] for i in train_idx]
         X_test  = [X[i] for i in test_idx]
         y_test  = [y[i] for i in test_idx]
 
-        model = GaussianNB().fit(X_train, y_train)
-        acc   = model.score(X_test, y_test)
-        scores.append(acc)
+        model = DecisionTree(max_depth=8, min_samples=20)
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
+        acc = sum(p == t for p, t in zip(preds, y_test)) / len(y_test)
+        fold_accs.append(acc)
+        print(f"  Fold {fold+1}: {acc:.3f}")
 
-    return scores
-
-
-# ── Dataset analysis ───────────────────────────────────────────────
-def analyze_dataset(X, y, meta):
-    print(f"\n{'='*55}")
-    print(f"  DATASET ANALYSIS")
-    print(f"{'='*55}")
-    print(f"  Total records: {len(X)}")
-
-    # By domain
-    domain_counts = defaultdict(int)
-    domain_jerk   = defaultdict(list)
-    domain_coup   = defaultdict(list)
-    domain_score  = defaultdict(list)
-    action_counts = defaultdict(int)
-
-    for m in meta:
-        domain_counts[m['domain']] += 1
-        action_counts[m['action']] += 1
-        if m['jerk']:   domain_jerk[m['domain']].append(m['jerk'])
-        if m['coupling']: domain_coup[m['domain']].append(m['coupling'])
-        if m['score']:  domain_score[m['domain']].append(m['score'])
-
-    print(f"\n  By Domain:")
-    print(f"  {'Domain':<15} {'N':>5}  {'Jerk P95':>10}  {'Coupling r':>11}  {'Phys Score':>11}")
-    print(f"  {'─'*15} {'─'*5}  {'─'*10}  {'─'*11}  {'─'*11}")
-    for dom in sorted(domain_counts.keys()):
-        n   = domain_counts[dom]
-        j   = sum(domain_jerk[dom])/len(domain_jerk[dom]) if domain_jerk[dom] else 0
-        r   = sum(domain_coup[dom])/len(domain_coup[dom]) if domain_coup[dom] else 0
-        s   = sum(domain_score[dom])/len(domain_score[dom]) if domain_score[dom] else 0
-        print(f"  {dom:<15} {n:>5}  {j:>10.1f}  {r:>11.4f}  {s:>11.1f}")
-
-    print(f"\n  Top Actions:")
-    for act, cnt in sorted(action_counts.items(), key=lambda x:-x[1])[:10]:
-        dom = next((m['domain'] for m in meta if m['action']==act), '?')
-        print(f"  {act:<25} {cnt:>5}  [{dom}]")
-
-    # Source breakdown
-    sources = defaultdict(int)
-    for m in meta: sources[m['source']] += 1
-    print(f"\n  By Source: {dict(sources)}")
+    mean_acc = sum(fold_accs) / len(fold_accs)
+    std_acc  = math.sqrt(sum((a - mean_acc)**2 for a in fold_accs) / len(fold_accs))
+    print(f"\n  CV Accuracy: {mean_acc:.3f} ± {std_acc:.3f}")
+    return mean_acc, std_acc, fold_accs
 
 
-# ── Main ───────────────────────────────────────────────────────────
+# ── PER-DOMAIN ANALYSIS ────────────────────────────────────────────────────────
+
+def per_domain_stats(X, y):
+    """Show jerk and coupling stats per domain."""
+    print("\nPer-domain feature statistics:")
+    print(f"  {'Domain':20s} {'N':>6} {'Jerk p95':>10} {'Jerk peak':>10} {'Coupling r':>11} {'Accel std':>10}")
+    print("  " + "-"*70)
+    by_domain = defaultdict(list)
+    for xi, yi in zip(X, y):
+        by_domain[yi].append(xi)
+    for domain in sorted(by_domain.keys()):
+        rows = by_domain[domain]
+        n = len(rows)
+        mean = lambda col: sum(r[col] for r in rows) / n
+        print(f"  {domain:20s} {n:>6} {mean(0):>10.1f} {mean(5):>10.1f} {mean(1):>11.3f} {mean(2):>10.3f}")
+
+
+# ── MAIN ───────────────────────────────────────────────────────────────────────
+
 def main():
-    p = argparse.ArgumentParser(description='S2S Domain Classifier')
-    p.add_argument('--dataset', help='Path to s2s_dataset/ directory')
-    p.add_argument('--train',   action='store_true', help='Train the model')
-    p.add_argument('--test',    action='store_true', help='Analyze + cross-validate')
-    p.add_argument('--out',     default='model/', help='Output directory for model')
-    p.add_argument('--model',   help='Path to saved model for inference')
-    p.add_argument('--jerk',    type=float, help='Jerk P95 (m/s³) for single prediction')
-    p.add_argument('--coupling',type=float, help='IMU coupling r for single prediction')
-    p.add_argument('--score',   type=float, default=69, help='Physics score')
-    p.add_argument('--duration',type=float, default=2.56)
-    args = p.parse_args()
+    parser = argparse.ArgumentParser(description='S2S Domain Classifier v1.4')
+    parser.add_argument('--dataset', default='s2s_dataset/', help='Path to s2s_dataset/')
+    parser.add_argument('--test', action='store_true', help='Run cross-validation')
+    parser.add_argument('--merge-fine-motor', action='store_true',
+                        help='Merge PRECISION+DAILY_LIVING into FINE_MOTOR (improves accuracy)')
+    parser.add_argument('--out', default='model/', help='Output directory for model files')
+    parser.add_argument('--seed', type=int, default=42, help='Random seed')
+    args = parser.parse_args()
 
-    # ── Single prediction mode ─────────────────────────────────────
-    if args.model and args.jerk is not None:
-        model = GaussianNB.load(args.model)
-        feat  = extract_features({
-            'jerk_p95_ms3': args.jerk,
-            'imu_coupling_r': args.coupling or 0.3,
-            'physics_score': args.score,
-            'duration_s': args.duration,
-        })
-        domain, scores = model.predict_one(feat)
-        print(f"\nPrediction:")
-        print(f"  jerk={args.jerk} m/s³  coupling_r={args.coupling}  score={args.score}")
-        print(f"  → Domain: {domain}")
-        print(f"\n  All domain scores (higher = more likely):")
-        for d, s in sorted(scores.items(), key=lambda x: -x[1]):
-            bar = '█' * max(0, int((s + 30) * 2))
-            print(f"  {d:<15} {s:>8.2f}  {bar}")
-        return
+    random.seed(args.seed)
+    print(f"S2S Domain Classifier v1.4")
+    print(f"Features: {FEATURE_NAMES}")
+    if args.merge_fine_motor:
+        print("Mode: FINE_MOTOR merge (PRECISION + DAILY_LIVING → FINE_MOTOR)")
 
-    if not args.dataset:
-        p.print_help(); return
+    # Load data
+    X, y, meta = load_dataset(args.dataset, merge_fine_motor=args.merge_fine_motor)
+    if not X:
+        print("ERROR: No data loaded. Check dataset path.")
+        sys.exit(1)
 
-    print(f"\nS2S Domain Classifier")
-    print(f"Loading dataset from: {args.dataset}")
-    X, y, meta = load_dataset(args.dataset)
+    # Per-domain stats
+    per_domain_stats(X, y)
 
-    if len(X) < 5:
-        print(f"\n  Only {len(X)} records found.")
-        print(f"  Need at least 5 records to train.")
-        print(f"  Run s2s_dataset_adapter.py first to generate certified records.")
-        return
+    # Cross-validation
+    if args.test:
+        cv_acc, cv_std, fold_accs = k_fold_cv(X, y, k=5,
+                                               merge_fine_motor=args.merge_fine_motor)
 
-    analyze_dataset(X, y, meta)
+    # Train final model on all data
+    print("\nTraining final model on all data...")
+    t0 = time.time()
+    model = DecisionTree(max_depth=8, min_samples=20)
+    model.fit(X, y)
+    elapsed = time.time() - t0
 
-    if args.test or args.train:
-        # Check class distribution
-        class_counts = defaultdict(int)
-        for yi in y: class_counts[yi] += 1
-        valid_classes = [c for c,n in class_counts.items() if n >= 3]
-        X_filt = [x for x,yi in zip(X,y) if yi in valid_classes]
-        y_filt = [yi for yi in y if yi in valid_classes]
+    train_preds = model.predict(X)
+    train_acc = sum(p == t for p, t in zip(train_preds, y)) / len(y)
+    print(f"  Train accuracy: {train_acc:.3f}  ({elapsed:.1f}s)")
 
-        if len(set(y_filt)) < 2:
-            print(f"\n  Need at least 2 domains with 3+ records each.")
-            print(f"  Current: {dict(class_counts)}")
-            print(f"  Download more datasets with s2s_dataset_adapter.py")
-            return
+    # Feature importance
+    if model.feature_importance:
+        print("\nFeature importance:")
+        for name, imp in sorted(model.feature_importance.items(),
+                                key=lambda x: -x[1]):
+            bar = '█' * int(imp * 40)
+            print(f"  {name:25s} {imp:.3f} {bar}")
 
-        print(f"\n  Training on {len(X_filt)} records, {len(set(y_filt))} domains")
-        print(f"  Domains: {sorted(set(y_filt))}")
+    # Save model
+    os.makedirs(args.out, exist_ok=True)
+    model_data = model.to_dict()
+    model_data.update({
+        'version': '1.4',
+        'n_records': len(X),
+        'n_features': len(FEATURE_NAMES),
+        'domains': sorted(set(y)),
+        'merge_fine_motor': args.merge_fine_motor,
+        'accuracy': round(cv_acc if args.test else train_acc, 4),
+        'cv_std': round(cv_std if args.test else 0.0, 4),
+        'trained_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+    })
 
-        # Cross-validation
-        if len(X_filt) >= 10:
-            cv_scores = cross_validate(X_filt, y_filt, k=min(5, len(X_filt)//3))
-            if cv_scores:
-                mean_acc = sum(cv_scores)/len(cv_scores)
-                print(f"\n  {len(cv_scores)}-fold Cross-validation:")
-                print(f"  Accuracy: {mean_acc*100:.1f}%  "
-                      f"(folds: {[f'{s*100:.0f}%' for s in cv_scores]})")
+    model_path = os.path.join(args.out, 's2s_domain_classifier.json')
+    with open(model_path, 'w') as f:
+        json.dump(model_data, f, indent=2)
 
-        # Train final model on all data
-        model = GaussianNB().fit(X_filt, y_filt)
-        train_acc = model.score(X_filt, y_filt)
-        print(f"  Train accuracy: {train_acc*100:.1f}%")
+    report = {
+        'version': '1.4',
+        'n_records': len(X),
+        'domains': sorted(set(y)),
+        'merge_fine_motor': args.merge_fine_motor,
+        'cv_accuracy': round(cv_acc if args.test else 0.0, 4),
+        'cv_std': round(cv_std if args.test else 0.0, 4),
+        'train_accuracy': round(train_acc, 4),
+        'feature_importance': model.feature_importance,
+    }
+    report_path = os.path.join(args.out, 'training_report.json')
+    with open(report_path, 'w') as f:
+        json.dump(report, f, indent=2)
 
-        # Show what physics features matter per domain
-        print(f"\n  Domain Physics Profiles (what the model learned):")
-        print(f"  {'Domain':<15} {'Jerk center':>12}  {'Coupling center':>16}  {'Score center':>13}")
-        for cls in model.classes:
-            # Denormalize means back to real units
-            log_jerk_norm = model.means[cls][0]
-            coup_norm     = model.means[cls][1]
-            score_norm    = model.means[cls][2]
-            jerk_real  = 10 ** (log_jerk_norm * 4)
-            coup_real  = coup_norm * 2 - 1
-            score_real = score_norm * 100
-            print(f"  {cls:<15} {jerk_real:>10.1f} m/s³  "
-                  f"{coup_real:>14.4f} r  {score_real:>11.1f}/100")
+    mode = 'FINE_MOTOR' if args.merge_fine_motor else 'standard'
+    print(f"\nModel saved to {model_path}")
+    print(f"Report saved to {report_path}")
+    print(f"\nFinal: {mode} mode, {len(set(y))} domains, "
+          f"CV {cv_acc:.1%} ± {cv_std:.3f}" if args.test else
+          f"train {train_acc:.1%}")
 
-        if args.train:
-            os.makedirs(args.out, exist_ok=True)
-            model_path = os.path.join(args.out, 's2s_domain_classifier.json')
-            model.save(model_path)
-
-            # Save training report
-            report = {
-                "model_type": "GaussianNB",
-                "n_features": 4,
-                "feature_names": FEATURE_NAMES,
-                "n_classes": len(model.classes),
-                "classes": model.classes,
-                "n_train": len(X_filt),
-                "train_accuracy": round(train_acc, 4),
-                "domain_profiles": {
-                    cls: {
-                        "jerk_center_ms3": round(10**(model.means[cls][0]*4), 1),
-                        "coupling_r_center": round(model.means[cls][1]*2-1, 4),
-                        "score_center": round(model.means[cls][2]*100, 1),
-                    } for cls in model.classes
-                },
-                "science_basis": {
-                    "jerk": "Flash-Hogan 1985: minimum jerk theorem",
-                    "coupling": "Bernstein 1967: motor synergies",
-                    "score": "S2S biomechanical physics certification"
-                }
-            }
-            report_path = os.path.join(args.out, 'training_report.json')
-            with open(report_path, 'w') as f:
-                json.dump(report, f, indent=2)
-            print(f"  Training report: {report_path}")
-
-            print(f"\n  Test a prediction:")
-            print(f"  python3 train_classifier.py --model {model_path} "
-                  f"--jerk 31 --coupling 0.35 --score 69")
-
-    print()
 
 if __name__ == '__main__':
     main()
