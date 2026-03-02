@@ -1,0 +1,4 @@
+# S2S dashboard dependencies
+# Install with: pip install -r requirements-dashboard.txt
+streamlit>=1.30
+numpy>=1.24

@@ -1,0 +1,5 @@
+# S2S optional dependencies — ML mode
+# Install with: pip install -r requirements-ml.txt
+torch>=2.0
+numpy>=1.24
+scikit-learn>=1.3
