@@ -1,8 +1,8 @@
 # S2S — SCAN2SELL Physical Motion Certification
 
-**Physics-certified motion data for Physical AI training.**
+**Physics-certified motion data for prosthetics, robotics, and Physical AI.**
 
-S2S certifies that sensor data from real humans obeys biomechanical physics laws — making it trustworthy training data for robots, prosthetics, and physical AI systems.
+S2S is a physics validation layer for human motion sensor data. Before training a prosthetic hand, surgical robot, or humanoid — run your IMU data through S2S. It verifies the data obeys 7 biomechanical laws and issues a cryptographic certificate. Bad data gets rejected before it reaches your model.
 
 [![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)]()
@@ -149,7 +149,6 @@ train_classifier.py             Train domain classifier (Gaussian Naive Bayes, 5
 | UCI HAR | 30 | 6 | 50 | ✅ |
 | PAMAP2 | 9 | 18 | 100 | ✅ |
 | WISDM 2019 | 51 | 18 | 20 | ✅ |
-| MoVi | 90 | 20 | 120 | ✅ |
 | Your iPhone | 1 | any | 100 | ✅ |
 
 ## Use Cases
