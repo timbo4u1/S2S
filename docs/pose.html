@@ -6,795 +6,367 @@
 <title>S2S Pose — Physics Certification</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400&display=swap');
-
 :root {
-  --bg:      #04080c;
-  --panel:   rgba(6,14,20,0.92);
-  --border:  #0f2030;
-  --gold:    #ffd060;
-  --silver:  #80c8f0;
-  --bronze:  #e08840;
-  --reject:  #ff3030;
-  --green:   #20ff90;
-  --cyan:    #00d4ff;
-  --dim:     #1a3040;
-  --text:    #80b0c8;
-  --orb:     'Orbitron', sans-serif;
-  --mono:    'IBM Plex Mono', monospace;
+  --bg:#04080c;--panel:rgba(6,14,20,0.93);--border:#0f2030;
+  --gold:#ffd060;--silver:#80c8f0;--bronze:#e08840;--reject:#ff3030;
+  --green:#20ff90;--cyan:#00d4ff;--dim:#1a3040;--text:#80b0c8;
+  --orb:'Orbitron',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  font-family: var(--mono);
-  color: var(--text);
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ── CAMERA VIEWPORT ── */
-#viewport {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-  background: #000;
-}
-
-#video {
-  position: absolute;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transform: scaleX(-1);
-  opacity: 0.85;
-}
-
-#poseCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  transform: scaleX(-1);
-}
-
-/* Scan line effect */
-#viewport::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,212,255,0.015) 2px,
-    rgba(0,212,255,0.015) 4px
-  );
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Corner brackets */
-.corner {
-  position: absolute;
-  width: 24px; height: 24px;
-  border-color: var(--cyan);
-  border-style: solid;
-  opacity: 0.6;
-  z-index: 20;
-}
-.corner.tl { top:12px; left:12px;  border-width: 2px 0 0 2px; }
-.corner.tr { top:12px; right:12px; border-width: 2px 2px 0 0; }
-.corner.bl { bottom:12px; left:12px;  border-width: 0 0 2px 2px; }
-.corner.br { bottom:12px; right:12px; border-width: 0 2px 2px 0; }
-
-/* ── FLOATING SCORE ── */
-#scoreFloat {
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 30;
-  text-align: center;
-  pointer-events: none;
-}
-
-.score-tier {
-  font-family: var(--orb);
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--dim);
-  transition: color 0.3s, text-shadow 0.3s;
-  line-height: 1;
-}
-.score-tier.active {
-  text-shadow: 0 0 20px currentColor;
-}
-
-.score-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--dim);
-  margin-top: 3px;
-  transition: color 0.3s;
-}
-
-/* ── JOINT LABELS on canvas ── */
-.joint-label {
-  position: absolute;
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--green);
-  pointer-events: none;
-  z-index: 25;
-  white-space: nowrap;
-}
-
-/* ── BOTTOM PANEL ── */
-#panel {
-  background: var(--panel);
-  border-top: 1px solid var(--border);
-  padding: 10px 14px 12px;
-  backdrop-filter: blur(8px);
-  z-index: 40;
-}
-
-.panel-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.metric {
-  flex: 1;
-  background: rgba(4,8,12,0.8);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 6px 8px;
-  transition: border-color 0.3s;
-}
-.metric.pass { border-color: rgba(32,255,144,0.25); }
-.metric.fail { border-color: rgba(255,48,48,0.25); }
-
-.metric-name {
-  font-size: 8px;
-  letter-spacing: 2px;
-  color: var(--dim);
-  margin-bottom: 3px;
-}
-.metric-val {
-  font-size: 14px;
-  color: var(--text);
-  transition: color 0.3s;
-  font-weight: 400;
-}
-.metric.pass .metric-val { color: var(--green); }
-.metric.fail .metric-val { color: var(--reject); }
-.metric-unit {
-  font-size: 8px;
-  color: var(--dim);
-  margin-top: 1px;
-}
-
-/* Score bar */
-.bar-wrap {
-  height: 3px;
-  background: var(--border);
-  border-radius: 2px;
-  margin-bottom: 8px;
-  overflow: hidden;
-}
-.bar-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: 2px;
-  background: var(--cyan);
-  transition: width 0.3s ease, background 0.3s;
-}
-
-/* Domain + status row */
-.bottom-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.domain-tag {
-  font-family: var(--orb);
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--gold);
-}
-.status-tag {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--dim);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--dim);
-  transition: background 0.3s;
-}
-.live-dot.on {
-  background: var(--green);
-  animation: blink 1s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100% { opacity:1; } 50% { opacity:0.3; }
-}
-
-/* ── START SCREEN ── */
-#startScreen {
-  position: absolute;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 32px;
-  text-align: center;
-}
-#startScreen.hidden { display: none; }
-
-.start-logo {
-  font-family: var(--orb);
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: 8px;
-  margin-bottom: 4px;
-}
-.start-logo span { color: var(--cyan); }
-
-.start-sub {
-  font-size: 9px;
-  letter-spacing: 4px;
-  color: var(--dim);
-  margin-bottom: 32px;
-}
-
-.start-desc {
-  font-size: 11px;
-  color: var(--text);
-  line-height: 1.9;
-  margin-bottom: 32px;
-  max-width: 300px;
-}
-.start-desc strong { color: var(--cyan); }
-
-#startBtn {
-  font-family: var(--orb);
-  font-size: 12px;
-  letter-spacing: 4px;
-  color: var(--bg);
-  background: var(--cyan);
-  border: none;
-  border-radius: 2px;
-  padding: 16px 36px;
-  cursor: pointer;
-  width: 100%;
-  max-width: 300px;
-  -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.2s;
-}
-#startBtn:active { opacity: 0.8; }
-
-.start-note {
-  font-size: 9px;
-  color: var(--dim);
-  margin-top: 14px;
-  line-height: 1.7;
-}
-
-/* ── LOADING ── */
-#loadingScreen {
-  position: absolute;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 90;
-}
-#loadingScreen.hidden { display: none; }
-
-.loading-text {
-  font-family: var(--orb);
-  font-size: 11px;
-  letter-spacing: 4px;
-  color: var(--cyan);
-  margin-bottom: 16px;
-}
-.loading-bar-wrap {
-  width: 200px;
-  height: 2px;
-  background: var(--border);
-  border-radius: 1px;
-  overflow: hidden;
-}
-.loading-bar {
-  height: 100%;
-  background: var(--cyan);
-  width: 0%;
-  animation: load-anim 3s ease forwards;
-}
-@keyframes load-anim {
-  0%   { width: 0%; }
-  30%  { width: 40%; }
-  70%  { width: 75%; }
-  100% { width: 95%; }
-}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);font-family:var(--mono);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+#viewport{position:relative;flex:1;overflow:hidden;background:#000;}
+#video{position:absolute;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);opacity:0.8;}
+#poseCanvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);}
+#viewport::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.012) 2px,rgba(0,212,255,0.012) 4px);pointer-events:none;z-index:10;}
+.corner{position:absolute;width:24px;height:24px;border-color:var(--cyan);border-style:solid;opacity:0.5;z-index:20;}
+.corner.tl{top:12px;left:12px;border-width:2px 0 0 2px;}
+.corner.tr{top:12px;right:12px;border-width:2px 2px 0 0;}
+.corner.bl{bottom:12px;left:12px;border-width:0 0 2px 2px;}
+.corner.br{bottom:12px;right:12px;border-width:0 2px 2px 0;}
+#scoreFloat{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:30;text-align:center;pointer-events:none;}
+.score-tier{font-family:var(--orb);font-size:26px;font-weight:900;letter-spacing:4px;color:var(--dim);transition:color 0.3s,text-shadow 0.3s;line-height:1;}
+.score-tier.active{text-shadow:0 0 20px currentColor;}
+.score-num{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--dim);margin-top:3px;transition:color 0.3s;}
+#panel{background:var(--panel);border-top:1px solid var(--border);padding:10px 14px 12px;backdrop-filter:blur(8px);z-index:40;}
+.panel-row{display:flex;gap:8px;margin-bottom:8px;}
+.metric{flex:1;background:rgba(4,8,12,0.8);border:1px solid var(--border);border-radius:3px;padding:6px 8px;transition:border-color 0.3s;}
+.metric.pass{border-color:rgba(32,255,144,0.25);}
+.metric.fail{border-color:rgba(255,48,48,0.25);}
+.metric-name{font-size:7px;letter-spacing:2px;color:var(--dim);margin-bottom:3px;}
+.metric-val{font-size:13px;color:var(--text);transition:color 0.3s;}
+.metric.pass .metric-val{color:var(--green);}
+.metric.fail .metric-val{color:var(--reject);}
+.metric-unit{font-size:7px;color:var(--dim);margin-top:1px;}
+.bar-wrap{height:3px;background:var(--border);border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.bar-fill{height:100%;width:0%;border-radius:2px;background:var(--cyan);transition:width 0.3s ease,background 0.3s;}
+.bottom-row{display:flex;justify-content:space-between;align-items:center;}
+.domain-tag{font-family:var(--orb);font-size:10px;letter-spacing:3px;color:var(--gold);}
+.status-tag{font-size:9px;letter-spacing:2px;color:var(--dim);display:flex;align-items:center;gap:5px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--dim);transition:background 0.3s;}
+.live-dot.on{background:var(--green);animation:blink 1s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+#startScreen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;padding:32px;text-align:center;}
+#startScreen.hidden{display:none;}
+.start-logo{font-family:var(--orb);font-size:42px;font-weight:900;letter-spacing:8px;margin-bottom:4px;}
+.start-logo span{color:var(--cyan);}
+.start-sub{font-size:9px;letter-spacing:4px;color:var(--dim);margin-bottom:28px;}
+.start-desc{font-size:11px;color:var(--text);line-height:1.9;margin-bottom:28px;max-width:300px;}
+.start-desc strong{color:var(--cyan);}
+#startBtn{font-family:var(--orb);font-size:12px;letter-spacing:4px;color:var(--bg);background:var(--cyan);border:none;border-radius:2px;padding:16px 36px;cursor:pointer;width:100%;max-width:300px;-webkit-tap-highlight-color:transparent;}
+.start-note{font-size:9px;color:var(--dim);margin-top:12px;line-height:1.7;}
+#loadingScreen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:90;gap:16px;}
+#loadingScreen.hidden{display:none;}
+.loading-title{font-family:var(--orb);font-size:11px;letter-spacing:4px;color:var(--cyan);}
+.loading-sub{font-size:9px;color:var(--dim);letter-spacing:2px;}
+.loading-bar-wrap{width:200px;height:2px;background:var(--border);border-radius:1px;overflow:hidden;}
+.loading-bar{height:100%;background:var(--cyan);width:0%;transition:width 0.4s ease;}
+#errorMsg{font-size:10px;color:var(--reject);margin-top:8px;display:none;text-align:center;max-width:280px;line-height:1.6;}
+#retryBtn{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--bg);background:var(--silver);border:none;border-radius:2px;padding:10px 20px;cursor:pointer;display:none;margin-top:8px;}
 </style>
 </head>
 <body>
 
-<!-- START SCREEN -->
 <div id="startScreen">
   <div class="start-logo">S<span>2</span>S</div>
   <div class="start-sub">POSE CERTIFICATION</div>
   <div class="start-desc">
-    Point your camera at a person.<br>
-    S2S tracks <strong>33 body landmarks</strong> and checks<br>
-    biomechanical physics laws in real time.<br><br>
-    <strong>Rigid body kinematics · Jerk bounds</strong><br>
-    <strong>Joint coupling · Motion domain</strong>
+    Point camera at a person.<br>
+    S2S tracks <strong>17 body joints</strong> and checks<br>
+    biomechanical physics laws live.<br><br>
+    <strong>Rigid body · Jerk · Symmetry · Flow</strong>
   </div>
   <button id="startBtn">START CAMERA</button>
-  <div class="start-note">
-    Requires camera permission<br>
-    All processing on-device · No data sent anywhere
-  </div>
+  <div class="start-note">Camera stays on device · No data sent anywhere</div>
 </div>
 
-<!-- LOADING SCREEN -->
 <div id="loadingScreen" class="hidden">
-  <div class="loading-text">LOADING POSE MODEL</div>
-  <div class="loading-bar-wrap">
-    <div class="loading-bar"></div>
-  </div>
+  <div class="loading-title">LOADING POSE MODEL</div>
+  <div class="loading-sub">~3MB · one time download</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loadBar"></div></div>
+  <div id="errorMsg"></div>
+  <button id="retryBtn" onclick="location.reload()">RETRY</button>
 </div>
 
-<!-- CAMERA VIEWPORT -->
 <div id="viewport">
   <video id="video" autoplay muted playsinline></video>
   <canvas id="poseCanvas"></canvas>
-
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
   <div id="scoreFloat">
     <div class="score-tier" id="tierDisp">——</div>
     <div class="score-num" id="scoreDisp">— / 100</div>
   </div>
 </div>
 
-<!-- BOTTOM PANEL -->
 <div id="panel">
   <div class="panel-row">
-    <div class="metric" id="m-rigid">
-      <div class="metric-name">RIGID BODY</div>
-      <div class="metric-val" id="v-rigid">—</div>
-      <div class="metric-unit">joint consistency</div>
-    </div>
-    <div class="metric" id="m-jerk">
-      <div class="metric-name">JOINT JERK</div>
-      <div class="metric-val" id="v-jerk">—</div>
-      <div class="metric-unit">px/frame³ norm</div>
-    </div>
-    <div class="metric" id="m-sym">
-      <div class="metric-name">SYMMETRY</div>
-      <div class="metric-val" id="v-sym">—</div>
-      <div class="metric-unit">bilateral r</div>
-    </div>
-    <div class="metric" id="m-flow">
-      <div class="metric-name">MOTION FLOW</div>
-      <div class="metric-val" id="v-flow">—</div>
-      <div class="metric-unit">smoothness</div>
-    </div>
+    <div class="metric" id="m-rigid"><div class="metric-name">RIGID BODY</div><div class="metric-val" id="v-rigid">—</div><div class="metric-unit">consistency</div></div>
+    <div class="metric" id="m-jerk"><div class="metric-name">JOINT JERK</div><div class="metric-val" id="v-jerk">—</div><div class="metric-unit">smoothness</div></div>
+    <div class="metric" id="m-sym"><div class="metric-name">SYMMETRY</div><div class="metric-val" id="v-sym">—</div><div class="metric-unit">bilateral</div></div>
+    <div class="metric" id="m-flow"><div class="metric-name">FLOW</div><div class="metric-val" id="v-flow">—</div><div class="metric-unit">motion</div></div>
   </div>
-
-  <div class="bar-wrap">
-    <div class="bar-fill" id="barFill"></div>
-  </div>
-
+  <div class="bar-wrap"><div class="bar-fill" id="barFill"></div></div>
   <div class="bottom-row">
     <div class="domain-tag" id="domainDisp">SCANNING...</div>
-    <div class="status-tag">
-      <div class="live-dot" id="liveDot"></div>
-      <span id="fpsDisp">— FPS</span>
-    </div>
+    <div class="status-tag"><div class="live-dot" id="liveDot"></div><span id="fpsDisp">— FPS</span></div>
   </div>
 </div>
 
-<!-- MediaPipe from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+<!-- TensorFlow.js + MoveNet (lighter, faster than MediaPipe) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.0/dist/pose-detection.min.js"></script>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  S2S POSE PHYSICS ENGINE
-// ══════════════════════════════════════════════════════
-
-// Key joint indices (MediaPipe Pose)
-const JOINTS = {
-  nose:       0,
-  l_shoulder: 11, r_shoulder: 12,
-  l_elbow:    13, r_elbow:    14,
-  l_wrist:    15, r_wrist:    16,
-  l_hip:      23, r_hip:      24,
-  l_knee:     25, r_knee:     26,
-  l_ankle:    27, r_ankle:    28,
+// MoveNet keypoint indices
+const KP = {
+  nose:0, l_eye:1, r_eye:2, l_ear:3, r_ear:4,
+  l_shoulder:5, r_shoulder:6, l_elbow:7, r_elbow:8,
+  l_wrist:9, r_wrist:10, l_hip:11, r_hip:12,
+  l_knee:13, r_knee:14, l_ankle:15, r_ankle:16
 };
 
-// Store history of landmark positions
-const HISTORY_LEN = 30;
-let poseHistory = []; // array of landmark arrays
-let frameCount = 0;
-let lastFpsTime = Date.now();
-let fps = 0;
+const CONNECTIONS = [
+  [5,6],[5,7],[7,9],[6,8],[8,10],
+  [5,11],[6,12],[11,12],[11,13],[12,14],[13,15],[14,16]
+];
 
-// ── Distance between two landmarks
-function dist(a, b) {
-  return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
-}
+let history = [];
+const HIST = 25;
+let detector = null;
+let animId = null;
+let frameCount = 0, lastFps = Date.now(), fps = 0;
 
-// ── Rigid body check: segment lengths should be CONSTANT over time
-// If a person is rigid, shoulder-elbow distance doesn't change
-function checkRigidBody(history) {
-  if (history.length < 5) return { score: 0, r: 0 };
-  const segments = [
-    [JOINTS.l_shoulder, JOINTS.l_elbow],
-    [JOINTS.r_shoulder, JOINTS.r_elbow],
-    [JOINTS.l_elbow,    JOINTS.l_wrist],
-    [JOINTS.r_elbow,    JOINTS.r_wrist],
-    [JOINTS.l_hip,      JOINTS.l_knee],
-    [JOINTS.r_hip,      JOINTS.r_knee],
-  ];
-
-  let totalVariance = 0;
-  let validSegs = 0;
-
-  for (const [a, b] of segments) {
-    const lengths = history.map(lms => {
-      const la = lms[a], lb = lms[b];
-      if (!la || !lb || la.visibility < 0.3 || lb.visibility < 0.3) return null;
-      return dist(la, lb);
-    }).filter(v => v !== null);
-
-    if (lengths.length < 3) continue;
-    const mean = lengths.reduce((s,v)=>s+v,0)/lengths.length;
-    if (mean < 0.01) continue;
-    const cv = Math.sqrt(lengths.reduce((s,v)=>s+(v-mean)**2,0)/lengths.length) / mean;
-    totalVariance += cv;
-    validSegs++;
+// ── S2S Physics
+function rigidBody(hist) {
+  if (hist.length < 4) return 0.5;
+  const segs = [[5,7],[6,8],[7,9],[8,10],[11,13],[12,14],[13,15],[14,16]];
+  let totalCV = 0, valid = 0;
+  for (const [a,b] of segs) {
+    const lens = hist.map(kps => {
+      const ka=kps[a], kb=kps[b];
+      if (!ka||!kb||ka.score<0.3||kb.score<0.3) return null;
+      return Math.hypot(ka.x-kb.x, ka.y-kb.y);
+    }).filter(v=>v!==null);
+    if (lens.length < 3) continue;
+    const mean = lens.reduce((s,v)=>s+v,0)/lens.length;
+    if (mean < 1) continue;
+    const std = Math.sqrt(lens.reduce((s,v)=>s+(v-mean)**2,0)/lens.length);
+    totalCV += std/mean;
+    valid++;
   }
-
-  if (validSegs === 0) return { score: 0, r: 0 };
-  const avgCV = totalVariance / validSegs;
-  // Lower CV = more rigid = better
-  const r = Math.max(0, 1 - avgCV * 10);
-  return { score: r, r: r };
+  return valid ? Math.max(0, 1 - (totalCV/valid)*8) : 0.5;
 }
 
-// ── Jerk: third derivative of position (acceleration of acceleration)
-function checkJerk(history) {
-  if (history.length < 6) return { score: 0, jerk: 0 };
-  const keyJoints = [JOINTS.l_wrist, JOINTS.r_wrist, JOINTS.l_ankle, JOINTS.r_ankle];
+function jointJerk(hist) {
+  if (hist.length < 6) return 0.5;
+  const joints = [KP.l_wrist, KP.r_wrist, KP.l_ankle, KP.r_ankle];
   let maxJerk = 0;
-
-  for (const j of keyJoints) {
-    const pos = history.map(lms => lms[j]).filter(v => v && v.visibility > 0.3);
-    if (pos.length < 6) continue;
-    // Velocity
-    const vel = [];
-    for (let i=1;i<pos.length;i++) {
-      vel.push({ x: pos[i].x-pos[i-1].x, y: pos[i].y-pos[i-1].y });
-    }
-    // Acceleration
-    const acc = [];
-    for (let i=1;i<vel.length;i++) {
-      acc.push({ x: vel[i].x-vel[i-1].x, y: vel[i].y-vel[i-1].y });
-    }
-    // Jerk
+  for (const j of joints) {
+    const pos = hist.map(kps=>kps[j]).filter(v=>v&&v.score>0.3);
+    if (pos.length < 5) continue;
+    const vel = pos.slice(1).map((p,i)=>({x:p.x-pos[i].x, y:p.y-pos[i].y}));
+    const acc = vel.slice(1).map((v,i)=>({x:v.x-vel[i].x, y:v.y-vel[i].y}));
     for (let i=1;i<acc.length;i++) {
-      const j3 = Math.sqrt((acc[i].x-acc[i-1].x)**2 + (acc[i].y-acc[i-1].y)**2);
-      maxJerk = Math.max(maxJerk, j3);
+      maxJerk = Math.max(maxJerk, Math.hypot(acc[i].x-acc[i-1].x, acc[i].y-acc[i-1].y));
     }
   }
-
-  // Normalize: jerk > 0.05 in normalized coords is very high
-  const normJerk = Math.min(maxJerk / 0.05, 1);
-  const score = 1 - normJerk;
-  return { score: Math.max(0, score), jerk: maxJerk };
+  return Math.max(0, 1 - maxJerk/15);
 }
 
-// ── Bilateral symmetry: left vs right joint positions should mirror
-function checkSymmetry(lms) {
-  const pairs = [
-    [JOINTS.l_shoulder, JOINTS.r_shoulder],
-    [JOINTS.l_elbow,    JOINTS.r_elbow],
-    [JOINTS.l_wrist,    JOINTS.r_wrist],
-    [JOINTS.l_hip,      JOINTS.r_hip],
-    [JOINTS.l_knee,     JOINTS.r_knee],
-  ];
-
-  // Center x
-  const cx = 0.5;
-  let symScores = [];
-
-  for (const [l, r] of pairs) {
-    const lj = lms[l], rj = lms[r];
-    if (!lj || !rj || lj.visibility < 0.3 || rj.visibility < 0.3) continue;
-    // Mirror symmetry: left distance from center should ~ right distance
-    const ld = Math.abs(lj.x - cx);
-    const rd = Math.abs(rj.x - cx);
-    const diff = Math.abs(ld - rd);
-    const avg  = (ld + rd) / 2 + 0.001;
-    symScores.push(1 - Math.min(diff/avg, 1));
+function symmetry(kps) {
+  const pairs=[[5,6],[7,8],[9,10],[11,12],[13,14],[15,16]];
+  let scores=[];
+  const cx = kps.reduce((s,k)=>s+(k?k.x:0),0) / kps.filter(k=>k&&k.score>0.3).length || 0.5;
+  for (const [l,r] of pairs) {
+    const lk=kps[l], rk=kps[r];
+    if (!lk||!rk||lk.score<0.3||rk.score<0.3) continue;
+    const ld=Math.abs(lk.x-cx), rd=Math.abs(rk.x-cx);
+    const avg=(ld+rd)/2+0.001;
+    scores.push(1-Math.min(Math.abs(ld-rd)/avg,1));
   }
-
-  if (symScores.length === 0) return { score: 0.5, r: 0.5 };
-  const r = symScores.reduce((s,v)=>s+v,0)/symScores.length;
-  return { score: r, r };
+  return scores.length ? scores.reduce((s,v)=>s+v,0)/scores.length : 0.5;
 }
 
-// ── Motion flow: velocity smoothness over time
-function checkMotionFlow(history) {
-  if (history.length < 8) return { score: 0, smoothness: 0 };
-  const j = JOINTS.r_wrist;
-  const pos = history.map(lms => lms[j]).filter(v => v && v.visibility > 0.3);
-  if (pos.length < 6) return { score: 0.5, smoothness: 0.5 };
-
-  const speeds = [];
-  for (let i=1;i<pos.length;i++) {
-    speeds.push(Math.sqrt((pos[i].x-pos[i-1].x)**2 + (pos[i].y-pos[i-1].y)**2));
-  }
-  const mean = speeds.reduce((s,v)=>s+v,0)/speeds.length;
-  const std  = Math.sqrt(speeds.reduce((s,v)=>s+(v-mean)**2,0)/speeds.length);
-  const cv   = mean > 0.001 ? std/mean : 1;
-  const smoothness = Math.max(0, 1 - cv);
-  return { score: smoothness, smoothness };
+function motionFlow(hist) {
+  if (hist.length < 6) return 0.5;
+  const j = KP.r_wrist;
+  const pos = hist.map(kps=>kps[j]).filter(v=>v&&v.score>0.3);
+  if (pos.length < 5) return 0.5;
+  const spd = pos.slice(1).map((p,i)=>Math.hypot(p.x-pos[i].x, p.y-pos[i].y));
+  const mean = spd.reduce((s,v)=>s+v,0)/spd.length;
+  const std = Math.sqrt(spd.reduce((s,v)=>s+(v-mean)**2,0)/spd.length);
+  return Math.max(0, 1-(mean>0.5?std/mean:1));
 }
 
-// ── Classify domain from pose motion
-function classifyDomain(jerk, rigid, history) {
-  if (history.length < 5) return 'SCANNING';
-  // Estimate overall motion speed
-  const j = JOINTS.l_ankle;
-  const pos = history.map(lms => lms[j]).filter(v => v && v.visibility > 0.3);
+function classifyDomain(kps_hist, jerkScore) {
+  if (kps_hist.length < 5) return 'SCANNING';
+  const j = KP.l_ankle;
+  const pos = kps_hist.map(k=>k[j]).filter(v=>v&&v.score>0.3);
   let speed = 0;
   if (pos.length >= 2) {
-    const d = [];
-    for (let i=1;i<pos.length;i++) d.push(dist(pos[i], pos[i-1]));
+    const d = pos.slice(1).map((p,i)=>Math.hypot(p.x-pos[i].x,p.y-pos[i].y));
     speed = d.reduce((s,v)=>s+v,0)/d.length;
   }
-
-  if (speed > 0.015) return 'LOCOMOTION';
-  if (jerk.jerk > 0.03) return 'SPORT';
-  if (rigid.r > 0.8 && speed < 0.003) return 'DAILY_LIVING';
-  if (jerk.jerk < 0.01) return 'PRECISION';
+  if (speed > 8) return 'LOCOMOTION';
+  if (jerkScore < 0.4) return 'SPORT';
+  if (speed < 1 && jerkScore > 0.8) return 'DAILY_LIVING';
+  if (jerkScore > 0.85) return 'PRECISION';
   return 'SOCIAL';
 }
 
-// ── Master certify
-function certifyPose(history) {
-  if (history.length < 5) return null;
-  const latest = history[history.length - 1];
-
-  const rigid = checkRigidBody(history);
-  const jerk  = checkJerk(history);
-  const sym   = checkSymmetry(latest);
-  const flow  = checkMotionFlow(history);
-
+function certify(hist) {
+  if (hist.length < 5) return null;
+  const r = rigidBody(hist);
+  const j = jointJerk(hist);
+  const s = symmetry(hist[hist.length-1]);
+  const f = motionFlow(hist);
   let score = 0;
-  if (rigid.r > 0.6)    score += 35; else if (rigid.r > 0.3) score += 15;
-  if (jerk.score > 0.6) score += 25; else if (jerk.score > 0.3) score += 12;
-  if (sym.r > 0.6)      score += 20; else if (sym.r > 0.3) score += 10;
-  if (flow.smoothness > 0.5) score += 20; else if (flow.smoothness > 0.2) score += 10;
-
-  let tier, color;
-  if (score >= 90)      { tier='GOLD';     color='#ffd060'; }
-  else if (score >= 60) { tier='SILVER';   color='#80c8f0'; }
-  else if (score >= 30) { tier='BRONZE';   color='#e08840'; }
-  else                  { tier='REJECTED'; color='#ff3030'; }
-
-  const domain = classifyDomain(jerk, rigid, history);
-
-  return { score, tier, color, rigid, jerk, sym, flow, domain };
+  if (r>0.6) score+=35; else if(r>0.3) score+=15;
+  if (j>0.6) score+=25; else if(j>0.3) score+=12;
+  if (s>0.6) score+=20; else if(s>0.3) score+=10;
+  if (f>0.5) score+=20; else if(f>0.2) score+=10;
+  let tier,color;
+  if(score>=90){tier='GOLD';color='#ffd060';}
+  else if(score>=60){tier='SILVER';color='#80c8f0';}
+  else if(score>=30){tier='BRONZE';color='#e08840';}
+  else{tier='REJECTED';color='#ff3030';}
+  return {score,tier,color,r,j,s,f,domain:classifyDomain(hist,j)};
 }
 
-// ══════════════════════════════════════════════════════
-//  SKELETON DRAWING
-// ══════════════════════════════════════════════════════
-
-const CONNECTIONS = [
-  [11,12],[11,13],[13,15],[12,14],[14,16],
-  [11,23],[12,24],[23,24],[23,25],[24,26],[25,27],[26,28]
-];
-
-function drawSkeleton(canvas, landmarks, result) {
+// ── Draw skeleton
+function drawSkeleton(canvas, keypoints, result) {
   const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if (!keypoints||!keypoints.length) return;
+  const color = result?result.color:'#00d4ff';
 
-  if (!landmarks || landmarks.length === 0) return;
-
-  const color = result ? result.color : '#00d4ff';
-  const alpha = 0.85;
-
-  // Draw connections
-  ctx.lineWidth = 2;
-  for (const [a, b] of CONNECTIONS) {
-    const la = landmarks[a], lb = landmarks[b];
-    if (!la || !lb || la.visibility < 0.3 || lb.visibility < 0.3) continue;
-    const x1 = la.x * W, y1 = la.y * H;
-    const x2 = lb.x * W, y2 = lb.y * H;
-
-    const grad = ctx.createLinearGradient(x1,y1,x2,y2);
-    grad.addColorStop(0, color + 'cc');
-    grad.addColorStop(1, '#00d4ff88');
-    ctx.strokeStyle = grad;
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
+  ctx.lineWidth = 2.5;
+  for (const [a,b] of CONNECTIONS) {
+    const ka=keypoints[a], kb=keypoints[b];
+    if (!ka||!kb||ka.score<0.3||kb.score<0.3) continue;
+    const g = ctx.createLinearGradient(ka.x,ka.y,kb.x,kb.y);
+    g.addColorStop(0,color+'cc'); g.addColorStop(1,'#00d4ff88');
+    ctx.strokeStyle=g;
+    ctx.beginPath(); ctx.moveTo(ka.x,ka.y); ctx.lineTo(kb.x,kb.y); ctx.stroke();
   }
 
-  // Draw joints
-  for (let i = 0; i < landmarks.length; i++) {
-    const lm = landmarks[i];
-    if (!lm || lm.visibility < 0.3) continue;
-    const x = lm.x * W, y = lm.y * H;
-
-    // Outer glow
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, Math.PI*2);
-    ctx.fillStyle = color + '20';
-    ctx.fill();
-
-    // Inner dot
-    ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI*2);
-    ctx.fillStyle = color;
-    ctx.fill();
+  for (const kp of keypoints) {
+    if (!kp||kp.score<0.3) continue;
+    ctx.beginPath(); ctx.arc(kp.x,kp.y,5,0,Math.PI*2);
+    ctx.fillStyle=color+'30'; ctx.fill();
+    ctx.beginPath(); ctx.arc(kp.x,kp.y,2.5,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
   }
 
-  // Score overlay near body center
-  if (result && landmarks[23] && landmarks[24]) {
-    const cx = ((landmarks[23].x + landmarks[24].x)/2) * W;
-    const cy = ((landmarks[23].y + landmarks[24].y)/2) * H - 20;
-    ctx.font = 'bold 13px "IBM Plex Mono"';
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.fillText(result.score + '/100', cx, cy);
+  if (result && keypoints[11]&&keypoints[12]&&keypoints[11].score>0.3&&keypoints[12].score>0.3) {
+    const cx=(keypoints[11].x+keypoints[12].x)/2;
+    const cy=(keypoints[11].y+keypoints[12].y)/2 - 24;
+    ctx.font='bold 14px "IBM Plex Mono"';
+    ctx.fillStyle=color; ctx.textAlign='center';
+    ctx.shadowColor=color; ctx.shadowBlur=8;
+    ctx.fillText(result.score+'/100',cx,cy);
+    ctx.shadowBlur=0;
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  UI UPDATE
-// ══════════════════════════════════════════════════════
-
-function setMetric(id, valId, value, displayVal, pass) {
-  document.getElementById(id).className = 'metric ' + (pass ? 'pass' : 'fail');
-  document.getElementById(valId).textContent = displayVal;
+// ── UI
+function setMetric(id,valId,val,display,pass) {
+  document.getElementById(id).className='metric '+(pass?'pass':'fail');
+  document.getElementById(valId).textContent=display;
 }
-
 function updateUI(result) {
   if (!result) return;
-  const { score, tier, color, rigid, jerk, sym, flow, domain } = result;
-
-  // Tier + score
-  const tierEl = document.getElementById('tierDisp');
-  tierEl.textContent = tier;
-  tierEl.style.color = color;
-  tierEl.className = 'score-tier active';
-  document.getElementById('scoreDisp').textContent = score + ' / 100';
-  document.getElementById('scoreDisp').style.color = color;
-
-  // Bar
-  document.getElementById('barFill').style.width = score + '%';
-  document.getElementById('barFill').style.background = color;
-
-  // Metrics
-  setMetric('m-rigid', 'v-rigid', rigid.r,          rigid.r.toFixed(2),          rigid.r > 0.6);
-  setMetric('m-jerk',  'v-jerk',  jerk.score,        jerk.jerk.toFixed(4),        jerk.score > 0.6);
-  setMetric('m-sym',   'v-sym',   sym.r,             sym.r.toFixed(2),            sym.r > 0.6);
-  setMetric('m-flow',  'v-flow',  flow.smoothness,   flow.smoothness.toFixed(2),  flow.smoothness > 0.5);
-
-  // Domain
-  document.getElementById('domainDisp').textContent = domain;
+  const {score,tier,color,r,j,s,f,domain}=result;
+  const te=document.getElementById('tierDisp');
+  te.textContent=tier; te.style.color=color; te.className='score-tier active';
+  const se=document.getElementById('scoreDisp');
+  se.textContent=score+' / 100'; se.style.color=color;
+  document.getElementById('barFill').style.width=score+'%';
+  document.getElementById('barFill').style.background=color;
+  setMetric('m-rigid','v-rigid',r,r.toFixed(2),r>0.6);
+  setMetric('m-jerk','v-jerk',j,j.toFixed(2),j>0.6);
+  setMetric('m-sym','v-sym',s,s.toFixed(2),s>0.6);
+  setMetric('m-flow','v-flow',f,f.toFixed(2),f>0.5);
+  document.getElementById('domainDisp').textContent=domain;
 }
 
-// ══════════════════════════════════════════════════════
-//  MEDIAPIPE SETUP
-// ══════════════════════════════════════════════════════
-
-let poseModel = null;
-
-async function initPose() {
-  document.getElementById('loadingScreen').classList.remove('hidden');
-
-  poseModel = new Pose({
-    locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-  });
-
-  poseModel.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    enableSegmentation: false,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
-  });
-
-  poseModel.onResults(onPoseResults);
-
-  await poseModel.initialize();
-  document.getElementById('loadingScreen').classList.add('hidden');
-  startCamera();
-}
-
-function onPoseResults(results) {
-  const canvas = document.getElementById('poseCanvas');
-  canvas.width  = results.image.width;
-  canvas.height = results.image.height;
+// ── Main loop
+async function detect() {
+  const video=document.getElementById('video');
+  const canvas=document.getElementById('poseCanvas');
+  if (video.readyState < 2) { animId=requestAnimationFrame(detect); return; }
+  canvas.width=video.videoWidth; canvas.height=video.videoHeight;
 
   frameCount++;
-  const now = Date.now();
-  if (now - lastFpsTime >= 1000) {
-    fps = frameCount;
-    frameCount = 0;
-    lastFpsTime = now;
-    document.getElementById('fpsDisp').textContent = fps + ' FPS';
-  }
+  const now=Date.now();
+  if(now-lastFps>=1000){fps=frameCount;frameCount=0;lastFps=now;document.getElementById('fpsDisp').textContent=fps+' FPS';}
 
-  if (results.poseLandmarks) {
-    poseHistory.push(results.poseLandmarks);
-    if (poseHistory.length > HISTORY_LEN) poseHistory.shift();
-
-    const result = certifyPose(poseHistory);
-    drawSkeleton(canvas, results.poseLandmarks, result);
-    updateUI(result);
-    document.getElementById('liveDot').className = 'live-dot on';
-  } else {
-    drawSkeleton(canvas, null, null);
-    document.getElementById('domainDisp').textContent = 'NO PERSON DETECTED';
-    document.getElementById('liveDot').className = 'live-dot';
-  }
+  try {
+    const poses=await detector.estimatePoses(video);
+    if(poses.length>0) {
+      const kps=poses[0].keypoints;
+      history.push(kps);
+      if(history.length>HIST) history.shift();
+      const result=certify(history);
+      drawSkeleton(canvas,kps,result);
+      updateUI(result);
+      document.getElementById('liveDot').className='live-dot on';
+    } else {
+      drawSkeleton(canvas,[],null);
+      document.getElementById('domainDisp').textContent='NO PERSON DETECTED';
+      document.getElementById('liveDot').className='live-dot';
+    }
+  } catch(e) {}
+  animId=requestAnimationFrame(detect);
 }
 
-function startCamera() {
-  const video = document.getElementById('video');
-
-  const camera = new Camera(video, {
-    onFrame: async () => {
-      if (poseModel) await poseModel.send({ image: video });
-    },
-    width: 640,
-    height: 480,
-    facingMode: 'user'
-  });
-
-  camera.start();
+// ── Init
+function setLoadBar(pct) {
+  document.getElementById('loadBar').style.width=pct+'%';
 }
 
-// ══════════════════════════════════════════════════════
-//  START BUTTON
-// ══════════════════════════════════════════════════════
-
-document.getElementById('startBtn').addEventListener('click', async () => {
+async function init() {
   document.getElementById('startScreen').classList.add('hidden');
-  await initPose();
-});
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  setLoadBar(10);
+
+  try {
+    // Camera first
+    const stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false
+    });
+    document.getElementById('video').srcObject=stream;
+    setLoadBar(30);
+
+    // Load MoveNet Lightning (smallest, fastest)
+    setLoadBar(50);
+    await tf.ready();
+    setLoadBar(65);
+
+    detector=await poseDetection.createDetector(
+      poseDetection.SupportedModels.MoveNet,
+      {modelType:poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING}
+    );
+    setLoadBar(100);
+
+    setTimeout(()=>{
+      document.getElementById('loadingScreen').classList.add('hidden');
+      detect();
+    },400);
+
+  } catch(e) {
+    const em=document.getElementById('errorMsg');
+    em.style.display='block';
+    document.getElementById('retryBtn').style.display='block';
+    if(e.name==='NotAllowedError') {
+      em.textContent='Camera permission denied. Allow camera access and retry.';
+    } else {
+      em.textContent='Failed to load model: '+e.message+'\nCheck internet connection and retry.';
+    }
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click',init);
 </script>
 </body>
 </html>
