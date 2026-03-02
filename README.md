@@ -53,6 +53,12 @@ Based on Flash-Hogan 1985, Bernstein 1967, Fitts 1954, Wolpert 1998 (MOSAIC mode
 | DAILY_LIVING | 150 m/s³ | 0.20 | Home robots, elder care |
 | SPORT | 500 m/s³ | 0.10 | Athletic training, motion analysis |
 
+## Live Demo
+
+**[→ Open on your phone: timbo4u1.github.io/S2S](https://timbo4u1.github.io/S2S)**
+
+Real-time physics certification using your phone's accelerometer + gyroscope. No install needed. Move your hand and watch S2S certify your motion live.
+
 ## Quick Start
 
 ```bash
