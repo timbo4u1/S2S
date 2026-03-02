@@ -33,7 +33,7 @@ Open https://timbo4u1.github.io/S2S/pose.html and report:
 If you have access to a motion dataset not yet supported, write an adapter following the pattern in `s2s_dataset_adapter.py`. Any dataset with IMU (accel + gyro) at any Hz is useful.
 
 ### 4. Classifier Improvements
-The domain classifier is in `train_classifier.py`. Current accuracy: 65.9%.
+The domain classifier is in `train_classifier.py`. Current accuracy: 76.6% (FINE_MOTOR mode, 5-fold CV). Standard 5-domain: 65.9%.
 
 Known issue: PRECISION and DAILY_LIVING overlap at 20Hz.
 Proposed fix: merge into FINE_MOTOR domain.

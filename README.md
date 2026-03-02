@@ -4,6 +4,7 @@
 
 S2S is a physics validation layer for human motion sensor data. Before training a prosthetic hand, surgical robot, or humanoid — run your IMU data through S2S. It verifies the data obeys 7 biomechanical laws and issues a cryptographic certificate. Bad data gets rejected before it reaches your model.
 
+[![Tests](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml/badge.svg)](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml)
 [![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](README.md)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-green.svg)](README.md)
@@ -81,8 +82,8 @@ result = PhysicsEngine().certify(
     },
     segment="forearm"
 )
-print(result['tier'])               # SILVER
-print(result['physical_law_score']) # 69
+print(result['physics_tier'])        # SILVER
+print(result['physics_score'])       # 69
 print(result['laws_passed'])
 ```
 
