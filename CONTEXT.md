@@ -13,8 +13,8 @@ data trustworthy for training robots, prosthetics, and exoskeletons.
 
 **Repo:** https://github.com/timbo4u1/S2S  
 **Author:** Timur Davkarayev (timur.davkarayev@gmail.com)  
-**Version:** v1.3  
-**Language:** Python 3.9+, zero external dependencies  
+**Version:** v1.4  
+**Language:** Python 3.9+, cryptography dep for signing; zero deps in physics core  
 **License:** BSL-1.1 → Apache 2.0 on 2028-01-01  
 
 ---
@@ -112,13 +112,13 @@ result['overall_score']      # float 0-100
 
 ## Known Weaknesses (Active Development)
 
-1. **Domain classifier accuracy: 65.9%** — below acceptable for production (target: 85%+)
-2. **No test suite** — zero pytest coverage currently
+1. **Domain classifier accuracy: 76.6%** (FINE_MOTOR mode) — standard 5-domain: 65.9% — below acceptable for production (target: 85%+)
+2. **Test suite exists** — tests/test_physics_laws.py, 21 tests ✅
 3. **Pure Python math** — no numpy/GPU, slow on large batches
-4. **No ML integration layer** — `s2s_ml_interface` module designed but not yet implemented
-5. **Single commit on GitHub** — 19 local commits not yet pushed (git push pending)
-6. **No CI/CD** — no GitHub Actions workflow yet
-7. **No PyPI package** — must clone repo manually
+4. **ML integration layer built** — s2s_standard_v1_3/s2s_ml_interface.py ✅
+5. **29 commits on GitHub** ✅
+6. **CI green** — .github/workflows/ci.yml, passing ✅
+7. **PyPI packaging ready** — pyproject.toml committed, not yet published
 
 ---
 
@@ -162,5 +162,5 @@ loss = loss_task + lambda_phys * loss_phys   # lambda_phys = 0.1
 ## Session Notes
 *(Add notes here during each working session so continuity is maintained)*
 
-- 2026-03-03: Full roadmap created. 13 GitHub issues defined. Priority: push commits first.
+- 2026-03-03: v1.4 complete. CI green. 29 commits. 76.6% accuracy. Dashboard working. 2 stars.
 
