@@ -76,9 +76,9 @@ def read_gyro_csv(path):
                 try:
                     rows.append((
                         int(float(row['timestamp'])),
-                        float(row.get('x', row.get('gyro_x', 0))),
-                        float(row.get('y', row.get('gyro_y', 0))),
-                        float(row.get('z', row.get('gyro_z', 0))),
+                        float(row.get('x', row.get('gyro_x', 0))) * 0.01745,
+                        float(row.get('y', row.get('gyro_y', 0))) * 0.01745,
+                        float(row.get('z', row.get('gyro_z', 0))) * 0.01745,
                     ))
                 except (ValueError, KeyError):
                     continue
