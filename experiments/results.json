@@ -1,51 +1,51 @@
 {
   "experiment": "uci_har_certified_vs_uncertified",
-  "timestamp": "2026-03-03T03:04:38",
+  "timestamp": "2026-03-03T06:51:44",
   "conditions": {
     "A_uncertified": {
-      "accuracy": 0.1711,
-      "macro_f1": 0.2,
+      "accuracy": 0.4671,
+      "macro_f1": 0.2622,
       "per_domain_f1": {
-        "PRECISION": 0.0,
+        "PRECISION": 1.0,
         "SOCIAL": 0.0,
-        "LOCOMOTION": 0.0,
-        "DAILY_LIVING": 1.0,
+        "LOCOMOTION": 0.3108,
+        "DAILY_LIVING": 0.0,
         "SPORT": 0.0
       },
       "train_samples": 82688,
       "test_samples": 20672,
-      "epochs": 30,
-      "training_time_s": 422.61
+      "epochs": 50,
+      "training_time_s": 694.19
     },
     "B_certified": {
-      "accuracy": 0.2231,
-      "macro_f1": 0.2,
+      "accuracy": 0.3399,
+      "macro_f1": 0.2377,
       "per_domain_f1": {
-        "PRECISION": 0.0,
+        "PRECISION": 0.4279,
         "SOCIAL": 0.0,
-        "LOCOMOTION": 1.0,
+        "LOCOMOTION": 0.7606,
         "DAILY_LIVING": 0.0,
         "SPORT": 0.0
       },
       "train_samples": 32889,
       "test_samples": 20672,
-      "epochs": 30,
-      "training_time_s": 172.49
+      "epochs": 50,
+      "training_time_s": 282.35
     },
     "C_physics_loss": {
-      "accuracy": 0.3978,
-      "macro_f1": 0.2,
+      "accuracy": 0.118,
+      "macro_f1": 0.2622,
       "per_domain_f1": {
-        "PRECISION": 1.0,
-        "SOCIAL": 0.0,
-        "LOCOMOTION": 0.0,
+        "PRECISION": 0.0,
+        "SOCIAL": 1.0,
+        "LOCOMOTION": 0.3108,
         "DAILY_LIVING": 0.0,
         "SPORT": 0.0
       },
       "train_samples": 82688,
       "test_samples": 20672,
-      "epochs": 30,
-      "training_time_s": 426.62
+      "epochs": 50,
+      "training_time_s": 701.51
     }
   },
   "notes": "Condition A: all data (baseline). Condition B: GOLD+SILVER certified only. Condition C: all data + physics loss \u03bb=0.1."
