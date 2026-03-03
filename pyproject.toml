@@ -1,10 +1,10 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "s2s-certify"
-version = "1.3.0"
+version = "1.4.0"
 description = "Physics-certified motion data toolkit for Physical AI training"
 readme = "README.md"
 license = { file = "LICENSE" }

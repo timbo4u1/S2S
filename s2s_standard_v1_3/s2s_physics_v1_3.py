@@ -566,3 +566,49 @@ class PhysicsEngine:
             "tool":         "s2s_physics_v1_3",
             "issued_at_ns": time.time_ns(),
         }
+
+
+def main():
+    """CLI entry point: s2s-certify --help"""
+    import argparse, json, sys
+    p = argparse.ArgumentParser(description='S2S Physics Certification')
+    p.add_argument('--version', action='store_true', help='Show version')
+    p.add_argument('--demo', action='store_true', help='Run demo certification')
+    args = p.parse_args()
+    if args.version:
+        print('s2s-certify 1.4.0')
+    elif args.demo:
+        import math
+        n, dt = 100, 0.01
+        result = PhysicsEngine().certify(
+            imu_raw={
+                'timestamps_ns': [int(i*dt*1e9) for i in range(n)],
+                'accel': [[0.1*math.sin(2*math.pi*2*i*dt), 0.1*math.cos(2*math.pi*2*i*dt), 9.8] for i in range(n)],
+                'gyro':  [[0.01*math.sin(2*math.pi*10*i*dt), 0.0, 0.0] for i in range(n)],
+            }, segment='forearm')
+        print(json.dumps(result, indent=2))
+    else:
+        p.print_help()
+
+
+def main():
+    """CLI entry point: s2s-certify --help"""
+    import argparse, json, sys
+    p = argparse.ArgumentParser(description='S2S Physics Certification')
+    p.add_argument('--version', action='store_true', help='Show version')
+    p.add_argument('--demo', action='store_true', help='Run demo certification')
+    args = p.parse_args()
+    if args.version:
+        print('s2s-certify 1.4.0')
+    elif args.demo:
+        import math
+        n, dt = 100, 0.01
+        result = PhysicsEngine().certify(
+            imu_raw={
+                'timestamps_ns': [int(i*dt*1e9) for i in range(n)],
+                'accel': [[0.1*math.sin(2*math.pi*2*i*dt), 0.1*math.cos(2*math.pi*2*i*dt), 9.8] for i in range(n)],
+                'gyro':  [[0.01*math.sin(2*math.pi*10*i*dt), 0.0, 0.0] for i in range(n)],
+            }, segment='forearm')
+        print(json.dumps(result, indent=2))
+    else:
+        p.print_help()
