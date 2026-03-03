@@ -56,7 +56,7 @@ class MLP:
     Simple 2-layer MLP in pure Python (no dependencies).
     Input: feature_dim → hidden_dim → num_classes
     """
-    def __init__(self, input_dim=15, hidden_dim=32, output_dim=5, lr=0.01):
+    def __init__(self, input_dim=15, hidden_dim=32, output_dim=5, lr=0.001):
         self.lr = lr
         scale1 = math.sqrt(2.0 / input_dim)
         scale2 = math.sqrt(2.0 / hidden_dim)
@@ -265,7 +265,7 @@ def run_benchmark(dataset_dir, output_path, epochs=30, test_split=0.2):
         if lambda_phys > 0:
             print(f"  Physics loss λ = {lambda_phys}")
 
-        model = MLP(input_dim=15, hidden_dim=32, output_dim=len(DOMAINS), lr=0.01)
+        model = MLP(input_dim=15, hidden_dim=32, output_dim=len(DOMAINS), lr=0.001)
 
         t0 = time.time()
         for epoch in range(epochs):
