@@ -41,11 +41,9 @@ jobs:
               imu_raw={"timestamps_ns": timestamps, "accel": accel, "gyro": gyro},
               segment="forearm"
           )
-          tier = result.get('physics_tier', result.get('tier', 'UNKNOWN'))
-          assert tier in ['GOLD','SILVER','BRONZE','REJECTED'], f'Bad tier: {tier}'
-          score = result.get('physics_score', result.get('physical_law_score', -1))
-          assert 0 <= score <= 100, f'Score out of range: {score}'
-          print(f"Certify OK: {tier} {score}/100")
+          assert result['tier'] in ['GOLD','SILVER','BRONZE','REJECTED'], "Bad tier"
+          assert 0 <= result['physical_law_score'] <= 100, "Score out of range"
+          print(f"Certify OK: {result['tier']} {result['physical_law_score']}/100")
           EOF
 
       - name: Test signing module
