@@ -409,6 +409,10 @@ def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[bool, int, Dict]:
     accel = imu_raw.get("accel", [])
     gyro = imu_raw.get("gyro", [])
     ts = imu_raw.get("timestamps_ns", [])
+    if not gyro:
+        d["violation"] = "MISSING_GYRO"
+        d["interpretation"] = "Gyroscope data is required for rigid body kinematics"
+        return False, 0, d
     n = min(len(accel), len(gyro), len(ts))
     if n < 20:
         d["skip"] = "INSUFFICIENT_DATA"
@@ -693,6 +697,10 @@ def check_imu_consistency(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     accel = imu_raw.get("accel", [])
     gyro = imu_raw.get("gyro", [])
+    if not gyro:
+        d["violation"] = "MISSING_GYRO"
+        d["interpretation"] = "Gyroscope data is required for IMU consistency check"
+        return False, 0, d
     n = min(len(accel), len(gyro))
     if n < 30:
         d["skip"] = "INSUFFICIENT_DATA"
