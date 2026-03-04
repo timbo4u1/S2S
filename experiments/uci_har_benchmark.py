@@ -11,7 +11,12 @@ DOMAIN_TO_IDX = {d:i for i,d in enumerate(DOMAINS)}
 random.seed(42)
 
 def softmax(x):
-    m = max(x); e = [math.exp(v-m) for v in x]; s=sum(e); return [v/s for v in e]
+    m = max(x)
+    e = [math.exp(max(-60.0, min(60.0, v-m))) for v in x]
+    s = sum(e)
+    if s == 0 or s != s:  # s==0 or NaN
+        return [1.0/len(x)] * len(x)
+    return [v/s for v in e]
 
 def clip(x,lo,hi): return max(lo,min(hi,x))
 
@@ -32,7 +37,7 @@ class MLP:
         self.gb2 = [1e-8]*output
 
     def forward(self, x):
-        h = [max(0.0, sum(self.W1[j][i]*x[i] for i in range(len(x)))+self.b1[j])
+        h = [max(0.0, min(50.0, sum(self.W1[j][i]*x[i] for i in range(len(x)))+self.b1[j]))
              for j in range(len(self.b1))]
         logits = [sum(self.W2[k][j]*h[j] for j in range(len(h)))+self.b2[k]
                   for k in range(len(self.b2))]
@@ -58,14 +63,35 @@ class MLP:
             self.gb1[j] += dh[j]*dh[j]
             self.b1[j] -= self.lr/math.sqrt(self.gb1[j])*dh[j]
 
+    def _clip_weights(self, max_norm=5.0):
+        """Clip weight matrix norms to prevent explosion."""
+        for row in self.W1:
+            n = math.sqrt(sum(v*v for v in row))
+            if n > max_norm:
+                s = max_norm / n
+                for i in range(len(row)): row[i] *= s
+        for row in self.W2:
+            n = math.sqrt(sum(v*v for v in row))
+            if n > max_norm:
+                s = max_norm / n
+                for i in range(len(row)): row[i] *= s
+
     def train_epoch(self, samples):
         random.shuffle(samples)
         loss = 0.0
+        nan_count = 0
         for feat,label,_ in samples:
             h,probs = self.forward(feat)
-            loss -= math.log(max(probs[label],1e-10))
+            step_loss = -math.log(max(probs[label],1e-10))
+            if step_loss != step_loss:  # NaN check
+                nan_count += 1
+                continue
+            loss += step_loss
             self.backward(feat,h,probs,label)
-        return loss/max(len(samples),1)
+        self._clip_weights(max_norm=5.0)
+        if nan_count > 0:
+            print(f'    [warn] {nan_count} NaN losses skipped this epoch')
+        return loss/max(len(samples)-nan_count,1)
 
     def evaluate(self, samples):
         correct=0; pc={d:0 for d in DOMAINS}; pt={d:0 for d in DOMAINS}
@@ -126,7 +152,7 @@ def run(dataset_dir, output_path, epochs=30):
     for cond, td in [("A_all_data", train), ("B_certified", cert)]:
         print(f"\n{'─'*40}")
         print(f"Condition {cond}  n={len(td)}")
-        m = MLP(input_dim=5, hidden=32, output=5, lr=0.1)
+        m = MLP(input_dim=5, hidden=32, output=5, lr=0.01)
         t0 = time.time()
         for ep in range(epochs):
             loss = m.train_epoch(td)
