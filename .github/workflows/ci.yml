@@ -93,6 +93,7 @@ jobs:
           # Known allowed external deps per module
           ALLOWED_EXTERNAL = {
               's2s_signing_v1_3.py': {'cryptography'},  # Ed25519 signing
+              's2s_physics_v1_3.py': {'numpy'},          # optional fast-path (stdlib fallback exists)
           }
 
           # Internal module names (imports between s2s files are fine)
