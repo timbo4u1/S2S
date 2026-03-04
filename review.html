@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S2S — BRONZE Review Queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #080b0f;
+    --surface:  #0e1318;
+    --border:   #1c2530;
+    --border2:  #243040;
+    --text:     #c8d4e0;
+    --muted:    #4a6070;
+    --bronze:   #c87820;
+    --bronze2:  #e8a040;
+    --gold:     #e8c840;
+    --silver:   #90a8b8;
+    --pass:     #2a8060;
+    --pass-fg:  #50d0a0;
+    --fail:     #802030;
+    --fail-fg:  #e05060;
+    --approved: #204838;
+    --rejected: #381820;
+    --mono:     'IBM Plex Mono', monospace;
+    --sans:     'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--bronze);
+    box-shadow: 0 0 8px var(--bronze);
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .header-stats span { color: var(--text); }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--border2);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+  /* ── LAYOUT ── */
+  .workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── QUEUE PANEL ── */
+  .queue-panel {
+    width: 300px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .count-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--bronze);
+    color: #000;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .queue-list {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .queue-list::-webkit-scrollbar { width: 4px; }
+  .queue-list::-webkit-scrollbar-track { background: transparent; }
+  .queue-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .queue-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+  }
+
+  .queue-item:hover { background: #0d1520; }
+  .queue-item.active { background: #111c28; border-left: 2px solid var(--bronze); }
+  .queue-item.status-approved { opacity: 0.4; border-left: 2px solid var(--pass-fg); }
+  .queue-item.status-rejected { opacity: 0.3; border-left: 2px solid var(--fail-fg); }
+
+  .qi-action {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-transform: lowercase;
+  }
+
+  .qi-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .qi-source {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .qi-score-bar {
+    height: 2px;
+    background: var(--border2);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .qi-score-fill {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 0.3s;
+  }
+
+  .qi-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .score-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--bronze2);
+    font-weight: 500;
+  }
+
+  .domain-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--border);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .detail-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+
+  .detail-scroll::-webkit-scrollbar { width: 4px; }
+  .detail-scroll::-webkit-scrollbar-track { background: transparent; }
+  .detail-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--muted);
+  }
+
+  .empty-icon {
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .empty-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── RECORD DETAIL ── */
+  .record-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .record-title {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+    margin-bottom: 6px;
+  }
+
+  .record-subtitle {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tier-display {
+    text-align: right;
+  }
+
+  .tier-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 4px;
+  }
+
+  .tier-score {
+    font-family: var(--mono);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--bronze2);
+    line-height: 1;
+  }
+
+  .tier-max {
+    font-size: 16px;
+    color: var(--muted);
+  }
+
+  /* ── META GRID ── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .meta-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+  }
+
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── LAWS SECTION ── */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .laws-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .law-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.15s;
+  }
+
+  .law-card.pass { border-color: #1a3d30; background: #0a1f18; }
+  .law-card.fail { border-color: #3d1820; background: #1f0a10; }
+
+  .law-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .law-card.pass .law-indicator { background: var(--pass-fg); box-shadow: 0 0 6px var(--pass-fg); }
+  .law-card.fail .law-indicator { background: var(--fail-fg); }
+
+  .law-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  .law-card.pass .law-name { color: var(--pass-fg); }
+  .law-card.fail .law-name { color: #704050; }
+
+  /* ── SCORE METER ── */
+  .score-section {
+    margin-bottom: 28px;
+  }
+
+  .score-meter {
+    height: 6px;
+    background: var(--border2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #7a4010, var(--bronze2));
+    transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .score-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .score-threshold {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .threshold {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .threshold span { color: var(--text); }
+
+  /* ── NOTES ── */
+  .notes-area {
+    margin-bottom: 28px;
+  }
+
+  .notes-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    resize: vertical;
+    min-height: 72px;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  .notes-input:focus { border-color: var(--border2); }
+  .notes-input::placeholder { color: var(--muted); }
+
+  /* ── DECISION BAR ── */
+  .decision-bar {
+    border-top: 1px solid var(--border);
+    padding: 16px 32px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .decision-bar .spacer { flex: 1; }
+
+  .btn-reject {
+    background: transparent;
+    border-color: var(--fail-fg);
+    color: var(--fail-fg);
+    padding: 8px 24px;
+    font-size: 11px;
+  }
+  .btn-reject:hover { background: var(--rejected); }
+
+  .btn-approve {
+    background: var(--pass);
+    border-color: var(--pass-fg);
+    color: var(--pass-fg);
+    padding: 8px 24px;
+    font-size: 11px;
+  }
+  .btn-approve:hover { background: #2d9470; }
+
+  .decision-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .reviewed-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-bottom: 24px;
+  }
+
+  .reviewed-banner.approved { background: var(--approved); color: var(--pass-fg); border: 1px solid #2a5040; }
+  .reviewed-banner.rejected { background: var(--rejected); color: var(--fail-fg); border: 1px solid #502030; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--border2);
+    color: var(--text);
+    border-color: var(--border2);
+  }
+
+  /* ── LOAD OVERLAY ── */
+  .load-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    color: var(--muted);
+  }
+
+  .load-error {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 28px 36px;
+    text-align: center;
+    max-width: 400px;
+  }
+
+  .load-error h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .load-error p {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .load-error code {
+    background: var(--border);
+    padding: 2px 6px;
+    border-radius: 2px;
+    color: var(--bronze2);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    S2S / BRONZE REVIEW
+  </div>
+  <div class="header-stats" id="headerStats">
+    Loading…
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" onclick="exportApproved()">Export Approved</button>
+    <button class="btn btn-ghost" onclick="location.reload()">Refresh</button>
+  </div>
+</header>
+
+<div class="workspace">
+
+  <!-- Queue Panel -->
+  <div class="queue-panel">
+    <div class="panel-header">
+      <span class="panel-title">Queue</span>
+      <span class="count-badge" id="pendingCount">—</span>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="pending" onclick="setFilter('pending', this)">Pending</button>
+      <button class="filter-btn" data-filter="approved" onclick="setFilter('approved', this)">Approved</button>
+      <button class="filter-btn" data-filter="rejected" onclick="setFilter('rejected', this)">Rejected</button>
+      <button class="filter-btn" data-filter="all" onclick="setFilter('all', this)">All</button>
+    </div>
+    <div class="queue-list" id="queueList">
+      <div class="load-overlay"><span class="empty-text">Loading queue…</span></div>
+    </div>
+  </div>
+
+  <!-- Detail Panel -->
+  <div class="detail-panel">
+    <div class="detail-scroll" id="detailScroll">
+      <div class="empty-state">
+        <div class="empty-icon">◈</div>
+        <div class="empty-text">Select a record to review</div>
+      </div>
+    </div>
+    <div class="decision-bar" id="decisionBar" style="display:none">
+      <span class="decision-hint">Add notes before deciding (optional)</span>
+      <div class="spacer"></div>
+      <button class="btn btn-reject" onclick="decide('rejected')">✕ Reject</button>
+      <button class="btn btn-approve" onclick="decide('approved')">✓ Approve</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────
+let queue = { items: [] };
+let activeId = null;
+let currentFilter = 'pending';
+const QUEUE_FILE = 'review_queue.json';
+
+const ALL_LAWS = [
+  'jerk_bounds',
+  'rigid_body_kinematics',
+  'resonance_frequency',
+  'imu_internal_consistency',
+  'Newton_Fma',
+  'BCG_heartbeat',
+  'Joule_heating',
+];
+
+const LAW_LABELS = {
+  'jerk_bounds':              'Jerk ≤ 500 m/s³',
+  'rigid_body_kinematics':    'Rigid body kinematics',
+  'resonance_frequency':      'Resonance 8–12 Hz',
+  'imu_internal_consistency': 'IMU consistency',
+  'imu_consistency':          'IMU consistency',
+  'Newton_Fma':               'Newton F=ma (EMG)',
+  'BCG_heartbeat':            'BCG heartbeat',
+  'Joule_heating':            'Joule heating',
+};
+
+// ── LOAD ──────────────────────────────────────────────────────────
+async function loadQueue() {
+  try {
+    const res = await fetch(QUEUE_FILE + '?t=' + Date.now());
+    if (!res.ok) throw new Error(res.status);
+    queue = await res.json();
+    renderQueue();
+    updateHeaderStats();
+  } catch (e) {
+    document.getElementById('queueList').innerHTML = `
+      <div class="load-overlay">
+        <div class="load-error">
+          <h3>Cannot load review_queue.json</h3>
+          <p>Serve this file from the S2S repo root:<br><br>
+          <code>cd ~/S2S</code><br>
+          <code>python3 -m http.server 8080</code><br><br>
+          Then open <code>localhost:8080/review.html</code></p>
+        </div>
+      </div>`;
+  }
+}
+
+// ── RENDER QUEUE ──────────────────────────────────────────────────
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQueue();
+}
+
+function renderQueue() {
+  const items = queue.items.filter(i => {
+    if (currentFilter === 'all') return true;
+    return i.status === currentFilter;
+  });
+
+  document.getElementById('pendingCount').textContent =
+    queue.items.filter(i => i.status === 'pending').length;
+
+  if (!items.length) {
+    document.getElementById('queueList').innerHTML = `
+      <div style="padding:32px 16px; text-align:center; color:var(--muted); font-family:var(--mono); font-size:11px;">
+        No ${currentFilter} records
+      </div>`;
+    return;
+  }
+
+  document.getElementById('queueList').innerHTML = items.map(item => {
+    const pct = (item.physics_score / 100) * 100;
+    const color = item.physics_score >= 50 ? '#c87820' : '#8a5010';
+    return `
+    <div class="queue-item status-${item.status} ${activeId === item.id ? 'active' : ''}"
+         onclick="selectItem('${item.id}')">
+      <div class="qi-action">${item.action.replace(/_/g, ' ')}</div>
+      <div class="qi-meta">
+        <span class="qi-source">${item.dataset_source}</span>
+        <span class="domain-tag">${item.domain}</span>
+      </div>
+      <div class="qi-score-bar">
+        <div class="qi-score-fill" style="width:${pct}%; background:${color}"></div>
+      </div>
+      <div class="qi-footer">
+        <span class="score-num">${item.physics_score}/100</span>
+        <span class="qi-source">${item.person_id}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateHeaderStats() {
+  const p = queue.items.filter(i => i.status === 'pending').length;
+  const a = queue.items.filter(i => i.status === 'approved').length;
+  const r = queue.items.filter(i => i.status === 'rejected').length;
+  document.getElementById('headerStats').innerHTML = `
+    Pending <span>${p}</span> &nbsp;·&nbsp;
+    Approved <span>${a}</span> &nbsp;·&nbsp;
+    Rejected <span>${r}</span>`;
+}
+
+// ── SELECT ITEM ───────────────────────────────────────────────────
+function selectItem(id) {
+  activeId = id;
+  renderQueue();
+  const item = queue.items.find(i => i.id === id);
+  if (!item) return;
+  renderDetail(item);
+}
+
+function renderDetail(item) {
+  const lawsPassed = item.laws_passed || [];
+  const lawsFailed = item.laws_failed || [];
+  const allLaws = [...new Set([...lawsPassed, ...lawsFailed])];
+
+  const lawsHtml = allLaws.map(law => {
+    const passed = lawsPassed.includes(law);
+    const label = LAW_LABELS[law] || law.replace(/_/g, ' ');
+    return `
+    <div class="law-card ${passed ? 'pass' : 'fail'}">
+      <div class="law-indicator"></div>
+      <div class="law-name">${label}</div>
+    </div>`;
+  }).join('');
+
+  const isReviewed = item.status !== 'pending';
+  const reviewedBanner = isReviewed ? `
+    <div class="reviewed-banner ${item.status}">
+      ${item.status === 'approved' ? '✓ Approved' : '✕ Rejected'}
+      ${item.reviewed_at ? ' · ' + item.reviewed_at.replace('T', ' ').replace('Z', ' UTC') : ''}
+      ${item.reviewer_notes ? ' · "' + item.reviewer_notes + '"' : ''}
+    </div>` : '';
+
+  const jerk = item.jerk_p95_ms3 != null ? item.jerk_p95_ms3.toFixed(1) + ' m/s³' : '—';
+  const coupling = item.imu_coupling_r != null ? item.imu_coupling_r.toFixed(3) : '—';
+  const duration = item.duration_s != null ? item.duration_s.toFixed(2) + 's' : '—';
+  const samples = item.n_samples != null ? item.n_samples.toString() : '—';
+
+  document.getElementById('detailScroll').innerHTML = `
+    ${reviewedBanner}
+    <div class="record-header">
+      <div>
+        <div class="record-title">${item.action.replace(/_/g, '_')}</div>
+        <div class="record-subtitle">${item.person_id} · ${item.dataset_source} · queued ${item.queued_at.replace('T',' ').replace('Z',' UTC')}</div>
+      </div>
+      <div class="tier-display">
+        <div class="tier-label">Bronze</div>
+        <div class="tier-score">${item.physics_score}<span class="tier-max">/100</span></div>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <div class="meta-label">Domain</div>
+        <div class="meta-value">${item.domain}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Duration</div>
+        <div class="meta-value">${duration}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Jerk p95</div>
+        <div class="meta-value">${jerk}</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">IMU Coupling r</div>
+        <div class="meta-value">${coupling}</div>
+      </div>
+    </div>
+
+    <div class="score-section">
+      <div class="section-title">Physics Score</div>
+      <div class="score-meter">
+        <div class="score-fill" style="width:${item.physics_score}%"></div>
+      </div>
+      <div class="score-labels">
+        <span>0 — REJECTED</span>
+        <span>30 — BRONZE ◄ here</span>
+        <span>60 — SILVER</span>
+        <span>90 — GOLD</span>
+      </div>
+      <div class="score-threshold">
+        <span class="threshold">Laws passed: <span>${lawsPassed.length}</span> / ${allLaws.length}</span>
+        <span class="threshold">Laws failed: <span>${lawsFailed.length}</span></span>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Biomechanical Laws</div>
+      <div class="laws-grid">${lawsHtml || '<span style="color:var(--muted);font-family:var(--mono);font-size:11px">No law data available</span>'}</div>
+    </div>
+
+    <div class="notes-area">
+      <div class="section-title">Reviewer Notes</div>
+      <textarea class="notes-input" id="notesInput" placeholder="Explain why you're approving or rejecting this record…">${item.reviewer_notes || ''}</textarea>
+    </div>
+  `;
+
+  const decisionBar = document.getElementById('decisionBar');
+  decisionBar.style.display = isReviewed ? 'none' : 'flex';
+}
+
+// ── DECIDE ─────────────────────────────────────────────────────────
+function decide(decision) {
+  if (!activeId) return;
+  const notes = document.getElementById('notesInput')?.value || '';
+  const item = queue.items.find(i => i.id === activeId);
+  if (!item) return;
+
+  item.status = decision;
+  item.reviewed_at = new Date().toISOString().replace('.000', '');
+  item.reviewer_notes = notes;
+
+  saveQueue();
+  renderQueue();
+  renderDetail(item);
+  updateHeaderStats();
+
+  // Auto-advance to next pending
+  setTimeout(() => {
+    const next = queue.items.find(i => i.status === 'pending');
+    if (next) selectItem(next.id);
+  }, 300);
+}
+
+// ── SAVE ───────────────────────────────────────────────────────────
+function saveQueue() {
+  // Save updated queue as downloadable JSON
+  // (browser can't write to disk directly — user downloads and replaces file)
+  const blob = new Blob([JSON.stringify(queue, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'review_queue.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportApproved() {
+  const approved = queue.items.filter(i => i.status === 'approved');
+  const blob = new Blob([JSON.stringify({ approved }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bronze_approved.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────
+loadQueue();
+</script>
+</body>
+</html>
