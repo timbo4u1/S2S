@@ -26,6 +26,11 @@ import sys, os, json, csv, math, glob, argparse, random
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from review_queue import ReviewQueue
+    _review_queue = ReviewQueue()
+except ImportError:
+    _review_queue = None
 
 # ═══════════════════════════════════════════════════════════════════
 #  MOTION DOMAIN TAXONOMY
@@ -334,6 +339,21 @@ def certify_and_save(seg, out_dir, signer, counters):
 
     if phys['tier'] == 'REJECTED':
         return None, "REJECTED"
+
+    # Auto-queue BRONZE records for human review
+    if phys['tier'] == 'BRONZE' and _review_queue is not None:
+        _review_queue.add({
+            **seg,
+            'physics_tier': phys['tier'],
+            'physics_score': phys['physical_law_score'],
+            'physics_laws_passed': phys['laws_passed'],
+            'physics_laws_failed': phys['laws_failed'],
+            'jerk_p95_ms3': d_jk.get('p95_jerk_ms3'),
+            'imu_coupling_r': d_rb.get('pearson_r_measured_vs_predicted'),
+            'domain': classify_domain(seg['action'],
+                                      d_jk.get('p95_jerk_ms3'),
+                                      d_rb.get('pearson_r_measured_vs_predicted')),
+        })
 
     # IMU stream cert
     win = min(256, n // 2)

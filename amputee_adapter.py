@@ -25,6 +25,11 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+try:
+    from review_queue import ReviewQueue
+    _review_queue = ReviewQueue()
+except ImportError:
+    _review_queue = None
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 
@@ -283,6 +288,23 @@ def process_dataset(input_dir, output_dir, window_size=200):
                     stats['certified'] += 1
                 else:
                     stats['rejected'] += 1
+
+                # Auto-queue BRONZE for human review
+                if tier == 'BRONZE' and _review_queue is not None:
+                    _review_queue.add({
+                        'action': action,
+                        'domain': DOMAIN,
+                        'person_id': subject_id,
+                        'dataset_source': DATASET_SOURCE,
+                        'physics_tier': tier,
+                        'physics_score': score,
+                        'physics_laws_passed': result.get('laws_passed', []),
+                        'physics_laws_failed': result.get('laws_failed', []),
+                        'jerk_p95_ms3': result.get('jerk_p95_ms3', 0),
+                        'imu_coupling_r': result.get('imu_coupling_r', 0),
+                        'n_samples': window.get('n_samples', len(window.get('timestamps_ns', []))),
+                        'duration_s': len(window.get('timestamps_ns', [])) / SAMPLE_RATE_HZ,
+                    })
 
                 # Build output record
                 record = {
