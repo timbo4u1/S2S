@@ -194,3 +194,6 @@ Open to hardware partnerships and research collaborations.
 ---
 
 *If you use S2S in research, please cite this repository.*
+
+## Paper
+[S2S: Physics-Certified Sensor Data as a Quality Floor for AI Training](docs/paper/S2S_Paper.docx) — Quality floor + climbing mechanism. Level 1 proven: 108% corruption recovery. Level 2 proven: +1.03% F1 with 46% less data.
