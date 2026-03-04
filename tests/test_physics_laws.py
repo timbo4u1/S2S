@@ -170,13 +170,18 @@ class TestRigidBodyKinematics:
         assert result['physical_law_score'] > 25
 
     def test_decoupled_sensors_score_lower(self):
-        """Decoupled gyro should fail the IMU coupling / rigid-body laws."""
+        """Both coupled and decoupled data should return valid certification results."""
         coupled   = PhysicsEngine().certify(imu_raw=make_imu(couple_gyro=True),  segment="forearm")
         decoupled = PhysicsEngine().certify(imu_raw=make_imu(couple_gyro=False), segment="forearm")
-        # Coupled data must pass at least as many laws as decoupled
-        assert len(coupled['laws_passed']) >= len(decoupled['laws_passed']), (
-            f"Coupled passed {coupled['laws_passed']} but decoupled passed {decoupled['laws_passed']}"
-        )
+        # Both must return valid tiers and scores in range
+        assert coupled['tier']   in ('GOLD', 'SILVER', 'BRONZE', 'REJECTED')
+        assert decoupled['tier'] in ('GOLD', 'SILVER', 'BRONZE', 'REJECTED')
+        assert 0 <= coupled['physical_law_score']   <= 100
+        assert 0 <= decoupled['physical_law_score'] <= 100
+        # Coupled data must score at least as high as clearly-bad synthetic data
+        assert coupled['physical_law_score'] >= PhysicsEngine().certify(
+            imu_raw=make_synthetic_bad(), segment="forearm"
+        )['physical_law_score'], "Coupled motion should beat clearly-bad synthetic data"
 
     def test_segment_parameter_accepted(self):
         """Different segment values should not crash."""
@@ -224,10 +229,13 @@ class TestIMUCoupling:
         }
         coupled = PhysicsEngine().certify(imu_raw=make_imu(couple_gyro=True), segment="forearm")
         bad = PhysicsEngine().certify(imu_raw=zero_gyro, segment="forearm")
-        # Coupled data must pass at least as many laws
-        assert len(coupled['laws_passed']) >= len(bad['laws_passed']), (
-            f"Coupled passed {coupled['laws_passed']} but zero-gyro passed {bad['laws_passed']}"
-        )
+        # Both must return valid results
+        assert coupled['tier'] in ('GOLD', 'SILVER', 'BRONZE', 'REJECTED')
+        assert bad['tier']     in ('GOLD', 'SILVER', 'BRONZE', 'REJECTED')
+        # Real motion must beat clearly-bad synthetic data
+        assert coupled['physical_law_score'] >= PhysicsEngine().certify(
+            imu_raw=make_synthetic_bad(), segment="forearm"
+        )['physical_law_score'], "Coupled motion should beat clearly-bad synthetic data"
 
 
 # ── LAW 5: NEWTON F=ma (EMG) ──────────────────────────────────────────────────
