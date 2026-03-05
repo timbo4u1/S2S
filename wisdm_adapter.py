@@ -113,7 +113,7 @@ def simple_certify(accel_window, gyro_window, dt=0.05):
         score += 25
         passed.append("sensor_validity")
 
-    tier = "GOLD" if score >= 90 else "SILVER" if score >= 60 else "BRONZE" if score >= 30 else "REJECTED"
+    tier = "GOLD" if score >= 87 else "SILVER" if score >= 75 else "BRONZE" if score >= 60 else "REJECTED"
     return score, passed, tier
 
 def process_subject(subject_id, accel_data, gyro_data, device, out_dir):
