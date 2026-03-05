@@ -1,0 +1,43 @@
+{
+  "A_clean": {
+    "description": "Clean SILVER reference",
+    "accuracy": 0.8013,
+    "macro_f1": 0.7655,
+    "train_n": 1158
+  },
+  "B_mixed": {
+    "description": "SILVER+BRONZE, no repair",
+    "accuracy": 0.8905,
+    "macro_f1": 0.8756,
+    "train_n": 6215
+  },
+  "C_floor": {
+    "description": "Floor only \u2014 BRONZE removed",
+    "accuracy": 0.8013,
+    "macro_f1": 0.7655,
+    "train_n": 1158
+  },
+  "D_adaptive": {
+    "description": "Floor + savgol recon (w=0.5, dual check)",
+    "accuracy": 0.7895,
+    "macro_f1": 0.7483,
+    "train_n": 1651
+  },
+  "meta": {
+    "experiment": "s2s_level3_adaptive_pamap2",
+    "dataset": "pamap2",
+    "hz": 100,
+    "recon_method": "savgol",
+    "dual_acceptance": {
+      "physics_threshold": 75,
+      "spectral_similarity_threshold": 0.8
+    },
+    "bronze_windows": 5057,
+    "accepted_reconstructed": 493,
+    "acceptance_rate": 9.7,
+    "avg_score_before": 62.1,
+    "avg_score_after": 80.0,
+    "avg_spectral_similarity": 0.997,
+    "adaptive_floor": 58
+  }
+}
