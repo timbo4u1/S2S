@@ -1,0 +1,35 @@
+{
+  "A_silver_clean": {
+    "description": "All SILVER \u2014 clean reference",
+    "accuracy": 0.8506,
+    "macro_f1": 0.6024,
+    "train_n": 17689
+  },
+  "B_bronze_mixed": {
+    "description": "SILVER + degraded BRONZE mixed",
+    "accuracy": 0.8441,
+    "macro_f1": 0.5927,
+    "train_n": 17689
+  },
+  "C_floor_only": {
+    "description": "Floor filtered \u2014 BRONZE removed",
+    "accuracy": 0.8438,
+    "macro_f1": 0.6014,
+    "train_n": 12383
+  },
+  "D_kalman_recon": {
+    "description": "Floor + Kalman recon (w=0.5, n=768)",
+    "accuracy": 0.8553,
+    "macro_f1": 0.6079,
+    "train_n": 13151
+  },
+  "meta": {
+    "experiment": "s2s_level3_kalman_wisdm",
+    "dataset": "WISDM_2019",
+    "method": "controlled_silver_bronze_degradation",
+    "bronze_created": 5306,
+    "bronze_reconstructed": 768,
+    "acceptance_rate": 0.145,
+    "epochs": 40
+  }
+}
