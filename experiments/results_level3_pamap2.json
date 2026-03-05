@@ -1,0 +1,38 @@
+{
+  "A_clean": {
+    "description": "Clean PAMAP2 baseline",
+    "accuracy": 0.917,
+    "macro_f1": 0.9133,
+    "train_n": 10985
+  },
+  "B_corrupted": {
+    "description": "Corrupted 35%, no filter",
+    "accuracy": 0.8966,
+    "macro_f1": 0.8786,
+    "train_n": 10985
+  },
+  "C_s2s_floor": {
+    "description": "Adaptive S2S floor",
+    "accuracy": 0.8985,
+    "macro_f1": 0.8837,
+    "train_n": 6225
+  },
+  "D_kalman_recon": {
+    "description": "Floor + Kalman recon (w=0.5, n=1852)",
+    "accuracy": 0.89,
+    "macro_f1": 0.8752,
+    "train_n": 8077
+  },
+  "meta": {
+    "experiment": "s2s_level3_pamap2",
+    "dataset": "PAMAP2",
+    "hz": 100,
+    "window_size": 256,
+    "subjects_used": 8,
+    "bronze_found": 4013,
+    "bronze_reconstructed": 1852,
+    "acceptance_rate": 0.462,
+    "adaptive_floor": 69,
+    "corruption_rate": 0.35
+  }
+}
