@@ -1,0 +1,48 @@
+{
+  "experiment": "s2s_v4_wisdm_raw",
+  "timestamp": "2026-03-04T08:12:33",
+  "features": "14 raw accel features (mean/std/range per axis, magnitude stats, FFT, ZCR)",
+  "split": "subject-based (no leakage)",
+  "conditions": {
+    "A_all_data": {
+      "accuracy": 0.8623,
+      "macro_f1": 0.3758,
+      "per_domain_f1": {
+        "DAILY_LIVING": 0.0,
+        "LOCOMOTION": 0.0,
+        "PRECISION": 0.96,
+        "SOCIAL": 0.0244,
+        "SPORT": 0.8944
+      },
+      "train_n": 50451,
+      "test_n": 12277
+    },
+    "B_certified": {
+      "accuracy": 0.8538,
+      "macro_f1": 0.367,
+      "per_domain_f1": {
+        "DAILY_LIVING": 0.0,
+        "LOCOMOTION": 0.0,
+        "PRECISION": 0.9639,
+        "SOCIAL": 0.0197,
+        "SPORT": 0.8516
+      },
+      "train_n": 20561,
+      "test_n": 12277
+    },
+    "C_random_subsample": {
+      "accuracy": 0.8608,
+      "macro_f1": 0.3746,
+      "per_domain_f1": {
+        "DAILY_LIVING": 0.0,
+        "LOCOMOTION": 0.0,
+        "PRECISION": 0.96,
+        "SOCIAL": 0.0254,
+        "SPORT": 0.8879
+      },
+      "train_n": 20561,
+      "test_n": 12277
+    }
+  },
+  "note": "A=all WISDM, B=certified(score>=60), C=random same size as B. B vs C isolates data quality from quantity."
+}

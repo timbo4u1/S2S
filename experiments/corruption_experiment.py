@@ -180,6 +180,60 @@ def get_tier(score: int) -> str:
     return 'REJECTED'
 
 
+
+def kalman_smooth(accel_window: list) -> list:
+    """
+    Rauch-Tung-Striebel Kalman smoother.
+    Physics model: constant velocity between samples (correct for human motion).
+    F = [[1, dt], [0, 1]] — position += velocity * dt
+    Smoothed signal re-scored by S2S before acceptance.
+    """
+    n = len(accel_window)
+    if n < 4:
+        return accel_window
+    dt = 0.05   # 20Hz; works for 50Hz too
+    q = 0.005   # process noise
+    R = 0.3     # measurement noise
+
+    smoothed_axes = []
+    for axis in range(3):
+        signal = [accel_window[i][axis] for i in range(n)]
+        x = [signal[0], 0.0]
+        P = [[1.0, 0.0], [0.0, 1.0]]
+        xs, Ps = [list(x)], [[list(P[0]), list(P[1])]]
+
+        for k in range(1, n):
+            xp = [x[0]+dt*x[1], x[1]]
+            Pp = [[P[0][0]+dt*P[1][0]+dt*(P[0][1]+dt*P[1][1])+q*dt**3/3,
+                   P[0][1]+dt*P[1][1]+q*dt**2/2],
+                  [P[1][0]+dt*P[1][1]+q*dt**2/2, P[1][1]+q*dt]]
+            S = Pp[0][0] + R
+            K = [Pp[0][0]/S, Pp[1][0]/S]
+            inn = signal[k] - xp[0]
+            x = [xp[0]+K[0]*inn, xp[1]+K[1]*inn]
+            P = [[(1-K[0])*Pp[0][0], (1-K[0])*Pp[0][1]],
+                 [Pp[1][0]-K[1]*Pp[0][0], Pp[1][1]-K[1]*Pp[0][1]]]
+            xs.append(list(x)); Ps.append([list(P[0]), list(P[1])])
+
+        result = [xs[-1][0]]
+        for k in range(n-2, -1, -1):
+            xf, Pf = xs[k], Ps[k]
+            xp = [xf[0]+dt*xf[1], xf[1]]
+            Pp = [[Pf[0][0]+dt*Pf[1][0]+dt*(Pf[0][1]+dt*Pf[1][1])+q*dt**3/3,
+                   Pf[0][1]+dt*Pf[1][1]+q*dt**2/2],
+                  [Pf[1][0]+dt*Pf[1][1]+q*dt**2/2, Pf[1][1]+q*dt]]
+            det = Pp[0][0]*Pp[1][1] - Pp[0][1]*Pp[1][0]
+            if abs(det) < 1e-10:
+                result.insert(0, xf[0]); continue
+            G00 = (Pf[0][0]*Pp[1][1] - Pf[0][1]*Pp[1][0]) / det
+            result.insert(0, xf[0] + G00*(result[0] - xp[0]))
+
+        smoothed_axes.append(result)
+
+    return [[smoothed_axes[0][i], smoothed_axes[1][i], smoothed_axes[2][i]]
+            for i in range(n)]
+
+
 def build_centroids(samples_with_meta: list) -> dict:
     """
     Compute per-domain feature centroid from GOLD + SILVER records.
@@ -190,7 +244,7 @@ def build_centroids(samples_with_meta: list) -> dict:
     """
     from collections import defaultdict
     buckets = defaultdict(list)
-    for feats, label, score in samples_with_meta:
+    for feats, label, score, _ in samples_with_meta:
         tier = get_tier(score)
         if tier in ('GOLD', 'SILVER'):
             buckets[label].append(feats)
@@ -210,7 +264,7 @@ def build_centroids(samples_with_meta: list) -> dict:
 
 
 def physics_predict_up(features: list, score: int, label: int,
-                       centroids: dict) -> list:
+                       centroids: dict, raw_record: dict = None) -> list:
     """
     Interpolate a BRONZE record toward the GOLD/SILVER centroid for its domain.
 
@@ -224,33 +278,34 @@ def physics_predict_up(features: list, score: int, label: int,
 
     alpha = tier_gap / 40 × 0.4  (proportional to how far below SILVER)
     """
+    # Kalman path: physics reconstruction from raw signal
+    if raw_record is not None:
+        imu = raw_record.get('imu_raw', {})
+        accel = imu.get('accel', [])
+        if len(accel) >= 20:
+            smoothed = kalman_smooth(accel)
+            test_rec = dict(raw_record)
+            test_rec['imu_raw'] = dict(imu)
+            test_rec['imu_raw']['accel'] = smoothed
+            new_score = score_record(test_rec)
+            if new_score >= 75:
+                new_feats = extract_features(test_rec)
+                if new_feats:
+                    return new_feats  # RECONSTRUCTED — weight 0.5 set by caller
+
+    # Fallback: centroid interpolation (no raw data)
     if label not in centroids:
-        return features  # no centroid for this domain — return unchanged
-
+        return features
     centroid = centroids[label]
-    # How far below SILVER threshold (75) is this record?
     tier_gap = max(0, 75 - score)
-    # Alpha: proportional to gap, capped at 0.4 (never go more than 40% of way)
     alpha = min(0.40, tier_gap / 40.0 * 0.4)
-
     if alpha < 0.01:
-        return features  # already close to SILVER — no prediction needed
-
-    # Interpolate each feature toward centroid
-    # Physics rationale per feature group:
-    #   std/range (indices 1,2,4,5,7,8): should increase toward centroid
-    #                                    (more dynamic motion = better physics)
-    #   mag_std, mag_max (10,11):        same — richer motion signal
-    #   dom_freq (12):                   move toward domain's typical frequency
-    #   mean, zcr (0,3,6,9,13):         don't change — these are activity identity,
-    #                                    not quality markers
-    QUALITY_FEATURES = {1,2,4,5,7,8,10,11,12}  # indices to interpolate
-
+        return features
+    QUALITY_FEATURES = {1,2,4,5,7,8,10,11,12}
     predicted = list(features)
     for j in QUALITY_FEATURES:
         if j < len(features) and j < len(centroid):
             predicted[j] = features[j] + alpha * (centroid[j] - features[j])
-
     return predicted
 
 
@@ -563,13 +618,13 @@ def load_wisdm(dataset_dir: str):
 
 
 def subject_split(records, test_frac=0.2):
-    subjects = sorted(set(r.get('subject_id','?') for r in records))
+    subjects = sorted(set(r.get('subject_id', r.get('person_id','?')) for r in records))
     random.seed(42)
     random.shuffle(subjects)
     n_test = max(1, int(len(subjects)*test_frac))
     test_ids = set(subjects[:n_test])
-    train = [r for r in records if r.get('subject_id') not in test_ids]
-    test  = [r for r in records if r.get('subject_id') in test_ids]
+    train = [r for r in records if r.get('subject_id', r.get('person_id','?')) not in test_ids]
+    test  = [r for r in records if r.get('subject_id', r.get('person_id','?')) in test_ids]
     print(f"  Train subjects: {len(subjects)-n_test}  Test subjects: {n_test}")
     print(f"  Train records:  {len(train)}  Test records: {len(test)}")
     return train, test
@@ -656,14 +711,14 @@ def run(dataset_dir, output_path, epochs=40):
         feats = extract_features(rec)
         domain = rec.get('domain','')
         if feats and domain in DOM2IDX:
-            scored_filtered.append((feats, DOM2IDX[domain], s))
+            scored_filtered.append((feats, DOM2IDX[domain], s, rec))
 
     # Build GOLD+SILVER centroids per domain
     centroids = build_centroids(scored_filtered)
 
     # Tier distribution report
     tier_counts = {'GOLD':0,'SILVER':0,'BRONZE':0,'PRED':0,'REJECTED':0}
-    for _,_,s in scored_filtered:
+    for _,_,s,_ in scored_filtered:
         tier_counts[get_tier(s)] += 1
     print(f"  Tier distribution in filtered data:")
     for t,c in tier_counts.items():
@@ -672,7 +727,7 @@ def run(dataset_dir, output_path, epochs=40):
 
     # ── Condition D: tier-weighted (all filtered, weighted loss) ──
     sD_weighted = []  # (features, label, weight)
-    for feats, label, score in scored_filtered:
+    for feats, label, score, rec in scored_filtered:
         tier = get_tier(score)
         w = TIER_WEIGHTS.get(tier, 0.4)
         sD_weighted.append((feats, label, w))
@@ -693,7 +748,7 @@ def run(dataset_dir, output_path, epochs=40):
     phases = {1:[], 2:[], 3:[], 4:[]}
     bronze_pred_count = 0
 
-    for feats, label, score in scored_filtered:
+    for feats, label, score, rec in scored_filtered:
         tier = get_tier(score)
         if tier == 'GOLD':
             phases[1].append((feats, label, TIER_WEIGHTS['GOLD']))
@@ -707,10 +762,11 @@ def run(dataset_dir, output_path, epochs=40):
         elif tier == 'BRONZE':
             phases[3].append((feats, label, TIER_WEIGHTS['BRONZE']))
             phases[4].append((feats, label, TIER_WEIGHTS['BRONZE']))
-            # Generate physics-predicted version for Phase 4
-            pred_feats = physics_predict_up(feats, score, label, centroids)
-            if pred_feats is not feats:  # prediction was made
-                phases[4].append((pred_feats, label, TIER_WEIGHTS['PRED']))
+            # Level 3: Kalman reconstruction with S2S re-check
+            pred_feats = physics_predict_up(feats, score, label, centroids,
+                                            raw_record=rec)
+            if pred_feats is not feats:
+                phases[4].append((pred_feats, label, 0.5))
                 bronze_pred_count += 1
 
     print(f"  Physics predictions generated: {bronze_pred_count} BRONZE→SILVER_PRED records")
