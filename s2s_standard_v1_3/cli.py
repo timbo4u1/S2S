@@ -88,17 +88,24 @@ def load_csv(path):
 def print_banner():
     print(f"""
 {BOLD}╔══════════════════════════════════════════╗
-║   S2S Physics Certification  v1.4.3      ║
+║   S2S Physics Certification  v1.4.4      ║
 ║   github.com/timbo4u1/S2S                ║
 ╚══════════════════════════════════════════╝{RESET}""")
+
+def extract_fields(result):
+    details = result.get("law_details", {})
+    r = (result.get("imu_coupling_r") or
+         (details.get("rigid_body_kinematics") or {}).get("pearson_r_measured_vs_predicted"))
+    jerk = (result.get("jerk_p95_ms3") or
+            (details.get("jerk_bounds") or {}).get("p95_jerk_ms3"))
+    laws_passed = result.get("physics_laws_passed") or result.get("laws_passed", [])
+    laws_failed = result.get("physics_laws_failed") or result.get("laws_failed", [])
+    return r, jerk, laws_passed, laws_failed
 
 def print_result(result, filename, n_samples, has_gyro):
     tier  = result.get("physics_tier") or result.get("tier", "UNKNOWN")
     score = result.get("physical_law_score") or result.get("physics_score", 0)
-    laws_passed = result.get("physics_laws_passed", [])
-    laws_failed = result.get("physics_laws_failed", [])
-    r     = result.get("imu_coupling_r", None)
-    jerk  = result.get("jerk_p95_ms3", None)
+    r, jerk, laws_passed, laws_failed = extract_fields(result)
     sig   = result.get("_signature", None)
     color = TIER_COLORS.get(tier, "\033[97m")
 
@@ -178,10 +185,10 @@ def main():
                 "segment": args.segment,
                 "tier": result.get("physics_tier") or result.get("tier"),
                 "score": result.get("physical_law_score") or result.get("physics_score"),
-                "coupling_r": result.get("imu_coupling_r"),
-                "jerk_p95_ms3": result.get("jerk_p95_ms3"),
-                "laws_passed": result.get("physics_laws_passed", []),
-                "laws_failed": result.get("physics_laws_failed", []),
+                "coupling_r": extract_fields(result)[0],
+                "jerk_p95_ms3": extract_fields(result)[1],
+                "laws_passed": extract_fields(result)[2],
+                "laws_failed": extract_fields(result)[3],
                 "flags": result.get("flags", []),
                 "signed": bool(result.get("_signature")),
                 "tool": result.get("tool"),
