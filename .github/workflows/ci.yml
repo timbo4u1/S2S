@@ -162,3 +162,8 @@ jobs:
           pip install cryptography>=46.0.5
           pip-audit --skip-editable || true
           echo "Security audit complete"
+
+      - name: Run pytest test suite
+        run: |
+          pip install pytest cryptography
+          pytest tests/ -v --tb=short
