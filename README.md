@@ -15,6 +15,7 @@ S2S is a physics validation layer for human motion sensor data. Before training 
 
 ## Live Demos
 - 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) — 104,160 real certified records, hover to explore
+![S2S Physics Certification Explorer](docs/viz_preview.png)
 - 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) — real-time physics certification on your phone
 - 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) — 17-joint live certification
 
