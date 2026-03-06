@@ -19,52 +19,39 @@
     --text: #c8d8e8;
     --dim: #4a5568;
     --accent: #7c6fff;
+    --wisdm: #00e5ff;
+    --ucihar: #7c6fff;
+    --pamap2: #00ff88;
+    --amputee: #ff9a3d;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; min-height:100vh; overflow-x:hidden; }
   body::before {
-    content:'';
-    position:fixed; inset:0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events:none; z-index:0;
+    content:''; position:fixed; inset:0;
+    background-image: linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px), linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);
+    background-size:48px 48px; pointer-events:none; z-index:0;
   }
   .container { max-width:1140px; margin:0 auto; padding:36px 20px; position:relative; z-index:1; }
 
-  /* HEADER */
-  header { text-align:center; margin-bottom:40px; }
+  header { text-align:center; margin-bottom:36px; }
   .logo { font-size:11px; letter-spacing:.35em; color:var(--dim); text-transform:uppercase; margin-bottom:10px; font-weight:600; }
-  h1 {
-    font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,40px); font-weight:800; line-height:1.1; margin-bottom:12px;
-    background:linear-gradient(135deg,#fff 0%,var(--real) 100%);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  }
+  h1 { font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,40px); font-weight:800; line-height:1.1; margin-bottom:12px;
+    background:linear-gradient(135deg,#fff 0%,var(--real) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
   .subtitle { font-size:12px; color:var(--dim); letter-spacing:.05em; }
+  .total-badge { display:inline-block; background:rgba(0,229,255,.08); border:1px solid rgba(0,229,255,.2);
+    color:var(--real); font-size:11px; letter-spacing:.1em; padding:3px 12px; border-radius:3px; margin-top:10px; font-weight:600; }
 
-  /* STAT STRIP */
-  .stats {
-    display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;
-  }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
   @media(max-width:600px){ .stats{ grid-template-columns:repeat(2,1fr); } }
-  .stat-card {
-    background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px 18px;
-    display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden;
-  }
-  .stat-card::after {
-    content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
-  }
+  .stat-card { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px 18px;
+    display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; animation:fadeUp .5s ease forwards; opacity:0; }
+  .stat-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
   .stat-card.gold::after { background:var(--gold); box-shadow:0 0 8px var(--gold); }
   .stat-card.silver::after { background:var(--silver); }
   .stat-card.bronze::after { background:var(--bronze); }
   .stat-card.rejected::after { background:var(--rejected); }
+  .stat-card:nth-child(1){animation-delay:.05s} .stat-card:nth-child(2){animation-delay:.1s}
+  .stat-card:nth-child(3){animation-delay:.15s} .stat-card:nth-child(4){animation-delay:.2s}
   .stat-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); font-weight:600; }
   .stat-value { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; }
   .stat-card.gold .stat-value { color:var(--gold); text-shadow:0 0 16px rgba(255,215,0,.35); }
@@ -73,99 +60,76 @@
   .stat-card.rejected .stat-value { color:var(--rejected); }
   .stat-sub { font-size:10px; color:var(--dim); }
 
-  /* MAIN LAYOUT */
-  .main-grid { display:grid; grid-template-columns:1fr 320px; gap:16px; }
+  /* DATASET FILTERS */
+  .filters { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+  .filter-label { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--dim); margin-right:4px; }
+  .filter-btn {
+    font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.1em;
+    text-transform:uppercase; padding:6px 14px; border-radius:4px; border:1px solid; cursor:pointer;
+    transition:all .2s; opacity:0.4;
+  }
+  .filter-btn.active { opacity:1; }
+  .filter-btn.wisdm { color:var(--wisdm); border-color:var(--wisdm); background:rgba(0,229,255,.08); }
+  .filter-btn.wisdm.active { background:rgba(0,229,255,.15); box-shadow:0 0 10px rgba(0,229,255,.2); }
+  .filter-btn.ucihar { color:var(--ucihar); border-color:var(--ucihar); background:rgba(124,111,255,.08); }
+  .filter-btn.ucihar.active { background:rgba(124,111,255,.15); }
+  .filter-btn.pamap2 { color:var(--pamap2); border-color:var(--pamap2); background:rgba(0,255,136,.08); }
+  .filter-btn.pamap2.active { background:rgba(0,255,136,.15); }
+  .filter-btn.amputee { color:var(--amputee); border-color:var(--amputee); background:rgba(255,154,61,.08); }
+  .filter-btn.amputee.active { background:rgba(255,154,61,.15); }
+
+  .main-grid { display:grid; grid-template-columns:1fr 300px; gap:16px; }
   @media(max-width:780px){ .main-grid{ grid-template-columns:1fr; } }
 
-  /* PANELS */
-  .panel {
-    background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:20px;
-    position:relative; overflow:hidden;
-  }
-  .panel-title {
-    font-family:'Syne',sans-serif; font-size:11px; font-weight:700;
-    letter-spacing:.2em; text-transform:uppercase; color:var(--dim); margin-bottom:16px;
-    display:flex; align-items:center; gap:10px;
-  }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:20px; position:relative; overflow:hidden; }
+  .panel-title { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
   .panel-title span { font-size:10px; color:var(--accent); }
 
-  /* SCATTER CANVAS */
-  #scatterCanvas {
-    width:100%; display:block; border-radius:4px;
-    background:rgba(0,0,0,.4); cursor:crosshair;
-  }
+  #scatterCanvas { width:100%; display:block; border-radius:4px; background:rgba(0,0,0,.4); cursor:crosshair; }
 
-  /* TOOLTIP */
-  #tooltip {
-    position:fixed; background:#0c1018; border:1px solid var(--border);
-    border-radius:6px; padding:10px 14px; font-size:11px; pointer-events:none;
-    opacity:0; transition:opacity .15s; z-index:100; min-width:180px;
-    box-shadow:0 4px 24px rgba(0,0,0,.6);
-  }
+  #tooltip { position:fixed; background:#0c1018; border:1px solid var(--border); border-radius:6px; padding:10px 14px;
+    font-size:11px; pointer-events:none; opacity:0; transition:opacity .15s; z-index:100; min-width:200px; box-shadow:0 4px 24px rgba(0,0,0,.6); }
   #tooltip .tt-tier { font-family:'Syne',sans-serif; font-weight:800; font-size:13px; margin-bottom:6px; }
-  #tooltip .tt-row { display:flex; justify-content:space-between; gap:16px; color:var(--dim); margin-top:2px; }
+  #tooltip .tt-row { display:flex; justify-content:space-between; gap:16px; color:var(--dim); margin-top:3px; }
   #tooltip .tt-row span:last-child { color:var(--text); }
+  #tooltip .tt-sensor { font-size:10px; margin-top:6px; padding-top:6px; border-top:1px solid var(--border); color:var(--dim); }
 
-  /* AXIS LABELS */
   .axis-labels { display:flex; justify-content:space-between; margin-top:6px; }
   .axis-label { font-size:10px; color:var(--dim); letter-spacing:.1em; }
 
-  /* SIDEBAR */
   .sidebar { display:flex; flex-direction:column; gap:16px; }
-
-  /* DONUT */
   #donutCanvas { width:100%; display:block; }
 
-  /* DOMAIN BAR */
-  .domain-bars { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
-  .domain-row { display:flex; align-items:center; gap:10px; }
-  .domain-name { font-size:10px; letter-spacing:.08em; color:var(--dim); width:90px; flex-shrink:0; text-transform:uppercase; }
-  .domain-bar-wrap { flex:1; height:6px; background:rgba(255,255,255,.05); border-radius:3px; overflow:hidden; }
-  .domain-bar-fill { height:100%; border-radius:3px; transition:width 1s ease; }
-  .domain-count { font-size:10px; color:var(--dim); width:40px; text-align:right; }
+  .dataset-bars { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+  .ds-row { display:flex; flex-direction:column; gap:4px; }
+  .ds-header { display:flex; justify-content:space-between; align-items:center; }
+  .ds-name { font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; }
+  .ds-sensor { font-size:9px; color:var(--dim); }
+  .ds-bar-wrap { height:5px; background:rgba(255,255,255,.05); border-radius:3px; overflow:hidden; }
+  .ds-bar-fill { height:100%; border-radius:3px; transition:width 1s ease; }
+  .ds-count { font-size:10px; color:var(--dim); }
 
-  /* LAW TABLE */
   .law-list { display:flex; flex-direction:column; gap:7px; margin-top:4px; }
   .law-item { display:flex; align-items:center; gap:8px; }
-  .law-dot { width:6px; height:6px; border-radius:50%; background:var(--pass); box-shadow:0 0 5px var(--pass); flex-shrink:0; }
-  .law-text { font-size:10px; color:var(--dim); flex:1; letter-spacing:.03em; }
-  .law-pct { font-size:10px; color:var(--pass); font-weight:600; }
+  .law-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .law-text { font-size:10px; color:var(--dim); flex:1; }
+  .law-pct { font-size:10px; font-weight:600; }
 
-  /* LEGEND */
-  .scatter-legend { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px; }
+  .scatter-legend { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
   .leg-item { display:flex; align-items:center; gap:6px; font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
   .leg-dot { width:8px; height:8px; border-radius:50%; }
 
-  /* LOADING */
-  #loading {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:60px; gap:16px; color:var(--dim); font-size:12px; letter-spacing:.1em;
-  }
-  .spinner {
-    width:32px; height:32px; border:2px solid var(--border);
-    border-top-color:var(--real); border-radius:50%;
-    animation:spin .8s linear infinite;
-  }
+  #loading { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px; gap:16px; color:var(--dim); font-size:12px; }
+  .spinner { width:32px; height:32px; border:2px solid var(--border); border-top-color:var(--real); border-radius:50%; animation:spin .8s linear infinite; }
+
   @keyframes spin { to { transform:rotate(360deg); } }
-
-  /* ANIMATE IN */
   @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-  .stat-card { animation:fadeUp .5s ease forwards; opacity:0; }
-  .stat-card:nth-child(1){animation-delay:.05s}
-  .stat-card:nth-child(2){animation-delay:.1s}
-  .stat-card:nth-child(3){animation-delay:.15s}
-  .stat-card:nth-child(4){animation-delay:.2s}
 
-  /* FOOTER */
   footer { text-align:center; padding:28px 0 12px; font-size:11px; color:var(--dim); border-top:1px solid var(--border); margin-top:36px; letter-spacing:.08em; }
   footer a { color:var(--real); text-decoration:none; }
   footer a:hover { text-shadow:0 0 8px var(--real); }
 
-  .total-badge {
-    display:inline-block; background:rgba(0,229,255,.08); border:1px solid rgba(0,229,255,.2);
-    color:var(--real); font-size:11px; letter-spacing:.1em; padding:3px 12px; border-radius:3px;
-    margin-top:10px; font-weight:600;
-  }
+  .count-display { font-size:10px; color:var(--dim); margin-left:auto; }
 </style>
 </head>
 <body>
@@ -176,47 +140,41 @@
   <div class="tt-row"><span>score</span><span id="tt-score"></span></div>
   <div class="tt-row"><span>coupling r</span><span id="tt-r"></span></div>
   <div class="tt-row"><span>jerk P95</span><span id="tt-jerk"></span></div>
-  <div class="tt-row"><span>signed</span><span id="tt-signed"></span></div>
+  <div class="tt-sensor">
+    <span id="tt-dataset"></span> · <span id="tt-sensors"></span> · <span id="tt-hz"></span>
+  </div>
 </div>
 
 <div class="container">
   <header>
     <div class="logo">S2S · Physics Certification</div>
     <h1>104,160 Certified Motion Records</h1>
-    <p class="subtitle">Real data from UCI HAR · PAMAP2 · WISDM — certified against 7 biomechanical laws</p>
-    <div class="total-badge" id="totalBadge">Loading data…</div>
+    <p class="subtitle">Real data from UCI HAR · PAMAP2 · WISDM · Amputee EMG — certified against 7 biomechanical laws</p>
+    <div class="total-badge" id="totalBadge">Loading…</div>
   </header>
 
   <div class="stats">
-    <div class="stat-card gold">
-      <div class="stat-label">Gold</div>
-      <div class="stat-value" id="goldCount">—</div>
-      <div class="stat-sub">All laws passed</div>
-    </div>
-    <div class="stat-card silver">
-      <div class="stat-label">Silver</div>
-      <div class="stat-value" id="silverCount">—</div>
-      <div class="stat-sub">Core laws passed</div>
-    </div>
-    <div class="stat-card bronze">
-      <div class="stat-label">Bronze</div>
-      <div class="stat-value" id="bronzeCount">—</div>
-      <div class="stat-sub">Marginal · reconstructible</div>
-    </div>
-    <div class="stat-card rejected">
-      <div class="stat-label">Rejected</div>
-      <div class="stat-value" id="rejectedCount">—</div>
-      <div class="stat-sub">Physics violations</div>
-    </div>
+    <div class="stat-card gold"><div class="stat-label">Gold</div><div class="stat-value" id="goldCount">—</div><div class="stat-sub">All laws passed</div></div>
+    <div class="stat-card silver"><div class="stat-label">Silver</div><div class="stat-value" id="silverCount">—</div><div class="stat-sub">Core laws passed</div></div>
+    <div class="stat-card bronze"><div class="stat-label">Bronze</div><div class="stat-value" id="bronzeCount">—</div><div class="stat-sub">Marginal</div></div>
+    <div class="stat-card rejected"><div class="stat-label">Rejected</div><div class="stat-value" id="rejectedCount">—</div><div class="stat-sub">Physics violations</div></div>
+  </div>
+
+  <!-- DATASET FILTERS -->
+  <div class="filters">
+    <span class="filter-label">Filter by sensor:</span>
+    <button class="filter-btn wisdm active" data-ds="WISDM" onclick="toggleFilter('WISDM')">WISDM · Wrist accel · 20Hz</button>
+    <button class="filter-btn ucihar active" data-ds="UCI_HAR" onclick="toggleFilter('UCI_HAR')">UCI HAR · Waist IMU · 50Hz</button>
+    <button class="filter-btn pamap2 active" data-ds="PAMAP2" onclick="toggleFilter('PAMAP2')">PAMAP2 · 3×IMU · 100Hz</button>
+    <button class="filter-btn amputee active" data-ds="amputee_myo_armband" onclick="toggleFilter('amputee_myo_armband')">Amputee · EMG · 200Hz</button>
+    <span class="count-display" id="visibleCount"></span>
   </div>
 
   <div class="main-grid">
-
-    <!-- SCATTER PLOT -->
     <div class="panel">
       <div class="panel-title">
         Physics Score vs IMU Coupling
-        <span>500 sampled records · hover for details</span>
+        <span>500 sampled · hover for details</span>
       </div>
       <div class="scatter-legend">
         <div class="leg-item"><div class="leg-dot" style="background:var(--gold);box-shadow:0 0 5px var(--gold)"></div><span style="color:var(--gold)">Gold</span></div>
@@ -224,425 +182,311 @@
         <div class="leg-item"><div class="leg-dot" style="background:var(--bronze)"></div><span style="color:var(--bronze)">Bronze</span></div>
         <div class="leg-item"><div class="leg-dot" style="background:var(--rejected)"></div><span style="color:var(--rejected)">Rejected</span></div>
       </div>
-      <div id="loading"><div class="spinner"></div>Fetching real data from GitHub…</div>
+      <div id="loading"><div class="spinner"></div>Fetching real data…</div>
       <canvas id="scatterCanvas" style="display:none"></canvas>
       <div class="axis-labels" style="display:none" id="axisLabels">
-        <span class="axis-label">← low coupling (synthetic-like)</span>
+        <span class="axis-label">← low coupling</span>
         <span class="axis-label">IMU coupling r →</span>
         <span class="axis-label">high coupling →</span>
       </div>
     </div>
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
-
-      <!-- DONUT -->
       <div class="panel">
         <div class="panel-title">Certification Distribution</div>
         <canvas id="donutCanvas" height="160"></canvas>
       </div>
-
-      <!-- DOMAINS -->
       <div class="panel">
-        <div class="panel-title">Motion Domains</div>
-        <div class="domain-bars" id="domainBars">
-          <div style="color:var(--dim);font-size:11px">Loading…</div>
-        </div>
+        <div class="panel-title">Datasets & Sensors</div>
+        <div class="dataset-bars" id="datasetBars"><div style="color:var(--dim);font-size:11px">Loading…</div></div>
       </div>
-
-      <!-- LAWS -->
       <div class="panel">
         <div class="panel-title">Physics Laws · Pass Rate</div>
-        <div class="law-list" id="lawList">
-          <div style="color:var(--dim);font-size:11px">Loading…</div>
-        </div>
+        <div class="law-list" id="lawList"><div style="color:var(--dim);font-size:11px">Loading…</div></div>
       </div>
-
     </div>
   </div>
 
   <footer>
-    <a href="https://github.com/timbo4u1/S2S">github.com/timbo4u1/S2S</a>
-    &nbsp;·&nbsp;
-    <a href="https://timbo4u1.github.io/S2S">Live IMU Demo</a>
-    &nbsp;·&nbsp;
-    pip install s2s-certify
-    &nbsp;·&nbsp;
-    DOI: 10.5281/zenodo.18878307
-    &nbsp;·&nbsp;
-    v1.4.0 · BSL-1.1
+    <a href="https://github.com/timbo4u1/S2S">github.com/timbo4u1/S2S</a> &nbsp;·&nbsp;
+    <a href="https://timbo4u1.github.io/S2S">Live IMU Demo</a> &nbsp;·&nbsp;
+    pip install s2s-certify &nbsp;·&nbsp;
+    DOI: 10.5281/zenodo.18878307 &nbsp;·&nbsp;
+    v1.4.2 · BSL-1.1
   </footer>
 </div>
 
 <script>
-const TIER_COLORS = {
-  GOLD: '#ffd700', SILVER: '#a8c4d4', BRONZE: '#cd7f32', REJECTED: '#ff3d6b'
-};
-const DOMAIN_COLORS = {
-  LOCOMOTION:'#00e5ff', PRECISION:'#7c6fff', DAILY_LIVING:'#00ff88',
-  SPORT:'#ff9a3d', SOCIAL:'#ff3d6b', POWER:'#ffd700'
-};
+const TIER_COLORS = { GOLD:'#ffd700', SILVER:'#a8c4d4', BRONZE:'#cd7f32', REJECTED:'#ff3d6b' };
+const DS_COLORS = { WISDM:'#00e5ff', UCI_HAR:'#7c6fff', PAMAP2:'#00ff88', amputee_myo_armband:'#ff9a3d' };
+const DS_LABELS = { WISDM:'WISDM', UCI_HAR:'UCI HAR', PAMAP2:'PAMAP2', amputee_myo_armband:'Amputee EMG' };
 
-let allPoints = [];
-let canvasPoints = []; // {x,y,r} in canvas coords + data
+let allSample = [];
+let activeFilters = new Set(['WISDM','UCI_HAR','PAMAP2','amputee_myo_armband']);
+let canvasPoints = [];
 
-// ── Fetch real data ──────────────────────────────────────────────────
 async function loadData() {
-  const DATA_URL = 'https://timbo4u1.github.io/S2S/viz_data.json';
-  let data;
   try {
-    const res = await fetch(DATA_URL);
-    data = await res.json();
-  } catch(e) {
-    // Fallback if not yet deployed
-    data = generateFallback();
-  }
-  return data;
+    const res = await fetch('https://timbo4u1.github.io/S2S/viz_data.json?v=' + Date.now());
+    return await res.json();
+  } catch(e) { return generateFallback(); }
 }
 
 function generateFallback() {
-  // Realistic fallback matching real stats
   const sample = [];
-  const tiers = ['GOLD','SILVER','SILVER','SILVER','BRONZE','BRONZE','REJECTED'];
-  const actions = ['walking','running','stairs','sitting','standing','cycling','laying'];
-  const domains = ['LOCOMOTION','PRECISION','DAILY_LIVING','SPORT','SOCIAL'];
-  for (let i = 0; i < 500; i++) {
+  const tiers = ['GOLD','SILVER','SILVER','BRONZE','BRONZE','REJECTED'];
+  const datasets = ['WISDM','UCI_HAR','PAMAP2','amputee_myo_armband'];
+  const actions = ['walking','running','sitting','standing','cycling'];
+  const domains = ['LOCOMOTION','PRECISION','DAILY_LIVING','SPORT'];
+  const sensorMap = { WISDM:'Wrist accel', UCI_HAR:'Waist IMU', PAMAP2:'Hand+Chest+Ankle IMU', amputee_myo_armband:'EMG armband' };
+  const hzMap = { WISDM:'20Hz', UCI_HAR:'50Hz', PAMAP2:'100Hz', amputee_myo_armband:'200Hz' };
+  for(let i=0;i<500;i++){
     const tier = tiers[Math.floor(Math.random()*tiers.length)];
-    const baseScore = tier==='GOLD'?92:tier==='SILVER'?75:tier==='BRONZE'?55:20;
-    const baseR = tier==='GOLD'?0.5:tier==='SILVER'?0.35:tier==='BRONZE'?0.15:-0.05;
-    sample.push({
-      tier, score: baseScore + (Math.random()-0.5)*12,
-      coupling_r: baseR + (Math.random()-0.5)*0.25,
-      jerk: Math.random()*80+5,
-      action: actions[Math.floor(Math.random()*actions.length)],
-      domain: domains[Math.floor(Math.random()*domains.length)],
-      signed: true,
-      laws_passed: ['rigid_body_kinematics','jerk_bounds','resonance_frequency','imu_internal_consistency'],
-      laws_failed: tier==='REJECTED'?['rigid_body_kinematics','imu_internal_consistency']:[]
-    });
+    const ds = datasets[Math.floor(Math.random()*datasets.length)];
+    const baseScore = tier==='GOLD'?92:tier==='SILVER'?72:tier==='BRONZE'?52:18;
+    const baseR = tier==='GOLD'?0.5:tier==='SILVER'?0.32:tier==='BRONZE'?0.12:-0.05;
+    sample.push({ tier, dataset:ds, sensors:sensorMap[ds], hz:hzMap[ds],
+      score:baseScore+(Math.random()-.5)*12, coupling_r:baseR+(Math.random()-.5)*0.25,
+      jerk:Math.random()*80+5, action:actions[Math.floor(Math.random()*actions.length)],
+      domain:domains[Math.floor(Math.random()*domains.length)],
+      laws_passed:['rigid_body_kinematics','jerk_bounds'], laws_failed:[] });
   }
-  return { total:104160, tiers:{GOLD:24,SILVER:4731,BRONZE:4564,REJECTED:514}, sample };
+  return { total:104160, tiers:{GOLD:24,SILVER:4731,BRONZE:4564,REJECTED:514},
+    datasets:{WISDM:94327,UCI_HAR:8987,PAMAP2:46,amputee_myo_armband:800}, sample };
 }
 
-// ── Render stats ─────────────────────────────────────────────────────
+function toggleFilter(ds) {
+  if(activeFilters.has(ds)) activeFilters.delete(ds);
+  else activeFilters.add(ds);
+  document.querySelector(`[data-ds="${ds}"]`).classList.toggle('active', activeFilters.has(ds));
+  redrawScatter();
+}
+
 function renderStats(data) {
   const t = data.tiers;
-  const total = data.total;
-  document.getElementById('totalBadge').textContent = `${total.toLocaleString()} total certified records`;
+  document.getElementById('totalBadge').textContent = `${data.total.toLocaleString()} total certified records`;
   document.getElementById('goldCount').textContent = t.GOLD.toLocaleString();
   document.getElementById('silverCount').textContent = t.SILVER.toLocaleString();
   document.getElementById('bronzeCount').textContent = t.BRONZE.toLocaleString();
   document.getElementById('rejectedCount').textContent = t.REJECTED.toLocaleString();
 }
 
-// ── Donut chart ───────────────────────────────────────────────────────
 function renderDonut(data) {
   const canvas = document.getElementById('donutCanvas');
-  const dpr = window.devicePixelRatio || 1;
-  const w = canvas.parentElement.clientWidth - 40;
-  const h = 160;
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-
-  const t = data.tiers;
-  const total = t.GOLD + t.SILVER + t.BRONZE + t.REJECTED;
-  const slices = [
-    { label:'GOLD', val:t.GOLD, color:'#ffd700' },
-    { label:'SILVER', val:t.SILVER, color:'#a8c4d4' },
-    { label:'BRONZE', val:t.BRONZE, color:'#cd7f32' },
-    { label:'REJECTED', val:t.REJECTED, color:'#ff3d6b' },
-  ];
-
-  const cx = w * 0.38, cy = h / 2, r = 58, inner = 36;
-  let angle = -Math.PI / 2;
-
-  slices.forEach(s => {
-    const sweep = (s.val / total) * 2 * Math.PI;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angle, angle + sweep);
-    ctx.closePath();
-    ctx.fillStyle = s.color;
-    ctx.globalAlpha = 0.85;
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    angle += sweep;
+  const dpr = window.devicePixelRatio||1;
+  const w = canvas.parentElement.clientWidth-40, h=160;
+  canvas.style.width=w+'px'; canvas.style.height=h+'px';
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const t=data.tiers, total=t.GOLD+t.SILVER+t.BRONZE+t.REJECTED;
+  const slices=[{label:'GOLD',val:t.GOLD,color:'#ffd700'},{label:'SILVER',val:t.SILVER,color:'#a8c4d4'},
+    {label:'BRONZE',val:t.BRONZE,color:'#cd7f32'},{label:'REJECTED',val:t.REJECTED,color:'#ff3d6b'}];
+  const cx=w*.38,cy=h/2,r=55,inner=34; let angle=-Math.PI/2;
+  slices.forEach(s=>{
+    const sweep=(s.val/total)*2*Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle,angle+sweep); ctx.closePath();
+    ctx.fillStyle=s.color; ctx.globalAlpha=0.85; ctx.fill(); ctx.globalAlpha=1; angle+=sweep;
   });
-
-  // Inner circle
-  ctx.beginPath();
-  ctx.arc(cx, cy, inner, 0, Math.PI * 2);
-  ctx.fillStyle = '#0c1018';
-  ctx.fill();
-
-  // Center text
-  const certRate = ((t.GOLD + t.SILVER) / total * 100).toFixed(1);
-  ctx.font = `bold ${Math.floor(dpr * 0 + 16)}px Syne, sans-serif`;
-  ctx.fillStyle = '#fff';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(certRate + '%', cx, cy - 6);
-  ctx.font = `9px JetBrains Mono`;
-  ctx.fillStyle = '#4a5568';
-  ctx.fillText('certified', cx, cy + 10);
-
-  // Legend on right
-  const lx = cx + r + 20;
-  slices.forEach((s, i) => {
-    const ly = cy - 42 + i * 24;
-    ctx.fillStyle = s.color;
-    ctx.fillRect(lx, ly - 5, 10, 10);
-    ctx.font = '10px JetBrains Mono';
-    ctx.fillStyle = '#4a5568';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(s.label, lx + 14, ly);
-    ctx.fillStyle = '#c8d8e8';
-    const pct = (s.val / total * 100).toFixed(1);
-    ctx.fillText(pct + '%', lx + 14, ly + 11);
+  ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2); ctx.fillStyle='#0c1018'; ctx.fill();
+  const certRate=((t.GOLD+t.SILVER)/total*100).toFixed(1);
+  ctx.font=`bold 15px Syne,sans-serif`; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(certRate+'%',cx,cy-6);
+  ctx.font='9px JetBrains Mono'; ctx.fillStyle='#4a5568'; ctx.fillText('certified',cx,cy+9);
+  const lx=cx+r+16;
+  slices.forEach((s,i)=>{
+    const ly=cy-36+i*22;
+    ctx.fillStyle=s.color; ctx.fillRect(lx,ly-4,8,8);
+    ctx.font='9px JetBrains Mono'; ctx.fillStyle='#4a5568'; ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText(s.label,lx+12,ly);
+    ctx.fillStyle='#c8d8e8';
+    ctx.fillText((s.val/total*100).toFixed(1)+'%',lx+12,ly+10);
   });
 }
 
-// ── Domain bars ───────────────────────────────────────────────────────
-function renderDomains(sample) {
-  const counts = {};
-  sample.forEach(r => { counts[r.domain] = (counts[r.domain]||0) + 1; });
-  const max = Math.max(...Object.values(counts));
-  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
-
-  const el = document.getElementById('domainBars');
-  el.innerHTML = sorted.map(([domain, count]) => {
-    const pct = Math.round(count / max * 100);
-    const color = DOMAIN_COLORS[domain] || '#7c6fff';
-    return `<div class="domain-row">
-      <div class="domain-name">${domain.replace('_',' ')}</div>
-      <div class="domain-bar-wrap">
-        <div class="domain-bar-fill" style="width:0%;background:${color}" data-target="${pct}"></div>
+function renderDatasets(data) {
+  const ds = data.datasets;
+  const total = Object.values(ds).reduce((a,b)=>a+b,0);
+  const sorted = Object.entries(ds).sort((a,b)=>b[1]-a[1]);
+  const sensorMap = { WISDM:'Wrist accel · 20Hz', UCI_HAR:'Waist IMU · 50Hz',
+    PAMAP2:'Hand+Chest+Ankle · 100Hz', amputee_myo_armband:'EMG armband · 200Hz' };
+  const el = document.getElementById('datasetBars');
+  el.innerHTML = sorted.map(([d,count])=>{
+    const pct = Math.round(count/total*100);
+    const color = DS_COLORS[d]||'#888';
+    const label = DS_LABELS[d]||d;
+    const sensor = sensorMap[d]||'IMU';
+    return `<div class="ds-row">
+      <div class="ds-header">
+        <span class="ds-name" style="color:${color}">${label}</span>
+        <span class="ds-count">${count.toLocaleString()}</span>
       </div>
-      <div class="domain-count">${count}</div>
+      <div class="ds-sensor">${sensor}</div>
+      <div class="ds-bar-wrap"><div class="ds-bar-fill" style="width:0%;background:${color}" data-target="${pct}"></div></div>
     </div>`;
   }).join('');
-
-  setTimeout(() => {
-    el.querySelectorAll('.domain-bar-fill').forEach(b => {
-      b.style.width = b.dataset.target + '%';
-    });
-  }, 100);
+  setTimeout(()=>{ el.querySelectorAll('.ds-bar-fill').forEach(b=>{ b.style.width=b.dataset.target+'%'; }); },100);
 }
 
-// ── Law pass rates ────────────────────────────────────────────────────
 function renderLaws(sample) {
-  const lawCounts = {};
-  const lawTotal = {};
-  sample.forEach(r => {
-    (r.laws_passed||[]).forEach(l => {
-      lawCounts[l] = (lawCounts[l]||0) + 1;
-      lawTotal[l] = (lawTotal[l]||0) + 1;
-    });
-    (r.laws_failed||[]).forEach(l => {
-      lawTotal[l] = (lawTotal[l]||0) + 1;
-    });
+  const lawCounts={}, lawTotal={};
+  sample.forEach(r=>{
+    (r.laws_passed||[]).forEach(l=>{ lawCounts[l]=(lawCounts[l]||0)+1; lawTotal[l]=(lawTotal[l]||0)+1; });
+    (r.laws_failed||[]).forEach(l=>{ lawTotal[l]=(lawTotal[l]||0)+1; });
   });
-
-  const lawNames = {
-    rigid_body_kinematics: 'Rigid body kinematics',
-    jerk_bounds: 'Jerk bounds',
-    resonance_frequency: 'Resonance frequency',
-    imu_internal_consistency: 'IMU consistency',
-    newton_emg_coupling: 'Newton EMG coupling',
-    bcg_heartbeat: 'BCG heartbeat',
-    joule_heating: 'Joule heating'
-  };
-
-  const el = document.getElementById('lawList');
-  const laws = Object.entries(lawTotal).sort((a,b) => b[1]-a[1]).slice(0,7);
-
-  el.innerHTML = laws.map(([law, total]) => {
-    const passed = lawCounts[law] || 0;
-    const pct = Math.round(passed / total * 100);
-    const name = lawNames[law] || law.replace(/_/g,' ');
+  const lawNames={ rigid_body_kinematics:'Rigid body kinematics', jerk_bounds:'Jerk bounds',
+    resonance_frequency:'Resonance frequency', imu_internal_consistency:'IMU consistency',
+    newton_emg_coupling:'Newton EMG coupling', bcg_heartbeat:'BCG heartbeat', joule_heating:'Joule heating' };
+  const el=document.getElementById('lawList');
+  const laws=Object.entries(lawTotal).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  el.innerHTML=laws.map(([law,total])=>{
+    const passed=lawCounts[law]||0, pct=Math.round(passed/total*100);
+    const color=pct>70?'var(--pass)':'#ff9a3d';
     return `<div class="law-item">
-      <div class="law-dot" style="background:${pct>70?'var(--pass)':'#ff9a3d'};box-shadow:0 0 5px ${pct>70?'var(--pass)':'#ff9a3d'}"></div>
-      <div class="law-text">${name}</div>
-      <div class="law-pct" style="color:${pct>70?'var(--pass)':'#ff9a3d'}">${pct}%</div>
+      <div class="law-dot" style="background:${color};box-shadow:0 0 5px ${color}"></div>
+      <div class="law-text">${lawNames[law]||law.replace(/_/g,' ')}</div>
+      <div class="law-pct" style="color:${color}">${pct}%</div>
     </div>`;
   }).join('');
 }
 
-// ── Scatter plot ──────────────────────────────────────────────────────
-function renderScatter(sample) {
-  document.getElementById('loading').style.display = 'none';
-  const canvas = document.getElementById('scatterCanvas');
-  canvas.style.display = 'block';
-  document.getElementById('axisLabels').style.display = 'flex';
+function redrawScatter() {
+  const filtered = allSample.filter(r => activeFilters.has(r.dataset));
+  document.getElementById('visibleCount').textContent = `${filtered.length} / 500 records visible`;
+  drawScatter(filtered);
+}
 
-  const dpr = window.devicePixelRatio || 1;
-  const w = canvas.parentElement.clientWidth - 40;
-  const h = Math.min(420, window.innerHeight * 0.5);
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
+function drawScatter(sample) {
+  const canvas=document.getElementById('scatterCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const w=canvas.width/dpr, h=canvas.height/dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
 
-  const pad = { top:20, right:20, bottom:30, left:44 };
-  const pw = w - pad.left - pad.right;
-  const ph = h - pad.top - pad.bottom;
+  const pad={top:20,right:20,bottom:30,left:44};
+  const pw=w-pad.left-pad.right, ph=h-pad.top-pad.bottom;
+  const rMin=-0.3,rMax=0.8,sMin=0,sMax=100;
+  const toX=r=>pad.left+((r-rMin)/(rMax-rMin))*pw;
+  const toY=s=>pad.top+(1-(s-sMin)/(sMax-sMin))*ph;
 
-  // Value ranges
-  const rMin = -0.3, rMax = 0.8;
-  const sMin = 0, sMax = 100;
-
-  function toX(r) { return pad.left + ((r - rMin) / (rMax - rMin)) * pw; }
-  function toY(s) { return pad.top + (1 - (s - sMin) / (sMax - sMin)) * ph; }
-
-  // Draw grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  ctx.lineWidth = 1;
-  for (let s = 0; s <= 100; s += 25) {
-    ctx.beginPath(); ctx.moveTo(pad.left, toY(s)); ctx.lineTo(pad.left + pw, toY(s)); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.15)';
-    ctx.font = '9px JetBrains Mono';
-    ctx.textAlign = 'right';
-    ctx.fillText(s, pad.left - 6, toY(s) + 3);
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1;
+  for(let s=0;s<=100;s+=25){
+    ctx.beginPath(); ctx.moveTo(pad.left,toY(s)); ctx.lineTo(pad.left+pw,toY(s)); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.font='9px JetBrains Mono'; ctx.textAlign='right';
+    ctx.fillText(s,pad.left-6,toY(s)+3);
   }
-  for (let r = -0.2; r <= 0.8; r += 0.2) {
-    const x = toX(r);
-    ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ph); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.15)';
-    ctx.font = '9px JetBrains Mono';
-    ctx.textAlign = 'center';
-    ctx.fillText(r.toFixed(1), x, pad.top + ph + 16);
+  for(let r=-0.2;r<=0.8;r+=0.2){
+    const x=toX(r);
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+ph); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.font='9px JetBrains Mono'; ctx.textAlign='center';
+    ctx.fillText(r.toFixed(1),x,pad.top+ph+16);
   }
 
-  // Tier threshold lines
-  ctx.strokeStyle = 'rgba(255,215,0,0.15)';
-  ctx.setLineDash([4,4]);
-  ctx.lineWidth = 1;
-  // SILVER threshold (score ~75)
-  ctx.beginPath(); ctx.moveTo(pad.left, toY(75)); ctx.lineTo(pad.left+pw, toY(75)); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,215,0,0.3)';
-  ctx.font = '9px JetBrains Mono';
-  ctx.textAlign = 'left';
-  ctx.fillText('SILVER ≥75', pad.left+4, toY(75)-4);
-
-  ctx.strokeStyle = 'rgba(205,127,50,0.15)';
-  ctx.beginPath(); ctx.moveTo(pad.left, toY(60)); ctx.lineTo(pad.left+pw, toY(60)); ctx.stroke();
-  ctx.fillStyle = 'rgba(205,127,50,0.3)';
-  ctx.fillText('BRONZE ≥60', pad.left+4, toY(60)-4);
-  ctx.setLineDash([]);
-
-  // Coupling threshold
-  ctx.strokeStyle = 'rgba(0,229,255,0.12)';
-  ctx.setLineDash([4,4]);
-  ctx.beginPath(); ctx.moveTo(toX(0.2), pad.top); ctx.lineTo(toX(0.2), pad.top+ph); ctx.stroke();
+  // Threshold lines
+  ctx.setLineDash([4,4]); ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(168,196,212,0.15)';
+  ctx.beginPath(); ctx.moveTo(pad.left,toY(75)); ctx.lineTo(pad.left+pw,toY(75)); ctx.stroke();
+  ctx.fillStyle='rgba(168,196,212,0.3)'; ctx.font='9px JetBrains Mono'; ctx.textAlign='left';
+  ctx.fillText('SILVER ≥75',pad.left+4,toY(75)-4);
+  ctx.strokeStyle='rgba(205,127,50,0.15)';
+  ctx.beginPath(); ctx.moveTo(pad.left,toY(60)); ctx.lineTo(pad.left+pw,toY(60)); ctx.stroke();
+  ctx.fillStyle='rgba(205,127,50,0.3)'; ctx.fillText('BRONZE ≥60',pad.left+4,toY(60)-4);
   ctx.setLineDash([]);
 
   // Axis labels
-  ctx.fillStyle = 'rgba(255,255,255,0.25)';
-  ctx.font = '10px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText('imu coupling r', pad.left + pw/2, h - 2);
-  ctx.save();
-  ctx.translate(10, pad.top + ph/2);
-  ctx.rotate(-Math.PI/2);
-  ctx.fillText('physics score', 0, 0);
-  ctx.restore();
+  ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font='10px JetBrains Mono'; ctx.textAlign='center';
+  ctx.fillText('imu coupling r',pad.left+pw/2,h-2);
+  ctx.save(); ctx.translate(10,pad.top+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('physics score',0,0); ctx.restore();
 
-  // Plot points — draw in tier order (rejected first so gold on top)
-  canvasPoints = [];
-  const tierOrder = ['REJECTED','BRONZE','SILVER','GOLD'];
+  // Points
+  canvasPoints=[];
+  ['REJECTED','BRONZE','SILVER','GOLD'].forEach(tier=>{
+    sample.filter(r=>r.tier===tier).forEach(r=>{
+      const coupling=r.coupling_r!=null?r.coupling_r:(Math.random()*0.3);
+      const score=r.score!=null?r.score:50;
+      const x=toX(coupling), y=toY(score);
+      const dsColor=DS_COLORS[r.dataset]||'#888';
+      const tierColor=TIER_COLORS[tier]||'#888';
+      const radius=tier==='GOLD'?5:3.5;
 
-  tierOrder.forEach(tier => {
-    const pts = sample.filter(r => r.tier === tier);
-    pts.forEach(r => {
-      const coupling = r.coupling_r != null ? r.coupling_r : (Math.random()*0.3);
-      const score = r.score != null ? r.score : 50;
-      const x = toX(coupling);
-      const y = toY(score);
-      const color = TIER_COLORS[tier] || '#888';
-      const radius = tier === 'GOLD' ? 5 : 3.5;
+      // Outer ring = dataset color
+      ctx.beginPath(); ctx.arc(x,y,radius+1.5,0,Math.PI*2);
+      ctx.fillStyle=dsColor; ctx.globalAlpha=0.25; ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI*2);
-      ctx.fillStyle = color;
-      ctx.globalAlpha = tier==='GOLD' ? 1 : tier==='SILVER' ? 0.7 : tier==='BRONZE' ? 0.55 : 0.5;
-      if (tier==='GOLD') { ctx.shadowBlur=10; ctx.shadowColor=color; }
-      ctx.fill();
-      ctx.shadowBlur=0;
-      ctx.globalAlpha=1;
+      // Inner fill = tier color
+      ctx.beginPath(); ctx.arc(x,y,radius,0,Math.PI*2);
+      ctx.fillStyle=tierColor;
+      ctx.globalAlpha=tier==='GOLD'?1:tier==='SILVER'?0.75:0.55;
+      if(tier==='GOLD'){ctx.shadowBlur=10;ctx.shadowColor=tierColor;}
+      ctx.fill(); ctx.shadowBlur=0; ctx.globalAlpha=1;
 
-      canvasPoints.push({ x, y, r: radius+3, data: r });
+      canvasPoints.push({x,y,r:radius+4,data:r});
     });
   });
-
-  allPoints = canvasPoints;
 }
 
-// ── Tooltip on hover ──────────────────────────────────────────────────
+function setupScatterCanvas() {
+  const canvas=document.getElementById('scatterCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const w=canvas.parentElement.clientWidth-40;
+  const h=Math.min(420,window.innerHeight*.5);
+  canvas.style.width=w+'px'; canvas.style.height=h+'px';
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+}
+
 function setupHover() {
-  const canvas = document.getElementById('scatterCanvas');
-  const tooltip = document.getElementById('tooltip');
-  const dpr = window.devicePixelRatio || 1;
-
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-
-    let hit = null;
-    for (const pt of canvasPoints) {
-      const dx = pt.x - mx, dy = pt.y - my;
-      if (Math.sqrt(dx*dx+dy*dy) < pt.r + 2) { hit = pt; break; }
+  const canvas=document.getElementById('scatterCanvas');
+  const tooltip=document.getElementById('tooltip');
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    let hit=null;
+    for(const pt of canvasPoints){
+      const dx=pt.x-mx,dy=pt.y-my;
+      if(Math.sqrt(dx*dx+dy*dy)<pt.r+2){hit=pt;break;}
     }
-
-    if (hit) {
-      const d = hit.data;
-      const color = TIER_COLORS[d.tier] || '#888';
-      document.getElementById('tt-tier').style.color = color;
-      document.getElementById('tt-tier').textContent = d.tier;
-      document.getElementById('tt-action').textContent = d.action || '—';
-      document.getElementById('tt-domain').textContent = d.domain || '—';
-      document.getElementById('tt-score').textContent = d.score != null ? d.score.toFixed(1) : '—';
-      document.getElementById('tt-r').textContent = d.coupling_r != null ? d.coupling_r.toFixed(3) : '—';
-      document.getElementById('tt-jerk').textContent = d.jerk != null ? d.jerk.toFixed(1) + ' m/s³' : '—';
-      document.getElementById('tt-signed').textContent = d.signed ? '✓ Ed25519' : '—';
-      tooltip.style.opacity = '1';
-      const tx = e.clientX + 14;
-      const ty = e.clientY - 20;
-      tooltip.style.left = Math.min(tx, window.innerWidth - 220) + 'px';
-      tooltip.style.top = ty + 'px';
-      canvas.style.cursor = 'pointer';
+    if(hit){
+      const d=hit.data, color=TIER_COLORS[d.tier]||'#888';
+      document.getElementById('tt-tier').style.color=color;
+      document.getElementById('tt-tier').textContent=d.tier;
+      document.getElementById('tt-action').textContent=d.action||'—';
+      document.getElementById('tt-domain').textContent=d.domain||'—';
+      document.getElementById('tt-score').textContent=d.score!=null?d.score.toFixed(1):'—';
+      document.getElementById('tt-r').textContent=d.coupling_r!=null?d.coupling_r.toFixed(3):'—';
+      document.getElementById('tt-jerk').textContent=d.jerk!=null?d.jerk.toFixed(1)+' m/s³':'—';
+      document.getElementById('tt-dataset').textContent=DS_LABELS[d.dataset]||d.dataset||'—';
+      document.getElementById('tt-sensors').textContent=d.sensors||'—';
+      document.getElementById('tt-hz').textContent=d.hz||'—';
+      tooltip.style.opacity='1';
+      tooltip.style.left=Math.min(e.clientX+14,window.innerWidth-220)+'px';
+      tooltip.style.top=(e.clientY-20)+'px';
+      canvas.style.cursor='pointer';
     } else {
-      tooltip.style.opacity = '0';
-      canvas.style.cursor = 'crosshair';
+      tooltip.style.opacity='0'; canvas.style.cursor='crosshair';
     }
   });
-
-  canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+  canvas.addEventListener('mouseleave',()=>{tooltip.style.opacity='0';});
 }
 
-// ── Main ──────────────────────────────────────────────────────────────
 async function main() {
-  const data = await loadData();
+  const data=await loadData();
+  allSample=data.sample;
   renderStats(data);
   renderDonut(data);
-  renderDomains(data.sample);
+  renderDatasets(data);
   renderLaws(data.sample);
-  renderScatter(data.sample);
+  document.getElementById('loading').style.display='none';
+  document.getElementById('scatterCanvas').style.display='block';
+  document.getElementById('axisLabels').style.display='flex';
+  setupScatterCanvas();
+  redrawScatter();
   setupHover();
+  document.getElementById('visibleCount').textContent=`${allSample.length} / 500 records visible`;
 }
 
-window.addEventListener('load', main);
-window.addEventListener('resize', () => {
-  clearTimeout(window._rt);
-  window._rt = setTimeout(main, 200);
-});
+window.addEventListener('load',main);
+window.addEventListener('resize',()=>{ clearTimeout(window._rt); window._rt=setTimeout(()=>{ setupScatterCanvas(); redrawScatter(); },200); });
 </script>
 </body>
 </html>
