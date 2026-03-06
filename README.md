@@ -154,10 +154,10 @@ Columns auto-detected: `timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z`
 
 ## Datasets Validated
 
-| Dataset | Hz | Sensors | Windows | Used for |
-|---------|-----|---------|---------|----------|
-| WISDM 2019 | 20Hz | Wrist accel | 46,946 | Levels 1, 2, 3 |
-| PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | Levels 1, 3, 4 |
+| Dataset    | Hz    | Sensors              | Windows | Used for         |
+|------------|-------|----------------------|---------|------------------|
+| WISDM 2019 | 20Hz  | Wrist accel          | 46,946  | Levels 1, 2, 3   |
+| PAMAP2     | 100Hz | Hand+Chest+Ankle IMU | 13,094  | Levels 1, 2, 3, 4 |
 
 ---
 
