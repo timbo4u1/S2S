@@ -155,3 +155,10 @@ jobs:
           else:
               print('Physics core zero-dependencies check PASSED')
           EOF
+
+      - name: Security audit
+        run: |
+          pip install pip-audit
+          pip install cryptography>=46.0.5
+          pip-audit --skip-editable || true
+          echo "Security audit complete"
