@@ -37,10 +37,11 @@ venv/
 .vscode/
 .idea/
 *.swp
+
+# OS
 .DS_Store
 **/.DS_Store
-.DS_Store
-**/.DS_Store
-**/.DS_Store
+
+# Local data
 s2s_dataset/
 data/
