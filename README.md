@@ -147,6 +147,8 @@ print(result['laws_passed']) # which of 7 single-sensor laws passed
 ```bash
 s2s-certify your_imu_data.csv
   s2s-certify your_imu_data.csv --output report.json
+  s2s-certify your_imu_data.csv
+  s2s-certify your_imu_data.csv --output report.json --output report.json
 ```
 
 Columns auto-detected: `timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z`
