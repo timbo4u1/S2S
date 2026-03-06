@@ -94,13 +94,13 @@ def load_csv(path):
 def print_banner():
     print(f"""
 {BOLD}╔══════════════════════════════════════════╗
-║   S2S Physics Certification  v1.4.0      ║
+║   S2S Physics Certification  v1.4.2      ║
 ║   github.com/timbo4u1/S2S                ║
 ╚══════════════════════════════════════════╝{RESET}""")
 
 def print_result(result, filename, n_samples, has_gyro):
     tier  = result.get("physics_tier") or result.get("tier", "UNKNOWN")
-    score = result.get("physics_score", 0)
+    score = result.get("physical_law_score") or result.get("physics_score", 0)
     laws_passed = result.get("physics_laws_passed", [])
     laws_failed = result.get("physics_laws_failed", [])
     r     = result.get("imu_coupling_r", None)
