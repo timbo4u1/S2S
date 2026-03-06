@@ -43,7 +43,7 @@ Repository = "https://github.com/timbo4u1/S2S"
 Documentation = "https://timbo4u1.github.io/S2S"
 
 [project.scripts]
-s2s-certify = "s2s_standard_v1_3.s2s_physics_v1_3:main"
+s2s-certify = "s2s_standard_v1_3.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["s2s_standard_v1_3*"]
