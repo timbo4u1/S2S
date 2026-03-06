@@ -2,14 +2,16 @@
 """
 s2s-certify  —  Physics certification for IMU CSV files
 Usage:  s2s-certify yourfile.csv
+        s2s-certify yourfile.csv --output report.json
+        s2s-certify yourfile.csv --segment hand
 """
 import sys, csv, json, os, time
 
 TIER_COLORS = {
-    "GOLD":     "\033[93m",   # yellow
-    "SILVER":   "\033[96m",   # cyan
-    "BRONZE":   "\033[33m",   # orange
-    "REJECTED": "\033[91m",   # red
+    "GOLD":     "\033[93m",
+    "SILVER":   "\033[96m",
+    "BRONZE":   "\033[33m",
+    "REJECTED": "\033[91m",
 }
 RESET = "\033[0m"
 BOLD  = "\033[1m"
@@ -17,7 +19,6 @@ GREEN = "\033[92m"
 DIM   = "\033[2m"
 
 def find_columns(headers):
-    """Auto-detect column names regardless of capitalisation or separator."""
     h = [c.lower().strip() for c in headers]
     def find(candidates):
         for c in candidates:
@@ -25,7 +26,6 @@ def find_columns(headers):
                 if c in col:
                     return i
         return None
-
     t  = find(['time', 'ts', 'ns', 'ms', 'sec', 't'])
     ax = find(['acc_x', 'accel_x', 'ax', 'a_x', 'accelerometer_x', 'x_acc'])
     ay = find(['acc_y', 'accel_y', 'ay', 'a_y', 'accelerometer_y', 'y_acc'])
@@ -37,7 +37,6 @@ def find_columns(headers):
 
 def load_csv(path):
     with open(path, newline='') as f:
-        # Sniff delimiter
         sample = f.read(2048); f.seek(0)
         try:
             dialect = csv.Sniffer().sniff(sample)
@@ -52,7 +51,6 @@ def load_csv(path):
     headers = rows[0]
     t_i, ax_i, ay_i, az_i, gx_i, gy_i, gz_i = find_columns(headers)
 
-    # If gyro not found, still run accel-only laws
     has_gyro = all(i is not None for i in [gx_i, gy_i, gz_i])
     has_accel = all(i is not None for i in [ax_i, ay_i, az_i])
 
@@ -68,7 +66,7 @@ def load_csv(path):
             if t_i is not None:
                 ts = float(row[t_i])
             else:
-                ts = len(timestamps) * 0.01  # assume 100Hz
+                ts = len(timestamps) * 0.01
             timestamps.append(ts)
             accel.append([float(row[ax_i]), float(row[ay_i]), float(row[az_i])])
             if has_gyro:
@@ -76,16 +74,12 @@ def load_csv(path):
         except (ValueError, IndexError):
             continue
 
-    # Convert timestamps to nanoseconds if they look like seconds
     if timestamps and timestamps[-1] < 1e6:
         timestamps = [int(t * 1e9) for t in timestamps]
     else:
         timestamps = [int(t) for t in timestamps]
 
-    imu = {
-        "timestamps_ns": timestamps,
-        "accel": accel,
-    }
+    imu = {"timestamps_ns": timestamps, "accel": accel}
     if has_gyro:
         imu["gyro"] = gyro
 
@@ -94,7 +88,7 @@ def load_csv(path):
 def print_banner():
     print(f"""
 {BOLD}╔══════════════════════════════════════════╗
-║   S2S Physics Certification  v1.4.2      ║
+║   S2S Physics Certification  v1.4.3      ║
 ║   github.com/timbo4u1/S2S                ║
 ╚══════════════════════════════════════════╝{RESET}""")
 
@@ -106,7 +100,6 @@ def print_result(result, filename, n_samples, has_gyro):
     r     = result.get("imu_coupling_r", None)
     jerk  = result.get("jerk_p95_ms3", None)
     sig   = result.get("_signature", None)
-
     color = TIER_COLORS.get(tier, "\033[97m")
 
     print(f"\n{DIM}File:{RESET}    {filename}")
@@ -143,25 +136,26 @@ def print_result(result, filename, n_samples, has_gyro):
     print()
 
 def main():
-    if len(sys.argv) < 2 or sys.argv[1] in ('-h','--help'):
-        print(__doc__)
-        print("Example:")
-        print("  s2s-certify my_imu_recording.csv")
-        print("\nExpected CSV columns:")
-        print("  timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z")
-        print("  (column names are flexible — ax/ay/az, accel_x etc. all work)")
-        sys.exit(0)
+    import argparse
+    parser = argparse.ArgumentParser(
+        prog='s2s-certify',
+        description='Physics certification for IMU CSV files'
+    )
+    parser.add_argument('file', help='CSV file to certify')
+    parser.add_argument('--output', '-o', help='Save result to JSON file')
+    parser.add_argument('--segment', default='forearm',
+        help='Body segment: forearm, hand, shank, foot (default: forearm)')
+    args = parser.parse_args()
 
-    path = sys.argv[1]
-    if not os.path.exists(path):
-        print(f"File not found: {path}"); sys.exit(1)
+    if not os.path.exists(args.file):
+        print(f"File not found: {args.file}"); sys.exit(1)
 
     print_banner()
-    print(f"  Certifying: {os.path.basename(path)}")
+    print(f"  Certifying: {os.path.basename(args.file)}")
     print(f"  {DIM}Loading…{RESET}", end='\r')
 
     try:
-        imu, headers, has_gyro, n = load_csv(path)
+        imu, headers, has_gyro, n = load_csv(args.file)
     except Exception as e:
         print(f"\nFailed to load CSV: {e}"); sys.exit(1)
 
@@ -174,7 +168,29 @@ def main():
         result = PhysicsEngine().certify(imu)
         elapsed = time.time() - t0
         print(f"  Done in {elapsed:.2f}s                        ")
-        print_result(result, path, n, has_gyro)
+        print_result(result, args.file, n, has_gyro)
+
+        if args.output:
+            out = {
+                "file": args.file,
+                "n_samples": n,
+                "has_gyro": has_gyro,
+                "segment": args.segment,
+                "tier": result.get("physics_tier") or result.get("tier"),
+                "score": result.get("physical_law_score") or result.get("physics_score"),
+                "coupling_r": result.get("imu_coupling_r"),
+                "jerk_p95_ms3": result.get("jerk_p95_ms3"),
+                "laws_passed": result.get("physics_laws_passed", []),
+                "laws_failed": result.get("physics_laws_failed", []),
+                "flags": result.get("flags", []),
+                "signed": bool(result.get("_signature")),
+                "tool": result.get("tool"),
+                "certified_at_ns": result.get("issued_at_ns"),
+            }
+            with open(args.output, 'w') as f:
+                json.dump(out, f, indent=2)
+            print(f"  {GREEN}Report saved → {args.output}{RESET}")
+
     except Exception as e:
         print(f"\nCertification error: {e}")
         import traceback; traceback.print_exc()
