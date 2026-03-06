@@ -1,0 +1,39 @@
+{
+  "A_clean": {
+    "description": "Clean UCI_HAR baseline",
+    "accuracy": 0.6631,
+    "macro_f1": 0.6752,
+    "train_n": 7199,
+    "test_n": 1790
+  },
+  "B_corrupted": {
+    "description": "Corrupted 35%, no filter",
+    "accuracy": 0.705,
+    "macro_f1": 0.7079,
+    "train_n": 7199,
+    "test_n": 1790
+  },
+  "C_s2s_floor": {
+    "description": "S2S floor filtered (score>=60)",
+    "accuracy": 0.705,
+    "macro_f1": 0.7079,
+    "train_n": 7199,
+    "test_n": 1790
+  },
+  "D_kalman_recon": {
+    "description": "S2S floor + Kalman reconstructed BRONZE (w=0.5)",
+    "accuracy": 0.6385,
+    "macro_f1": 0.6592,
+    "train_n": 7349,
+    "test_n": 1790
+  },
+  "meta": {
+    "experiment": "s2s_level3_kalman_uci",
+    "dataset": "UCI_HAR",
+    "hz": 50,
+    "bronze_total": 2047,
+    "bronze_reconstructed": 150,
+    "acceptance_rate": 0.073,
+    "corruption_rate": 0.35
+  }
+}
