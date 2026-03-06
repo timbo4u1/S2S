@@ -11,7 +11,7 @@
 
 Please **do not** open a public GitHub issue for security vulnerabilities.
 
-Email: **timur.davkarayev@gmail.com**  
+Email: **s2s.physical@proton.me**  
 Subject line: `[S2S SECURITY] brief description`
 
 You will receive a response within 48 hours.
