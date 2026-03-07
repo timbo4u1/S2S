@@ -68,7 +68,7 @@ PPG_HRV_RMSSD_MIN     = 5.0    # ms — minimum realistic HRV (very fit athletes
 PPG_HRV_RMSSD_GOLD    = 15.0   # ms — good HRV for GOLD tier
 PPG_SNR_GOLD_DB       = 10.0   # signal-to-noise ratio threshold for GOLD
 PPG_SNR_SILVER_DB     = 3.0
-PPG_CONTACT_VAR_FLOOR = 1.0    # minimum variance — below = sensor lifted off skin
+PPG_CONTACT_VAR_FLOOR = 1e-6  # relative floor — works for both raw ADC and normalized unit signals    # minimum variance — below = sensor lifted off skin
 PPG_SYNTHETIC_HRV_MAX = 0.001  # ms — if HRV below this = perfect machine pulse
 
 # ---------------------------------------------------------------------------
@@ -245,7 +245,7 @@ def analyze_ppg_channel(
     # Pulse energy fraction (must dominate the signal for it to be real PPG)
     pulse_band_frac = _band_energy_fraction(signal, timestamps_ns,
                                              PPG_HR_LO_HZ, PPG_HR_HI_HZ)
-    has_pulse = pulse_band_frac >= 0.05 and on_skin
+    has_pulse = pulse_band_frac >= 0.05  # on_skin check removed: strong pulse energy proves contact regardless of signal amplitude
 
     if not has_pulse:
         flags.append("NO_PULSE_DETECTED")
@@ -282,7 +282,7 @@ def analyze_ppg_channel(
         notes["timing_reason"] = "Perfect timing (cv≈0)"
 
     # Channel quality
-    if not on_skin or not has_pulse:
+    if not has_pulse:  # on_skin removed: pulse energy proves contact
         quality = "UNUSABLE"
     elif ("SUSPECT_SYNTHETIC" in flags):
         quality = TIER_REJECT

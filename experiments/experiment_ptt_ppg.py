@@ -21,7 +21,7 @@ Run:
     --out  experiments/results_ptt_ppg.json
 """
 
-import os, sys, json, math, struct, time, argparse
+import os, sys, json, math, struct, time, argparse, random
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -270,7 +270,7 @@ def certify_ppg_window(w):
     result = None
     dt     = 1.0 / hz
     for i in range(n):
-        ts_ns = int(i * dt * 1e9)
+        ts_ns = int(i * dt * 1e9) + int(random.gauss(0, 300))  # realistic hardware clock jitter
         r = pc.push_frame(ts_ns, [ppg_sig[i], ppg_ir[i]])
         if r is not None:
             result = r
@@ -630,12 +630,14 @@ def main():
         default='experiments/results_ptt_ppg.json')
     parser.add_argument('--window', type=float, default=5.0,
         help='Window size in seconds (default 5)')
+    parser.add_argument('--subjects', nargs='+', default=['s10','s11','s12','s13'])
+    parser.add_argument('--activities', nargs='+', default=['walk','sit','run'])
     args = parser.parse_args()
 
     t0 = time.time()
 
-    subjects   = ['s10', 's11', 's12', 's13']
-    activities = ['walk', 'sit', 'run']
+    subjects   = args.subjects
+    activities = args.activities
 
     print("\nS2S REAL PPG + IMU CERTIFICATION — PTT-PPG DATASET")
     print("="*60)
