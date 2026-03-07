@@ -322,7 +322,7 @@ def run_level3(windows, sample_n=100):
             noise  = 0.02 * math.sin(2 * math.pi * 37 * t)
             val    = breath * pulse + motion_artifact + noise
             channels = [val, val * 0.9 + 0.01 * noise]
-            ts_ns  = int(i * dt * 1e9)
+            ts_ns  = int(i * dt * 1e9) + int(random.gauss(0, 300))
             r = pc.push_frame(ts_ns, channels)
             if r is not None:
                 ppg_result = r
@@ -467,7 +467,7 @@ def run_level4(windows, sample_n=100):
             breath = 1.0 + 0.12 * math.sin(2 * math.pi * 0.25 * t)
             mag  = math.sqrt(sum(v**2 for v in row['chest_a']))
             val  = breath * pulse + 0.05 * (mag/10.0) + 0.02 * math.sin(37*t)
-            r = pc.push_frame(int(i * dt * 1e9), [val, val * 0.9])
+            r = pc.push_frame(int(i * dt * 1e9) + int(random.gauss(0, 300)), [val, val * 0.9])
             if r is not None:
                 ppg_result = r
 

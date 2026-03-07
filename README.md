@@ -173,9 +173,7 @@ print(result['laws_passed']) # which of 7 single-sensor laws passed
 **Or certify a CSV file directly from terminal:**
 ```bash
 s2s-certify your_imu_data.csv
-  s2s-certify your_imu_data.csv --output report.json
-  s2s-certify your_imu_data.csv
-  s2s-certify your_imu_data.csv --output report.json --output report.json
+s2s-certify your_imu_data.csv --output report.json
 ```
 
 Columns auto-detected: `timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z`
@@ -188,6 +186,7 @@ Columns auto-detected: `timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z`
 |------------|-------|----------------------|---------|------------------|
 | WISDM 2019 | 20Hz  | Wrist accel          | 46,946  | Levels 1, 2, 3   |
 | PAMAP2     | 100Hz | Hand+Chest+Ankle IMU | 13,094  | Levels 1, 2, 3, 4 |
+| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU | 1,164 | Levels 2, 3, 4 |
 
 ---
 

@@ -1,0 +1,74 @@
+{
+  "level2_imu": {
+    "level": 2,
+    "description": "Real wrist IMU from PTT-PPG dataset",
+    "sensor": "Wrist accelerometer + gyroscope, 500Hz",
+    "n_windows": 97,
+    "avg_physics_score": 39.32,
+    "pass_rate": 0.6701,
+    "tier_counts": {
+      "BRONZE": 65,
+      "REJECTED": 32,
+      "GOLD": 0,
+      "SILVER": 0
+    },
+    "by_activity": {
+      "walk": 39.3
+    }
+  },
+  "level3_ppg": {
+    "level": 3,
+    "description": "Real PPG from PTT-PPG dataset, wrist wearable",
+    "sensor": "6-channel PPG + skin temperature, 500Hz, real humans",
+    "n_windows": 97,
+    "pass_rate": 0.8763,
+    "tier_counts": {
+      "BRONZE": 84,
+      "REJECTED": 12,
+      "SILVER": 1,
+      "GOLD": 0,
+      "UNKNOWN": 0
+    },
+    "by_activity": {
+      "walk": {
+        "n": 97,
+        "pass": 85
+      }
+    },
+    "hr_mean_bpm": 131.4,
+    "hrv_mean_ms": 16.0
+  },
+  "level4_fusion": {
+    "level": 4,
+    "description": "Real 3-sensor fusion: PPG + IMU + Thermal",
+    "sensor": "PTT-PPG wrist device: 6ch PPG + accel/gyro + temp, 500Hz",
+    "n_windows": 97,
+    "avg_hil_score": 66.24,
+    "pass_rate": 1.0,
+    "fusion_tier_counts": {
+      "BRONZE": 69,
+      "SILVER": 28,
+      "GOLD": 0,
+      "REJECTED": 0
+    },
+    "by_activity": {
+      "walk": 66.2
+    },
+    "real_temp_mean_c": 33.72,
+    "hr_mean_bpm": 123.8
+  },
+  "meta": {
+    "experiment": "s2s_ptt_ppg_real_data",
+    "dataset": "PhysioNet PTT-PPG v1.1.0",
+    "subjects": [
+      "s10_walk"
+    ],
+    "window_s": 5.0,
+    "hz": 500,
+    "n_windows": 97,
+    "elapsed_s": 365.5,
+    "s2s_version": "1.4.4",
+    "sensors": "PPG (6ch) + IMU (accel+gyro) + Thermal \u2014 all real, wrist device",
+    "note": "100% real human data. No synthetic signals."
+  }
+}

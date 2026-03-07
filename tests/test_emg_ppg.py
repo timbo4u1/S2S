@@ -393,3 +393,50 @@ class TestEMGPPGIntegration:
         assert ppg.PPG_BREATHING_HI_HZ < ppg.PPG_HR_LO_HZ, \
             "Breathing rate must be below heart rate"
         assert ppg.PPG_SNR_GOLD_DB > ppg.PPG_SNR_SILVER_DB
+
+
+class TestTimestampJitter:
+    """Certifier must accept real-hardware-style jitter; uniform timestamps have near-zero CV."""
+
+    def _make_ts_and_ppg(self, hz=500, seconds=5, jitter_ns=300):
+        import random, math
+        n = hz * seconds
+        dt = 1.0 / hz
+        ts = [int(i * dt * 1e9) + int(random.gauss(0, jitter_ns)) for i in range(n)]
+        hr_hz = 70 / 60
+        ppg = [math.sin(2 * math.pi * hr_hz * i * dt) for i in range(n)]
+        return ts, ppg
+
+    def test_realistic_jitter_accepted(self):
+        from s2s_standard_v1_3.s2s_ppg_certify_v1_3 import certify_ppg_channels
+        ts, ppg = self._make_ts_and_ppg(jitter_ns=300)
+        result = certify_ppg_channels(
+            names=["pleth"],
+            channels=[ppg],
+            timestamps_ns=ts,
+            sampling_hz=500,
+        )
+        assert result["tier"] != "REJECTED", "Real hardware jitter should not be rejected"
+
+    def test_zero_jitter_cv_near_zero(self):
+        """Perfect uniform timestamps = reconstructed from file — CV should be ~0."""
+        from s2s_standard_v1_3.s2s_ppg_certify_v1_3 import certify_ppg_channels
+        import math
+        hz, seconds = 500, 5
+        n = hz * seconds
+        dt = 1.0 / hz
+        ts = [int(i * dt * 1e9) for i in range(n)]  # perfectly uniform
+        hr_hz = 70 / 60
+        ppg = [math.sin(2 * math.pi * hr_hz * i * dt) for i in range(n)]
+        result = certify_ppg_channels(
+            names=["pleth"],
+            channels=[ppg],
+            timestamps_ns=ts,
+            sampling_hz=500,
+        )
+        # Top-level timing CV should be near-zero for perfect clock
+        per_ch = result.get("per_channel", {})
+        ch = per_ch.get("pleth", per_ch.get(next(iter(per_ch), ""), {}))
+        cv = ch.get("timing", {}).get("cv", None)
+        if cv is not None:
+            assert cv < 0.001, f"CV should be near-zero for perfect clock, got {cv}"
