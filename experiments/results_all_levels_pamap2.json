@@ -1,0 +1,111 @@
+{
+  "level1": {
+    "level": 1,
+    "description": "Single IMU \u2014 chest accelerometer + gyroscope",
+    "sensor": "PAMAP2 chest IMU, 100Hz, real human subjects",
+    "n_windows": 200,
+    "avg_physics_score": 39.48,
+    "pass_rate": 0.555,
+    "tier_counts": {
+      "BRONZE": 94,
+      "REJECTED": 89,
+      "SILVER": 17,
+      "GOLD": 0
+    },
+    "per_activity": {
+      "ascending_stairs": 37.1,
+      "cycling": 37.2,
+      "descending_stairs": 46.0,
+      "lying": 43.5,
+      "nordic_walking": 33.4,
+      "running": 47.2,
+      "sitting": 44.6,
+      "standing": 42.4,
+      "walking": 29.5
+    }
+  },
+  "level2": {
+    "level": 2,
+    "description": "Multi-IMU \u2014 hand + chest + ankle, consensus certification",
+    "sensor": "PAMAP2 3x IMU, 100Hz, real human subjects",
+    "n_windows": 200,
+    "avg_physics_score": 41.32,
+    "pass_rate": 0.9,
+    "tier_counts": {
+      "BRONZE": 179,
+      "REJECTED": 20,
+      "SILVER": 1,
+      "GOLD": 0
+    },
+    "per_activity": {
+      "ascending_stairs": 40.4,
+      "cycling": 39.6,
+      "descending_stairs": 43.9,
+      "lying": 41.1,
+      "nordic_walking": 42.5,
+      "running": 44.9,
+      "sitting": 41.7,
+      "standing": 40.3,
+      "walking": 40.4
+    }
+  },
+  "level3": {
+    "level": 3,
+    "description": "EMG + PPG certification on real human motion data",
+    "sensor": "EMG: synthesized from PAMAP2 chest IMU | PPG: derived from real PAMAP2 HR",
+    "n_windows": 100,
+    "emg_pass_rate": 1.0,
+    "ppg_pass_rate": 0.0,
+    "emg_tier_counts": {
+      "BRONZE": 100,
+      "GOLD": 0,
+      "SILVER": 0,
+      "REJECTED": 0,
+      "NO_RESULT": 0
+    },
+    "ppg_tier_counts": {
+      "REJECTED": 100,
+      "GOLD": 0,
+      "SILVER": 0,
+      "BRONZE": 0,
+      "NO_RESULT": 0
+    },
+    "hr_estimation_mae_bpm": null
+  },
+  "level4": {
+    "level": 4,
+    "description": "Full 4-sensor fusion: IMU + EMG + PPG + Thermal",
+    "sensor": "PAMAP2: real IMU + real HR (PPG proxy) + real skin temp (Thermal) + synthesized EMG",
+    "n_windows": 100,
+    "avg_hil_score": 38.43,
+    "pass_rate": 1.0,
+    "fusion_tier_counts": {
+      "BRONZE": 98,
+      "SILVER": 2,
+      "GOLD": 0,
+      "REJECTED": 0
+    },
+    "per_activity_hil": {
+      "cycling": 37.6,
+      "descending_stairs": 40.0,
+      "nordic_walking": 40.3,
+      "lying": 37.8,
+      "walking": 35.5,
+      "sitting": 39.7,
+      "running": 48.0,
+      "ascending_stairs": 38.4,
+      "standing": 36.1
+    }
+  },
+  "meta": {
+    "experiment": "s2s_all_levels_pamap2",
+    "dataset": "PAMAP2",
+    "subjects": 9,
+    "hz": 100,
+    "window_size": 256,
+    "total_windows": 4988,
+    "elapsed_s": 293.1,
+    "s2s_version": "1.4.4",
+    "note": "Level 3 EMG synthesized from chest IMU. PPG derived from real PAMAP2 HR. Thermal from real PAMAP2 skin temperature."
+  }
+}
