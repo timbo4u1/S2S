@@ -440,3 +440,30 @@ class TestTimestampJitter:
         cv = ch.get("timing", {}).get("cv", None)
         if cv is not None:
             assert cv < 0.001, f"CV should be near-zero for perfect clock, got {cv}"
+
+
+class TestAutoDetectProfile:
+    """auto_detect_profile picks the right threshold set from Hz + signal range."""
+
+    def test_normalized_500hz_detected(self):
+        from s2s_standard_v1_3.s2s_ppg_certify_v1_3 import _auto_detect_profile
+        # PTT-PPG style: normalized signal, range ~0.002
+        signal = [0.001 * i for i in range(100)]  # range = 0.099
+        profile = _auto_detect_profile(signal, hz=500)
+        assert profile["contact_var_floor"] == 1e-6
+        assert profile["snr_gold_db"] == 3.0
+
+    def test_raw_adc_100hz_detected(self):
+        from s2s_standard_v1_3.s2s_ppg_certify_v1_3 import _auto_detect_profile
+        # PAMAP2 style: raw ADC, range ~100
+        signal = [float(i) for i in range(100)]  # range = 99
+        profile = _auto_detect_profile(signal, hz=100)
+        assert profile["contact_var_floor"] == 1.0
+        assert profile["snr_gold_db"] == 10.0
+
+    def test_default_fallback(self):
+        from s2s_standard_v1_3.s2s_ppg_certify_v1_3 import _auto_detect_profile
+        # Ambiguous — mid-range signal, mid Hz
+        signal = [float(i) for i in range(5)]  # range = 4
+        profile = _auto_detect_profile(signal, hz=200)
+        assert profile["contact_var_floor"] == 1e-6  # conservative fallback

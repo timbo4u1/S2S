@@ -72,6 +72,55 @@ PPG_CONTACT_VAR_FLOOR = 1e-6  # relative floor — works for both raw ADC and no
 PPG_SYNTHETIC_HRV_MAX = 0.001  # ms — if HRV below this = perfect machine pulse
 
 # ---------------------------------------------------------------------------
+# Device profiles — threshold sets per Hz + signal amplitude range
+# ---------------------------------------------------------------------------
+_PPG_PROFILES = {
+    "normalized_500hz": {
+        # PTT-PPG style: 500Hz, normalized units (variance ~0.001-0.01)
+        "contact_var_floor": 1e-6,
+        "snr_gold_db":       3.0,   # normalized signals have lower absolute SNR
+        "snr_silver_db":     0.0,
+        "hrv_rmssd_min":     5.0,
+        "hrv_rmssd_gold":    15.0,
+    },
+    "raw_adc_100hz": {
+        # PAMAP2 style: 100Hz, raw ADC units (variance ~50-500)
+        "contact_var_floor": 1.0,
+        "snr_gold_db":       10.0,
+        "snr_silver_db":     3.0,
+        "hrv_rmssd_min":     5.0,
+        "hrv_rmssd_gold":    15.0,
+    },
+    "default": {
+        # Conservative fallback — works for both
+        "contact_var_floor": 1e-6,
+        "snr_gold_db":       3.0,
+        "snr_silver_db":     0.0,
+        "hrv_rmssd_min":     5.0,
+        "hrv_rmssd_gold":    15.0,
+    },
+}
+
+def _auto_detect_profile(signal: List[float], hz: float) -> dict:
+    """
+    Auto-detect device profile from Hz + signal amplitude range.
+    No user config needed — certifier adapts to device automatically.
+
+    Rules (from real data):
+      PTT-PPG  : hz >= 400 AND signal_range < 1.0  → normalized_500hz
+      PAMAP2   : hz <= 150 AND signal_range > 10   → raw_adc_100hz
+      fallback :                                    → default
+    """
+    if not signal:
+        return _PPG_PROFILES["default"]
+    sig_range = max(signal) - min(signal)
+    if hz >= 400 and sig_range < 1.0:
+        return _PPG_PROFILES["normalized_500hz"]
+    if hz <= 150 and sig_range > 10:
+        return _PPG_PROFILES["raw_adc_100hz"]
+    return _PPG_PROFILES["default"]
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
@@ -233,7 +282,8 @@ def analyze_ppg_channel(
 
     # Contact / skin check
     var = _variance(signal)
-    on_skin = var >= PPG_CONTACT_VAR_FLOOR
+    profile = _auto_detect_profile(signal, sampling_hz)
+    on_skin = var >= profile["contact_var_floor"]
     if not on_skin:
         flags.append("SENSOR_NOT_ON_SKIN")
 
@@ -286,9 +336,9 @@ def analyze_ppg_channel(
         quality = "UNUSABLE"
     elif ("SUSPECT_SYNTHETIC" in flags):
         quality = TIER_REJECT
-    elif snr_db >= PPG_SNR_GOLD_DB and rmssd_ms >= PPG_HRV_RMSSD_GOLD and not flags:
+    elif snr_db >= profile["snr_gold_db"] and rmssd_ms >= profile["hrv_rmssd_gold"] and not flags:
         quality = TIER_GOLD
-    elif snr_db >= PPG_SNR_SILVER_DB and rmssd_ms >= PPG_HRV_RMSSD_MIN:
+    elif snr_db >= profile["snr_silver_db"] and rmssd_ms >= profile["hrv_rmssd_min"]:
         quality = TIER_SILVER
     elif has_pulse:
         quality = TIER_BRONZE
@@ -570,7 +620,9 @@ def main() -> None:
             statistics.mean([b-a for a,b in zip(timestamps, timestamps[1:])])
             if len(timestamps) > 1 else None
         )
-        sampling_hz = (1e9 / mean_delta) if mean_delta else args.sampling_hz
+        deltas = [timestamps[i+1]-timestamps[i] for i in range(len(timestamps)-1)]
+        median_delta = sorted(deltas)[len(deltas)//2] if deltas else None
+        sampling_hz = (1e9 / median_delta) if median_delta else args.sampling_hz
 
         result = certify_ppg_channels(
             names=names, channels=channels,
