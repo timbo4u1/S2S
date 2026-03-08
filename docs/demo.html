@@ -116,7 +116,7 @@ function gen(type){
     const t=i/50,g=Math.sin(2*Math.PI*1.8*t);
     if(type==='real') d.push([0.3*g+(Math.random()-.5)*.4,0.2*Math.sin(2*Math.PI*1.8*t+.5)+(Math.random()-.5)*.3,9.81+0.8*g+(Math.random()-.5)*.5]);
     else if(type==='corrupted'){let ax=0.3*g+(Math.random()-.5)*.4,ay=0.2*g+(Math.random()-.5)*.3,az=9.81+0.8*g+(Math.random()-.5)*.5;if(i>60&&i<90){ax=3.5;ay=3.5;az=3.5}if(i>150&&i<180){ax=0;ay=0;az=9.81}d.push([ax,ay,az]);}
-    else if(type==='synthetic') d.push([Math.sin(2*Math.PI*2*t),Math.cos(2*Math.PI*2*t),9.81+Math.sin(2*Math.PI*4*t)]);
+    else if(type==='synthetic'){const v=i<128?0.0:9.81;d.push([0,0,v]);}  // flat then frozen
     else d.push([0.3*g+(Math.random()-.5)*2,0.2*g+(Math.random()-.5)*2,9.81+0.8*g+(Math.random()-.5)*2.5]);
   }
   return d;
