@@ -93,7 +93,7 @@ pre{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:
 <div class="controls">
   <button class="btn real" onclick="certify('real')"><span class="btn-label">▶ REAL HUMAN WALKING</span>50Hz wrist accelerometer</button>
   <button class="btn corrupted" onclick="certify('corrupted')"><span class="btn-label">▶ CORRUPTED DATA</span>Clipped + frozen samples injected</button>
-  <button class="btn synthetic" onclick="certify('synthetic')"><span class="btn-label">▶ SYNTHETIC SINE WAVE</span>Mathematically perfect — not human</button>
+  <button class="btn synthetic" onclick="certify('synthetic')"><span class="btn-label">▶ FLAT/FROZEN SENSOR</span>Zero movement — dead or disconnected sensor</button>
   <button class="btn phone" onclick="certify('phone')"><span class="btn-label">▶ NOISY CHEAP IMU</span>High sensor noise recording</button>
 </div>
 <div class="result-panel" id="resultPanel">
@@ -132,7 +132,7 @@ async function certify(type){
   try{
     const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({accel:gen(type),sample_rate_hz:50})});
     const data=await res.json();
-    const labels={real:'Real Human Walking',corrupted:'Corrupted Data',synthetic:'Synthetic Sine Wave',phone:'Noisy IMU'};
+    const labels={real:'Real Human Walking',corrupted:'Corrupted Data',synthetic:'Flat/Frozen Sensor',phone:'Noisy IMU'};
     const passed=new Set(data.laws_passed);
     const lawsHTML=Object.entries(LAWS).map(([k,v])=>`<div class="law-row ${passed.has(k)?'passed':'failed'}"><div class="law-dot"></div><span>${v}</span></div>`).join('');
     panel.className=`result-panel tier-${data.tier}`;
