@@ -2,11 +2,10 @@
 
 **Physics-certified motion data for prosthetics, robotics, and Physical AI.**
 
-S2S is a physics validation layer for human motion sensor data. Before training a prosthetic hand, surgical robot, or humanoid — run your IMU data through S2S. It verifies the data obeys 7 biomechanical laws and issues a certificate. Bad data gets rejected before it reaches your model.
+S2S is a physics validation layer for human motion sensor data. Before training a prosthetic hand, surgical robot, or humanoid — run your IMU data through S2S. It verifies the data obeys 11 biomechanical laws and issues a certificate. Bad data gets rejected before it reaches your model.
 
 [![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307)
-[![Tests](https://img.shields.io/badge/tests-105%20passing-brightgreen.svg)](https://github.com/timbo4u1/S2S/actions)
 [![S2S CI](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml/badge.svg)](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml)
 [![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](README.md)
@@ -15,10 +14,10 @@ S2S is a physics validation layer for human motion sensor data. Before training 
 ---
 
 ## Live Demos
-- 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) — 104,160 real certified records, hover to explore
-![S2S Physics Certification Explorer](docs/viz_preview.png)
-- 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) — real-time physics certification on your phone
-- 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) — 17-joint live certification
+
+**[→ IMU Demo — open on your phone](https://timbo4u1.github.io/S2S)** · Real-time certification using phone accelerometer + gyroscope
+
+**[→ Pose Demo — camera + skeleton](https://timbo4u1.github.io/S2S/pose.html)** · 17-joint body tracking with live physics certification
 
 No install needed. All processing runs on your device. No data sent anywhere.
 
@@ -83,33 +82,7 @@ Tested on PAMAP2 12-class activity recognition (hand + chest + ankle IMU, 100Hz)
 
 ---
 
-## Validated on Real Human Data
-
-S2S has been tested on two independent public datasets with real human subjects.
-
-**PAMAP2** (9 subjects, 100Hz, chest IMU, 12 activities):
-
-| Level | Result |
-|-------|--------|
-| Level 1 Single IMU | 55.5% pass rate, avg score 39.5/100 |
-| Level 2 Multi-IMU | 90.0% pass rate, avg score 41.3/100 |
-| Level 4 Fusion | 100% pass, HIL score 38.4/100 |
-
-**PhysioNet PTT-PPG** (4 subjects, 500Hz, wrist device, walk/sit/run):
-
-| Level | Result |
-|-------|--------|
-| Level 2 IMU | 61.7% pass rate, avg score 37.2/100 |
-| Level 3 PPG | 96.3% pass rate, HR mean 106 BPM, HRV 21ms |
-| Level 4 Fusion | 100% pass, HIL score 68.7/100, 438 SILVER |
-
-Real skin temperature: 33.6°C. Real pulse detected across all 3 activities.
-All experiment code in `experiments/`. All results reproducible.
-
-
----
-
-## 7 Physics Laws
+## 11 Physics Laws
 
 ### Single-Sensor Laws (Levels 1–3)
 
@@ -170,23 +143,15 @@ print(result['tier'])        # GOLD / SILVER / BRONZE / REJECTED
 print(result['score'])       # 0–100
 print(result['laws_passed']) # which of 7 single-sensor laws passed
 ```
-**Or certify a CSV file directly from terminal:**
-```bash
-s2s-certify your_imu_data.csv
-s2s-certify your_imu_data.csv --output report.json
-```
-
-Columns auto-detected: `timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z`
 
 ---
 
 ## Datasets Validated
 
-| Dataset    | Hz    | Sensors              | Windows | Used for         |
-|------------|-------|----------------------|---------|------------------|
-| WISDM 2019 | 20Hz  | Wrist accel          | 46,946  | Levels 1, 2, 3   |
-| PAMAP2     | 100Hz | Hand+Chest+Ankle IMU | 13,094  | Levels 1, 2, 3, 4 |
-| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU | 1,164 | Levels 2, 3, 4 |
+| Dataset | Hz | Sensors | Windows | Used for |
+|---------|-----|---------|---------|----------|
+| WISDM 2019 | 20Hz | Wrist accel | 46,946 | Levels 1, 2, 3 |
+| PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | Levels 1, 3, 4 |
 
 ---
 
