@@ -83,6 +83,8 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
 .footer{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .footer a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:color 0.2s}
 .footer a:hover{color:var(--accent)}
+.hz-btn{padding:6px 14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:12px;cursor:pointer;border-radius:3px;transition:all 0.2s}
+.hz-btn.active,.hz-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,136,0.05)}
 </style>
 </head>
 <body>
@@ -100,6 +102,14 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
     <div class="stat"><div class="stat-value">110</div><div class="stat-label">Tests passing</div></div>
   </div>
 
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <span style="font-family:JetBrains Mono,monospace;font-size:11px;color:#64748b;letter-spacing:0.08em">SAMPLE RATE:</span>
+    <button class="hz-btn active" onclick="setHz(20,this)">20 Hz</button>
+    <button class="hz-btn" onclick="setHz(50,this)">50 Hz</button>
+    <button class="hz-btn" onclick="setHz(100,this)">100 Hz</button>
+    <button class="hz-btn" onclick="setHz(500,this)">500 Hz</button>
+    <input style="width:90px;padding:6px 10px;border:1px solid #1e2530;background:#0d1117;color:#e2e8f0;font-family:JetBrains Mono,monospace;font-size:12px;border-radius:3px;outline:none" type="number" placeholder="custom Hz" min="1" max="2000" onchange="setHz(+this.value,null)">
+  </div>
   <div class="upload-zone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="dz(event,'over')" ondragleave="dz(event,'leave')" ondrop="dz(event,'drop')">
     <span class="upload-icon">📂</span>
     <div class="upload-title">DROP YOUR CSV HERE — or click to upload</div>
@@ -136,6 +146,8 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
 
 <script>
 const API = "https://s2s-65sy.onrender.com/certify";
+let hz = 20;
+function setHz(v,btn){hz=v;document.querySelectorAll(".hz-btn").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");}
 
 
 
@@ -180,7 +192,7 @@ async function handleFile(file) {
   }
 
   try {
-    const body = { accel, sample_rate_hz: 50 };
+    const body = { accel, sample_rate_hz: hz };
     if (hasGyro && gyro.length === accel.length) body.gyro = gyro;
     const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
     const data = await res.json();
