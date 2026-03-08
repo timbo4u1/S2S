@@ -1,0 +1,68 @@
+{
+  "experiment": "S2S Level 5 PTT-PPG CNN Certifier",
+  "dataset": "PhysioNet PTT-PPG 500Hz 22 subjects",
+  "channels": 11,
+  "window_size": 256,
+  "train_subjects": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8",
+    "s9",
+    "s10",
+    "s11",
+    "s12",
+    "s13",
+    "s14",
+    "s15",
+    "s16"
+  ],
+  "test_subjects": [
+    "s17",
+    "s18",
+    "s19",
+    "s20",
+    "s21",
+    "s22"
+  ],
+  "train_windows": 9219,
+  "test_windows": 3470,
+  "epochs": 60,
+  "device": "mps",
+  "n_params": 387874,
+  "train_time_s": 164,
+  "test_acc": 0.7012,
+  "test_f1": 0.5218,
+  "reject_recall": 0.8082,
+  "agreement": 0.7012,
+  "per_tier_agreement": {
+    "BRONZE": 0.2339,
+    "REJECTED": 0.8082,
+    "SILVER": 0.3
+  },
+  "confusion_matrix": [
+    [
+      154,
+      496
+    ],
+    [
+      541,
+      2279
+    ]
+  ],
+  "train_tier_dist": {
+    "REJECTED": 7671,
+    "BRONZE": 1443,
+    "SILVER": 105
+  },
+  "test_tier_dist": {
+    "BRONZE": 620,
+    "REJECTED": 2820,
+    "SILVER": 30
+  },
+  "level5_proven": true
+}
