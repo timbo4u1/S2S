@@ -95,7 +95,13 @@ def _real_score(accel, hz=50.0):
 
     avg = float(np.mean(list(scores.values())))
 
-    if avg >= 78:
+    # Force REJECTED for pathological cases regardless of avg
+    var = float(np.mean(np.var(np.array(accel), axis=0)))
+    all_noise = var > 20
+    all_frozen = var < 0.01
+    if all_frozen or all_noise:
+        tier = 'REJECTED'
+    elif avg >= 78:
         tier = 'SILVER'
     elif avg >= 55:
         tier = 'BRONZE'
