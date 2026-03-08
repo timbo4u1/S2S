@@ -107,16 +107,6 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
     <input type="file" id="fileInput" accept=".csv,.txt" onchange="handleFile(this.files[0])">
   </div>
 
-  <div class="hz-row">
-    <span class="hz-label">SAMPLE RATE:</span>
-    <button class="hz-btn" onclick="setHz(20,this)">20 Hz</button>
-    <button class="hz-btn active" onclick="setHz(50,this)">50 Hz</button>
-    <button class="hz-btn" onclick="setHz(100,this)">100 Hz</button>
-    <button class="hz-btn" onclick="setHz(500,this)">500 Hz</button>
-    <input class="hz-custom" type="number" placeholder="custom Hz" min="1" max="2000" onchange="setHz(+this.value,null)">
-    <span class="hz-label" id="hzDisplay" style="color:var(--accent)">50 Hz</span>
-  </div>
-
   <div class="result-panel" id="resultPanel"></div>
 
   <div class="format-box">
@@ -146,14 +136,8 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
 
 <script>
 const API = "https://s2s-65sy.onrender.com/certify";
-let hz = 50;
 
-function setHz(v, btn) {
-  hz = v;
-  document.querySelectorAll('.hz-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  document.getElementById('hzDisplay').textContent = v + ' Hz';
-}
+
 
 function dz(e, type) {
   e.preventDefault();
@@ -196,7 +180,7 @@ async function handleFile(file) {
   }
 
   try {
-    const body = { accel, sample_rate_hz: hz };
+    const body = { accel, sample_rate_hz: 50 };
     if (hasGyro && gyro.length === accel.length) body.gyro = gyro;
     const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
     const data = await res.json();
