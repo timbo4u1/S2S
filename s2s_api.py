@@ -77,12 +77,10 @@ def _certify_window(accel, gyro, hz):
 
     avg_score = float(np.mean(scores)) if scores else 0.0
 
-    if avg_score >= 87:
-        tier = "GOLD"
-    elif avg_score >= 75:
-        tier = "SILVER"
-    elif avg_score >= 60:
+    if avg_score >= 54:
         tier = "BRONZE"
+    elif avg_score >= 48:
+        tier = "REJECTED"
     else:
         tier = "REJECTED"
 
