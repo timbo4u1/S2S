@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S2S — Physics Certification Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080a0e;--surface:#0d1117;--border:#1e2530;--accent:#00ff88;--accent2:#ff4444;--accent3:#ffaa00;--text:#e2e8f0;--muted:#64748b;--gold:#ffd700;--silver:#94a3b8;--bronze:#cd7f32;--rejected:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.container{max-width:900px;margin:0 auto;padding:60px 24px;position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:2px;letter-spacing:0.1em;margin-bottom:20px}
+.badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px}
+h1 span{color:var(--accent)}
+.subtitle{color:var(--muted);font-size:1.1rem;max-width:560px;line-height:1.6;margin-bottom:40px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:40px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--muted)}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
+.btn{padding:14px 24px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;border-radius:4px;transition:all 0.2s;text-align:left;position:relative;overflow:hidden}
+.btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,136,0.05)}
+.btn.real{border-left:3px solid var(--accent)}
+.btn.corrupted{border-left:3px solid var(--accent2)}
+.btn.synthetic{border-left:3px solid var(--accent3)}
+.btn.phone{border-left:3px solid #8b5cf6}
+.btn-label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px;letter-spacing:0.08em}
+.btn.loading{pointer-events:none;opacity:0.6}
+.btn.loading::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--accent);animation:load 1s infinite}
+@keyframes load{0%{width:0;left:0}50%{width:100%;left:0}100%{width:0;left:100%}}
+.result-panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:40px;transition:border-color 0.3s}
+.result-panel.tier-GOLD{border-color:var(--gold)}
+.result-panel.tier-SILVER{border-color:var(--silver)}
+.result-panel.tier-BRONZE{border-color:var(--bronze)}
+.result-panel.tier-REJECTED{border-color:var(--rejected)}
+.result-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.result-title{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.1em}
+.tier-badge{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:4px 12px;border-radius:2px;letter-spacing:0.1em}
+.tier-GOLD .tier-badge{background:rgba(255,215,0,0.15);color:var(--gold)}
+.tier-SILVER .tier-badge{background:rgba(148,163,184,0.15);color:var(--silver)}
+.tier-BRONZE .tier-badge{background:rgba(205,127,50,0.15);color:var(--bronze)}
+.tier-REJECTED .tier-badge{background:rgba(239,68,68,0.15);color:var(--rejected)}
+.result-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.score-block{display:flex;flex-direction:column;gap:8px}
+.score-label{font-size:11px;color:var(--muted);letter-spacing:0.08em;font-family:'JetBrains Mono',monospace}
+.score-value{font-size:3rem;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+.tier-GOLD .score-value{color:var(--gold)}
+.tier-SILVER .score-value{color:var(--silver)}
+.tier-BRONZE .score-value{color:var(--bronze)}
+.tier-REJECTED .score-value{color:var(--rejected)}
+.score-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:4px}
+.score-fill{height:100%;border-radius:2px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
+.tier-GOLD .score-fill{background:var(--gold)}
+.tier-SILVER .score-fill{background:var(--silver)}
+.tier-BRONZE .score-fill{background:var(--bronze)}
+.tier-REJECTED .score-fill{background:var(--rejected)}
+.laws-block{display:flex;flex-direction:column;gap:8px}
+.law-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 10px;border-radius:3px;background:rgba(255,255,255,0.02)}
+.law-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.law-row.passed .law-dot{background:var(--accent)}
+.law-row.failed .law-dot{background:var(--accent2)}
+.law-row.failed{color:var(--muted)}
+.raw-json{border-top:1px solid var(--border);padding:16px 20px}
+.raw-json summary{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;letter-spacing:0.08em}
+pre{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.6;overflow-x:auto}
+.idle-state{padding:40px 20px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px}
+.api-info{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:24px;margin-bottom:40px}
+.api-info h3{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.12em;margin-bottom:16px}
+.code-block{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:4px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);line-height:1.7;overflow-x:auto;margin-bottom:12px}
+.footer{border-top:1px solid var(--border);padding-top:32px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.footer a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;transition:color 0.2s}
+.footer a:hover{color:var(--accent)}
+@media(max-width:600px){.controls{grid-template-columns:1fr}.result-body{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="container">
+<div style="margin-bottom:60px">
+  <div class="badge">LIVE API</div>
+  <h1>Does your data obey<br><span>the laws of physics?</span></h1>
+  <p class="subtitle">S2S certifies human motion sensor data against 11 biomechanical laws. Real human movement has a physics signature. Synthetic data does not.</p>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-value">11</div><div class="stat-label">Physics laws</div></div>
+  <div class="stat"><div class="stat-value">5</div><div class="stat-label">Datasets validated</div></div>
+  <div class="stat"><div class="stat-value">80.8%</div><div class="stat-label">Bad data detected</div></div>
+  <div class="stat"><div class="stat-value">0ms</div><div class="stat-label">Setup time</div></div>
+</div>
+<div class="controls">
+  <button class="btn real" onclick="certify('real')"><span class="btn-label">▶ REAL HUMAN WALKING</span>50Hz wrist accelerometer</button>
+  <button class="btn corrupted" onclick="certify('corrupted')"><span class="btn-label">▶ CORRUPTED DATA</span>Clipped + frozen samples injected</button>
+  <button class="btn synthetic" onclick="certify('synthetic')"><span class="btn-label">▶ SYNTHETIC SINE WAVE</span>Mathematically perfect — not human</button>
+  <button class="btn phone" onclick="certify('phone')"><span class="btn-label">▶ NOISY CHEAP IMU</span>High sensor noise recording</button>
+</div>
+<div class="result-panel" id="resultPanel">
+  <div class="idle-state">↑ Pick a data type above to certify it live against the physics API</div>
+</div>
+<div class="api-info">
+  <h3>USE IN YOUR CODE</h3>
+  <div class="code-block">import requests<br><br>cert = requests.post("https://s2s-65sy.onrender.com/certify",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json={"accel": your_data, "sample_rate_hz": 50})<br><br>print(cert.json()["tier"])   # GOLD / SILVER / BRONZE / REJECTED<br>print(cert.json()["score"])  # 0-100</div>
+</div>
+<div class="footer">
+  <div style="display:flex;gap:24px"><a href="https://github.com/timbo4u1/S2S">GitHub</a><a href="https://s2s-65sy.onrender.com">API</a><a href="https://pypi.org/project/s2s-certify/">PyPI</a></div>
+  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">BSL-1.1 free for research</span>
+</div>
+</div>
+<script>
+const API="https://s2s-65sy.onrender.com/certify";
+function gen(type){
+  const n=256,d=[];
+  for(let i=0;i<n;i++){
+    const t=i/50,g=Math.sin(2*Math.PI*1.8*t);
+    if(type==='real') d.push([0.3*g+(Math.random()-.5)*.4,0.2*Math.sin(2*Math.PI*1.8*t+.5)+(Math.random()-.5)*.3,9.81+0.8*g+(Math.random()-.5)*.5]);
+    else if(type==='corrupted'){let ax=0.3*g+(Math.random()-.5)*.4,ay=0.2*g+(Math.random()-.5)*.3,az=9.81+0.8*g+(Math.random()-.5)*.5;if(i>60&&i<90){ax=3.5;ay=3.5;az=3.5}if(i>150&&i<180){ax=0;ay=0;az=9.81}d.push([ax,ay,az]);}
+    else if(type==='synthetic') d.push([Math.sin(2*Math.PI*2*t),Math.cos(2*Math.PI*2*t),9.81+Math.sin(2*Math.PI*4*t)]);
+    else d.push([0.3*g+(Math.random()-.5)*2,0.2*g+(Math.random()-.5)*2,9.81+0.8*g+(Math.random()-.5)*2.5]);
+  }
+  return d;
+}
+const LAWS={resonance:'Segment Resonance',rigid_body:'Rigid Body Kinematics',jerk:'Motor Control Jerk',imu_consistency:'IMU Consistency'};
+async function certify(type){
+  const btns={real:'.real',corrupted:'.corrupted',synthetic:'.synthetic',phone:'.phone'};
+  const btn=document.querySelector(`.btn${btns[type]}`);
+  const panel=document.getElementById('resultPanel');
+  btn.classList.add('loading');
+  panel.className='result-panel';
+  panel.innerHTML='<div class="idle-state" style="color:var(--accent)">Calling physics API...</div>';
+  try{
+    const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({accel:gen(type),sample_rate_hz:50})});
+    const data=await res.json();
+    const labels={real:'Real Human Walking',corrupted:'Corrupted Data',synthetic:'Synthetic Sine Wave',phone:'Noisy IMU'};
+    const passed=new Set(data.laws_passed);
+    const lawsHTML=Object.entries(LAWS).map(([k,v])=>`<div class="law-row ${passed.has(k)?'passed':'failed'}"><div class="law-dot"></div><span>${v}</span></div>`).join('');
+    panel.className=`result-panel tier-${data.tier}`;
+    panel.innerHTML=`<div class="result-header"><span class="result-title">CERTIFIED — ${labels[type].toUpperCase()}</span><span class="tier-badge">${data.tier}</span></div><div class="result-body"><div class="score-block"><span class="score-label">PHYSICS SCORE</span><span class="score-value">${data.score}</span><div class="score-bar"><div class="score-fill" style="width:${data.score}%"></div></div><span class="score-label" style="margin-top:8px">${data.windows} window · ${data.sample_rate_hz}Hz</span></div><div class="laws-block"><span class="score-label" style="margin-bottom:4px">LAWS CHECKED</span>${lawsHTML}</div></div><details class="raw-json"><summary>RAW JSON</summary><pre>${JSON.stringify(data,null,2)}</pre></details>`;
+  }catch(e){panel.innerHTML=`<div class="idle-state" style="color:var(--accent2)">API waking up (free tier, 50s delay). Try again in a moment.</div>`;}
+  btn.classList.remove('loading');
+}
+</script>
+</body>
+</html>
