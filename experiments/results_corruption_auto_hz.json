@@ -1,0 +1,90 @@
+{
+  "experiment": "s2s_quality_floor_v2_climbing",
+  "timestamp": "2026-03-08T07:15:58",
+  "corruption_rate": 0.35,
+  "corruption_types": [
+    "flat_signal",
+    "label_noise",
+    "sensor_clipping"
+  ],
+  "physics_threshold": 60,
+  "split": "subject-based (no leakage)",
+  "features": "14 raw accel (no physics metadata \u2014 no circularity)",
+  "conditions": {
+    "A_clean": {
+      "description": "Clean data, quality floor intact",
+      "accuracy": 0.7982,
+      "macro_f1": 0.5644,
+      "per_domain": {
+        "PRECISION": 0.9631,
+        "SOCIAL": 0.0,
+        "SPORT": 0.73
+      },
+      "train_n": 20561,
+      "test_n": 5366
+    },
+    "B_corrupted": {
+      "description": "Corrupted (35%), no filter",
+      "accuracy": 0.7777,
+      "macro_f1": 0.5324,
+      "per_domain": {
+        "PRECISION": 0.9712,
+        "SOCIAL": 0.0,
+        "SPORT": 0.6259
+      },
+      "train_n": 20561,
+      "test_n": 5366
+    },
+    "C_s2s_filtered": {
+      "description": "Corrupted \u2192 S2S filtered, floor restored",
+      "accuracy": 0.8108,
+      "macro_f1": 0.5818,
+      "per_domain": {
+        "PRECISION": 0.9625,
+        "SOCIAL": 0.0,
+        "SPORT": 0.7828
+      },
+      "train_n": 12746,
+      "test_n": 5366
+    },
+    "D_tier_weighted": {
+      "description": "S2S filtered + tier-weighted loss",
+      "accuracy": 0.8099,
+      "macro_f1": 0.5802,
+      "per_domain": {
+        "PRECISION": 0.9631,
+        "SOCIAL": 0.0,
+        "SPORT": 0.7775
+      },
+      "train_n": 12746,
+      "test_n": 5366
+    },
+    "E_curriculum": {
+      "description": "Curriculum GOLD\u2192SILVER\u2192BRONZE\u2192PRED phases",
+      "accuracy": 0.7965,
+      "macro_f1": 0.5609,
+      "per_domain": {
+        "PRECISION": 0.9654,
+        "SOCIAL": 0.0,
+        "SPORT": 0.7172
+      },
+      "train_n": 12746,
+      "test_n": 5366,
+      "phases": {
+        "1": 97,
+        "2": 12746,
+        "3": 12746,
+        "4": 12746
+      },
+      "predictions": 0
+    }
+  },
+  "tier_system": {
+    "GOLD": "original, all laws pass \u2014 pristine",
+    "SILVER": "original, most laws pass \u2014 good",
+    "BRONZE": "original, marginal \u2014 acceptable",
+    "RECONSTRUCTED": "corrupted, physics-restored \u2014 repaired (honest label)",
+    "REJECTED": "unrestorable \u2014 write-off"
+  },
+  "note": "A=clean, B=corrupted, C=S2S floor, D=tier-weighted, E=curriculum+physics-prediction. Level1: C>B proves floor. Level2: E>C proves climbing mechanism. Physics prediction: BRONZE records interpolated toward GOLD/SILVER centroid (max 40%). Honest labels: predicted records marked PRED, never passed off as original."
+}
