@@ -2,10 +2,10 @@
 S2S Certification API
 POST /certify — certify a window of IMU data
 GET  /health  — health check
-GET  /        — usage info
-
-Deploy free: render.com, railway.app, or fly.io
 """
+
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,33 +13,80 @@ from pydantic import BaseModel
 from typing import List, Optional
 import numpy as np
 
-app = FastAPI(
-    title="S2S Certification API",
-    description="Physics certification for human motion sensor data",
-    version="1.4.4"
+from s2s_standard_v1_3.s2s_physics_v1_3 import (
+    check_resonance, check_rigid_body, check_jerk, check_imu_consistency
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["POST", "GET"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="S2S Certification API", version="1.4.4")
+
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
 class CertifyRequest(BaseModel):
-    accel: List[List[float]]        # [[ax,ay,az], ...] — required
-    gyro: Optional[List[List[float]]] = None   # [[gx,gy,gz], ...] — optional
+    accel: List[List[float]]
+    gyro: Optional[List[List[float]]] = None
     sample_rate_hz: Optional[float] = 50.0
 
 
 class CertifyResponse(BaseModel):
-    tier: str           # GOLD / SILVER / BRONZE / REJECTED
-    score: float        # 0–100
+    tier: str
+    score: float
     laws_passed: list
     laws_failed: list
     windows: int
     sample_rate_hz: float
+
+
+def _to_imu_raw(accel, gyro, hz):
+    n = len(accel)
+    dt_ns = int(1e9 / hz)
+    ts = [i * dt_ns for i in range(n)]
+    imu = {
+        "accel": accel,
+        "gyro": gyro if gyro else [[0.0, 0.0, 0.0]] * n,
+        "timestamps_ns": ts,
+        "sample_rate_hz": hz,
+    }
+    return imu
+
+
+def _certify_window(accel, gyro, hz):
+    imu_raw = _to_imu_raw(accel, gyro, hz)
+    laws_passed = []
+    laws_failed = []
+    scores = []
+
+    checks = [
+        ("resonance",        lambda: check_resonance(imu_raw)),
+        ("rigid_body",       lambda: check_rigid_body(imu_raw)),
+        ("jerk",             lambda: check_jerk(imu_raw)),
+        ("imu_consistency",  lambda: check_imu_consistency(imu_raw)),
+    ]
+
+    for name, fn in checks:
+        try:
+            passed, score, _ = fn()
+            if passed:
+                laws_passed.append(name)
+            else:
+                laws_failed.append(name)
+            scores.append(max(0, min(100, score)))
+        except Exception:
+            laws_failed.append(name)
+            scores.append(0)
+
+    avg_score = float(np.mean(scores)) if scores else 0.0
+
+    if avg_score >= 87:
+        tier = "GOLD"
+    elif avg_score >= 75:
+        tier = "SILVER"
+    elif avg_score >= 60:
+        tier = "BRONZE"
+    else:
+        tier = "REJECTED"
+
+    return tier, avg_score, laws_passed, laws_failed
 
 
 @app.get("/")
@@ -47,21 +94,7 @@ def root():
     return {
         "name": "S2S Certification API",
         "version": "1.4.4",
-        "usage": {
-            "endpoint": "POST /certify",
-            "body": {
-                "accel": "[[ax,ay,az], ...] — list of 3-axis accelerometer samples",
-                "gyro":  "[[gx,gy,gz], ...] — optional gyroscope samples",
-                "sample_rate_hz": "sampling rate in Hz (default: 50)"
-            },
-            "example_python": (
-                "import requests\n"
-                "import numpy as np\n"
-                "data = np.random.randn(256, 3).tolist()\n"
-                "r = requests.post('https://api.s2s.dev/certify', json={'accel': data, 'sample_rate_hz': 50})\n"
-                "print(r.json())"
-            )
-        },
+        "usage": "POST /certify with {accel: [[ax,ay,az],...], sample_rate_hz: 50}",
         "github": "https://github.com/timbo4u1/S2S",
         "pypi": "pip install s2s-certify"
     }
@@ -74,78 +107,41 @@ def health():
 
 @app.post("/certify", response_model=CertifyResponse)
 def certify_endpoint(req: CertifyRequest):
-    # Validate input
     if len(req.accel) < 32:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Need at least 32 samples, got {len(req.accel)}. Recommended: 256 samples."
-        )
-
+        raise HTTPException(status_code=400, detail=f"Need at least 32 samples, got {len(req.accel)}")
     if len(req.accel[0]) != 3:
-        raise HTTPException(
-            status_code=400,
-            detail="accel must be [[ax,ay,az], ...] — 3 values per sample"
-        )
+        raise HTTPException(status_code=400, detail="accel must be [[ax,ay,az],...]")
 
-    if req.gyro is not None:
-        if len(req.gyro) != len(req.accel):
-            raise HTTPException(
-                status_code=400,
-                detail="gyro and accel must have the same number of samples"
-            )
-        if len(req.gyro[0]) != 3:
-            raise HTTPException(
-                status_code=400,
-                detail="gyro must be [[gx,gy,gz], ...] — 3 values per sample"
-            )
+    accel = req.accel
+    gyro = req.gyro
+    hz = req.sample_rate_hz or 50.0
 
-    try:
-        import sys, os; sys.path.insert(0, os.path.dirname(__file__)); from s2s_standard_v1_3.s2s_physics_v1_3 import certify
-    except ImportError:
-        raise HTTPException(
-            status_code=500,
-            detail="s2s-certify not installed on this server. Contact admin."
-        )
+    window_size = 256
+    accel_np = np.array(accel)
+    all_tiers, all_scores, all_passed, all_failed = [], [], set(), set()
 
-    try:
-        accel_np = np.array(req.accel, dtype=float)
+    for start in range(0, len(accel_np) - window_size + 1, window_size):
+        w_acc = accel_np[start:start+window_size].tolist()
+        w_gyr = gyro[start:start+window_size] if gyro else None
+        tier, score, lp, lf = _certify_window(w_acc, w_gyr, hz)
+        all_tiers.append(tier)
+        all_scores.append(score)
+        all_passed.update(lp)
+        all_failed.update(lf)
 
-        # Certify in 256-sample windows
-        window_size = 256
-        results = []
+    if not all_tiers:
+        tier, score, lp, lf = _certify_window(accel, gyro, hz)
+        all_tiers, all_scores = [tier], [score]
+        all_passed, all_failed = set(lp), set(lf)
 
-        for start in range(0, len(accel_np) - window_size + 1, window_size):
-            window = accel_np[start:start + window_size]
-            result = certify(window, sample_rate_hz=req.sample_rate_hz)
-            results.append(result)
+    tier_order = {"GOLD": 4, "SILVER": 3, "BRONZE": 2, "REJECTED": 1}
+    worst = min(all_tiers, key=lambda t: tier_order.get(t, 0))
 
-        if not results:
-            # Single window smaller than 256
-            result = certify(accel_np, sample_rate_hz=req.sample_rate_hz)
-            results = [result]
-
-        # Aggregate: worst tier wins (conservative)
-        tier_order = {"GOLD": 4, "SILVER": 3, "BRONZE": 2, "REJECTED": 1}
-        scores = [r["score"] for r in results]
-        tiers = [r["tier"] for r in results]
-        worst_tier = min(tiers, key=lambda t: tier_order.get(t, 0))
-        avg_score = float(np.mean(scores))
-
-        # Aggregate laws
-        all_passed = set(results[0].get("laws_passed", []))
-        all_failed = set(results[0].get("laws_failed", []))
-        for r in results[1:]:
-            all_passed &= set(r.get("laws_passed", []))   # only laws that ALWAYS pass
-            all_failed |= set(r.get("laws_failed", []))   # any law that ever fails
-
-        return CertifyResponse(
-            tier=worst_tier,
-            score=round(avg_score, 1),
-            laws_passed=sorted(list(all_passed)),
-            laws_failed=sorted(list(all_failed)),
-            windows=len(results),
-            sample_rate_hz=req.sample_rate_hz
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return CertifyResponse(
+        tier=worst,
+        score=round(float(np.mean(all_scores)), 1),
+        laws_passed=sorted(all_passed - all_failed),
+        laws_failed=sorted(all_failed),
+        windows=len(all_tiers),
+        sample_rate_hz=hz
+    )
