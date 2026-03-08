@@ -1,0 +1,45 @@
+{
+  "experiment": "S2S Level 5 Self-Supervised Pre-training",
+  "dataset": "UCI HAR 50Hz 30 subjects 6 activities",
+  "label_pct": 0.1,
+  "pretrain_windows": 6411,
+  "finetune_windows": 732,
+  "test_windows": 2947,
+  "results": {
+    "G_pretrained": {
+      "acc": 0.6077,
+      "f1": 0.6065,
+      "n_pretrain": 6411,
+      "n_finetune": 732,
+      "desc": "S2S pretrained \u2192 finetune 10% labels (frozen encoder)",
+      "time_s": 656
+    },
+    "G2_pretrained_full": {
+      "acc": 0.5925,
+      "f1": 0.5707,
+      "n_pretrain": 6411,
+      "n_finetune": 732,
+      "desc": "S2S pretrained \u2192 finetune 10% labels (full fine-tune)",
+      "time_s": 710
+    },
+    "H_random": {
+      "acc": 0.583,
+      "f1": 0.554,
+      "n_pretrain": 0,
+      "n_finetune": 732,
+      "desc": "Random init \u2192 finetune 10% labels (no pretraining)",
+      "time_s": 111
+    },
+    "H_full_labels": {
+      "acc": 0.3868,
+      "f1": 0.238,
+      "n_pretrain": 0,
+      "n_finetune": 7352,
+      "desc": "Random init \u2192 ALL labels (100% supervised upper bound)",
+      "time_s": 935
+    }
+  },
+  "level5_gain_vs_random_f1": 0.0525,
+  "level5_proven": true,
+  "total_time_s": 2413
+}
