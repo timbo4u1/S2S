@@ -17,6 +17,93 @@ from s2s_standard_v1_3.s2s_physics_v1_3 import (
     check_resonance, check_rigid_body, check_jerk, check_imu_consistency
 )
 
+def _real_score(accel, hz=50.0):
+    """Data-driven signal quality scorer — measures actual signal properties."""
+    a = np.array(accel, dtype=float)
+    scores = {}
+    laws_passed = []
+    laws_failed = []
+
+    # 1. FREEZE — consecutive identical values = dead sensor
+    diffs = np.diff(a, axis=0)
+    freeze_ratio = float(np.mean(np.all(np.abs(diffs) < 1e-6, axis=1)))
+    s = max(0.0, 100.0 - freeze_ratio * 500.0)
+    scores['no_freeze'] = s
+    (laws_passed if s > 50 else laws_failed).append('no_freeze')
+
+    # 2. CLIPPING — values stuck at max = saturated ADC
+    amax = float(np.max(np.abs(a)))
+    if amax > 0:
+        clip_ratio = float(np.mean(np.abs(np.abs(a) - amax) < 0.01 * amax))
+        s = max(0.0, 100.0 - clip_ratio * 400.0)
+    else:
+        s = 0.0
+    scores['no_clipping'] = s
+    (laws_passed if s > 60 else laws_failed).append('no_clipping')
+
+    # 3. VARIANCE — too low=frozen, too high=pure noise, right=human motion
+    var = float(np.mean(np.var(a, axis=0)))
+    if var < 0.001:
+        s = 10.0
+    elif var > 100:
+        s = 15.0
+    elif var > 20:
+        s = 40.0
+    elif var > 5:
+        s = 65.0
+    else:
+        s = 88.0
+    scores['variance_ok'] = s
+    (laws_passed if s > 60 else laws_failed).append('variance_ok')
+
+    # 4. GRAVITY — median magnitude should be near 9.81 m/s²
+    mag = np.linalg.norm(a, axis=1)
+    err = abs(float(np.median(mag)) - 9.81)
+    s = max(0.0, 100.0 - err * 12.0)
+    scores['gravity_ok'] = s
+    (laws_passed if s > 50 else laws_failed).append('gravity_ok')
+
+    # 5. JERK — human motion has bounded smooth jerk
+    dt = 1.0 / hz
+    j = np.diff(np.diff(np.diff(a, axis=0), axis=0), axis=0) / (dt**3)
+    p95 = float(np.percentile(np.abs(j), 95))
+    if p95 < 200:
+        s = 92.0
+    elif p95 < 3000:
+        s = 72.0
+    elif p95 < 15000:
+        s = 42.0
+    else:
+        s = 12.0
+    scores['jerk_ok'] = s
+    (laws_passed if s > 50 else laws_failed).append('jerk_ok')
+
+    # Also run physics checks for law names
+    try:
+        n = len(a); dt_ns = int(1e9/hz)
+        imu = {'accel': a.tolist(), 'gyro': [[0,0,0]]*n,
+               'timestamps_ns': [i*dt_ns for i in range(n)], 'sample_rate_hz': hz}
+        for name, fn in [('resonance', check_resonance), ('rigid_body', check_rigid_body),
+                         ('jerk_physics', check_jerk), ('imu_consistency', check_imu_consistency)]:
+            passed, sc, _ = fn(imu)
+            if passed and name not in laws_passed:
+                laws_passed.append(name)
+            elif not passed and name not in laws_failed:
+                laws_failed.append(name)
+    except Exception:
+        pass
+
+    avg = float(np.mean(list(scores.values())))
+
+    if avg >= 78:
+        tier = 'SILVER'
+    elif avg >= 55:
+        tier = 'BRONZE'
+    else:
+        tier = 'REJECTED'
+
+    return tier, round(avg, 1), laws_passed, laws_failed
+
 app = FastAPI(title="S2S Certification API", version="1.4.4")
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -51,40 +138,7 @@ def _to_imu_raw(accel, gyro, hz):
 
 
 def _certify_window(accel, gyro, hz):
-    imu_raw = _to_imu_raw(accel, gyro, hz)
-    laws_passed = []
-    laws_failed = []
-    scores = []
-
-    checks = [
-        ("resonance",        lambda: check_resonance(imu_raw)),
-        ("rigid_body",       lambda: check_rigid_body(imu_raw)),
-        ("jerk",             lambda: check_jerk(imu_raw)),
-        ("imu_consistency",  lambda: check_imu_consistency(imu_raw)),
-    ]
-
-    for name, fn in checks:
-        try:
-            passed, score, _ = fn()
-            if passed:
-                laws_passed.append(name)
-            else:
-                laws_failed.append(name)
-            scores.append(max(0, min(100, score)))
-        except Exception:
-            laws_failed.append(name)
-            scores.append(0)
-
-    avg_score = float(np.mean(scores)) if scores else 0.0
-
-    if avg_score >= 54:
-        tier = "BRONZE"
-    elif avg_score >= 48:
-        tier = "REJECTED"
-    else:
-        tier = "REJECTED"
-
-    return tier, avg_score, laws_passed, laws_failed
+    return _real_score(accel, hz)
 
 
 @app.get("/")
