@@ -100,7 +100,7 @@ def certify_endpoint(req: CertifyRequest):
             )
 
     try:
-        from s2s_certify import certify
+        import sys, os; sys.path.insert(0, os.path.dirname(__file__)); from s2s_standard_v1_3.s2s_physics_v1_3 import certify
     except ImportError:
         raise HTTPException(
             status_code=500,
