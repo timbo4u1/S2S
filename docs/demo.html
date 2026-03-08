@@ -101,24 +101,7 @@ pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:
     <div class="stat"><div class="stat-v">80.8%</div><div class="stat-l">Reject recall</div></div>
     <div class="stat"><div class="stat-v">110</div><div class="stat-l">Tests passing</div></div>
   </div>
-  <div class="examples">
-    <button class="ex-btn high" onclick="certifyExample('high','Clean Walking — PTT-PPG s1',500)">
-      <div class="ex-label">▶ HIGH QUALITY</div>
-      <div class="ex-title">Clean Walking</div>
-      <div class="ex-desc">Real human gait<br>PTT-PPG · 500Hz wrist IMU</div>
-    </button>
-    <button class="ex-btn mid" onclick="certifyExample('mid','Sitting Still — PTT-PPG s1',500)">
-      <div class="ex-label">▶ MID QUALITY</div>
-      <div class="ex-title">Sitting Still</div>
-      <div class="ex-desc">Low motion recording<br>PTT-PPG · 500Hz wrist IMU</div>
-    </button>
-    <button class="ex-btn low" onclick="certifyExample('low','Corrupted — clipped + dropout + freeze',500)">
-      <div class="ex-label">▶ LOW QUALITY</div>
-      <div class="ex-title">Corrupted Data</div>
-      <div class="ex-desc">Clipping + dropout + freeze<br>injected into real recording</div>
-    </button>
-  </div>
-  <div class="divider">OR UPLOAD YOUR OWN</div>
+  
   <div class="upload-zone" id="dz" onclick="document.getElementById('fi').click()" ondragover="dzEv(event,'over')" ondragleave="dzEv(event,'leave')" ondrop="dzEv(event,'drop')">
     <span class="upload-icon">📂</span>
     <div class="upload-title">DROP YOUR CSV HERE — or click to upload</div>
