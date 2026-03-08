@@ -198,6 +198,22 @@ Floor = p25 of clean score distribution per dataset (adaptive).
 
 ---
 
+## Live API
+
+No install needed:
+
+```bash
+curl -X POST https://s2s-65sy.onrender.com/certify -H "Content-Type: application/json" -d "{"accel": [[ax,ay,az],...], "sample_rate_hz": 50}"
+```
+
+```python
+import requests
+cert = requests.post("https://s2s-65sy.onrender.com/certify", json={"accel": data, "sample_rate_hz": 50})
+print(cert.json()["tier"])  # GOLD / SILVER / BRONZE / REJECTED
+```
+
+Or install locally:
+
 ## Install
 ```bash
 pip install s2s-certify
