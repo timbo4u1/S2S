@@ -101,9 +101,9 @@ def _real_score(accel, hz=50.0):
     all_frozen = var < 0.01
     if all_frozen or all_noise:
         tier = 'REJECTED'
-    elif avg >= 78:
+    elif avg >= 75:
         tier = 'SILVER'
-    elif avg >= 55:
+    elif avg >= 52:
         tier = 'BRONZE'
     else:
         tier = 'REJECTED'

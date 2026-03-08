@@ -199,7 +199,7 @@ async function handleFile(file) {
 
     const passed = new Set(data.laws_passed);
     const failed = new Set(data.laws_failed);
-    const allKeys = [...new Set([...Object.keys(LAWS), ...passed, ...failed])];
+    const allKeys = Object.keys(LAWS);
     const lawsHTML = allKeys.map(k => `<div class="law-row ${passed.has(k)?'passed':'failed'}"><div class="law-dot"></div><span>${LAWS[k]||k}</span></div>`).join('');
 
     panel.className = `result-panel show tier-${data.tier}`;
