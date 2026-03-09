@@ -2,7 +2,7 @@
 
 **Physics-certified motion data for prosthetics, robotics, and Physical AI.**
 
-S2S is a physics validation layer for human motion sensor data. Before training a prosthetic hand, surgical robot, or humanoid — run your IMU data through S2S. It verifies the data obeys 11 biomechanical laws and issues a certificate. Bad data gets rejected before it reaches your model.
+IMU sensor data is silently corrupted more often than people realize. S2S catches it using physics laws, not statistics. Proven on 5 real datasets. One line to install.
 
 [![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307)

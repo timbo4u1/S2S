@@ -1,0 +1,53 @@
+{
+  "A_clean": {
+    "description": "Clean baseline",
+    "accuracy": 0.917,
+    "macro_f1": 0.9133,
+    "train_n": 10985
+  },
+  "B_corrupted": {
+    "description": "Corrupted 35%",
+    "accuracy": 0.8966,
+    "macro_f1": 0.8786,
+    "train_n": 10985
+  },
+  "C_floor": {
+    "description": "Adaptive floor",
+    "accuracy": 0.9018,
+    "macro_f1": 0.8881,
+    "train_n": 9663
+  },
+  "D_weighted": {
+    "description": "Tier-weighted loss",
+    "accuracy": 0.9018,
+    "macro_f1": 0.8874,
+    "train_n": 9663
+  },
+  "E_curriculum": {
+    "description": "Curriculum GOLD\u2192SILVER\u2192ALL",
+    "accuracy": 0.8758,
+    "macro_f1": 0.8766,
+    "train_n": 9663
+  },
+  "meta": {
+    "experiment": "s2s_level2_pamap2_adaptive_tiers",
+    "dataset": "PAMAP2",
+    "hz": 100,
+    "window_size": 256,
+    "epochs": 40,
+    "corrupt_rate": 0.35,
+    "adaptive_tiers": {
+      "gold_threshold": 90,
+      "silver_threshold": 80,
+      "floor": 58,
+      "gold_pct": 75,
+      "silver_pct": 50,
+      "floor_pct": 25
+    },
+    "tier_counts": {
+      "BRONZE": 4572,
+      "SILVER": 2172,
+      "GOLD": 4241
+    }
+  }
+}

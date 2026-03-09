@@ -1,0 +1,93 @@
+{
+  "experiment": "S2S Level 5 Real AI \u2014 1D CNN Certifier",
+  "dataset": "UCI HAR 50Hz 30 subjects",
+  "train_subjects": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "test_subjects": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "model": "IMUCertifierCNN \u2014 Conv1d\u00d74 \u2192 GlobalAvgPool \u2192 FC\u00d72",
+  "n_params": 94884,
+  "train_windows": 8013,
+  "test_windows": 2286,
+  "epochs": 80,
+  "device": "mps",
+  "train_time_s": 74,
+  "test_acc": 0.4738,
+  "test_f1": 0.3115,
+  "rule_engine_agreement": 0.4738,
+  "per_tier_agreement": {
+    "SILVER": 0.32,
+    "REJECTED": 0.2249,
+    "BRONZE": 0.7319,
+    "GOLD": 0.0
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      312,
+      595,
+      68
+    ],
+    [
+      0,
+      159,
+      688,
+      93
+    ],
+    [
+      0,
+      70,
+      216,
+      83
+    ]
+  ],
+  "train_tier_dist": {
+    "SILVER": 3287,
+    "REJECTED": 948,
+    "BRONZE": 3763,
+    "GOLD": 15
+  },
+  "test_tier_dist": {
+    "SILVER": 975,
+    "REJECTED": 369,
+    "BRONZE": 940,
+    "GOLD": 2
+  },
+  "level5_proven": false
+}

@@ -1,0 +1,26 @@
+{
+  "experiment": "S2S Level 5 Cross-Dataset Transfer",
+  "train_dataset": "PTT-PPG 500Hz s1-s16 IMU only",
+  "test_dataset_A": "PTT-PPG 500Hz s17-s22 (never seen)",
+  "test_dataset_B": "UCI HAR 50Hz all subjects (zero-shot)",
+  "n_channels": 6,
+  "ptt_train_windows": 10980,
+  "ptt_test_windows": 4081,
+  "uci_windows": 10299,
+  "epochs": 60,
+  "device": "mps",
+  "train_time_s": 192,
+  "ptt_agreement": 0.7339,
+  "ptt_reject_recall": 0.8237,
+  "ptt_f1": 0.5783,
+  "uci_agreement": 0.3838,
+  "uci_reject_recall": 0.6826,
+  "uci_f1": 0.3556,
+  "uci_per_tier": {
+    "SILVER": 0.3468,
+    "REJECTED": 0.6826,
+    "BRONZE": 0.334,
+    "GOLD": 0.2941
+  },
+  "transfer_proven": false
+}
