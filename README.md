@@ -31,7 +31,7 @@ A robot trained on bad data learns bad motion. A prosthetic hand trained on unce
 
 ---
 
-## Five Proven Levels
+## Four Proven Levels + Experimental AI
 
 S2S improves model performance at every stage of the training pipeline. All results validated across **five independent datasets** at four different sampling rates.
 
@@ -88,18 +88,19 @@ Real sensors: PPG infrared + PPG red + IMU accel+gyro + skin temperature — all
 
 > If HR rose with activity, skin temperature stayed in human range, and IMU timing matched PPG — simultaneously — a human was there.
 
-### Level 5 — AI Learns the Physics ✅ PROVEN
+### Level 5 — AI Learns the Physics 🔄 EXPERIMENTAL
 
-A 1D CNN trained on rule engine labels certifies data without the rule engine at inference time. Trained on PTT-PPG subjects s1–s16, tested on s17–s22 never seen during training.
+A 1D CNN attempts to learn physics certification from rule engine labels. This approach is **experimental and not yet proven**.
 
-| Metric | Result |
-|--------|--------|
-| Agreement with rule engine | **70.1%** |
-| REJECT recall | **80.8%** |
-| Macro F1 | 0.522 |
-| Architecture | 1D CNN, 387,874 params, 11 channels |
+Current results show the challenge of learning complex physics reasoning:
 
-> The CNN correctly identifies 4 out of 5 windows the rule engine rejects — on subjects it never trained on. Physics rule engine bootstraps the neural network. AI is the student. Physics is the permanent teacher.
+| Dataset | Agreement | REJECT Recall | Notes |
+|---------|-----------|---------------|-------|
+| PTT-PPG (same subjects) | 52.2% | - | CNN struggles with rule complexity |
+| PTT-PPG (unseen subjects) | 73.4% | 82.4% | Limited transfer capability |
+| UCI HAR (zero-shot) | 38.4% | 68.3% | Cross-dataset transfer fails |
+
+> **Status:** Active research area. The physics rule engine remains the reliable approach. AI learning requires deeper architectural work to achieve consistent performance across datasets.
 
 ---
 
@@ -165,7 +166,7 @@ Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct p
 
 | # | Law | What It Catches |
 |---|-----|-----------------|
-| 1 | Newton's Second Law (F=ma, 75ms EMG delay) | Synthetic data missing lagged EMG-accel correlation |
+| 1 | Newton's Second Law (F=ma, 117.5ms EMG→accel lag) | Synthetic data missing lagged EMG-accel correlation |
 | 2 | Segment Resonance (ω=√(K/I)) | Tremor at impossible frequency for body segment |
 | 3 | Rigid Body Kinematics (a=α×r+ω²×r) | Gyro and accel generated independently |
 | 4 | Ballistocardiography (F=ρQv) | IMU missing cardiac recoil |
@@ -247,14 +248,14 @@ s2s-certify your_imu_data.csv --output report.json
 | WISDM 2019 | 20Hz | Wrist accel | 46,946 | Levels 1, 2 |
 | PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | Levels 1, 2, 4 |
 | UCI HAR | 50Hz | Body accel+gyro | 10,299 | Levels 1, 2 |
-| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU+Thermal | 1,164 | Levels 2, 3, 4, 5 |
+| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU+Thermal | 1,164 | Levels 2, 3, 4, 5 (experimental) |
 | NinaPro DB5 | 2000Hz | Forearm EMG+Accelerometer | 500 | Law 1 |
 
 ---
 
 ## Paper
 
-**S2S: Physics-Certified Sensor Data — Five Proven Levels, Seven Laws, Five Independent Datasets**
+**S2S: Physics-Certified Sensor Data — Four Proven Levels, Eleven Laws, Five Independent Datasets**
 
 [→ Read paper (PDF)](docs/paper/S2S_Paper_v5.pdf) | [→ DOI: 10.5281/zenodo.18878307](https://doi.org/10.5281/zenodo.18878307)
 
