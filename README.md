@@ -88,19 +88,37 @@ Real sensors: PPG infrared + PPG red + IMU accel+gyro + skin temperature — all
 
 > If HR rose with activity, skin temperature stayed in human range, and IMU timing matched PPG — simultaneously — a human was there.
 
-### Level 5 — AI Learns the Physics 🔄 EXPERIMENTAL
+### Level 5 — Physics-Informed Hybrid AI EXPERIMENTAL
 
-A 1D CNN attempts to learn physics certification from rule engine labels. This approach is **experimental and not yet proven**.
+**Hybrid approach beats both baselines but physics feature extraction needs improvement.**
 
-Current results show the challenge of learning complex physics reasoning:
+| Dataset | Model | Accuracy | Features | Status |
+|---------|--------|----------|-----------|---------|
+| PTT-PPG | Raw IMU | 79.55% | 768 features | Baseline |
+| PTT-PPG | Physics Only | 70.48% | 19 features | Baseline |
+| PTT-PPG | **Hybrid** | **83.68%** | 787 features | **+4.13% vs Raw, +13.20% vs Physics** |
 
-| Dataset | Agreement | REJECT Recall | Notes |
-|---------|-----------|---------------|-------|
-| PTT-PPG (same subjects) | 52.2% | - | CNN struggles with rule complexity |
-| PTT-PPG (unseen subjects) | 73.4% | 82.4% | Limited transfer capability |
-| UCI HAR (zero-shot) | 38.4% | 68.3% | Cross-dataset transfer fails |
+**Key Finding:** Physics features add complementary signal but extraction is early-stage.
 
-> **Status:** Active research area. The physics rule engine remains the reliable approach. AI learning requires deeper architectural work to achieve consistent performance across datasets.
+#### Feature Importance Analysis (Honest Assessment):
+- **Only 2/19 physics features contribute**: `rigid_rms_measured` and `resonance_peak_energy`
+- **17/19 physics features have zero importance** in hybrid model
+- **Physics efficiency**: 0.0032 per feature vs 0.0012 for raw (promising but needs work)
+- **Raw IMU dominates**: 94% of predictive power from 768 features
+
+#### What Works:
+- `rigid_rms_measured` (0.0569 importance) - RMS acceleration magnitude
+- `resonance_peak_energy` (0.0011 importance) - Frequency domain energy
+
+#### What Needs Improvement:
+- 17 physics laws produce non-predictive features for activity classification
+- Most tier indicators (is_gold, is_silver, etc.) have zero importance
+- Confidence scores and detailed law outputs not useful for ML
+
+#### Status:
+**Physics feature extraction is early-stage but promising.** The hybrid approach proves physics features add unique signal, but most physics laws need better feature engineering for ML tasks.
+
+**Next Phase:** Improve physics feature extraction to make more laws ML-relevant.
 
 ---
 
