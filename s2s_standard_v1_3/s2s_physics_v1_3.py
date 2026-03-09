@@ -375,51 +375,23 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
 
     az = [s[2] if len(s) > 2 else 0.0 for s in accel]
     peak_f, peak_e = _band_peak(az, ts, 5.0, 30.0, steps=60)
-    
-    # Calculate acceleration RMS to detect active movement
-    if _NP:
-        accel_rms = float(np.sqrt(np.mean(np.square(np.asarray(az)))))
-    else:
-        accel_rms = math.sqrt(sum(a*a for a in az) / len(az))
-    
-    d.update({"measured_peak_hz": round(peak_f, 2), "measured_peak_energy": round(peak_e, 5),
-               "accel_rms_ms2": round(accel_rms, 3)})
-    
-    # Skip if no significant tremor
+    d.update({"measured_peak_hz": round(peak_f, 2), "measured_peak_energy": round(peak_e, 5)})
+
     if peak_e < 0.015:
         d["note"] = "NO_SIGNIFICANT_TREMOR"
         d["confidence"] = 60
         return True, 60, d
-    
-    # Adjust frequency range based on activity level
-    if accel_rms > 0.3:  # Active movement detected (lowered threshold for NinaPro data)
-        f_lo_active, f_hi_active = 0.5, 30.0  # Wider range for active gestures
-        d["activity_state"] = "active_movement"
-        d["resonance_range_widened"] = "resonance_range_widened_for_active_movement"
-        d["note"] = f"Active movement detected (RMS={accel_rms:.1f} m/s²), widened resonance range to {f_lo_active}-{f_hi_active}Hz"
-        in_range = f_lo_active <= peak_f <= f_hi_active
-    else:  # Resting state
-        f_lo_rest, f_hi_rest = f_lo, f_hi  # Strict tremor range for resting
-        d["activity_state"] = "resting"
-        d["resonance_range_widened"] = None
-        d["note"] = f"Resting state detected (RMS={accel_rms:.1f} m/s²), using strict tremor range {f_lo_rest}-{f_hi_rest}Hz"
-        in_range = f_lo_rest <= peak_f <= f_hi_rest
+
+    in_range = f_lo <= peak_f <= f_hi
     d["in_expected_range"] = in_range
     if in_range:
-        if accel_rms > 2.0:
-            d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz within active movement range 0.5-30Hz)"
-        else:
-            d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
+        d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
         conf = min(100, int(60 + peak_e * 400))
         passed = True
     else:
-        if accel_rms > 2.0:
-            d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside active movement range 0.5-30Hz"
-            d["interpretation"] = f"Active gesture cannot resonate at {peak_f:.1f}Hz (expected 0.5-30Hz for movement)"
-        else:
-            dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
-            d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}–{f_hi}Hz for {segment}"
-            d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz (ω=√(K/I) gives {f_lo}–{f_hi}Hz)"
+        dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
+        d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}–{f_hi}Hz for {segment}"
+        d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz (ω=√(K/I) gives {f_lo}–{f_hi}Hz)"
         conf = max(0, int(50 - dev * 8))
         passed = dev < 3.0
 
@@ -603,7 +575,7 @@ def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 6: Jerk Bounds  d³x/dt³ ≤ 500 m/s³  (Flash & Hogan 1985)
 # ---------------------------------------------------------------------------
-def check_jerk(imu_raw: Dict, segment: str = "forearm", sample_rate_hz: float = None) -> Tuple[bool, int, Dict]:
+def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict]:
     d = {"law": "Motor_Control_Jerk", "equation": "d3x/dt3 <= 500 m/s3",
          "reference": "Flash & Hogan (1985) minimum-jerk model",
          "implementation": "Signal smoothed with w=7 window BEFORE differentiation to separate motion from sensor noise"}
@@ -709,12 +681,6 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm", sample_rate_hz: float = 
         d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
         return True, 60, d
     
-    # Skip jerk check for high-rate IMU data (>200Hz) - no established literature
-    if sample_rate_hz is not None and sample_rate_hz > 200:
-        d["skip"] = "jerk_limit_not_established_for_high_rate_IMU_pending_literature"
-        d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
-        return True, 60, d
-    
     # Choose appropriate jerk limit based on segment
     jerk_limit = JERK_MAX_MS3  # Only arm movement limits are scientifically established
     
@@ -817,7 +783,7 @@ class PhysicsEngine:
         if imu_raw:
             results["resonance_frequency"]      = check_resonance(imu_raw, segment)
             results["rigid_body_kinematics"]    = check_rigid_body(imu_raw)
-            results["jerk_bounds"]              = check_jerk(imu_raw, segment, imu_raw.get("sample_rate_hz"))
+            results["jerk_bounds"]              = check_jerk(imu_raw, segment)
             results["imu_internal_consistency"] = check_imu_consistency(imu_raw)
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = check_bcg(imu_raw, ppg_cert)
