@@ -1,0 +1,46 @@
+{
+  "n_samples": 2000,
+  "n_features": 13,
+  "score_mean": 59.632,
+  "score_std": 11.310153668275246,
+  "tier_distribution": {
+    "GOLD": 114,
+    "SILVER": 1154,
+    "BRONZE": 583,
+    "REJECTED": 149
+  },
+  "difficulty_stages": [
+    {
+      "stage": 1,
+      "n_samples": 400,
+      "avg_score": 66.0525,
+      "description": "Stage 1: easy extremes"
+    },
+    {
+      "stage": 2,
+      "n_samples": 800,
+      "avg_score": 60.80125,
+      "description": "Stage 2: harder borderlines"
+    },
+    {
+      "stage": 3,
+      "n_samples": 1200,
+      "avg_score": 55.94916666666666,
+      "description": "Stage 3: harder borderlines"
+    },
+    {
+      "stage": 4,
+      "n_samples": 800,
+      "avg_score": 55.2525,
+      "description": "Stage 4: harder borderlines"
+    },
+    {
+      "stage": 5,
+      "n_samples": 400,
+      "avg_score": 53.1475,
+      "description": "Stage 5: harder borderlines"
+    }
+  ],
+  "ready_for_cloud_training": true,
+  "cloud_training_file": "module4_cloud_trainer.py"
+}

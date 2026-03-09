@@ -118,9 +118,14 @@ class CurriculumGenerator:
         features.append(float(gravity_magnitude))
 
         # Entropy (complexity measure)
-        hist, _ = np.histogram(accel.flatten(), bins=20)
-        hist = hist / (hist.sum() + 1e-10)
-        entropy = -np.sum(hist * np.log(hist + 1e-10))
+        accel_flat = accel.flatten()
+        accel_flat = accel_flat[~np.isnan(accel_flat)]  # Remove NaN values
+        if len(accel_flat) == 0:  # Fallback if all NaN
+            entropy = 0.0
+        else:
+            hist, _ = np.histogram(accel_flat, bins=20)
+            hist = hist / (hist.sum() + 1e-10)
+            entropy = -np.sum(hist * np.log(hist + 1e-10))
         features.append(float(entropy))
 
         return np.array(features, dtype=np.float32)
@@ -135,7 +140,8 @@ class CurriculumGenerator:
         for _ in range(n_samples):
             # Pick random corruption strategy
             strategy = random.choice(list(CORRUPTION_TYPES.keys()))
-            intensity = random.uniform(0, 1)
+            # Use higher intensity range for more challenging curriculum
+            intensity = random.uniform(0.7, 1.0)  # Final adjustment for target distribution
             corrupt_fn = CORRUPTION_TYPES[strategy]
 
             # Apply corruption
