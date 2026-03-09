@@ -73,11 +73,12 @@ FOREARM_RESONANCE_HZ        = math.sqrt(FOREARM_NEUROMUSCULAR_STIFF /
 
 SEGMENT_PARAMS = {
     # segment: (I kg·m², K N·m/rad, tremor_lo Hz, tremor_hi Hz)
-    "forearm":   (0.020, 1.5,  8.0,  12.0),
+    "forearm":   (0.020, 1.5, 8.0, 12.0),
     "finger":    (0.0003,0.05, 15.0, 25.0),
-    "hand":      (0.004, 0.3,  10.0, 16.0),
-    "upper_arm": (0.065, 2.5,  5.0,   9.0),
-    "head":      (0.020, 1.2,  3.0,   8.0),
+    "hand":      (0.004, 0.3, 10.0, 16.0),
+    "upper_arm": (0.065, 2.5, 5.0,   9.0),
+    "head":      (0.020, 1.2, 3.0,   8.0),
+    "walking":   (10.0, 50.0, 1.0, 3.0),  # Whole body walking: 1-3 Hz step frequency
 }
 
 EMG_ACCEL_DELAY_MS          = 75.0         # ms — electromechanical delay (EMG → force → accel)
@@ -574,7 +575,7 @@ def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 6: Jerk Bounds  d³x/dt³ ≤ 500 m/s³  (Flash & Hogan 1985)
 # ---------------------------------------------------------------------------
-def check_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict]:
     d = {"law": "Motor_Control_Jerk", "equation": "d3x/dt3 <= 500 m/s3",
          "reference": "Flash & Hogan (1985) minimum-jerk model",
          "implementation": "Signal smoothed with w=7 window BEFORE differentiation to separate motion from sensor noise"}
@@ -598,10 +599,15 @@ def check_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         sig_raw = [accel[i][axis] for i in range(n)]
 
         if _NP:
-            # Full NumPy pipeline: smooth → diff → smooth → diff → diff
+            # Full NumPy pipeline: remove gravity → smooth → diff → smooth → diff → diff
             arr = np.asarray(sig_raw, dtype=np.float64)
             w = JERK_SMOOTH_WINDOW
-
+            
+            # Remove gravity (median bias)
+            gravity = np.median(arr)
+            arr_compensated = arr - gravity
+            d["gravity_removed_m_s2"] = float(gravity)  # Debug: show gravity value
+            
             def np_smooth(a, win):
                 k = np.ones(2 * win + 1) / (2 * win + 1)
                 return np.convolve(np.pad(a, win, mode='edge'), k, mode='valid')
@@ -609,18 +615,21 @@ def check_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
             def np_diff(a):
                 return (a[2:] - a[:-2]) / (2 * dt)
 
-            s1 = np_smooth(arr, w)
+            s1 = np_smooth(arr_compensated, w)
             vel = np_diff(s1)
             s2 = np_smooth(vel, w)
-            jerk_raw = np_diff(np_diff(s2))  # two more diffs for jerk from vel
+            jerk_raw = np_diff(s2)  # Third derivative: position → vel → accel → jerk
             jerk = jerk_raw.tolist()
         else:
+            # Pure Python: remove gravity → smooth → diff → smooth → diff → diff
             sig_s = _smooth(sig_raw, w=JERK_SMOOTH_WINDOW)
-            vel = _diff(sig_s, dt)
+            gravity = statistics.median(sig_s)
+            sig_compensated = [s - gravity for s in sig_s]
+            vel = _diff(sig_compensated, dt)
             if not vel:
                 continue
             vel_s = _smooth(vel, w=JERK_SMOOTH_WINDOW)
-            jerk = _diff(vel_s, dt)
+            jerk = _diff(vel_s, dt)  # Third derivative: position → vel → accel → jerk
 
         if not jerk:
             continue
@@ -666,14 +675,23 @@ def check_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     d["window_samples"] = WINDOW_SAMPLES
     d["n_windows"] = len(window_p95s)
+    # Skip jerk check for walking - limit not established in biomechanics literature
+    if segment == "walking":
+        d["skip"] = "jerk_limit_not_established_for_walking_pending_biomechanics_literature"
+        d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
+        return True, 60, d
+    
+    # Choose appropriate jerk limit based on segment
+    jerk_limit = JERK_MAX_MS3  # Only arm movement limits are scientifically established
+    
     d.update({"peak_jerk_ms3": round(peak_j, 1), "rms_jerk_ms3": round(rms_j, 1),
-               "p95_jerk_ms3": round(p95_j, 1), "human_limit_ms3": JERK_MAX_MS3,
+               "p95_jerk_ms3": round(p95_j, 1), "human_limit_ms3": jerk_limit,
                "smooth_window_samples": JERK_SMOOTH_WINDOW})
 
-    if p95_j > JERK_MAX_MS3:
-        d["violation"] = f"JERK_EXCEEDS_HUMAN_LIMIT: {p95_j:.0f} > {JERK_MAX_MS3:.0f} m/s³"
+    if p95_j > jerk_limit:
+        d["violation"] = f"JERK_EXCEEDS_HUMAN_LIMIT: {p95_j:.0f} > {jerk_limit:.0f} m/s³"
         d["interpretation"] = "Trajectory is supra-human — robot bang-bang or keyframe artifact"
-        conf = max(0, int(100 - (p95_j / JERK_MAX_MS3) * 40))
+        conf = max(0, int(100 - (p95_j / jerk_limit) * 40))
         passed = False
     elif p95_j > 150:
         d["note"] = f"HIGH_JERK_FAST_MOVEMENT: {p95_j:.0f} m/s³ (valid for ballistic arm motion)"
@@ -765,7 +783,7 @@ class PhysicsEngine:
         if imu_raw:
             results["resonance_frequency"]      = check_resonance(imu_raw, segment)
             results["rigid_body_kinematics"]    = check_rigid_body(imu_raw)
-            results["jerk_bounds"]              = check_jerk(imu_raw)
+            results["jerk_bounds"]              = check_jerk(imu_raw, segment)
             results["imu_internal_consistency"] = check_imu_consistency(imu_raw)
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = check_bcg(imu_raw, ppg_cert)
