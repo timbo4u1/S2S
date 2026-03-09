@@ -101,7 +101,7 @@ def _real_score(accel, hz=50.0):
     all_frozen = var < 0.01
     if all_frozen or all_noise:
         tier = 'REJECTED'
-    elif avg >= 75:
+    elif avg >= 78:
         tier = 'SILVER'
     elif avg >= 52:
         tier = 'BRONZE'
@@ -192,11 +192,14 @@ def certify_endpoint(req: CertifyRequest):
         all_tiers, all_scores = [tier], [score]
         all_passed, all_failed = set(lp), set(lf)
 
+    # Return median tier instead of worst - one bad window shouldn't drag down whole file
     tier_order = {"GOLD": 4, "SILVER": 3, "BRONZE": 2, "REJECTED": 1}
-    worst = min(all_tiers, key=lambda t: tier_order.get(t, 0))
-
+    tier_scores = [tier_order.get(t, 0) for t in all_tiers]
+    median_score = np.median(tier_scores)
+    median_tier = {v: k for k, v in tier_order.items()}[median_score]
+    
     return CertifyResponse(
-        tier=worst,
+        tier=median_tier,
         score=round(float(np.mean(all_scores)), 1),
         laws_passed=sorted(all_passed - all_failed),
         laws_failed=sorted(all_failed),
