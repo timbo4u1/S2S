@@ -1,43 +1,43 @@
 {
-  "n_samples": 2000,
-  "n_features": 13,
-  "score_mean": 59.632,
-  "score_std": 11.310153668275246,
+  "n_samples": 1100,
+  "n_features": 16,
+  "score_mean": 62.02909090909091,
+  "score_std": 11.908861066484336,
   "tier_distribution": {
-    "GOLD": 114,
-    "SILVER": 1154,
-    "BRONZE": 583,
-    "REJECTED": 149
+    "GOLD": 37,
+    "SILVER": 757,
+    "BRONZE": 214,
+    "REJECTED": 92
   },
   "difficulty_stages": [
     {
       "stage": 1,
-      "n_samples": 400,
-      "avg_score": 66.0525,
+      "n_samples": 220,
+      "avg_score": 71.96818181818182,
       "description": "Stage 1: easy extremes"
     },
     {
       "stage": 2,
-      "n_samples": 800,
-      "avg_score": 60.80125,
+      "n_samples": 440,
+      "avg_score": 64.0,
       "description": "Stage 2: harder borderlines"
     },
     {
       "stage": 3,
-      "n_samples": 1200,
-      "avg_score": 55.94916666666666,
+      "n_samples": 660,
+      "avg_score": 56.592424242424244,
       "description": "Stage 3: harder borderlines"
     },
     {
       "stage": 4,
-      "n_samples": 800,
-      "avg_score": 55.2525,
+      "n_samples": 440,
+      "avg_score": 55.08863636363636,
       "description": "Stage 4: harder borderlines"
     },
     {
       "stage": 5,
-      "n_samples": 400,
-      "avg_score": 53.1475,
+      "n_samples": 220,
+      "avg_score": 53.21363636363636,
       "description": "Stage 5: harder borderlines"
     }
   ],

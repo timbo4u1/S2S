@@ -79,44 +79,68 @@ class CurriculumGenerator:
             return {"tier": "ERROR", "laws_failed": [], "physical_law_score": 0}
 
     def extract_features(self, accel, gyro):
-        """
-        Extract simple features for curriculum ML training.
-        These are the same 19 physics features used in Level 5.
-        """
+        """Extract 13 physics-inspired features from corrupted window"""
+        # Handle NaN values in input
+        accel = np.array(accel)
+        accel = accel[~np.isnan(accel).any(axis=1)] if len(accel.shape) > 1 else accel[~np.isnan(accel)]
+        gyro = np.array(gyro)
+        gyro = gyro[~np.isnan(gyro).any(axis=1)] if len(gyro.shape) > 1 else gyro[~np.isnan(gyro)]
+        
+        if len(accel) == 0:  # Fallback if all NaN
+            return np.zeros(13, dtype=np.float32)
+        
         features = []
-
-        # Time domain
-        features.append(np.sqrt(np.mean(accel**2)))          # accel RMS
-        features.append(np.std(accel))                         # accel std
-        features.append(np.max(np.abs(accel)))                 # accel peak
-        features.append(np.sqrt(np.mean(gyro**2)))            # gyro RMS
-        features.append(np.std(gyro))                          # gyro std
-
+        
+        # Basic statistics
+        features.extend([
+            np.mean(accel), np.std(accel), np.max(np.abs(accel)),
+            np.mean(gyro), np.std(gyro), np.max(np.abs(gyro))
+        ])
+        
+        # Signal quality metrics
+        signal_energy = np.sum(accel**2)
+        zero_crossings = np.sum(np.diff(np.sign(accel[:, 0])) != 0)
+        features.extend([float(signal_energy), float(zero_crossings)])
+        
         # Jerk (3rd derivative of position = 1st derivative of accel)
         if len(accel) > 3:
             jerk = np.diff(accel, n=1, axis=0) * self.sample_rate_hz
-            features.append(np.sqrt(np.mean(jerk**2)))        # jerk RMS
-            features.append(np.percentile(np.abs(jerk), 95))  # jerk P95
+            jerk_clean = jerk[~np.isnan(jerk).any(axis=1)] if len(jerk.shape) > 1 else jerk[~np.isnan(jerk)]
+            if len(jerk_clean) > 0:
+                features.append(np.sqrt(np.mean(jerk_clean**2)))        # jerk RMS
+                features.append(np.percentile(np.abs(jerk_clean), 95))  # jerk P95
+            else:
+                features.extend([0.0, 0.0])
         else:
             features.extend([0.0, 0.0])
-
+        
         # Frequency domain
-        for axis in range(3):
-            fft = np.abs(np.fft.rfft(accel[:, axis]))
-            freqs = np.fft.rfftfreq(len(accel), 1/self.sample_rate_hz)
-            peak_freq = freqs[np.argmax(fft)] if len(fft) > 0 else 0
-            features.append(float(peak_freq))
-
+        for axis in range(min(3, accel.shape[1])):
+            axis_data = accel[:, axis]
+            axis_clean = axis_data[~np.isnan(axis_data)]
+            if len(axis_clean) > 0:
+                fft = np.abs(np.fft.rfft(axis_clean))
+                freqs = np.fft.rfftfreq(len(axis_clean), 1/self.sample_rate_hz)
+                peak_freq = freqs[np.argmax(fft)] if len(fft) > 0 else 0
+                features.append(float(peak_freq))
+            else:
+                features.append(0.0)
+        
         # Cross-axis coupling (rigid body)
         if accel.shape[1] >= 2:
-            coupling = np.corrcoef(accel[:, 0], accel[:, 1])[0, 1]
-            features.append(float(coupling) if not np.isnan(coupling) else 0.0)
-
+            try:
+                coupling = np.corrcoef(accel[:, 0], accel[:, 1])[0, 1]
+                features.append(float(coupling) if not np.isnan(coupling) else 0.0)
+            except:
+                features.append(0.0)
+        else:
+            features.append(0.0)
+        
         # Gravity component
         mean_accel = np.mean(accel, axis=0)
         gravity_magnitude = np.linalg.norm(mean_accel)
-        features.append(float(gravity_magnitude))
-
+        features.append(float(gravity_magnitude) if not np.isnan(gravity_magnitude) else 0.0)
+        
         # Entropy (complexity measure)
         accel_flat = accel.flatten()
         accel_flat = accel_flat[~np.isnan(accel_flat)]  # Remove NaN values
@@ -127,10 +151,10 @@ class CurriculumGenerator:
             hist = hist / (hist.sum() + 1e-10)
             entropy = -np.sum(hist * np.log(hist + 1e-10))
         features.append(float(entropy))
-
+        
         return np.array(features, dtype=np.float32)
 
-    def generate_from_seed(self, seed_accel, seed_gyro, n_samples=100):
+    def generate_from_seed(self, seed_accel, seed_gyro, sample_rate=50, n_samples=100):
         """
         From one clean seed window, generate n_samples at varying quality levels.
         Uses corruption at random types and intensities.
@@ -160,7 +184,7 @@ class CurriculumGenerator:
 
         return samples
 
-    def generate_curriculum(self, seed_windows, n_per_seed=50, target_distribution=None):
+    def generate_curriculum(self, seed_windows, sample_rates=None, n_per_seed=50, target_distribution=None):
         """
         Generate full curriculum from seed windows.
 
@@ -179,8 +203,9 @@ class CurriculumGenerator:
         print(f"Generating curriculum from {len(seed_windows)} seed windows...")
         print(f"Target: {n_per_seed} samples per seed = {len(seed_windows)*n_per_seed} total")
 
-        for i, (accel, gyro) in enumerate(seed_windows):
-            samples = self.generate_from_seed(accel, gyro, n_per_seed)
+        for i, (seed_accel, seed_gyro) in enumerate(seed_windows):
+            sample_rate = sample_rates[i] if sample_rates and i < len(sample_rates) else 50
+            samples = self.generate_from_seed(seed_accel, seed_gyro, sample_rate, n_per_seed)
             all_samples.extend(samples)
             if (i + 1) % 10 == 0:
                 print(f"  Seed {i+1}/{len(seed_windows)} processed")
@@ -245,6 +270,9 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
         "data/training_X_raw.npy",       # PTT-PPG
     ]
     
+    all_seeds = []
+    sample_rates = []
+    
     # Try each dataset in order of preference
     for path in dataset_paths:
         expanded_path = os.path.expanduser(path)
@@ -254,11 +282,13 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                 print(f"Auto-discovered PTT-PPG data: {expanded_path}")
                 X = np.load(expanded_path)
                 seeds = []
-                for i in range(min(n_seeds, len(X))):
+                for i in range(min(n_seeds//2, len(X))):  # Take half from PTT-PPG
                     accel = X[i]  # (256, 3)
                     gyro = accel * 0.1 + np.random.randn(*accel.shape) * 0.01
                     seeds.append((accel, gyro))
-                return seeds
+                    sample_rates.append(500)  # PTT-PPG is 500Hz
+                all_seeds.extend(seeds)
+                
             elif os.path.isdir(expanded_path):  # Directory-based datasets
                 # Look for subject directories
                 subjects = [d for d in os.listdir(expanded_path) 
@@ -266,36 +296,66 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                 if subjects:
                     print(f"Auto-discovered dataset: {expanded_path} with subjects: {subjects[:5]}...")
                     
-                    # Try to load from first few subjects
-                    seeds = []
-                    loaded = 0
-                    for subject in subjects[:3]:  # Try first 3 subjects
+                    # Prioritize low-rejection NinaPro subjects (s4, s5)
+                    priority_subjects = []
+                    other_subjects = []
+                    
+                    for subject in subjects:
+                        if subject in ['s4', 's5']:  # Low rejection subjects
+                            priority_subjects.append(subject)
+                        else:
+                            other_subjects.append(subject)
+                    
+                    # Use priority subjects first
+                    selected_subjects = priority_subjects + other_subjects[:3]
+                    
+                    # Try to load from selected subjects
+                    seeds_loaded = 0
+                    for subject in selected_subjects:
+                        if seeds_loaded >= n_seeds//2:  # Take half from NinaPro
+                            break
                         subject_path = os.path.join(expanded_path, subject)
                         try:
                             # Look for common data files
-                            for file in os.listdir(subject_path):
-                                if file.endswith('.npy') and 'accel' in file.lower():
-                                    data = np.load(os.path.join(subject_path, file))
-                                    if len(data.shape) >= 2 and data.shape[1] >= 3:
-                                        # Extract windows
-                                        for i in range(min(10, len(data))):  # 10 windows per subject
-                                            if i * window_size + window_size <= len(data):
-                                                accel = data[i*window_size:(i+1)*window_size, :3]
-                                                gyro = accel * 0.1 + np.random.randn(*accel.shape) * 0.01
-                                                seeds.append((accel, gyro))
-                                                loaded += 1
-                                                if loaded >= n_seeds:
-                                                    return seeds
+                            import glob
+                            mat_files = glob.glob(os.path.join(subject_path, "*.mat"))
+                            if mat_files:
+                                # Load first .mat file
+                                import scipy.io
+                                mat = scipy.io.loadmat(mat_files[0])
+                                
+                                # Find accelerometer data
+                                for key in mat.keys():
+                                    if not key.startswith('_'):
+                                        data = mat[key]
+                                        if isinstance(data, np.ndarray) and data.ndim == 2 and data.shape[1] >= 3:
+                                            accel = data[:, :3]
+                                            
+                                            # Extract windows
+                                            max_windows = min(10, (n_seeds//2 - seeds_loaded))
+                                            for i in range(max_windows):
+                                                if i * window_size + window_size <= len(accel):
+                                                    window_accel = accel[i*window_size:(i+1)*window_size, :3]
+                                                    # Create synthetic gyro
+                                                    window_gyro = window_accel * 0.1 + np.random.randn(*window_accel.shape) * 0.01
+                                                    all_seeds.append((window_accel, window_gyro))
+                                                    sample_rates.append(2000)  # NinaPro is 2000Hz
+                                                    seeds_loaded += 1
+                                                    break
+                                            break
                         except Exception as e:
                             print(f"  Could not load {subject}: {e}")
                             continue
                     
-                    if seeds:
-                        print(f"  Loaded {len(seeds)} seed windows from {expanded_path}")
-                        return seeds
+                    if all_seeds:
+                        print(f"  Loaded {seeds_loaded} seed windows from {expanded_path}")
+    
+    if all_seeds:
+        print(f"Total seeds loaded: {len(all_seeds)} (PTT-PPG: {sample_rates.count(500)}, NinaPro: {sample_rates.count(2000)})")
+        return all_seeds, sample_rates
     
     print("No local datasets found with auto-discovery")
-    return None
+    return None, None
 
 
 def make_synthetic_seeds(n_seeds=50, window_size=256, sample_rate=50):
@@ -326,15 +386,16 @@ def main():
     generator = CurriculumGenerator(sample_rate_hz=50)
 
     # Load seed windows
-    seeds = make_seed_windows_from_data("data/training_X_raw.npy", n_seeds=100)
+    seeds, sample_rates = make_seed_windows_from_data("data/training_X_raw.npy", n_seeds=100)
     if seeds is None:
         print("No real data found — using synthetic seeds")
         seeds = make_synthetic_seeds(n_seeds=50)
+        sample_rates = [50] * len(seeds)
     else:
-        print(f"Loaded {len(seeds)} real seed windows from PTT-PPG data")
+        print(f"Loaded {len(seeds)} real seed windows from mixed datasets")
 
     # Generate curriculum
-    X, y_score, y_tier, raw = generator.generate_curriculum(seeds, n_per_seed=20)
+    X, y_score, y_tier, raw = generator.generate_curriculum(seeds, sample_rates, n_per_seed=20)
 
     # Build difficulty stages
     stages = generator.build_difficulty_stages(X, y_score, n_stages=5)
