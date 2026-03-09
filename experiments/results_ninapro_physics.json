@@ -1,0 +1,287 @@
+{
+  "experiment": "ninapro_db5_physics_certification",
+  "timestamp": "2026-03-09T12:00:00",
+  "dataset": "NinaPro DB5",
+  "description": "10 subjects, 2000Hz, 16-channel EMG + 3-axis accelerometer",
+  "segment": "forearm",
+  "window_size": 256,
+  "step_size": 128,
+  "sample_rate": 2000,
+  "summary": {
+    "total_subjects": 10,
+    "total_windows": 9552,
+    "overall_tier_counts": {
+      "BRONZE": 5484,
+      "REJECTED": 3276,
+      "SILVER": 792
+    },
+    "overall_law_failures": {
+      "jerk_bounds": 5490,
+      "resonance_frequency": 3103
+    },
+    "subject_rejection_rates": {
+      "s1": 0.4304635761589404,
+      "s10": 0.44486404833836857,
+      "s2": 0.539622641509434,
+      "s3": 0.684863523573201,
+      "s4": 0.029931972789115645,
+      "s5": 0.011477761836441894,
+      "s6": 0.32613168724279834,
+      "s7": 0.3051881993896236,
+      "s8": 0.05420827389443652,
+      "s9": 0.09857142857142857
+    }
+  },
+  "subjects": {
+    "s1": {
+      "subject_id": "s1",
+      "subject_dir": "/Users/timbo/ninapro_db5/s1",
+      "total_windows": 906,
+      "tier_counts": {
+        "BRONZE": 456,
+        "REJECTED": 390,
+        "SILVER": 60
+      },
+      "rejection_rate": 0.4304635761589404,
+      "law_failures": {
+        "jerk_bounds": 705,
+        "resonance_frequency": 298
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          705
+        ],
+        [
+          "resonance_frequency",
+          298
+        ]
+      ]
+    },
+    "s10": {
+      "subject_id": "s10",
+      "subject_dir": "/Users/timbo/ninapro_db5/s10",
+      "total_windows": 1324,
+      "tier_counts": {
+        "BRONZE": 661,
+        "SILVER": 74,
+        "REJECTED": 589
+      },
+      "rejection_rate": 0.44486404833836857,
+      "law_failures": {
+        "jerk_bounds": 927,
+        "resonance_frequency": 442
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          927
+        ],
+        [
+          "resonance_frequency",
+          442
+        ]
+      ]
+    },
+    "s2": {
+      "subject_id": "s2",
+      "subject_dir": "/Users/timbo/ninapro_db5/s2",
+      "total_windows": 1325,
+      "tier_counts": {
+        "REJECTED": 715,
+        "SILVER": 66,
+        "BRONZE": 544
+      },
+      "rejection_rate": 0.539622641509434,
+      "law_failures": {
+        "jerk_bounds": 1074,
+        "resonance_frequency": 500
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          1074
+        ],
+        [
+          "resonance_frequency",
+          500
+        ]
+      ]
+    },
+    "s3": {
+      "subject_id": "s3",
+      "subject_dir": "/Users/timbo/ninapro_db5/s3",
+      "total_windows": 1209,
+      "tier_counts": {
+        "REJECTED": 828,
+        "BRONZE": 360,
+        "SILVER": 21
+      },
+      "rejection_rate": 0.684863523573201,
+      "law_failures": {
+        "resonance_frequency": 383,
+        "jerk_bounds": 1173
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          1173
+        ],
+        [
+          "resonance_frequency",
+          383
+        ]
+      ]
+    },
+    "s4": {
+      "subject_id": "s4",
+      "subject_dir": "/Users/timbo/ninapro_db5/s4",
+      "total_windows": 735,
+      "tier_counts": {
+        "BRONZE": 590,
+        "SILVER": 123,
+        "REJECTED": 22
+      },
+      "rejection_rate": 0.029931972789115645,
+      "law_failures": {
+        "resonance_frequency": 205,
+        "jerk_bounds": 66
+      },
+      "top_failing_laws": [
+        [
+          "resonance_frequency",
+          205
+        ],
+        [
+          "jerk_bounds",
+          66
+        ]
+      ]
+    },
+    "s5": {
+      "subject_id": "s5",
+      "subject_dir": "/Users/timbo/ninapro_db5/s5",
+      "total_windows": 697,
+      "tier_counts": {
+        "BRONZE": 595,
+        "REJECTED": 8,
+        "SILVER": 94
+      },
+      "rejection_rate": 0.011477761836441894,
+      "law_failures": {
+        "resonance_frequency": 203,
+        "jerk_bounds": 13
+      },
+      "top_failing_laws": [
+        [
+          "resonance_frequency",
+          203
+        ],
+        [
+          "jerk_bounds",
+          13
+        ]
+      ]
+    },
+    "s6": {
+      "subject_id": "s6",
+      "subject_dir": "/Users/timbo/ninapro_db5/s6",
+      "total_windows": 972,
+      "tier_counts": {
+        "BRONZE": 577,
+        "SILVER": 78,
+        "REJECTED": 317
+      },
+      "rejection_rate": 0.32613168724279834,
+      "law_failures": {
+        "resonance_frequency": 320,
+        "jerk_bounds": 620
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          620
+        ],
+        [
+          "resonance_frequency",
+          320
+        ]
+      ]
+    },
+    "s7": {
+      "subject_id": "s7",
+      "subject_dir": "/Users/timbo/ninapro_db5/s7",
+      "total_windows": 983,
+      "tier_counts": {
+        "REJECTED": 300,
+        "BRONZE": 577,
+        "SILVER": 106
+      },
+      "rejection_rate": 0.3051881993896236,
+      "law_failures": {
+        "resonance_frequency": 344,
+        "jerk_bounds": 613
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          613
+        ],
+        [
+          "resonance_frequency",
+          344
+        ]
+      ]
+    },
+    "s8": {
+      "subject_id": "s8",
+      "subject_dir": "/Users/timbo/ninapro_db5/s8",
+      "total_windows": 701,
+      "tier_counts": {
+        "BRONZE": 575,
+        "SILVER": 88,
+        "REJECTED": 38
+      },
+      "rejection_rate": 0.05420827389443652,
+      "law_failures": {
+        "resonance_frequency": 200,
+        "jerk_bounds": 86
+      },
+      "top_failing_laws": [
+        [
+          "resonance_frequency",
+          200
+        ],
+        [
+          "jerk_bounds",
+          86
+        ]
+      ]
+    },
+    "s9": {
+      "subject_id": "s9",
+      "subject_dir": "/Users/timbo/ninapro_db5/s9",
+      "total_windows": 700,
+      "tier_counts": {
+        "BRONZE": 549,
+        "SILVER": 82,
+        "REJECTED": 69
+      },
+      "rejection_rate": 0.09857142857142857,
+      "law_failures": {
+        "jerk_bounds": 213,
+        "resonance_frequency": 208
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          213
+        ],
+        [
+          "resonance_frequency",
+          208
+        ]
+      ]
+    }
+  }
+}
