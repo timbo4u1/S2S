@@ -11,8 +11,8 @@
     "total_subjects": 10,
     "total_windows": 9552,
     "overall_tier_counts": {
-      "BRONZE": 8429,
-      "SILVER": 1123
+      "BRONZE": 8446,
+      "SILVER": 1106
     },
     "overall_law_failures": {
       "resonance_frequency": 3103
@@ -36,8 +36,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s1",
       "total_windows": 906,
       "tier_counts": {
-        "BRONZE": 807,
-        "SILVER": 99
+        "BRONZE": 808,
+        "SILVER": 98
       },
       "rejection_rate": 0.0,
       "law_failures": {
@@ -74,8 +74,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s2",
       "total_windows": 1325,
       "tier_counts": {
-        "BRONZE": 1195,
-        "SILVER": 130
+        "BRONZE": 1199,
+        "SILVER": 126
       },
       "rejection_rate": 0.0,
       "law_failures": {
@@ -112,8 +112,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s4",
       "total_windows": 735,
       "tier_counts": {
-        "BRONZE": 610,
-        "SILVER": 125
+        "BRONZE": 612,
+        "SILVER": 123
       },
       "rejection_rate": 0.0,
       "law_failures": {
@@ -150,8 +150,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s6",
       "total_windows": 972,
       "tier_counts": {
-        "BRONZE": 855,
-        "SILVER": 117
+        "BRONZE": 862,
+        "SILVER": 110
       },
       "rejection_rate": 0.0,
       "law_failures": {
@@ -188,8 +188,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s8",
       "total_windows": 701,
       "tier_counts": {
-        "BRONZE": 610,
-        "SILVER": 91
+        "BRONZE": 611,
+        "SILVER": 90
       },
       "rejection_rate": 0.0,
       "law_failures": {
@@ -207,8 +207,8 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s9",
       "total_windows": 700,
       "tier_counts": {
-        "BRONZE": 613,
-        "SILVER": 87
+        "BRONZE": 615,
+        "SILVER": 85
       },
       "rejection_rate": 0.0,
       "law_failures": {

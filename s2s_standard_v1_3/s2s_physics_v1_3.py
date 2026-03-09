@@ -575,7 +575,7 @@ def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 6: Jerk Bounds  d³x/dt³ ≤ 500 m/s³  (Flash & Hogan 1985)
 # ---------------------------------------------------------------------------
-def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict]:
+def check_jerk(imu_raw: Dict, segment: str = "forearm", sample_rate_hz: float = None) -> Tuple[bool, int, Dict]:
     d = {"law": "Motor_Control_Jerk", "equation": "d3x/dt3 <= 500 m/s3",
          "reference": "Flash & Hogan (1985) minimum-jerk model",
          "implementation": "Signal smoothed with w=7 window BEFORE differentiation to separate motion from sensor noise"}
@@ -681,6 +681,12 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
         d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
         return True, 60, d
     
+    # Skip jerk check for high-rate IMU data (>200Hz) - no established literature
+    if sample_rate_hz is not None and sample_rate_hz > 200:
+        d["skip"] = "jerk_limit_not_established_for_high_rate_IMU_pending_literature"
+        d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
+        return True, 60, d
+    
     # Choose appropriate jerk limit based on segment
     jerk_limit = JERK_MAX_MS3  # Only arm movement limits are scientifically established
     
@@ -783,7 +789,7 @@ class PhysicsEngine:
         if imu_raw:
             results["resonance_frequency"]      = check_resonance(imu_raw, segment)
             results["rigid_body_kinematics"]    = check_rigid_body(imu_raw)
-            results["jerk_bounds"]              = check_jerk(imu_raw, segment)
+            results["jerk_bounds"]              = check_jerk(imu_raw, segment, imu_raw.get("sample_rate_hz"))
             results["imu_internal_consistency"] = check_imu_consistency(imu_raw)
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = check_bcg(imu_raw, ppg_cert)

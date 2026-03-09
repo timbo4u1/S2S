@@ -116,17 +116,6 @@ def certify_windows(windows, sample_rate=2000, segment='forearm'):
     """Certify windows with physics engine"""
     engine = PhysicsEngine()
     
-    # Skip jerk check for high-rate IMU data (>200Hz) - no established literature
-    if sample_rate > 200:
-        print(f"  Skipping jerk check - {sample_rate}Hz > 200Hz (no biomechanics literature for scaled limits)")
-        # Temporarily override the global JERK_MAX_MS3 to a very high value to effectively skip
-        import s2s_standard_v1_3.s2s_physics_v1_3 as physics_module
-        original_jerk_limit = physics_module.JERK_MAX_MS3
-        physics_module.JERK_MAX_MS3 = 999999.0  # Effectively skip jerk check
-    else:
-        print(f"  Using standard jerk limit - {sample_rate}Hz <= 200Hz")
-        original_jerk_limit = None
-    
     tier_counts = Counter()
     law_failures = defaultdict(int)
     total_windows = len(windows)
@@ -157,10 +146,6 @@ def certify_windows(windows, sample_rate=2000, segment='forearm'):
         except Exception as e:
             print(f"  Error certifying window {i}: {e}")
             tier_counts['ERROR'] += 1
-    
-    # Restore original jerk limit if we modified it
-    if original_jerk_limit is not None:
-        physics_module.JERK_MAX_MS3 = original_jerk_limit
     
     return tier_counts, law_failures, total_windows
 
