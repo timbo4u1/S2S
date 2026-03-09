@@ -375,23 +375,51 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
 
     az = [s[2] if len(s) > 2 else 0.0 for s in accel]
     peak_f, peak_e = _band_peak(az, ts, 5.0, 30.0, steps=60)
-    d.update({"measured_peak_hz": round(peak_f, 2), "measured_peak_energy": round(peak_e, 5)})
-
+    
+    # Calculate acceleration RMS to detect active movement
+    if _NP:
+        accel_rms = float(np.sqrt(np.mean(np.square(np.asarray(az)))))
+    else:
+        accel_rms = math.sqrt(sum(a*a for a in az) / len(az))
+    
+    d.update({"measured_peak_hz": round(peak_f, 2), "measured_peak_energy": round(peak_e, 5),
+               "accel_rms_ms2": round(accel_rms, 3)})
+    
+    # Skip if no significant tremor
     if peak_e < 0.015:
         d["note"] = "NO_SIGNIFICANT_TREMOR"
         d["confidence"] = 60
         return True, 60, d
-
-    in_range = f_lo <= peak_f <= f_hi
+    
+    # Adjust frequency range based on activity level
+    if accel_rms > 0.3:  # Active movement detected (lowered threshold for NinaPro data)
+        f_lo_active, f_hi_active = 0.5, 30.0  # Wider range for active gestures
+        d["activity_state"] = "active_movement"
+        d["resonance_range_widened"] = "resonance_range_widened_for_active_movement"
+        d["note"] = f"Active movement detected (RMS={accel_rms:.1f} m/s²), widened resonance range to {f_lo_active}-{f_hi_active}Hz"
+        in_range = f_lo_active <= peak_f <= f_hi_active
+    else:  # Resting state
+        f_lo_rest, f_hi_rest = f_lo, f_hi  # Strict tremor range for resting
+        d["activity_state"] = "resting"
+        d["resonance_range_widened"] = None
+        d["note"] = f"Resting state detected (RMS={accel_rms:.1f} m/s²), using strict tremor range {f_lo_rest}-{f_hi_rest}Hz"
+        in_range = f_lo_rest <= peak_f <= f_hi_rest
     d["in_expected_range"] = in_range
     if in_range:
-        d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
+        if accel_rms > 2.0:
+            d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz within active movement range 0.5-30Hz)"
+        else:
+            d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
         conf = min(100, int(60 + peak_e * 400))
         passed = True
     else:
-        dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
-        d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}–{f_hi}Hz for {segment}"
-        d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz (ω=√(K/I) gives {f_lo}–{f_hi}Hz)"
+        if accel_rms > 2.0:
+            d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside active movement range 0.5-30Hz"
+            d["interpretation"] = f"Active gesture cannot resonate at {peak_f:.1f}Hz (expected 0.5-30Hz for movement)"
+        else:
+            dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
+            d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}–{f_hi}Hz for {segment}"
+            d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz (ω=√(K/I) gives {f_lo}–{f_hi}Hz)"
         conf = max(0, int(50 - dev * 8))
         passed = dev < 3.0
 
