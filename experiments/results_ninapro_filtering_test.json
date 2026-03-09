@@ -1,0 +1,28 @@
+{
+  "experiment": "ninapro_physics_filtering_test",
+  "timestamp": "2026-03-09T19:00:00",
+  "dataset": "NinaPro DB5",
+  "high_quality_subjects": [
+    "s4",
+    "s5",
+    "s8",
+    "s9"
+  ],
+  "low_quality_subjects": [
+    "s1",
+    "s10",
+    "s2",
+    "s3",
+    "s6",
+    "s7"
+  ],
+  "high_quality_accuracy": 0.10297004646840731,
+  "high_quality_std": 0.01707316790887504,
+  "all_subjects_accuracy": 0.07746626473430969,
+  "all_subjects_std": 0.023824300953073654,
+  "improvement": 0.02550378173409762,
+  "improvement_percent": 32.92243639417667,
+  "high_quality_samples": 2833,
+  "all_subjects_samples": 9552,
+  "features": 4864
+}
