@@ -597,6 +597,11 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
     d["sample_rate_hz"] = round(sample_rate, 1)
     d["rate_normalization_factor"] = round(rate_normalization_factor, 2)
 
+    # Initialize variables to prevent UnboundLocalError
+    p95_j = 0.0
+    peak_j = 0.0
+    rms_j = 0.0
+
     all_jerk = []
     window_p95s = []
     n = len(accel)
@@ -667,11 +672,6 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
         peak_j = max(abs(j) for j in all_jerk)
         rms_j = _rms(all_jerk)
 
-    # Apply rate normalization before comparing to limit
-    p95_j_normalized = p95_j / rate_normalization_factor
-    peak_j_normalized = peak_j / rate_normalization_factor
-    rms_j_normalized = rms_j / rate_normalization_factor
-
     if window_p95s:
         if _NP:
             p95_j = float(np.median(np.asarray(window_p95s)))
@@ -683,6 +683,11 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
             p95_j = float(np.percentile(np.abs(np.asarray(all_jerk)), 95))
         else:
             p95_j = sorted([abs(j) for j in all_jerk])[int(len(all_jerk) * 0.95)]
+
+    # Apply rate normalization after p95_j has its final value
+    p95_j_normalized = p95_j / rate_normalization_factor
+    peak_j_normalized = peak_j / rate_normalization_factor
+    rms_j_normalized = rms_j / rate_normalization_factor
 
     d["window_samples"] = WINDOW_SAMPLES
     d["n_windows"] = len(window_p95s)

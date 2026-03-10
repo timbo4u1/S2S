@@ -145,7 +145,7 @@ class TestJerkBounds:
         """Data with 10× jerk should score lower than normal motion."""
         normal = PhysicsEngine().certify(imu_raw=make_imu(jerk_scale=1.0), segment="forearm")
         extreme = PhysicsEngine().certify(imu_raw=make_imu(jerk_scale=10.0), segment="forearm")
-        assert normal['physical_law_score'] >= extreme['physical_law_score']
+        assert normal['law_details']['jerk_bounds']['confidence'] >= extreme['law_details']['jerk_bounds']['confidence'], f"Normal jerk confidence {normal['law_details']['jerk_bounds']['confidence']} should be >= extreme {extreme['law_details']['jerk_bounds']['confidence']}"
 
     def test_zero_motion_edge_case(self):
         """Static sensor (no motion) should not crash."""
