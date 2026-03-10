@@ -369,7 +369,11 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
 
     accel = imu_raw.get("accel", [])
     ts = imu_raw.get("timestamps_ns", [])
-    if len(accel) < 64:
+    dt = (statistics.mean([ts[i + 1] - ts[i] for i in range(min(len(ts) - 1, 50))]) * 1e-9
+          if len(ts) > 1 else 1 / 240)
+    sample_rate = 1.0 / dt if dt > 0 else 240.0
+    min_samples = max(64, int(3.0 / 8.0 * sample_rate))
+    if len(accel) < min_samples:
         d["skip"] = "INSUFFICIENT_DATA"
         return True, 50, d
 
