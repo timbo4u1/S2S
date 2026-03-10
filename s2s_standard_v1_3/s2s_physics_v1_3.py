@@ -590,6 +590,12 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
           if len(ts) > 1 else 1 / 240)
 
     WINDOW_SAMPLES = max(20, int(2.56 / dt)) if dt > 0 else 256
+    
+    # Calculate sample rate for rate normalization
+    sample_rate = 1.0 / dt if dt > 0 else 240.0
+    rate_normalization_factor = (sample_rate / 50.0) ** 3
+    d["sample_rate_hz"] = round(sample_rate, 1)
+    d["rate_normalization_factor"] = round(rate_normalization_factor, 2)
 
     all_jerk = []
     window_p95s = []
@@ -661,6 +667,11 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
         peak_j = max(abs(j) for j in all_jerk)
         rms_j = _rms(all_jerk)
 
+    # Apply rate normalization before comparing to limit
+    p95_j_normalized = p95_j / rate_normalization_factor
+    peak_j_normalized = peak_j / rate_normalization_factor
+    rms_j_normalized = rms_j / rate_normalization_factor
+
     if window_p95s:
         if _NP:
             p95_j = float(np.median(np.asarray(window_p95s)))
@@ -685,20 +696,22 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
     jerk_limit = JERK_MAX_MS3  # Only arm movement limits are scientifically established
     
     d.update({"peak_jerk_ms3": round(peak_j, 1), "rms_jerk_ms3": round(rms_j, 1),
-               "p95_jerk_ms3": round(p95_j, 1), "human_limit_ms3": jerk_limit,
+               "p95_jerk_ms3": round(p95_j, 1), "peak_jerk_normalized_ms3": round(peak_j_normalized, 1),
+               "rms_jerk_normalized_ms3": round(rms_j_normalized, 1), "p95_jerk_normalized_ms3": round(p95_j_normalized, 1),
+               "human_limit_ms3": jerk_limit,
                "smooth_window_samples": JERK_SMOOTH_WINDOW})
 
-    if p95_j > jerk_limit:
-        d["violation"] = f"JERK_EXCEEDS_HUMAN_LIMIT: {p95_j:.0f} > {jerk_limit:.0f} m/s³"
+    if p95_j_normalized > jerk_limit:
+        d["violation"] = f"JERK_EXCEEDS_HUMAN_LIMIT: {p95_j_normalized:.0f} > {jerk_limit:.0f} m/s³"
         d["interpretation"] = "Trajectory is supra-human — robot bang-bang or keyframe artifact"
-        conf = max(0, int(100 - (p95_j / jerk_limit) * 40))
+        conf = max(0, int(100 - (p95_j_normalized / jerk_limit) * 40))
         passed = False
-    elif p95_j > 150:
-        d["note"] = f"HIGH_JERK_FAST_MOVEMENT: {p95_j:.0f} m/s³ (valid for ballistic arm motion)"
+    elif p95_j_normalized > 150:
+        d["note"] = f"HIGH_JERK_FAST_MOVEMENT: {p95_j_normalized:.0f} m/s³ (valid for ballistic arm motion)"
         conf = 75
         passed = True
     else:
-        d["result"] = f"JERK_WITHIN_HUMAN_MOTOR_CONTROL: {p95_j:.0f} m/s³"
+        d["result"] = f"JERK_WITHIN_HUMAN_MOTOR_CONTROL: {p95_j_normalized:.0f} m/s³"
         conf = 92
         passed = True
 
