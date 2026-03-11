@@ -54,16 +54,6 @@ It is not a classifier. It does not learn. It applies equations that have been t
 
 ---
 
-## Try It Now
-
-| | |
-|---|---|
-| 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) | 104,160 certified records, hover to explore |
-| 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) | Real-time certification from your phone sensor |
-| 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) | 17-joint live certification via webcam |
-
-No install needed. All processing runs on your device.
-
 ---
 
 ## Results
