@@ -344,8 +344,10 @@ class TestFullPipeline:
         }
         try:
             result = PhysicsEngine().certify(imu_raw=bad_input, segment="forearm")
-            assert result['tier'] == 'REJECTED', \
-                "Missing gyro should result in REJECTED tier"
+            assert result['tier'] != 'REJECTED', \
+                "Missing gyro should SKIP gyro checks, not fail — acc-only data is certifiable"
+            assert result['tier'] in ('GOLD', 'SILVER', 'BRONZE'), \
+                f"Expected certifiable tier without gyro, got {result['tier']}"
         except (ValueError, KeyError, TypeError):
             pass  # Raising an exception is also acceptable
 
