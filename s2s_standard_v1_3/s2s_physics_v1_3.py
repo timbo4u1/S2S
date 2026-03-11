@@ -898,7 +898,24 @@ class PhysicsEngine:
         n = len(rms_vals)
         mu = sum(rms_vals) / n
         if mu <= 0:
-            return {"bfs": None, "reason": "ZERO_MEAN_JERK_RMS", "n_windows": n}
+            # Compute Hurst even on zero-mean — needed for biological floor detection
+            def _hurst_zm(ts):
+                if len(ts) < 4: return 0.5
+                m = sum(ts)/len(ts)
+                dev = [x - m for x in ts]
+                cum, s = [], 0.0
+                for d in dev: s += d; cum.append(s)
+                r = max(cum) - min(cum)
+                st = (sum(d*d for d in dev)/len(dev))**0.5
+                if st <= 0: return 0.5
+                rs = r / st
+                return math.log(rs)/math.log(len(ts)) if rs > 0 else 0.5
+            h = max(0.0, min(1.0, _hurst_zm(rms_vals)))
+            grade = "NOT_BIOLOGICAL" if h < 0.7 else "LOW_BIOLOGICAL_FIDELITY"
+            return {"bfs": None, "reason": "ZERO_MEAN_JERK_RMS",
+                    "biological_grade": grade,
+                    "recommendation": "REJECT" if grade == "NOT_BIOLOGICAL" else "REVIEW",
+                    "hurst": round(h, 4), "hurst_floor": 0.7, "n_windows": n}
 
         # CV (coefficient of variation)
         std = math.sqrt(sum((x - mu) ** 2 for x in rms_vals) / n)
@@ -945,7 +962,13 @@ class PhysicsEngine:
         # Above 0.70 = superhuman (prosthetics/robots valid zone, score > 100)
         bfs_score = round((bfs - human_range_min) / (human_range_max - human_range_min) * 100, 1)
 
-        if bfs >= floor_threshold:
+        # Hurst floor — primary biological origin detector
+        # Human motor control: H > 0.7 (persistent, long-range correlation)
+        # Synthetic/robotic: H < 0.55 (periodic or random, no biological structure)
+        if hurst < 0.7:
+            biological_grade = "NOT_BIOLOGICAL"
+            recommendation = "REJECT"
+        elif bfs >= floor_threshold:
             biological_grade = "HUMAN"
             recommendation = "ACCEPT"
         elif bfs >= 0.20:
