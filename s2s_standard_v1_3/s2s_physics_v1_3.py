@@ -874,8 +874,19 @@ class PhysicsEngine:
         """
         Calculate Biological Fingerprint Score (BFS) across a full session.
         Call this AFTER processing all windows for a session via certify().
-        BFS = 0.3*CV + 0.4*Kurtosis + 0.3*(1 - Hurst)
-        Proven: r = -0.664, p = 0.036 on NinaPro DB5 (n=10 subjects)
+
+        BFS = 0.3*(1/CV) + 0.4*(1-Kurtosis_norm) + 0.3*(1-Hurst)
+
+        BFS is a FLOOR DETECTOR, not a quality ranking:
+          - BFS >= 0.35 → signal confirmed biological origin (HUMAN)
+          - BFS 0.20-0.35 → low biological fidelity (REVIEW)
+          - BFS < 0.20 → not biological (SUSPICIOUS)
+
+        BFS measures biological signal diversity, not quality.
+        Higher BFS does not mean better signal — it means higher variability
+        pattern consistent with biological motor control. Proven: all 10 NinaPro
+        DB5 subjects score >= 0.35 (HUMAN). r = -0.664 p = 0.036 is a
+        population-level correlation, not a subject-level quality ranking.
         """
         rms_vals = self._session_jerk_rms[:]
         self._session_jerk_rms.clear()
@@ -946,8 +957,8 @@ class PhysicsEngine:
 
         return {
             "bfs": round(bfs, 4),
-            "bfs_score": bfs_score,
-            "biological_grade": biological_grade,
+            "biological_diversity_score": bfs_score,  # 0-100 within human range — diversity, not quality
+            "biological_grade": biological_grade,  # HUMAN/LOW_BIOLOGICAL_FIDELITY/SUSPICIOUS/SUPERHUMAN — origin detection only
             "recommendation": recommendation,
             "floor_threshold": floor_threshold,
             "human_range_min": human_range_min,
