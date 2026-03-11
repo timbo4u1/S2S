@@ -926,8 +926,22 @@ class PhysicsEngine:
         bfs = 0.3 * min(1.0, 1.0 / (cv + 0.001)) + 0.4 * (1.0 - kurt_norm) + 0.3 * (1.0 - hurst)
         bfs = max(0.0, min(1.0, bfs))
 
+        floor_threshold = 0.35
+        if bfs >= floor_threshold:
+            biological_grade = "HUMAN"
+            recommendation = "ACCEPT"
+        elif bfs >= 0.20:
+            biological_grade = "LOW_BIOLOGICAL_FIDELITY"
+            recommendation = "REVIEW"
+        else:
+            biological_grade = "SUSPICIOUS"
+            recommendation = "REVIEW"
+
         return {
             "bfs": round(bfs, 4),
+            "biological_grade": biological_grade,
+            "recommendation": recommendation,
+            "floor_threshold": floor_threshold,
             "cv": round(cv, 4),
             "kurtosis_raw": round(kurt, 4),
             "kurtosis_norm": round(kurt_norm, 4),
