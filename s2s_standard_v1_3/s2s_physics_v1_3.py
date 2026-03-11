@@ -864,7 +864,7 @@ class PhysicsEngine:
             },
             "device_id":    device_id,
             "session_id":   session_id,
-            "tool":         "s2s_physics_v1_4",
+            "tool":         "s2s_physics_v1_5",
             "numpy_enabled": _NP,
             "issued_at_ns": time.time_ns(),
         }
