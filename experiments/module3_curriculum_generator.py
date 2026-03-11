@@ -313,62 +313,53 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                     seeds_loaded = 0
                     sessions_skipped = 0
                     from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine as _PE
+                    import scipy.io as _sio
                     for subject in selected_subjects:
-                        if seeds_loaded >= n_seeds//2:  # Take half from NinaPro
+                        if seeds_loaded >= n_seeds//2:
                             break
                         subject_path = os.path.join(expanded_path, subject)
                         try:
-                            # Look for common data files
-                            import glob
-                            mat_files = glob.glob(os.path.join(subject_path, "*.mat"))
-                            if mat_files:
-                                # Load first .mat file
-                                import scipy.io
-                                mat = scipy.io.loadmat(mat_files[0])
-                                
-                                # Find accelerometer data
-                                for key in mat.keys():
-                                    if not key.startswith('_'):
-                                        data = mat[key]
-                                        if isinstance(data, np.ndarray) and data.ndim == 2 and data.shape[1] >= 3:
-                                            accel = data[:, :3]
-                                            
-                                            # --- BFS BIOLOGICAL ORIGIN FILTER ---
-                                            # Use 2000-sample windows for BFS check (proven at 2000Hz)
-                                            # Seed windows stay at 256 — BFS check is separate
-                                            _pe = _PE()
-                                            _hz = 2000
-                                            _dt_ns = int(1e9 / _hz)
-                                            _bfs_window = 2000  # 1s at 2000Hz — satisfies resonance minimum
-                                            _bfs_step = 1000
-                                            _n_check = (len(accel) - _bfs_window) // _bfs_step  # use all windows — Hurst needs 100+ for stable estimate
-                                            for _i in range(_n_check):
-                                                _start = _i * _bfs_step
-                                                _w = accel[_start:_start+_bfs_window, :3]
-                                                _ts = [_j * _dt_ns for _j in range(_bfs_window)]
-                                                _pe.certify(imu_raw={"timestamps_ns": _ts, "accel": _w.tolist()}, segment="forearm")
-                                            _session = _pe.certify_session()
-                                            _grade = _session.get("biological_grade")
-                                            if _grade == "NOT_BIOLOGICAL":
-                                                sessions_skipped += 1
-                                                print(f"  SKIPPED {subject}: NOT_BIOLOGICAL (H={_session.get('hurst')})")
-                                                break
-                                            else:
-                                                print(f"  ACCEPTED {subject}: {_grade} (H={_session.get('hurst')}, BFS={_session.get('bfs')})")
-                                            # --- END BFS FILTER ---
-
-                                            # Extract windows
-                                            max_windows = min(10, (n_seeds//2 - seeds_loaded))
-                                            for i in range(max_windows):
-                                                if i * window_size + window_size <= len(accel):
-                                                    window_accel = accel[i*window_size:(i+1)*window_size, :3]
-                                                    # Create synthetic gyro
-                                                    window_gyro = window_accel * 0.1 + np.random.randn(*window_accel.shape) * 0.01
-                                                    all_seeds.append((window_accel, window_gyro))
-                                                    sample_rates.append(2000)  # NinaPro is 2000Hz
-                                                    seeds_loaded += 1
-                                                    break
-                                            break
+                            import glob as _glob
+                            mat_files = sorted(_glob.glob(os.path.join(subject_path, "*.mat")))
+                            if not mat_files:
+                                continue
+                            # Concatenate ALL exercises — Hurst requires 100+ windows to be stable
+                            segments = []
+                            for _mf in mat_files:
+                                try:
+                                    _m = _sio.loadmat(_mf)
+                                    for _k, _v in _m.items():
+                                        if not _k.startswith('_') and isinstance(_v, np.ndarray) and _v.ndim == 2 and _v.shape[1] >= 3:
+                                            segments.append(_v[:, :3]); break
+                                except: continue
+                            if not segments:
+                                continue
+                            accel = np.concatenate(segments, axis=0)
+                            # --- BFS BIOLOGICAL ORIGIN FILTER ---
+                            _pe = _PE()
+                            _bfs_win, _bfs_step, _hz = 2000, 1000, 2000
+                            _dt_ns = int(1e9 / _hz)
+                            _n_check = (len(accel) - _bfs_win) // _bfs_step
+                            for _i in range(_n_check):
+                                _w = accel[_i*_bfs_step : _i*_bfs_step+_bfs_win, :3]
+                                _ts = [_j * _dt_ns for _j in range(_bfs_win)]
+                                _pe.certify(imu_raw={"timestamps_ns": _ts, "accel": _w.tolist()}, segment="forearm")
+                            _session = _pe.certify_session()
+                            _grade = _session.get("biological_grade")
+                            if _grade == "NOT_BIOLOGICAL":
+                                sessions_skipped += 1
+                                print(f"  SKIPPED {subject}: NOT_BIOLOGICAL (H={_session.get('hurst')})")
+                                continue
+                            print(f"  ACCEPTED {subject}: {_grade} (H={_session.get('hurst')}, BFS={_session.get('bfs')})")
+                            # --- END BFS FILTER ---
+                            max_windows = min(10, (n_seeds//2 - seeds_loaded))
+                            for i in range(max_windows):
+                                if i * window_size + window_size <= len(accel):
+                                    window_accel = accel[i*window_size:(i+1)*window_size, :3]
+                                    window_gyro = window_accel * 0.1 + np.random.randn(*window_accel.shape) * 0.01
+                                    all_seeds.append((window_accel, window_gyro))
+                                    sample_rates.append(2000)
+                                    seeds_loaded += 1
                         except Exception as e:
                             print(f"  Could not load {subject}: {e}")
                             continue
