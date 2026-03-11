@@ -311,6 +311,8 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                     
                     # Try to load from selected subjects
                     seeds_loaded = 0
+                    sessions_skipped = 0
+                    from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine as _PE
                     for subject in selected_subjects:
                         if seeds_loaded >= n_seeds//2:  # Take half from NinaPro
                             break
@@ -331,6 +333,30 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                                         if isinstance(data, np.ndarray) and data.ndim == 2 and data.shape[1] >= 3:
                                             accel = data[:, :3]
                                             
+                                            # --- BFS BIOLOGICAL ORIGIN FILTER ---
+                                            # Use 2000-sample windows for BFS check (proven at 2000Hz)
+                                            # Seed windows stay at 256 — BFS check is separate
+                                            _pe = _PE()
+                                            _hz = 2000
+                                            _dt_ns = int(1e9 / _hz)
+                                            _bfs_window = 2000  # 1s at 2000Hz — satisfies resonance minimum
+                                            _bfs_step = 1000
+                                            _n_check = (len(accel) - _bfs_window) // _bfs_step  # use all windows — Hurst needs 100+ for stable estimate
+                                            for _i in range(_n_check):
+                                                _start = _i * _bfs_step
+                                                _w = accel[_start:_start+_bfs_window, :3]
+                                                _ts = [_j * _dt_ns for _j in range(_bfs_window)]
+                                                _pe.certify(imu_raw={"timestamps_ns": _ts, "accel": _w.tolist()}, segment="forearm")
+                                            _session = _pe.certify_session()
+                                            _grade = _session.get("biological_grade")
+                                            if _grade == "NOT_BIOLOGICAL":
+                                                sessions_skipped += 1
+                                                print(f"  SKIPPED {subject}: NOT_BIOLOGICAL (H={_session.get('hurst')})")
+                                                break
+                                            else:
+                                                print(f"  ACCEPTED {subject}: {_grade} (H={_session.get('hurst')}, BFS={_session.get('bfs')})")
+                                            # --- END BFS FILTER ---
+
                                             # Extract windows
                                             max_windows = min(10, (n_seeds//2 - seeds_loaded))
                                             for i in range(max_windows):
@@ -346,6 +372,7 @@ def make_seed_windows_from_data(data_path, n_seeds=100, window_size=256):
                         except Exception as e:
                             print(f"  Could not load {subject}: {e}")
                             continue
+                    print(f"  BFS filter: {sessions_skipped} sessions skipped as NOT_BIOLOGICAL, {seeds_loaded} sessions accepted")
                     
                     if all_seeds:
                         print(f"  Loaded {seeds_loaded} seed windows from {expanded_path}")
