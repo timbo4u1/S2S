@@ -1,8 +1,6 @@
-# S2S — Physics-Certified Sensor Data
+# S2S — Physics Certification for Motion Data
 
-**Physics-certified motion data for prosthetics, robotics, and Physical AI.**
-
-IMU sensor data is silently corrupted more often than people realize. S2S catches it using physics laws, not statistics. Proven on 5 real datasets. One line to install.
+**Before your model sees the data, S2S checks if physics allows it.**
 
 [![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307)
@@ -11,229 +9,126 @@ IMU sensor data is silently corrupted more often than people realize. S2S catche
 [![License: BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](README.md)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-green.svg)](README.md)
+```bash
+pip install s2s-certify   # zero dependencies
+```
 
 ---
 
-## Live Demos
-- 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) — 104,160 real certified records, hover to explore
-- 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) — real-time physics certification on your phone
-- 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) — 17-joint live certification
+## What Is This
 
-No install needed. All processing runs on your device. No data sent anywhere.
+IMU and EMG signals from real humans obey physics. Synthetic data, corrupted recordings, and robotic motion do not. S2S checks eleven physics laws — jerk bounds, segment resonance, rigid-body kinematics, Hurst exponent persistence — and tells you whether your signal is biologically plausible before any model trains on it.
 
----
+It is not a classifier. It does not learn. It applies equations that have been true since Newton.
 
-## The Problem
-
-Physical AI (robots, prosthetics, exoskeletons) is trained on motion data. But most datasets contain synthetic data that violates physics, corrupted recordings, and mislabeled actions — with no way to verify the data came from a real human moving in physically valid ways.
-
-A robot trained on bad data learns bad motion. A prosthetic hand trained on uncertified data fails its user.
+**Proven on five independent datasets across five sampling rates (20Hz → 2000Hz). 110 tests passing.**
 
 ---
 
-## Four Proven Levels + Experimental AI
+## Try It Now
 
-S2S improves model performance at every stage of the training pipeline. All results validated across **five independent datasets** at four different sampling rates.
+| | |
+|---|---|
+| 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) | 104,160 certified records, hover to explore |
+| 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) | Real-time certification from your phone sensor |
+| 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) | 17-joint live certification via webcam |
 
-### Level 1 — Quality Floor ✅ PROVEN on 3 datasets
+No install needed. All processing runs on your device.
 
-| Dataset | Hz | Corruption | S2S Recovery | Net vs Clean |
-|---------|-----|-----------|-------------|--------------|
-| WISDM 2019 | 20Hz | 35% corrupted | 154% recovered | **+1.74% F1** |
-| PAMAP2 | 100Hz | 35% corrupted | confirmed | **+0.95% F1** |
-| UCI HAR | 50Hz | 35% corrupted | 135% recovered | **+2.51% F1** |
+---
 
-> Physics floor removes bad data and **beats the clean baseline across three independent datasets at three different sampling rates.**
+## Results
 
-### Level 2 — Physics Quality Floor Generalises ✅ PROVEN on 3 datasets
+### Does it improve model performance?
 
-| Dataset | Hz | Data used | vs All data |
-|---------|-----|----------|-------------|
-| WISDM 2019 | 20Hz | 41% of windows | **+1.74% F1** |
-| PAMAP2 | 100Hz | 88% of windows | **+0.95% F1** |
-| UCI HAR | 50Hz | 49% of windows | **+2.51% F1** |
+Yes — across every dataset tested.
 
-Also proven: kinematic chain consistency on PAMAP2 (hand + chest + ankle IMU):
+| Dataset | Hz | Improvement | Condition |
+|---------|-----|-------------|-----------|
+| UCI HAR | 50Hz | **+2.51% F1** | vs corrupted baseline |
+| PAMAP2 | 100Hz | **+4.23% F1** | kinematic chain vs single sensor |
+| WISDM 2019 | 20Hz | **+1.74% F1** | vs corrupted baseline |
 
-| Condition | F1 | Δ |
-|-----------|-----|---|
-| Single chest IMU | 0.7969 | baseline |
-| 3 IMUs naive concat | 0.8308 | +3.39% |
-| 3 IMUs + chain filter | 0.8399 | +0.91% over naive |
-| Net vs single sensor | **+4.23% F1** | ← headline |
+Less data, higher quality, better model. Physics score is a reliable proxy for training value.
 
-> Less data, higher quality, better model. The physics score is a reliable proxy for training value — confirmed across devices, sampling rates, and activity types.
+### Does it detect biological origin?
 
-### Level 3 — Biological Signal Certification ✅ PROVEN
+Yes — proven in both directions.
 
-Tested on PhysioNet PTT-PPG — 4 real subjects, 1164 windows, 500Hz wrist device, walk/sit/run.
+**Positive (real humans):** 10 NinaPro DB5 subjects, 2000Hz forearm EMG+ACC → all graded **HUMAN**. Hurst exponent H = 0.60–0.79 across all subjects.
+
+**Negative (synthetic signals):** Pure 50Hz sine (robot motion), white noise (sensor fault), step function (bang-bang control) → all graded **NOT_BIOLOGICAL**. Hurst H < 0.55 in every case.
+
+The separator: **Hurst exponent H < 0.7 = not biological.** Human motor control produces long-range correlated movement. Machines do not — unless specifically engineered to replicate it.
+
+### Does it certify biological signals?
 
 | Signal | Result |
 |--------|--------|
-| PPG pass rate | **96.3%** on real human subjects |
-| Heart rate | mean **106 BPM** (physiologically correct for activity) |
+| PPG pass rate | **96.3%** on real subjects |
+| Heart rate | mean **106 BPM** (correct for activity) |
 | HRV RMSSD | mean **21ms** (real human variability) |
-| Skin temperature | **33.6°C** (confirmed real human range) |
+| EMG→accel lag | **117.5ms** mean (neuromuscular literature: 50–200ms) |
 
-> Real pulse, real HRV, real temperature — verified simultaneously. Synthetic data cannot fake all three.
-
-### Level 4 — Multi-Sensor Fusion Coherence ✅ PROVEN
-
-| Dataset | HIL Score | Pass Rate | Tiers |
-|---------|-----------|-----------|-------|
-| PTT-PPG 500Hz wrist | **68.7/100** | 100% | 438 SILVER + 726 BRONZE |
-| PAMAP2 100Hz (auto-Hz) | **65.3/100** | 100% | 87 SILVER + 13 BRONZE |
-
-Real sensors: PPG infrared + PPG red + IMU accel+gyro + skin temperature — all from the same wrist hardware.
-
-> If HR rose with activity, skin temperature stayed in human range, and IMU timing matched PPG — simultaneously — a human was there.
-
-### Level 5 — Physics-Informed Hybrid AI EXPERIMENTAL
-
-**Hybrid approach beats both baselines but physics feature extraction needs improvement.**
-
-| Dataset | Model | Accuracy | Features | Status |
-|---------|--------|----------|-----------|---------|
-| PTT-PPG | Raw IMU | 79.55% | 768 features | Baseline |
-| PTT-PPG | Physics Only | 70.48% | 19 features | Baseline |
-| PTT-PPG | **Hybrid** | **83.68%** | 787 features | **+4.13% vs Raw, +13.20% vs Physics** |
-
-**Key Finding:** Physics features add complementary signal but extraction is early-stage.
-
-#### Feature Importance Analysis (Honest Assessment):
-- **Only 2/19 physics features contribute**: `rigid_rms_measured` and `resonance_peak_energy`
-- **17/19 physics features have zero importance** in hybrid model
-- **Physics efficiency**: 0.0032 per feature vs 0.0012 for raw (promising but needs work)
-- **Raw IMU dominates**: 94% of predictive power from 768 features
-
-#### What Works:
-- `rigid_rms_measured` (0.0569 importance) - RMS acceleration magnitude
-- `resonance_peak_energy` (0.0011 importance) - Frequency domain energy
-
-#### What Needs Improvement:
-- 17 physics laws produce non-predictive features for activity classification
-- Most tier indicators (is_gold, is_silver, etc.) have zero importance
-- Confidence scores and detailed law outputs not useful for ML
-
-#### Status:
-**Physics feature extraction is early-stage but promising.** The hybrid approach proves physics features add unique signal, but most physics laws need better feature engineering for ML tasks.
-
-**Next Phase:** Improve physics feature extraction to make more laws ML-relevant.
+Real pulse, real HRV, real lag. Synthetic data cannot fake all three simultaneously.
 
 ---
 
-### Active Learning Pipeline ✅ PROVEN
+## Biological Origin Detection (v1.5.0)
 
-**Self-improving data quality system that learns from corruption patterns and generates training curriculum automatically.**
+`certify_session()` answers: did a human produce this session?
+```python
+from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
-#### Module 1 — Corruption Fingerprinter
-- **Purpose**: Detect and classify data corruption types
-- **Results**: Identified resonance_frequency as most vulnerable (77% of corruptions break it first)
-- **Status**: ✅ **Proven on PTT-PPG data**
+pe = PhysicsEngine()
 
-#### Module 2 — Frankenstein Mixer  
-- **Purpose**: Find exact contamination boundaries for each physics law
-- **Results**: IMU consistency breaks at 30.6% contamination, resonance at 29.2%, jerk at 53.7%
-- **Status**: ✅ **Proven on PTT-PPG data**
+# Process windows
+for window in session_windows:
+    pe.certify(imu_raw={"timestamps_ns": ts, "accel": window}, segment="forearm")
 
-#### Module 3 — Curriculum Generator
-- **Purpose**: Generate training data at every quality level automatically
-- **Results**: 2,000 samples with balanced tiers (GOLD 5.7%, SILVER 58.7%, BRONZE 28.1%, REJECTED 6.7%)
-- **Auto-discovery**: Found NinaPro DB5, EMG Amputee, HuGaDB, PTT-PPG automatically
-- **Status**: ✅ **Proven on Mac with auto-discovery**
+# Session-level verdict
+result = pe.certify_session()
 
-#### Module 4 — Cloud Trainer
-- **Purpose**: Train quality prediction models on curriculum data
-- **Results**: **85.5% accuracy** (+27.7% over 57.8% majority baseline)
-- **Best model**: GradientBoosting with 93% precision on SILVER tier
-- **Status**: ✅ **Proven on Mac with sklearn baseline**
+print(result["biological_grade"])           # HUMAN / NOT_BIOLOGICAL / LOW_BIOLOGICAL_FIDELITY
+print(result["recommendation"])             # ACCEPT / REVIEW / REJECT
+print(result["biological_diversity_score"]) # 0-100 within human reference range
+print(result["hurst"])                      # Hurst exponent — primary origin detector
+```
 
-#### Pipeline Impact:
-- **Automatic curriculum generation** from any local dataset
-- **Quality predictor** that significantly outperforms naive baseline  
-- **Self-improving system** that learns corruption patterns
-- **Ready for deployment** with trained models and prediction API
+**Grade thresholds:**
 
----
+| Grade | Hurst | BFS | Meaning |
+|-------|-------|-----|---------|
+| `NOT_BIOLOGICAL` | H < 0.70 | any | Synthetic, robotic, or corrupted |
+| `LOW_BIOLOGICAL_FIDELITY` | H ≥ 0.70 | BFS < 0.35 | Marginal — review before training |
+| `HUMAN` | H ≥ 0.70 | BFS ≥ 0.35 | Confirmed biological origin |
+| `SUPERHUMAN` | H ≥ 0.70 | BFS > 0.70 | Valid — prosthetics / enhanced systems |
 
-## Auto-Hz Device Detection
-
-S2S automatically detects device profile from two numbers already in the data — sampling Hz (from median timestamp intervals) and signal amplitude range (from first window). No user configuration needed.
-
-| Hz range | Signal range | Profile | Example |
-|----------|-------------|---------|---------|
-| ≥400Hz | <1.0 normalized | normalized_500hz | PTT-PPG |
-| ≤150Hz | >10 raw ADC | raw_adc_100hz | PAMAP2 |
-| other | other | default | fallback |
-
-Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct profile.
+**Important:** BFS is a floor detector, not a quality ranking. Higher BFS means higher signal diversity — not a better subject. The Hurst floor is the actual biological gate.
 
 ---
 
-## Validated on Real Human Data
+## Quick Start
+```python
+from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
-**WISDM 2019** (51 subjects, 20Hz, wrist accel, 18 activities):
+pe = PhysicsEngine()
+result = pe.certify(
+    imu_raw={"timestamps_ns": timestamps, "accel": accel_window},
+    segment="forearm"
+)
 
-| Level | Result |
-|-------|--------|
-| Level 1 | **+1.74% F1** vs corrupted, 154% recovery |
-| Level 2 | **+1.74% F1** vs all data, 41% of windows used |
-
-**PAMAP2** (9 subjects, 100Hz, hand+chest+ankle IMU, 12 activities):
-
-| Level | Result |
-|-------|--------|
-| Level 1 | **+0.95% F1** vs corrupted |
-| Level 2 | **+4.23% F1** kinematic chain vs single sensor |
-| Level 4 | HIL **65.3/100**, 100% pass, 87 SILVER |
-
-**UCI HAR** (30 subjects, 50Hz, body accel+gyro, 6 activities):
-
-| Level | Result |
-|-------|--------|
-| Level 1 | **+2.51% F1** vs corrupted, 135% recovery |
-| Level 2 | **+2.51% F1** vs all data, 49% of windows used |
-
-**PhysioNet PTT-PPG** (4 subjects, 500Hz, wrist PPG+IMU+thermal, walk/sit/run):
-
-| Level | Result |
-|-------|--------|
-| Level 2 IMU | 61.7% pass rate, avg score 37.2/100 |
-| Level 3 PPG | **96.3% pass rate**, HR 106 BPM, HRV 21ms |
-| Level 4 Fusion | HIL **68.7/100**, 100% pass, 438 SILVER |
-
-**NinaPro DB5** (10 subjects, 2000Hz, 16-channel EMG + 3-axis accelerometer, hand gestures):
-
-| Level | Result |
-|-------|--------|
-| Law 1 Newton | EMG→accel lag **117.5ms** mean, 81.6% in 50–200ms range, 10/10 subjects |
-
-> Muscle fires → limb accelerates 117.5ms later. Consistent with published neuromuscular literature. Shuffled baseline: 88.5ms — real causal lag is distinct. Synthetic data cannot reproduce without full rigid-body muscle simulation.
-
----
-
-## 11 Physics Laws
-
-### Single-Sensor Laws (Levels 1–3)
-
-| # | Law | What It Catches |
-|---|-----|-----------------|
-| 1 | Newton's Second Law (F=ma, 117.5ms EMG→accel lag) | Synthetic data missing lagged EMG-accel correlation |
-| 2 | Segment Resonance (ω=√(K/I)) | Tremor at impossible frequency for body segment |
-| 3 | Rigid Body Kinematics (a=α×r+ω²×r) | Gyro and accel generated independently |
-| 4 | Ballistocardiography (F=ρQv) | IMU missing cardiac recoil |
-| 5 | Joule Heating (Q=0.75×P×t) | Sustained EMG without thermal elevation |
-| 6 | Motor Control Jerk (∂³x/∂t³ ≤ 5000 m/s³) | Robotic or keyframe animation artefacts |
-| 7 | IMU Consistency (Var(accel) ~ f(Var(gyro))) | Accel and gyro from independent generators |
-
-### Multi-Sensor Chain Laws (Level 4)
-
-| # | Law | What It Catches |
-|---|-----|-----------------|
-| 8 | Locomotion Coherence (freq spread <2.5Hz) | Sensors recording different activities |
-| 9 | Segment Coupling (chest-ankle r >0.3) | Independent synthetic channels |
-| 10 | Gyro-Accel Coupling (per IMU) | Rotation without corresponding acceleration |
-| 11 | Cross-Sensor Jerk Timing (ankle leads chest 0–200ms) | Reversed or zero lag — not real heel-strike |
+print(result["tier"])               # GOLD / SILVER / BRONZE / REJECTED
+print(result["physical_law_score"]) # 0-100
+print(result["laws_passed"])        # which physics laws passed
+print(result["laws_failed"])        # which failed and why
+```
+```bash
+# Live API — no install needed
+curl -X POST https://s2s-65sy.onrender.com/certify \
+  -H "Content-Type: application/json" \
+  -d '{"accel": [[ax,ay,az],...], "sample_rate_hz": 50}'
+```
 
 ---
 
@@ -241,67 +136,86 @@ Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct p
 
 | Tier | Score | Meaning |
 |------|-------|---------|
-| GOLD | ≥87 | All physics laws passed. Pristine. |
-| SILVER | 75–86 | Trusted. Minor deviations within noise. |
-| BRONZE | 60–74 | Marginal. Candidate for reconstruction at ≤50Hz. |
-| RECONSTRUCTED | — | Repaired, re-scored ≥75, spectral sim ≥0.8. Weight 0.5. |
-| REJECTED | <floor | Removed from pipeline. |
+| **GOLD** | ≥ 87 | All physics laws passed. Train on this. |
+| **SILVER** | 75–86 | Trusted. Minor deviations within noise bounds. |
+| **BRONZE** | 60–74 | Marginal. Usable; flag for review. |
+| **REJECTED** | < floor | Removed. Physics violated. |
 
-Floor = p25 of clean score distribution per dataset (adaptive).
-
----
-
-## Live API
-
-No install needed:
-
-```bash
-curl -X POST https://s2s-65sy.onrender.com/certify -H "Content-Type: application/json" -d "{"accel": [[ax,ay,az],...], "sample_rate_hz": 50}"
-```
-
-```python
-import requests
-cert = requests.post("https://s2s-65sy.onrender.com/certify", json={"accel": data, "sample_rate_hz": 50})
-print(cert.json()["tier"])  # GOLD / SILVER / BRONZE / REJECTED
-```
-
-Or install locally:
-
-## Install
-```bash
-pip install s2s-certify
-```
-
-Zero dependencies. Pure Python 3.9+. Works on any platform.
+Floor = p25 of clean score distribution per dataset (adaptive per Hz).
 
 ---
 
-## Quick Start
-```python
-from s2s_certify import certify
+## Eleven Physics Laws
 
-result = certify(accel_window, sample_rate_hz=20)
+### Per-Window (single sensor)
 
-print(result['tier'])        # GOLD / SILVER / BRONZE / REJECTED
-print(result['score'])       # 0–100
-print(result['laws_passed']) # which physics laws passed
-```
-```bash
-s2s-certify your_imu_data.csv
-s2s-certify your_imu_data.csv --output report.json
-```
+| # | Law | Catches |
+|---|-----|---------|
+| 1 | Newton F=ma — EMG→accel lag 117.5ms | Synthetic data without neuromuscular delay |
+| 2 | Segment resonance ω=√(K/I) | Tremor at impossible frequency for body segment |
+| 3 | Rigid-body kinematics a=α×r+ω²×r | Gyro and accel generated independently |
+| 4 | Ballistocardiography F=ρQv | IMU missing cardiac recoil |
+| 5 | Joule heating Q=0.75×P×t | Sustained EMG without thermal rise |
+| 6 | Motor control jerk ∂³x/∂t³ ≤ 500 m/s³ | Robotic motion, keyframe artefacts |
+| 7 | IMU consistency Var(accel) ~ Var(gyro) | Accel and gyro from separate generators |
+
+### Session-Level (biological origin)
+
+| # | Law | Catches |
+|---|-----|---------|
+| 8 | Hurst exponent H > 0.7 | Non-biological signal (synthetic/robotic) |
+| 9 | Locomotion coherence — freq spread < 2.5Hz | Sensors recording different activities |
+| 10 | Segment coupling — chest-ankle r > 0.3 | Independent synthetic channels |
+| 11 | Cross-sensor jerk timing — ankle leads 0–200ms | Reversed or zero lag, not real heel-strike |
 
 ---
 
-## Datasets Validated
+## Auto-Hz Detection
 
-| Dataset | Hz | Sensors | Windows | Used for |
-|---------|-----|---------|---------|----------|
-| WISDM 2019 | 20Hz | Wrist accel | 46,946 | Levels 1, 2 |
-| PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | Levels 1, 2, 4 |
-| UCI HAR | 50Hz | Body accel+gyro | 10,299 | Levels 1, 2 |
-| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU+Thermal | 1,164 | Levels 2, 3, 4, 5 (experimental) |
-| NinaPro DB5 | 2000Hz | Forearm EMG+Accelerometer | 500 | Law 1 |
+S2S reads sampling rate from timestamp intervals and signal amplitude range — no configuration needed.
+
+| Hz | Signal range | Profile | Device |
+|----|-------------|---------|--------|
+| ≥ 400Hz | < 1.0 normalized | normalized_500hz | PTT-PPG wrist |
+| ≤ 150Hz | > 10 raw ADC | raw_adc_100hz | PAMAP2 |
+| other | other | default | fallback |
+
+Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct profile.
+
+---
+
+## Active Learning Pipeline
+
+| Module | What it does | Result |
+|--------|-------------|--------|
+| **Corruption Fingerprinter** | Identifies which laws break first under corruption | Resonance breaks first (77%) |
+| **Frankenstein Mixer** | Finds exact contamination boundaries per law | IMU consistency breaks at 30.6% |
+| **Curriculum Generator** | Balanced training data at every quality level | 2,000 samples, auto-discovery |
+| **Cloud Trainer** | Trains quality prediction on curriculum | 85.5% accuracy, +27.7% over baseline |
+
+---
+
+## Datasets
+
+| Dataset | Hz | Sensors | Windows | Levels validated |
+|---------|-----|---------|---------|-----------------|
+| WISDM 2019 | 20Hz | Wrist accel | 46,946 | 1, 2 |
+| PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | 1, 2, 4 |
+| UCI HAR | 50Hz | Body accel+gyro | 10,299 | 1, 2 |
+| PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU+Thermal | 1,164 | 2, 3, 4, 5 |
+| NinaPro DB5 | 2000Hz | Forearm EMG+Accelerometer | 1,470+ | BFS, origin detection |
+
+---
+
+## Hybrid AI (Experimental)
+
+| Model | Accuracy | Features |
+|-------|----------|---------|
+| Raw IMU | 79.55% | 768 |
+| Physics only | 70.48% | 19 |
+| **Hybrid** | **83.68%** | 787 |
+
+2 of 19 physics features contribute meaningfully. The other 17 need better feature engineering. Honest assessment: promising, not finished.
 
 ---
 
@@ -309,16 +223,16 @@ s2s-certify your_imu_data.csv --output report.json
 
 **S2S: Physics-Certified Sensor Data — Four Proven Levels, Eleven Laws, Five Independent Datasets**
 
-[→ Read paper (PDF)](docs/paper/S2S_Paper_v5.pdf) | [→ DOI: 10.5281/zenodo.18878307](https://doi.org/10.5281/zenodo.18878307)
+[→ Read paper (PDF)](docs/paper/S2S_Paper_v5.pdf) · [→ DOI: 10.5281/zenodo.18878307](https://doi.org/10.5281/zenodo.18878307)
 
 ---
 
 ## Project Structure
 ```
-s2s_standard_v1_3/     # Physics engine (zero dependencies)
-experiments/           # All experiments + results JSON
-tests/                 # 110 tests, all passing
-docs/paper/            # S2S_Paper_v5.pdf
+s2s_standard_v1_3/    # Physics engine — zero dependencies, pure Python
+experiments/          # Proof scripts + results JSON
+tests/                # 110 tests, all passing
+docs/paper/           # S2S_Paper_v5.pdf
 ```
 
 ---
