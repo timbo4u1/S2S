@@ -927,6 +927,13 @@ class PhysicsEngine:
         bfs = max(0.0, min(1.0, bfs))
 
         floor_threshold = 0.35
+        human_range_min = 0.35
+        human_range_max = 0.70
+
+        # 0-100 human scale calibrated on NinaPro DB5 n=10 (BFS 0.37-0.68)
+        # Above 0.70 = superhuman (prosthetics/robots valid zone, score > 100)
+        bfs_score = round((bfs - human_range_min) / (human_range_max - human_range_min) * 100, 1)
+
         if bfs >= floor_threshold:
             biological_grade = "HUMAN"
             recommendation = "ACCEPT"
@@ -939,9 +946,12 @@ class PhysicsEngine:
 
         return {
             "bfs": round(bfs, 4),
+            "bfs_score": bfs_score,
             "biological_grade": biological_grade,
             "recommendation": recommendation,
             "floor_threshold": floor_threshold,
+            "human_range_min": human_range_min,
+            "human_range_max": human_range_max,
             "cv": round(cv, 4),
             "kurtosis_raw": round(kurt, 4),
             "kurtosis_norm": round(kurt_norm, 4),
