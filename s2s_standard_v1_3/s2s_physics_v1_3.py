@@ -599,6 +599,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
     # Calculate sample rate for rate normalization
     sample_rate = 1.0 / dt if dt > 0 else 240.0
     rate_normalization_factor = (sample_rate / 50.0) ** 3
+    if sample_rate < 30: rate_normalization_factor = 1.0  # robot/video control rates — formula inverts below 30Hz
     d["sample_rate_hz"] = round(sample_rate, 1)
     d["rate_normalization_factor"] = round(rate_normalization_factor, 2)
 

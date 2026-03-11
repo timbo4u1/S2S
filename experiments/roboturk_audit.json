@@ -1,0 +1,2992 @@
+{
+  "audit": "S2S RoboTurk Audit \u2014 Open-X Embodiment",
+  "dataset": "roboturk (Open-X Embodiment, Stanford)",
+  "description": "Human teleoperation via smartphone VR controllers",
+  "date": "2026-03-12",
+  "s2s_version": "v1.5.0",
+  "hz": 15,
+  "segment": "forearm",
+  "n_episodes": 216,
+  "n_windows": 1143,
+  "avg_score": 65.2,
+  "pass_rate_pct": 78.1,
+  "tiers": {
+    "GOLD": 284,
+    "SILVER": 609,
+    "BRONZE": 242,
+    "REJECTED": 8
+  },
+  "top_failing_laws": {
+    "imu_internal_consistency": 370,
+    "rigid_body_kinematics": 24
+  },
+  "episodes": [
+    {
+      "episode": "sample_000000000014",
+      "instruction": "object search",
+      "n_steps": 113,
+      "n_windows": 6,
+      "avg_score": 63.3,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000016",
+      "instruction": "object search",
+      "n_steps": 209,
+      "n_windows": 12,
+      "avg_score": 60.8,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 1,
+        "SILVER": 7
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000017",
+      "instruction": "object search",
+      "n_steps": 146,
+      "n_windows": 8,
+      "avg_score": 55.1,
+      "tiers": {
+        "BRONZE": 6,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000019",
+      "instruction": "object search",
+      "n_steps": 56,
+      "n_windows": 2,
+      "avg_score": 66.5,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000020",
+      "instruction": "layout laundry",
+      "n_steps": 55,
+      "n_windows": 2,
+      "avg_score": 57.5,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000021",
+      "instruction": "object search",
+      "n_steps": 91,
+      "n_windows": 4,
+      "avg_score": 58.8,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000022",
+      "instruction": "layout laundry",
+      "n_steps": 117,
+      "n_windows": 6,
+      "avg_score": 62.7,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000023",
+      "instruction": "create tower",
+      "n_steps": 108,
+      "n_windows": 6,
+      "avg_score": 68.2,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000024",
+      "instruction": "object search",
+      "n_steps": 89,
+      "n_windows": 4,
+      "avg_score": 64.0,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000025",
+      "instruction": "object search",
+      "n_steps": 78,
+      "n_windows": 4,
+      "avg_score": 57.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000026",
+      "instruction": "object search",
+      "n_steps": 226,
+      "n_windows": 13,
+      "avg_score": 61.4,
+      "tiers": {
+        "BRONZE": 3,
+        "GOLD": 1,
+        "SILVER": 9
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000027",
+      "instruction": "layout laundry",
+      "n_steps": 58,
+      "n_windows": 2,
+      "avg_score": 60.5,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000028",
+      "instruction": "create tower",
+      "n_steps": 133,
+      "n_windows": 7,
+      "avg_score": 73.7,
+      "tiers": {
+        "GOLD": 5,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000029",
+      "instruction": "create tower",
+      "n_steps": 72,
+      "n_windows": 3,
+      "avg_score": 52.7,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000030",
+      "instruction": "create tower",
+      "n_steps": 138,
+      "n_windows": 8,
+      "avg_score": 67.4,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000031",
+      "instruction": "layout laundry",
+      "n_steps": 121,
+      "n_windows": 6,
+      "avg_score": 61.3,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000033",
+      "instruction": "layout laundry",
+      "n_steps": 33,
+      "n_windows": 1,
+      "avg_score": 66.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000035",
+      "instruction": "layout laundry",
+      "n_steps": 105,
+      "n_windows": 5,
+      "avg_score": 66.2,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000036",
+      "instruction": "layout laundry",
+      "n_steps": 60,
+      "n_windows": 2,
+      "avg_score": 50.0,
+      "tiers": {
+        "BRONZE": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000037",
+      "instruction": "object search",
+      "n_steps": 44,
+      "n_windows": 1,
+      "avg_score": 62.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000038",
+      "instruction": "layout laundry",
+      "n_steps": 57,
+      "n_windows": 2,
+      "avg_score": 62.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000039",
+      "instruction": "layout laundry",
+      "n_steps": 55,
+      "n_windows": 2,
+      "avg_score": 54.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000040",
+      "instruction": "create tower",
+      "n_steps": 144,
+      "n_windows": 8,
+      "avg_score": 62.2,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000042",
+      "instruction": "layout laundry",
+      "n_steps": 146,
+      "n_windows": 8,
+      "avg_score": 62.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000044",
+      "instruction": "create tower",
+      "n_steps": 129,
+      "n_windows": 7,
+      "avg_score": 72.0,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000045",
+      "instruction": "layout laundry",
+      "n_steps": 38,
+      "n_windows": 1,
+      "avg_score": 50.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000046",
+      "instruction": "layout laundry",
+      "n_steps": 157,
+      "n_windows": 9,
+      "avg_score": 60.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 6,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000047",
+      "instruction": "object search",
+      "n_steps": 141,
+      "n_windows": 8,
+      "avg_score": 71.9,
+      "tiers": {
+        "GOLD": 4,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000048",
+      "instruction": "object search",
+      "n_steps": 69,
+      "n_windows": 3,
+      "avg_score": 60.3,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000049",
+      "instruction": "object search",
+      "n_steps": 93,
+      "n_windows": 5,
+      "avg_score": 71.2,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000050",
+      "instruction": "layout laundry",
+      "n_steps": 143,
+      "n_windows": 8,
+      "avg_score": 65.4,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000053",
+      "instruction": "object search",
+      "n_steps": 132,
+      "n_windows": 7,
+      "avg_score": 65.7,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000055",
+      "instruction": "create tower",
+      "n_steps": 179,
+      "n_windows": 10,
+      "avg_score": 72.1,
+      "tiers": {
+        "GOLD": 4,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000056",
+      "instruction": "layout laundry",
+      "n_steps": 92,
+      "n_windows": 5,
+      "avg_score": 63.4,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000057",
+      "instruction": "layout laundry",
+      "n_steps": 69,
+      "n_windows": 3,
+      "avg_score": 78.0,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000058",
+      "instruction": "layout laundry",
+      "n_steps": 102,
+      "n_windows": 5,
+      "avg_score": 58.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000059",
+      "instruction": "create tower",
+      "n_steps": 139,
+      "n_windows": 8,
+      "avg_score": 53.8,
+      "tiers": {
+        "BRONZE": 7,
+        "GOLD": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000060",
+      "instruction": "layout laundry",
+      "n_steps": 91,
+      "n_windows": 4,
+      "avg_score": 68.2,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000062",
+      "instruction": "object search",
+      "n_steps": 273,
+      "n_windows": 17,
+      "avg_score": 65.2,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 4,
+        "SILVER": 11
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000063",
+      "instruction": "object search",
+      "n_steps": 59,
+      "n_windows": 2,
+      "avg_score": 50.0,
+      "tiers": {
+        "BRONZE": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000064",
+      "instruction": "layout laundry",
+      "n_steps": 49,
+      "n_windows": 2,
+      "avg_score": 65.0,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000065",
+      "instruction": "object search",
+      "n_steps": 171,
+      "n_windows": 10,
+      "avg_score": 66.9,
+      "tiers": {
+        "BRONZE": 3,
+        "GOLD": 4,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000066",
+      "instruction": "object search",
+      "n_steps": 122,
+      "n_windows": 7,
+      "avg_score": 66.9,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000067",
+      "instruction": "create tower",
+      "n_steps": 39,
+      "n_windows": 1,
+      "avg_score": 69.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000068",
+      "instruction": "object search",
+      "n_steps": 145,
+      "n_windows": 8,
+      "avg_score": 63.8,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000069",
+      "instruction": "object search",
+      "n_steps": 113,
+      "n_windows": 6,
+      "avg_score": 67.7,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000070",
+      "instruction": "layout laundry",
+      "n_steps": 80,
+      "n_windows": 4,
+      "avg_score": 67.8,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000071",
+      "instruction": "object search",
+      "n_steps": 174,
+      "n_windows": 10,
+      "avg_score": 58.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 6,
+        "REJECTED": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000072",
+      "instruction": "layout laundry",
+      "n_steps": 41,
+      "n_windows": 1,
+      "avg_score": 70.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000074",
+      "instruction": "layout laundry",
+      "n_steps": 74,
+      "n_windows": 3,
+      "avg_score": 72.7,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000075",
+      "instruction": "object search",
+      "n_steps": 164,
+      "n_windows": 9,
+      "avg_score": 55.8,
+      "tiers": {
+        "BRONZE": 5,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000076",
+      "instruction": "create tower",
+      "n_steps": 134,
+      "n_windows": 7,
+      "avg_score": 67.4,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000078",
+      "instruction": "object search",
+      "n_steps": 123,
+      "n_windows": 7,
+      "avg_score": 67.1,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000079",
+      "instruction": "layout laundry",
+      "n_steps": 85,
+      "n_windows": 4,
+      "avg_score": 71.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000080",
+      "instruction": "layout laundry",
+      "n_steps": 32,
+      "n_windows": 1,
+      "avg_score": 81.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000081",
+      "instruction": "object search",
+      "n_steps": 89,
+      "n_windows": 4,
+      "avg_score": 66.5,
+      "tiers": {
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000082",
+      "instruction": "object search",
+      "n_steps": 120,
+      "n_windows": 6,
+      "avg_score": 64.3,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000083",
+      "instruction": "layout laundry",
+      "n_steps": 81,
+      "n_windows": 4,
+      "avg_score": 55.2,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000084",
+      "instruction": "object search",
+      "n_steps": 123,
+      "n_windows": 7,
+      "avg_score": 72.9,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000085",
+      "instruction": "create tower",
+      "n_steps": 148,
+      "n_windows": 8,
+      "avg_score": 65.4,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000086",
+      "instruction": "layout laundry",
+      "n_steps": 32,
+      "n_windows": 1,
+      "avg_score": 70.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000087",
+      "instruction": "object search",
+      "n_steps": 103,
+      "n_windows": 5,
+      "avg_score": 68.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000088",
+      "instruction": "object search",
+      "n_steps": 178,
+      "n_windows": 10,
+      "avg_score": 61.5,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000089",
+      "instruction": "object search",
+      "n_steps": 49,
+      "n_windows": 2,
+      "avg_score": 67.5,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000091",
+      "instruction": "object search",
+      "n_steps": 48,
+      "n_windows": 2,
+      "avg_score": 56.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000092",
+      "instruction": "object search",
+      "n_steps": 109,
+      "n_windows": 6,
+      "avg_score": 60.7,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000093",
+      "instruction": "object search",
+      "n_steps": 104,
+      "n_windows": 5,
+      "avg_score": 61.8,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000095",
+      "instruction": "layout laundry",
+      "n_steps": 37,
+      "n_windows": 1,
+      "avg_score": 78.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000096",
+      "instruction": "create tower",
+      "n_steps": 147,
+      "n_windows": 8,
+      "avg_score": 66.9,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 3,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000097",
+      "instruction": "create tower",
+      "n_steps": 131,
+      "n_windows": 7,
+      "avg_score": 67.3,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 3,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000098",
+      "instruction": "create tower",
+      "n_steps": 39,
+      "n_windows": 1,
+      "avg_score": 78.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000100",
+      "instruction": "layout laundry",
+      "n_steps": 46,
+      "n_windows": 1,
+      "avg_score": 50.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000102",
+      "instruction": "create tower",
+      "n_steps": 155,
+      "n_windows": 9,
+      "avg_score": 66.6,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000106",
+      "instruction": "create tower",
+      "n_steps": 159,
+      "n_windows": 9,
+      "avg_score": 67.0,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000107",
+      "instruction": "object search",
+      "n_steps": 57,
+      "n_windows": 2,
+      "avg_score": 57.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000108",
+      "instruction": "create tower",
+      "n_steps": 109,
+      "n_windows": 6,
+      "avg_score": 63.8,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000109",
+      "instruction": "create tower",
+      "n_steps": 169,
+      "n_windows": 10,
+      "avg_score": 56.6,
+      "tiers": {
+        "BRONZE": 5,
+        "SILVER": 4,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000110",
+      "instruction": "layout laundry",
+      "n_steps": 45,
+      "n_windows": 1,
+      "avg_score": 77.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000111",
+      "instruction": "object search",
+      "n_steps": 102,
+      "n_windows": 5,
+      "avg_score": 69.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000113",
+      "instruction": "object search",
+      "n_steps": 164,
+      "n_windows": 9,
+      "avg_score": 63.3,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000114",
+      "instruction": "object search",
+      "n_steps": 75,
+      "n_windows": 3,
+      "avg_score": 60.7,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000115",
+      "instruction": "object search",
+      "n_steps": 58,
+      "n_windows": 2,
+      "avg_score": 77.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000116",
+      "instruction": "create tower",
+      "n_steps": 90,
+      "n_windows": 4,
+      "avg_score": 71.8,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000117",
+      "instruction": "object search",
+      "n_steps": 82,
+      "n_windows": 4,
+      "avg_score": 73.2,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000118",
+      "instruction": "layout laundry",
+      "n_steps": 76,
+      "n_windows": 3,
+      "avg_score": 58.3,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000119",
+      "instruction": "layout laundry",
+      "n_steps": 77,
+      "n_windows": 4,
+      "avg_score": 64.2,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000121",
+      "instruction": "layout laundry",
+      "n_steps": 102,
+      "n_windows": 5,
+      "avg_score": 65.2,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000122",
+      "instruction": "create tower",
+      "n_steps": 169,
+      "n_windows": 10,
+      "avg_score": 64.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 3,
+        "SILVER": 5,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000123",
+      "instruction": "layout laundry",
+      "n_steps": 39,
+      "n_windows": 1,
+      "avg_score": 58.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000124",
+      "instruction": "layout laundry",
+      "n_steps": 71,
+      "n_windows": 3,
+      "avg_score": 55.3,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000125",
+      "instruction": "create tower",
+      "n_steps": 151,
+      "n_windows": 8,
+      "avg_score": 75.4,
+      "tiers": {
+        "GOLD": 6,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000126",
+      "instruction": "object search",
+      "n_steps": 145,
+      "n_windows": 8,
+      "avg_score": 58.9,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000128",
+      "instruction": "create tower",
+      "n_steps": 133,
+      "n_windows": 7,
+      "avg_score": 63.0,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000129",
+      "instruction": "layout laundry",
+      "n_steps": 86,
+      "n_windows": 4,
+      "avg_score": 66.8,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000130",
+      "instruction": "layout laundry",
+      "n_steps": 55,
+      "n_windows": 2,
+      "avg_score": 67.0,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000131",
+      "instruction": "layout laundry",
+      "n_steps": 104,
+      "n_windows": 5,
+      "avg_score": 76.0,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000133",
+      "instruction": "layout laundry",
+      "n_steps": 63,
+      "n_windows": 3,
+      "avg_score": 54.0,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000134",
+      "instruction": "create tower",
+      "n_steps": 165,
+      "n_windows": 9,
+      "avg_score": 70.9,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 5,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000135",
+      "instruction": "layout laundry",
+      "n_steps": 38,
+      "n_windows": 1,
+      "avg_score": 62.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000136",
+      "instruction": "layout laundry",
+      "n_steps": 112,
+      "n_windows": 6,
+      "avg_score": 58.8,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 4,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000138",
+      "instruction": "layout laundry",
+      "n_steps": 63,
+      "n_windows": 3,
+      "avg_score": 61.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000139",
+      "instruction": "object search",
+      "n_steps": 54,
+      "n_windows": 2,
+      "avg_score": 71.5,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000140",
+      "instruction": "layout laundry",
+      "n_steps": 73,
+      "n_windows": 3,
+      "avg_score": 57.3,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000141",
+      "instruction": "create tower",
+      "n_steps": 157,
+      "n_windows": 9,
+      "avg_score": 69.0,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 3,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000143",
+      "instruction": "object search",
+      "n_steps": 152,
+      "n_windows": 9,
+      "avg_score": 55.4,
+      "tiers": {
+        "BRONZE": 5,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000144",
+      "instruction": "layout laundry",
+      "n_steps": 71,
+      "n_windows": 3,
+      "avg_score": 67.0,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000145",
+      "instruction": "object search",
+      "n_steps": 224,
+      "n_windows": 13,
+      "avg_score": 66.5,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 3,
+        "SILVER": 8
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000146",
+      "instruction": "create tower",
+      "n_steps": 137,
+      "n_windows": 8,
+      "avg_score": 65.1,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000147",
+      "instruction": "create tower",
+      "n_steps": 171,
+      "n_windows": 10,
+      "avg_score": 72.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 6,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000149",
+      "instruction": "object search",
+      "n_steps": 160,
+      "n_windows": 9,
+      "avg_score": 66.0,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 3,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000150",
+      "instruction": "object search",
+      "n_steps": 72,
+      "n_windows": 3,
+      "avg_score": 55.3,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000151",
+      "instruction": "object search",
+      "n_steps": 122,
+      "n_windows": 7,
+      "avg_score": 68.6,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000152",
+      "instruction": "object search",
+      "n_steps": 125,
+      "n_windows": 7,
+      "avg_score": 68.7,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000153",
+      "instruction": "layout laundry",
+      "n_steps": 117,
+      "n_windows": 6,
+      "avg_score": 71.5,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000154",
+      "instruction": "layout laundry",
+      "n_steps": 160,
+      "n_windows": 9,
+      "avg_score": 73.6,
+      "tiers": {
+        "GOLD": 4,
+        "SILVER": 5
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000155",
+      "instruction": "object search",
+      "n_steps": 123,
+      "n_windows": 7,
+      "avg_score": 67.9,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000156",
+      "instruction": "object search",
+      "n_steps": 121,
+      "n_windows": 6,
+      "avg_score": 76.0,
+      "tiers": {
+        "GOLD": 5,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000157",
+      "instruction": "object search",
+      "n_steps": 39,
+      "n_windows": 1,
+      "avg_score": 56.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000158",
+      "instruction": "layout laundry",
+      "n_steps": 82,
+      "n_windows": 4,
+      "avg_score": 72.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000159",
+      "instruction": "object search",
+      "n_steps": 115,
+      "n_windows": 6,
+      "avg_score": 60.5,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000161",
+      "instruction": "layout laundry",
+      "n_steps": 75,
+      "n_windows": 3,
+      "avg_score": 66.0,
+      "tiers": {
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000162",
+      "instruction": "create tower",
+      "n_steps": 147,
+      "n_windows": 8,
+      "avg_score": 68.8,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 4,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000163",
+      "instruction": "object search",
+      "n_steps": 232,
+      "n_windows": 14,
+      "avg_score": 60.4,
+      "tiers": {
+        "BRONZE": 7,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000165",
+      "instruction": "layout laundry",
+      "n_steps": 43,
+      "n_windows": 1,
+      "avg_score": 82.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000166",
+      "instruction": "object search",
+      "n_steps": 78,
+      "n_windows": 4,
+      "avg_score": 66.5,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000168",
+      "instruction": "create tower",
+      "n_steps": 139,
+      "n_windows": 8,
+      "avg_score": 71.8,
+      "tiers": {
+        "GOLD": 4,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000169",
+      "instruction": "layout laundry",
+      "n_steps": 94,
+      "n_windows": 5,
+      "avg_score": 64.4,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000170",
+      "instruction": "object search",
+      "n_steps": 253,
+      "n_windows": 15,
+      "avg_score": 66.9,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 3,
+        "SILVER": 8
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000171",
+      "instruction": "create tower",
+      "n_steps": 152,
+      "n_windows": 9,
+      "avg_score": 72.6,
+      "tiers": {
+        "GOLD": 4,
+        "SILVER": 5
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000173",
+      "instruction": "layout laundry",
+      "n_steps": 48,
+      "n_windows": 2,
+      "avg_score": 75.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000174",
+      "instruction": "object search",
+      "n_steps": 61,
+      "n_windows": 2,
+      "avg_score": 62.5,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000175",
+      "instruction": "object search",
+      "n_steps": 90,
+      "n_windows": 4,
+      "avg_score": 65.2,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000176",
+      "instruction": "layout laundry",
+      "n_steps": 34,
+      "n_windows": 1,
+      "avg_score": 58.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000177",
+      "instruction": "layout laundry",
+      "n_steps": 108,
+      "n_windows": 6,
+      "avg_score": 69.8,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000179",
+      "instruction": "layout laundry",
+      "n_steps": 38,
+      "n_windows": 1,
+      "avg_score": 82.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000180",
+      "instruction": "create tower",
+      "n_steps": 174,
+      "n_windows": 10,
+      "avg_score": 60.3,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 1,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000181",
+      "instruction": "layout laundry",
+      "n_steps": 42,
+      "n_windows": 1,
+      "avg_score": 63.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000183",
+      "instruction": "layout laundry",
+      "n_steps": 47,
+      "n_windows": 2,
+      "avg_score": 65.0,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000185",
+      "instruction": "object search",
+      "n_steps": 59,
+      "n_windows": 2,
+      "avg_score": 74.5,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000187",
+      "instruction": "object search",
+      "n_steps": 56,
+      "n_windows": 2,
+      "avg_score": 74.0,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000188",
+      "instruction": "object search",
+      "n_steps": 140,
+      "n_windows": 8,
+      "avg_score": 60.0,
+      "tiers": {
+        "BRONZE": 5,
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000189",
+      "instruction": "create tower",
+      "n_steps": 154,
+      "n_windows": 9,
+      "avg_score": 64.0,
+      "tiers": {
+        "BRONZE": 3,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000190",
+      "instruction": "create tower",
+      "n_steps": 162,
+      "n_windows": 9,
+      "avg_score": 65.8,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000191",
+      "instruction": "object search",
+      "n_steps": 40,
+      "n_windows": 1,
+      "avg_score": 72.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000192",
+      "instruction": "object search",
+      "n_steps": 83,
+      "n_windows": 4,
+      "avg_score": 66.2,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000193",
+      "instruction": "object search",
+      "n_steps": 99,
+      "n_windows": 5,
+      "avg_score": 64.8,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000194",
+      "instruction": "object search",
+      "n_steps": 108,
+      "n_windows": 6,
+      "avg_score": 64.7,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000195",
+      "instruction": "create tower",
+      "n_steps": 141,
+      "n_windows": 8,
+      "avg_score": 63.4,
+      "tiers": {
+        "SILVER": 8
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000196",
+      "instruction": "layout laundry",
+      "n_steps": 38,
+      "n_windows": 1,
+      "avg_score": 72.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000197",
+      "instruction": "layout laundry",
+      "n_steps": 126,
+      "n_windows": 7,
+      "avg_score": 62.6,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000198",
+      "instruction": "create tower",
+      "n_steps": 42,
+      "n_windows": 1,
+      "avg_score": 55.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000199",
+      "instruction": "layout laundry",
+      "n_steps": 62,
+      "n_windows": 3,
+      "avg_score": 73.7,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000200",
+      "instruction": "create tower",
+      "n_steps": 154,
+      "n_windows": 9,
+      "avg_score": 68.1,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000201",
+      "instruction": "layout laundry",
+      "n_steps": 91,
+      "n_windows": 4,
+      "avg_score": 70.2,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000202",
+      "instruction": "layout laundry",
+      "n_steps": 104,
+      "n_windows": 5,
+      "avg_score": 75.6,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000203",
+      "instruction": "object search",
+      "n_steps": 172,
+      "n_windows": 10,
+      "avg_score": 72.0,
+      "tiers": {
+        "GOLD": 6,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000204",
+      "instruction": "create tower",
+      "n_steps": 69,
+      "n_windows": 3,
+      "avg_score": 70.0,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000206",
+      "instruction": "object search",
+      "n_steps": 55,
+      "n_windows": 2,
+      "avg_score": 69.0,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000207",
+      "instruction": "layout laundry",
+      "n_steps": 53,
+      "n_windows": 2,
+      "avg_score": 59.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000208",
+      "instruction": "object search",
+      "n_steps": 246,
+      "n_windows": 15,
+      "avg_score": 64.9,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 4,
+        "SILVER": 8,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000209",
+      "instruction": "object search",
+      "n_steps": 76,
+      "n_windows": 3,
+      "avg_score": 57.7,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000211",
+      "instruction": "layout laundry",
+      "n_steps": 60,
+      "n_windows": 2,
+      "avg_score": 72.5,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000212",
+      "instruction": "layout laundry",
+      "n_steps": 61,
+      "n_windows": 2,
+      "avg_score": 70.0,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000213",
+      "instruction": "object search",
+      "n_steps": 80,
+      "n_windows": 4,
+      "avg_score": 63.5,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000214",
+      "instruction": "object search",
+      "n_steps": 34,
+      "n_windows": 1,
+      "avg_score": 60.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000217",
+      "instruction": "object search",
+      "n_steps": 115,
+      "n_windows": 6,
+      "avg_score": 66.0,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 3,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000218",
+      "instruction": "create tower",
+      "n_steps": 145,
+      "n_windows": 8,
+      "avg_score": 52.2,
+      "tiers": {
+        "BRONZE": 5,
+        "SILVER": 2,
+        "REJECTED": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000219",
+      "instruction": "layout laundry",
+      "n_steps": 121,
+      "n_windows": 6,
+      "avg_score": 64.8,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000220",
+      "instruction": "create tower",
+      "n_steps": 149,
+      "n_windows": 8,
+      "avg_score": 61.9,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000221",
+      "instruction": "create tower",
+      "n_steps": 148,
+      "n_windows": 8,
+      "avg_score": 70.2,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 4,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000222",
+      "instruction": "object search",
+      "n_steps": 79,
+      "n_windows": 4,
+      "avg_score": 65.5,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000223",
+      "instruction": "layout laundry",
+      "n_steps": 139,
+      "n_windows": 8,
+      "avg_score": 74.1,
+      "tiers": {
+        "GOLD": 6,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000224",
+      "instruction": "create tower",
+      "n_steps": 165,
+      "n_windows": 9,
+      "avg_score": 69.1,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000225",
+      "instruction": "layout laundry",
+      "n_steps": 62,
+      "n_windows": 3,
+      "avg_score": 69.0,
+      "tiers": {
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000226",
+      "instruction": "layout laundry",
+      "n_steps": 128,
+      "n_windows": 7,
+      "avg_score": 62.3,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000228",
+      "instruction": "layout laundry",
+      "n_steps": 35,
+      "n_windows": 1,
+      "avg_score": 70.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000229",
+      "instruction": "layout laundry",
+      "n_steps": 171,
+      "n_windows": 10,
+      "avg_score": 69.5,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 4,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000230",
+      "instruction": "object search",
+      "n_steps": 98,
+      "n_windows": 5,
+      "avg_score": 76.4,
+      "tiers": {
+        "GOLD": 3,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000231",
+      "instruction": "create tower",
+      "n_steps": 144,
+      "n_windows": 8,
+      "avg_score": 59.9,
+      "tiers": {
+        "BRONZE": 3,
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000232",
+      "instruction": "create tower",
+      "n_steps": 174,
+      "n_windows": 10,
+      "avg_score": 57.0,
+      "tiers": {
+        "BRONZE": 3,
+        "SILVER": 7
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000233",
+      "instruction": "layout laundry",
+      "n_steps": 103,
+      "n_windows": 5,
+      "avg_score": 61.4,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000234",
+      "instruction": "layout laundry",
+      "n_steps": 34,
+      "n_windows": 1,
+      "avg_score": 50.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000235",
+      "instruction": "create tower",
+      "n_steps": 155,
+      "n_windows": 9,
+      "avg_score": 59.1,
+      "tiers": {
+        "BRONZE": 6,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000236",
+      "instruction": "create tower",
+      "n_steps": 132,
+      "n_windows": 7,
+      "avg_score": 68.4,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000237",
+      "instruction": "layout laundry",
+      "n_steps": 68,
+      "n_windows": 3,
+      "avg_score": 65.3,
+      "tiers": {
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000238",
+      "instruction": "create tower",
+      "n_steps": 140,
+      "n_windows": 8,
+      "avg_score": 58.2,
+      "tiers": {
+        "BRONZE": 2,
+        "SILVER": 6
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000239",
+      "instruction": "create tower",
+      "n_steps": 124,
+      "n_windows": 7,
+      "avg_score": 59.4,
+      "tiers": {
+        "BRONZE": 4,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000241",
+      "instruction": "layout laundry",
+      "n_steps": 59,
+      "n_windows": 2,
+      "avg_score": 58.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000242",
+      "instruction": "object search",
+      "n_steps": 89,
+      "n_windows": 4,
+      "avg_score": 61.2,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000245",
+      "instruction": "layout laundry",
+      "n_steps": 36,
+      "n_windows": 1,
+      "avg_score": 70.0,
+      "tiers": {
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000246",
+      "instruction": "layout laundry",
+      "n_steps": 80,
+      "n_windows": 4,
+      "avg_score": 72.8,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000247",
+      "instruction": "layout laundry",
+      "n_steps": 52,
+      "n_windows": 2,
+      "avg_score": 60.5,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000249",
+      "instruction": "layout laundry",
+      "n_steps": 42,
+      "n_windows": 1,
+      "avg_score": 76.0,
+      "tiers": {
+        "GOLD": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000250",
+      "instruction": "object search",
+      "n_steps": 54,
+      "n_windows": 2,
+      "avg_score": 74.5,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000251",
+      "instruction": "layout laundry",
+      "n_steps": 105,
+      "n_windows": 5,
+      "avg_score": 60.2,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000252",
+      "instruction": "layout laundry",
+      "n_steps": 83,
+      "n_windows": 4,
+      "avg_score": 59.5,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000253",
+      "instruction": "create tower",
+      "n_steps": 144,
+      "n_windows": 8,
+      "avg_score": 66.0,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000254",
+      "instruction": "create tower",
+      "n_steps": 67,
+      "n_windows": 3,
+      "avg_score": 73.7,
+      "tiers": {
+        "GOLD": 2,
+        "SILVER": 1
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000255",
+      "instruction": "object search",
+      "n_steps": 86,
+      "n_windows": 4,
+      "avg_score": 62.0,
+      "tiers": {
+        "BRONZE": 1,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000256",
+      "instruction": "create tower",
+      "n_steps": 71,
+      "n_windows": 3,
+      "avg_score": 61.7,
+      "tiers": {
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000257",
+      "instruction": "object search",
+      "n_steps": 106,
+      "n_windows": 5,
+      "avg_score": 69.8,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 4
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000258",
+      "instruction": "layout laundry",
+      "n_steps": 67,
+      "n_windows": 3,
+      "avg_score": 63.7,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000259",
+      "instruction": "object search",
+      "n_steps": 62,
+      "n_windows": 3,
+      "avg_score": 72.3,
+      "tiers": {
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000260",
+      "instruction": "object search",
+      "n_steps": 109,
+      "n_windows": 6,
+      "avg_score": 62.2,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000261",
+      "instruction": "create tower",
+      "n_steps": 155,
+      "n_windows": 9,
+      "avg_score": 74.6,
+      "tiers": {
+        "GOLD": 7,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000262",
+      "instruction": "create tower",
+      "n_steps": 137,
+      "n_windows": 8,
+      "avg_score": 67.6,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 3,
+        "SILVER": 4
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000263",
+      "instruction": "layout laundry",
+      "n_steps": 133,
+      "n_windows": 7,
+      "avg_score": 66.4,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000265",
+      "instruction": "object search",
+      "n_steps": 63,
+      "n_windows": 3,
+      "avg_score": 66.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000266",
+      "instruction": "object search",
+      "n_steps": 70,
+      "n_windows": 3,
+      "avg_score": 67.3,
+      "tiers": {
+        "SILVER": 3
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000267",
+      "instruction": "create tower",
+      "n_steps": 158,
+      "n_windows": 9,
+      "avg_score": 63.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 7
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000268",
+      "instruction": "layout laundry",
+      "n_steps": 37,
+      "n_windows": 1,
+      "avg_score": 53.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000269",
+      "instruction": "layout laundry",
+      "n_steps": 104,
+      "n_windows": 5,
+      "avg_score": 60.8,
+      "tiers": {
+        "SILVER": 5
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000270",
+      "instruction": "object search",
+      "n_steps": 80,
+      "n_windows": 4,
+      "avg_score": 59.0,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 1,
+        "SILVER": 2
+      },
+      "laws_failed": [
+        "imu_internal_consistency",
+        "rigid_body_kinematics"
+      ]
+    },
+    {
+      "episode": "sample_000000000271",
+      "instruction": "layout laundry",
+      "n_steps": 54,
+      "n_windows": 2,
+      "avg_score": 67.5,
+      "tiers": {
+        "SILVER": 2
+      },
+      "laws_failed": []
+    },
+    {
+      "episode": "sample_000000000272",
+      "instruction": "create tower",
+      "n_steps": 167,
+      "n_windows": 10,
+      "avg_score": 71.3,
+      "tiers": {
+        "BRONZE": 1,
+        "GOLD": 6,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    },
+    {
+      "episode": "sample_000000000273",
+      "instruction": "create tower",
+      "n_steps": 125,
+      "n_windows": 7,
+      "avg_score": 63.9,
+      "tiers": {
+        "BRONZE": 2,
+        "GOLD": 2,
+        "SILVER": 3
+      },
+      "laws_failed": [
+        "imu_internal_consistency"
+      ]
+    }
+  ]
+}
