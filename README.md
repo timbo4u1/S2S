@@ -1,7 +1,5 @@
 # S2S — Physics Certification for Motion Data
 
-**Before your model sees the data, S2S checks if physics allows it.**
-
 [![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307)
 [![Tests](https://img.shields.io/badge/tests-110%20passing-brightgreen.svg)](https://github.com/timbo4u1/S2S/actions)
@@ -12,6 +10,37 @@
 ```bash
 pip install s2s-certify   # zero dependencies
 ```
+
+Most motion datasets contain data that violates Newton's laws.
+S2S finds it — before your robot trains on it.
+
+It applies 11 physics equations to every sensor window: F=ma coupling,
+rigid-body kinematics, jerk bounds, Hurst persistence. No ML. No training.
+Equations that have been true since 1687.
+
+**Proven on 5 independent datasets. 10,352 windows certified. 110 tests passing.**
+
+---
+
+## It improves model performance
+
+| Dataset | Hz | Result |
+|---------|-----|--------|
+| UCI HAR | 50Hz | **+2.51% F1** vs corrupted baseline |
+| PAMAP2 | 100Hz | **+4.23% F1** kinematic chain vs single sensor |
+| WISDM 2019 | 20Hz | **+1.74% F1** vs corrupted baseline |
+
+Less data. Higher quality. Better model. Every time.
+
+---
+
+## Try it now — no install
+
+| | |
+|---|---|
+| 📊 [Interactive Data Explorer](https://timbo4u1.github.io/S2S/viz.html) | 104,160 certified records |
+| 📱 [Phone IMU Demo](https://timbo4u1.github.io/S2S) | Real-time from your phone |
+| 🎥 [Pose Camera Demo](https://timbo4u1.github.io/S2S/pose.html) | 17-joint live via webcam |
 
 ---
 
