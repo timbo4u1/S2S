@@ -18,7 +18,7 @@ It applies 11 physics equations to every sensor window: F=ma coupling,
 rigid-body kinematics, jerk bounds, Hurst persistence. No ML. No training.
 Equations that have been true since 1687.
 
-**Proven on 5 independent datasets. 10,352 windows certified. 110 tests passing.**
+**Proven on 6 independent datasets. 11,495 windows certified. 110 tests passing.**
 
 ---
 
@@ -50,7 +50,7 @@ IMU and EMG signals from real humans obey physics. Synthetic data, corrupted rec
 
 It is not a classifier. It does not learn. It applies equations that have been true since Newton.
 
-**Proven on five independent datasets across five sampling rates (20Hz → 2000Hz). 110 tests passing.**
+**Proven on six independent datasets across five sampling rates (15Hz → 2000Hz). 110 tests passing.**
 
 ---
 
@@ -210,7 +210,7 @@ Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct p
 | **Corruption Fingerprinter** | Identifies which laws break first under corruption | Resonance breaks first (77%) |
 | **Frankenstein Mixer** | Finds exact contamination boundaries per law | IMU consistency breaks at 30.6% |
 | **Curriculum Generator** | Balanced training data at every quality level | 2,000 samples, auto-discovery |
-| **Cloud Trainer** | Trains quality prediction on curriculum | 85.5% accuracy, +27.7% over baseline |
+| **Cloud Trainer** | Trains quality prediction on curriculum | 78.0% on real data (4,860 windows) |
 
 ---
 
@@ -222,7 +222,8 @@ Before auto-Hz: PAMAP2 Level 4 HIL = 38.4. After: **65.3**. Same data, correct p
 | PAMAP2 | 100Hz | Hand+Chest+Ankle IMU | 13,094 | 1, 2, 4 |
 | UCI HAR | 50Hz | Body accel+gyro | 10,299 | 1, 2 |
 | PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU+Thermal | 1,164 | 2, 3, 4, 5 |
-| NinaPro DB5 | 2000Hz | Forearm EMG+Accelerometer | 1,470+ | BFS, origin detection |
+| NinaPro DB5 | 2000Hz | Forearm EMG+Accelerometer | 9,552 | BFS, origin detection |
+| RoboTurk (Open-X) | 15Hz | 7-DOF end-effector teleoperation | 1,143 | Physics audit, imu_consistency |
 
 ---
 
