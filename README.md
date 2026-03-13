@@ -14,7 +14,7 @@ S2S is a physics validation layer for human motion sensor data. Before training 
 
 [→ Pose Demo — camera + skeleton](https://timbo4u1.github.io/S2S/) · 17-joint body tracking with live physics certification
 
-[→ Physical AI Demo — RoboTurk](docs/demo_physical_ai.html) · Robot arm learning from 686MB of certified teleoperation data
+[→ Physical AI Demo — RoboTurk](https://timbo4u1.github.io/S2S/demo_physical_ai.html) · Robot arm learning from 686MB of certified teleoperation data
 
 No install needed. All processing runs on your device. No data sent anywhere.
 
@@ -85,7 +85,7 @@ Why this catches synthetic data: Synthetic motion generators produce each sensor
 
 ## 🤖 Physical AI — Robot Learning from Certified Data
 
-**[→ Live Demo: demo_physical_ai.html](docs/demo_physical_ai.html)**
+**[→ Live Demo: demo_physical_ai.html](https://timbo4u1.github.io/S2S/demo_physical_ai.html)**
 
 686MB of real RoboTurk teleoperation data certified and used to train a physical AI model. Three real commands learned from 260 episodes, 23,125 steps:
 
