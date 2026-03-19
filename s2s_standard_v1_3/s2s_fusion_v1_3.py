@@ -347,6 +347,10 @@ class FusionCertifier:
 
         return coh_r, coh_d, flags, failed
 
+    def reset(self) -> None:
+        """Clear all streams, ready for reuse."""
+        self._streams.clear()
+
     def certify(self) -> Dict:
         flags: List[str] = []
         n = len(self._streams)
