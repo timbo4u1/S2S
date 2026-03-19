@@ -1,0 +1,46 @@
+{
+  "A_clean": {
+    "description": "Clean baseline",
+    "accuracy": 0.917,
+    "macro_f1": 0.9133,
+    "train_n": 10985
+  },
+  "B_corrupted": {
+    "description": "Corrupted 35%",
+    "accuracy": 0.8966,
+    "macro_f1": 0.8786,
+    "train_n": 10985
+  },
+  "C_s2s_floor": {
+    "description": "Adaptive S2S floor",
+    "accuracy": 0.8985,
+    "macro_f1": 0.8837,
+    "train_n": 6225
+  },
+  "D_weighted": {
+    "description": "Tier-weighted loss",
+    "accuracy": 0.8924,
+    "macro_f1": 0.8777,
+    "train_n": 6221
+  },
+  "E_curriculum": {
+    "description": "Curriculum: GOLD\u2192SILVER\u2192ALL",
+    "accuracy": 0.8928,
+    "macro_f1": 0.8786,
+    "train_n": 6225
+  },
+  "meta": {
+    "experiment": "s2s_level2_pamap2",
+    "dataset": "PAMAP2",
+    "hz": 100,
+    "window_size": 256,
+    "epochs": 40,
+    "corrupt_rate": 0.35,
+    "adaptive_floor": 69,
+    "tier_counts": {
+      "BRONZE": 4565,
+      "SILVER": 2470,
+      "REJECTED": 3950
+    }
+  }
+}

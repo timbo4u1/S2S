@@ -1,0 +1,158 @@
+{
+  "pipeline": "S2S v1.5.0",
+  "input": "/Users/timbo/ninapro_db5",
+  "n_sessions": 10,
+  "n_accepted": 10,
+  "sessions": [
+    {
+      "name": "s1",
+      "n": 566,
+      "avg_score": 56.9,
+      "tiers": {
+        "SILVER": 377,
+        "BRONZE": 189
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8414,
+      "bfs": 0.677,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 1.76
+    },
+    {
+      "name": "s10",
+      "n": 654,
+      "avg_score": 56.6,
+      "tiers": {
+        "SILVER": 412,
+        "BRONZE": 242
+      },
+      "grade": "HUMAN",
+      "hurst": 0.7368,
+      "bfs": 0.695,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 1.96
+    },
+    {
+      "name": "s2",
+      "n": 643,
+      "avg_score": 56.7,
+      "tiers": {
+        "SILVER": 401,
+        "BRONZE": 242
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8109,
+      "bfs": 0.6749,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 1.92
+    },
+    {
+      "name": "s3",
+      "n": 573,
+      "avg_score": 57.3,
+      "tiers": {
+        "BRONZE": 171,
+        "SILVER": 402
+      },
+      "grade": "HUMAN",
+      "hurst": 0.747,
+      "bfs": 0.6852,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 2.02
+    },
+    {
+      "name": "s4",
+      "n": 648,
+      "avg_score": 56.9,
+      "tiers": {
+        "SILVER": 479,
+        "BRONZE": 169
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8369,
+      "bfs": 0.6841,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 1.97
+    },
+    {
+      "name": "s5",
+      "n": 649,
+      "avg_score": 56.8,
+      "tiers": {
+        "SILVER": 438,
+        "BRONZE": 211
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8229,
+      "bfs": 0.6853,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 1.97
+    },
+    {
+      "name": "s6",
+      "n": 648,
+      "avg_score": 57.3,
+      "tiers": {
+        "SILVER": 477,
+        "BRONZE": 171
+      },
+      "grade": "HUMAN",
+      "hurst": 0.7562,
+      "bfs": 0.6569,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 2.39
+    },
+    {
+      "name": "s7",
+      "n": 652,
+      "avg_score": 56.9,
+      "tiers": {
+        "SILVER": 406,
+        "BRONZE": 246
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8193,
+      "bfs": 0.6822,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 2.14
+    },
+    {
+      "name": "s8",
+      "n": 647,
+      "avg_score": 57.2,
+      "tiers": {
+        "SILVER": 437,
+        "BRONZE": 210
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8074,
+      "bfs": 0.6809,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 2.04
+    },
+    {
+      "name": "s9",
+      "n": 647,
+      "avg_score": 57.0,
+      "tiers": {
+        "SILVER": 442,
+        "BRONZE": 205
+      },
+      "grade": "HUMAN",
+      "hurst": 0.8198,
+      "bfs": 0.675,
+      "recommendation": "ACCEPT",
+      "accepted": true,
+      "elapsed": 2.67
+    }
+  ]
+}

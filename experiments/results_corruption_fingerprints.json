@@ -1,0 +1,4433 @@
+{
+  "windows_processed": 46,
+  "windows_skipped": 4,
+  "fingerprint_summary": {
+    "dropped_packets": {
+      "0.1": {
+        "tier_changes": 4,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.25": {
+        "tier_changes": 4,
+        "law_failures": {
+          "resonance_frequency": 6
+        }
+      },
+      "0.5": {
+        "tier_changes": 5,
+        "law_failures": {
+          "resonance_frequency": 5
+        }
+      },
+      "0.75": {
+        "tier_changes": 5,
+        "law_failures": {
+          "resonance_frequency": 5
+        }
+      },
+      "1.0": {
+        "tier_changes": 3,
+        "law_failures": {
+          "resonance_frequency": 2
+        }
+      }
+    },
+    "sensor_drift": {
+      "0.1": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.25": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.5": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.75": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "1.0": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      }
+    },
+    "spike_injection": {
+      "0.1": {
+        "tier_changes": 13,
+        "law_failures": {
+          "imu_internal_consistency": 10,
+          "resonance_frequency": 7
+        }
+      },
+      "0.25": {
+        "tier_changes": 30,
+        "law_failures": {
+          "imu_internal_consistency": 19,
+          "resonance_frequency": 14
+        }
+      },
+      "0.5": {
+        "tier_changes": 37,
+        "law_failures": {
+          "imu_internal_consistency": 21,
+          "resonance_frequency": 27
+        }
+      },
+      "0.75": {
+        "tier_changes": 43,
+        "law_failures": {
+          "resonance_frequency": 25,
+          "imu_internal_consistency": 25,
+          "jerk_bounds": 1
+        }
+      },
+      "1.0": {
+        "tier_changes": 44,
+        "law_failures": {
+          "jerk_bounds": 34,
+          "imu_internal_consistency": 24,
+          "resonance_frequency": 24
+        }
+      }
+    },
+    "gravity_shift": {
+      "0.1": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.25": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.5": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.75": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "1.0": {
+        "tier_changes": 0,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      }
+    },
+    "clock_jitter": {
+      "0.1": {
+        "tier_changes": 1,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.25": {
+        "tier_changes": 2,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.5": {
+        "tier_changes": 3,
+        "law_failures": {
+          "resonance_frequency": 8
+        }
+      },
+      "0.75": {
+        "tier_changes": 3,
+        "law_failures": {
+          "resonance_frequency": 7
+        }
+      },
+      "1.0": {
+        "tier_changes": 3,
+        "law_failures": {
+          "resonance_frequency": 10
+        }
+      }
+    },
+    "synthetic_smoothing": {
+      "0.1": {
+        "tier_changes": 4,
+        "law_failures": {
+          "resonance_frequency": 2,
+          "rigid_body_kinematics": 1
+        }
+      },
+      "0.25": {
+        "tier_changes": 5,
+        "law_failures": {
+          "resonance_frequency": 7,
+          "imu_internal_consistency": 2,
+          "rigid_body_kinematics": 1
+        }
+      },
+      "0.5": {
+        "tier_changes": 14,
+        "law_failures": {
+          "imu_internal_consistency": 14
+        }
+      },
+      "0.75": {
+        "tier_changes": 23,
+        "law_failures": {
+          "imu_internal_consistency": 20,
+          "resonance_frequency": 2
+        }
+      },
+      "1.0": {
+        "tier_changes": 27,
+        "law_failures": {
+          "imu_internal_consistency": 26
+        }
+      }
+    }
+  },
+  "first_law_to_break": {
+    "dropped_packets@0.1": "resonance_frequency",
+    "dropped_packets@0.25": "resonance_frequency",
+    "dropped_packets@0.5": "resonance_frequency",
+    "dropped_packets@0.75": "resonance_frequency",
+    "dropped_packets@1.0": "resonance_frequency",
+    "sensor_drift@0.1": "resonance_frequency",
+    "sensor_drift@0.25": "resonance_frequency",
+    "sensor_drift@0.5": "resonance_frequency",
+    "sensor_drift@0.75": "resonance_frequency",
+    "sensor_drift@1.0": "resonance_frequency",
+    "spike_injection@0.1": "imu_internal_consistency",
+    "spike_injection@0.25": "imu_internal_consistency",
+    "spike_injection@0.5": "resonance_frequency",
+    "spike_injection@0.75": "resonance_frequency",
+    "spike_injection@1.0": "jerk_bounds",
+    "gravity_shift@0.1": "resonance_frequency",
+    "gravity_shift@0.25": "resonance_frequency",
+    "gravity_shift@0.5": "resonance_frequency",
+    "gravity_shift@0.75": "resonance_frequency",
+    "gravity_shift@1.0": "resonance_frequency",
+    "clock_jitter@0.1": "resonance_frequency",
+    "clock_jitter@0.25": "resonance_frequency",
+    "clock_jitter@0.5": "resonance_frequency",
+    "clock_jitter@0.75": "resonance_frequency",
+    "clock_jitter@1.0": "resonance_frequency",
+    "synthetic_smoothing@0.1": "resonance_frequency",
+    "synthetic_smoothing@0.25": "resonance_frequency",
+    "synthetic_smoothing@0.5": "imu_internal_consistency",
+    "synthetic_smoothing@0.75": "imu_internal_consistency",
+    "synthetic_smoothing@1.0": "imu_internal_consistency"
+  },
+  "raw_results": [
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 72,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 70,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 69,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 55,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 49,
+            "laws_failed": [],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 46,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 47,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 52,
+            "laws_failed": [],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 58,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 46,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 51,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 69,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 41,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 47,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 69,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 44,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 50,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 45,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 46,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 28,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 67,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 52,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 48,
+            "laws_failed": [
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 55,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 35,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 39,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 37,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 73,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 29,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 29,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 67,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 47,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 68,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 63,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 47,
+            "laws_failed": [
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 69,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 34,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 45,
+            "laws_failed": [
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 67,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 46,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 41,
+            "laws_failed": [
+              "resonance_frequency",
+              "jerk_bounds"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 70,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 70,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 69,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 72,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "REJECTED",
+            "score": 38,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 59,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 42,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 41,
+            "laws_failed": [
+              "jerk_bounds",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 71,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 68,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 64,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 60,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    },
+    {
+      "baseline_tier": "SILVER",
+      "baseline_score": 74,
+      "corruptions": {
+        "dropped_packets": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "sensor_drift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "spike_injection": {
+          "0.1": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.25": {
+            "tier": "BRONZE",
+            "score": 49,
+            "laws_failed": [
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.5": {
+            "tier": "REJECTED",
+            "score": 34,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          },
+          "0.75": {
+            "tier": "BRONZE",
+            "score": 53,
+            "laws_failed": [],
+            "tier_degraded": true
+          },
+          "1.0": {
+            "tier": "REJECTED",
+            "score": 33,
+            "laws_failed": [
+              "resonance_frequency",
+              "imu_internal_consistency"
+            ],
+            "tier_degraded": true
+          }
+        },
+        "gravity_shift": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 73,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "clock_jitter": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 74,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        },
+        "synthetic_smoothing": {
+          "0.1": {
+            "tier": "SILVER",
+            "score": 68,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.25": {
+            "tier": "SILVER",
+            "score": 66,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.5": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "0.75": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          },
+          "1.0": {
+            "tier": "SILVER",
+            "score": 65,
+            "laws_failed": [],
+            "tier_degraded": false
+          }
+        }
+      }
+    }
+  ]
+}

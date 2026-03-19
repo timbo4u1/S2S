@@ -1,0 +1,142 @@
+{
+  "experiment": "ninapro_db5_physics_certification",
+  "timestamp": "2026-03-09T12:00:00",
+  "dataset": "NinaPro DB5",
+  "description": "10 subjects, 2000Hz, 16-channel EMG + 3-axis accelerometer",
+  "segment": "forearm",
+  "window_size": 256,
+  "step_size": 128,
+  "sample_rate": 2000,
+  "summary": {
+    "total_subjects": 10,
+    "total_windows": 9552,
+    "overall_tier_counts": {
+      "SILVER": 9552
+    },
+    "overall_law_failures": {},
+    "subject_rejection_rates": {
+      "s1": 0.0,
+      "s10": 0.0,
+      "s2": 0.0,
+      "s3": 0.0,
+      "s4": 0.0,
+      "s5": 0.0,
+      "s6": 0.0,
+      "s7": 0.0,
+      "s8": 0.0,
+      "s9": 0.0
+    }
+  },
+  "subjects": {
+    "s1": {
+      "subject_id": "s1",
+      "subject_dir": "/Users/timbo/ninapro_db5/s1",
+      "total_windows": 906,
+      "tier_counts": {
+        "SILVER": 906
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s10": {
+      "subject_id": "s10",
+      "subject_dir": "/Users/timbo/ninapro_db5/s10",
+      "total_windows": 1324,
+      "tier_counts": {
+        "SILVER": 1324
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s2": {
+      "subject_id": "s2",
+      "subject_dir": "/Users/timbo/ninapro_db5/s2",
+      "total_windows": 1325,
+      "tier_counts": {
+        "SILVER": 1325
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s3": {
+      "subject_id": "s3",
+      "subject_dir": "/Users/timbo/ninapro_db5/s3",
+      "total_windows": 1209,
+      "tier_counts": {
+        "SILVER": 1209
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s4": {
+      "subject_id": "s4",
+      "subject_dir": "/Users/timbo/ninapro_db5/s4",
+      "total_windows": 735,
+      "tier_counts": {
+        "SILVER": 735
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s5": {
+      "subject_id": "s5",
+      "subject_dir": "/Users/timbo/ninapro_db5/s5",
+      "total_windows": 697,
+      "tier_counts": {
+        "SILVER": 697
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s6": {
+      "subject_id": "s6",
+      "subject_dir": "/Users/timbo/ninapro_db5/s6",
+      "total_windows": 972,
+      "tier_counts": {
+        "SILVER": 972
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s7": {
+      "subject_id": "s7",
+      "subject_dir": "/Users/timbo/ninapro_db5/s7",
+      "total_windows": 983,
+      "tier_counts": {
+        "SILVER": 983
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s8": {
+      "subject_id": "s8",
+      "subject_dir": "/Users/timbo/ninapro_db5/s8",
+      "total_windows": 701,
+      "tier_counts": {
+        "SILVER": 701
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    },
+    "s9": {
+      "subject_id": "s9",
+      "subject_dir": "/Users/timbo/ninapro_db5/s9",
+      "total_windows": 700,
+      "tier_counts": {
+        "SILVER": 700
+      },
+      "rejection_rate": 0.0,
+      "law_failures": {},
+      "top_failing_laws": []
+    }
+  }
+}

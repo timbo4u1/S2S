@@ -1,0 +1,59 @@
+{
+  "experiment": "s2s_quality_floor_v1",
+  "timestamp": "2026-03-04T13:16:52",
+  "corruption_rate": 0.35,
+  "corruption_types": [
+    "flat_signal",
+    "label_noise",
+    "sensor_clipping"
+  ],
+  "physics_threshold": 60,
+  "split": "subject-based (no leakage)",
+  "features": "14 raw accel (no physics metadata \u2014 no circularity)",
+  "conditions": {
+    "A_clean": {
+      "description": "Clean data, quality floor intact",
+      "accuracy": 0.8643,
+      "macro_f1": 0.6304,
+      "per_domain": {
+        "PRECISION": 0.9605,
+        "SOCIAL": 0.0329,
+        "SPORT": 0.8979
+      },
+      "train_n": 50451,
+      "test_n": 12277
+    },
+    "B_corrupted": {
+      "description": "Corrupted (35%), no filter",
+      "accuracy": 0.8549,
+      "macro_f1": 0.6066,
+      "per_domain": {
+        "PRECISION": 0.9718,
+        "SOCIAL": 0.0094,
+        "SPORT": 0.8386
+      },
+      "train_n": 50451,
+      "test_n": 12277
+    },
+    "C_s2s_filtered": {
+      "description": "Corrupted \u2192 S2S filtered, floor restored",
+      "accuracy": 0.8581,
+      "macro_f1": 0.6347,
+      "per_domain": {
+        "PRECISION": 0.9353,
+        "SOCIAL": 0.0272,
+        "SPORT": 0.9417
+      },
+      "train_n": 27304,
+      "test_n": 12277
+    }
+  },
+  "tier_system": {
+    "GOLD": "original, all laws pass \u2014 pristine",
+    "SILVER": "original, most laws pass \u2014 good",
+    "BRONZE": "original, marginal \u2014 acceptable",
+    "RECONSTRUCTED": "corrupted, physics-restored \u2014 repaired (honest label)",
+    "REJECTED": "unrestorable \u2014 write-off"
+  },
+  "note": "A=clean baseline, B=corrupted no filter, C=corrupted+S2S filter. If C>B on F1 \u2192 S2S quality floor proven. Next: RECONSTRUCTED tier \u2014 recover damaged records above floor."
+}

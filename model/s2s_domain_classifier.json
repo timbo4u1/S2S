@@ -1,0 +1,3310 @@
+{
+  "tree": {
+    "leaf": false,
+    "feature": 0,
+    "threshold": 1416.335,
+    "gain": 0.1543968915086677,
+    "left": {
+      "leaf": false,
+      "feature": 1,
+      "threshold": -0.12945,
+      "gain": 0.029751812565342983,
+      "left": {
+        "leaf": false,
+        "feature": 1,
+        "threshold": -0.26575,
+        "gain": 0.036120298118016425,
+        "left": {
+          "leaf": false,
+          "feature": 0,
+          "threshold": 283.675,
+          "gain": 0.04746768884402147,
+          "left": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 92.585,
+            "gain": 0.022075031794393962,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 27.65,
+              "gain": 0.07327970007063123,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 3.1500000000000004,
+                "gain": 0.005034309115871272,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1.55,
+                  "gain": 0.0025808807466984884,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 13
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 140,
+                      "LOCOMOTION": 233
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 19.0,
+                  "gain": 0.002794883118882263,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 239,
+                      "LOCOMOTION": 649
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 15
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 80.555,
+                "gain": 0.04552025094411233,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.33299999999999996,
+                  "gain": 0.01541526134335297,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 81,
+                      "LOCOMOTION": 24,
+                      "SOCIAL": 5
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 146,
+                      "LOCOMOTION": 8,
+                      "SOCIAL": 4
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.36324999999999996,
+                  "gain": 0.036102745976439254,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 15,
+                      "LOCOMOTION": 26
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 38,
+                      "LOCOMOTION": 21,
+                      "SOCIAL": 5
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 236.55,
+              "gain": 0.01908428980924598,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 128.95,
+                "gain": 0.005374569822614583,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.3077,
+                  "gain": 0.007332801378952425,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 42,
+                      "LOCOMOTION": 445,
+                      "SOCIAL": 5
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 40,
+                      "LOCOMOTION": 146,
+                      "SOCIAL": 6
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 218.75,
+                  "gain": 0.0030504752191231055,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 136,
+                      "LOCOMOTION": 507,
+                      "SOCIAL": 17,
+                      "SPORT": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 20,
+                      "LOCOMOTION": 38,
+                      "SOCIAL": 4
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 244.20499999999998,
+                "gain": 0.08959337915939958,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "FINE_MOTOR": 12,
+                    "LOCOMOTION": 14,
+                    "SOCIAL": 1
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 25,
+                    "LOCOMOTION": 2,
+                    "SOCIAL": 3
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 1178.38,
+            "gain": 0.03311681551177992,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 399.525,
+              "gain": 0.021314855413714362,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.29775,
+                "gain": 0.0008709473730050023,
+                "left": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 60
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 20,
+                    "SPORT": 1
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.30955,
+                "gain": 0.018527713974854976,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 528.615,
+                  "gain": 0.012253692076551026,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 24,
+                      "SOCIAL": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 53,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 4,
+                      "SPORT": 11
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.28554999999999997,
+                  "gain": 0.011053943655824572,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 22,
+                      "SPORT": 15
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 21,
+                      "SOCIAL": 1,
+                      "SPORT": 7
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": true,
+              "label": "FINE_MOTOR",
+              "counts": {
+                "FINE_MOTOR": 17,
+                "LOCOMOTION": 14,
+                "SPORT": 7
+              }
+            }
+          }
+        },
+        "right": {
+          "leaf": false,
+          "feature": 0,
+          "threshold": 34.995,
+          "gain": 0.027533169501559818,
+          "left": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 29.45,
+            "gain": 0.06545604587142334,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 1.75,
+              "gain": 0.017440813681074918,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 1.65,
+                "gain": 0.0040432445808468165,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.2005,
+                  "gain": 0.005369687868305828,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 33,
+                      "LOCOMOTION": 20
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 94,
+                      "LOCOMOTION": 95
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.1656,
+                  "gain": 0.004006053295024847,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 21,
+                      "LOCOMOTION": 33
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 15
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 2.45,
+                "gain": 0.0030722414164834344,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1.95,
+                  "gain": 0.010042723711484514,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 65,
+                      "LOCOMOTION": 90
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 64,
+                      "LOCOMOTION": 169
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 16.85,
+                  "gain": 0.0034401402443428597,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 107,
+                      "LOCOMOTION": 331
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 10,
+                      "LOCOMOTION": 13
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 1,
+              "threshold": -0.172,
+              "gain": 0.0005512147809900239,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.1966,
+                "gain": 0.003550295857988106,
+                "left": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 32
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 18,
+                    "LOCOMOTION": 1,
+                    "SOCIAL": 1
+                  }
+                }
+              },
+              "right": {
+                "leaf": true,
+                "label": "FINE_MOTOR",
+                "counts": {
+                  "FINE_MOTOR": 61
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 89.68,
+            "gain": 0.07018836200578299,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 78.89,
+              "gain": 0.006791427143199025,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 65.595,
+                "gain": 0.001662888835193943,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.23149999999999998,
+                  "gain": 0.0002732022579601881,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 127,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 6
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 1061,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 14,
+                      "SPORT": 5
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.202,
+                  "gain": 0.0020682690081086363,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 99,
+                      "LOCOMOTION": 8,
+                      "SOCIAL": 10
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 279,
+                      "LOCOMOTION": 15,
+                      "SOCIAL": 7,
+                      "SPORT": 1
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.23559999999999998,
+                "gain": 0.003279995207702724,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.24575,
+                  "gain": 0.00874999999999998,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 13,
+                      "LOCOMOTION": 4,
+                      "SOCIAL": 3
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 6
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.21989999999999998,
+                  "gain": 0.003803997661522396,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 25,
+                      "LOCOMOTION": 1,
+                      "SPORT": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 178,
+                      "LOCOMOTION": 32,
+                      "SOCIAL": 18,
+                      "SPORT": 2
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 240.975,
+              "gain": 0.06984197126475933,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 101.745,
+                "gain": 0.010006027703815756,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.18175,
+                  "gain": 0.00954208768218534,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 88,
+                      "LOCOMOTION": 70,
+                      "SOCIAL": 9
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 122,
+                      "LOCOMOTION": 51,
+                      "SOCIAL": 12
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.15994999999999998,
+                  "gain": 0.005705711056516072,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 540,
+                      "LOCOMOTION": 887,
+                      "SOCIAL": 112,
+                      "SPORT": 8
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 296,
+                      "LOCOMOTION": 291,
+                      "SOCIAL": 58,
+                      "SPORT": 5
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 692.1949999999999,
+                "gain": 0.02503891259315949,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 268.5,
+                  "gain": 0.015314223159858642,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 62,
+                      "LOCOMOTION": 25,
+                      "SOCIAL": 13,
+                      "SPORT": 3
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 461,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 33,
+                      "SPORT": 70
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1258.545,
+                  "gain": 0.013845929863355089,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 176,
+                      "LOCOMOTION": 4,
+                      "SOCIAL": 5,
+                      "SPORT": 109
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 26,
+                      "LOCOMOTION": 16,
+                      "SOCIAL": 1,
+                      "SPORT": 18
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "right": {
+        "leaf": false,
+        "feature": 0,
+        "threshold": 624.915,
+        "gain": 0.018466345301393294,
+        "left": {
+          "leaf": false,
+          "feature": 0,
+          "threshold": 41.275000000000006,
+          "gain": 0.011204185631880387,
+          "left": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 16.0,
+            "gain": 0.19998270199830226,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 2.55,
+              "gain": 0.00893301171376576,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 1.55,
+                "gain": 0.00481198450365683,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.020749999999999998,
+                  "gain": 0.006446412996750195,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 206,
+                      "LOCOMOTION": 202
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 101,
+                      "LOCOMOTION": 159
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.0344,
+                  "gain": 0.0016863483828938874,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 182,
+                      "LOCOMOTION": 384
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 294,
+                      "LOCOMOTION": 479
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 11.149999999999999,
+                "gain": 0.012115256760453719,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.0796,
+                  "gain": 0.002957271257023608,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 62,
+                      "LOCOMOTION": 284
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 18,
+                      "LOCOMOTION": 45
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 14,
+                    "LOCOMOTION": 13
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 28.805,
+              "gain": 0.001037057765833703,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 26.759999999999998,
+                "gain": 0.08547685001978642,
+                "left": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 12,
+                    "LOCOMOTION": 9
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 36
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 32.685,
+                "gain": 1.2123305171914817e-05,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.0169,
+                  "gain": 0.00017486785161673762,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 143,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 3
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 165,
+                      "SOCIAL": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.11135,
+                  "gain": 1.6058188591575734e-05,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 98,
+                      "SOCIAL": 2
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 2028,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 12,
+                      "SPORT": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 109.025,
+            "gain": 0.003210822480789882,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 74.975,
+              "gain": 0.0009836560147740564,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 65.695,
+                "gain": 7.750802854999961e-05,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.26854999999999996,
+                  "gain": 6.891219836709789e-05,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 6530,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 97,
+                      "SPORT": 39
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 151,
+                      "SOCIAL": 8,
+                      "SPORT": 2
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 73.88499999999999,
+                  "gain": 0.0002930521333591729,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 1677,
+                      "LOCOMOTION": 11,
+                      "SOCIAL": 42,
+                      "SPORT": 4
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 167,
+                      "LOCOMOTION": 3,
+                      "SOCIAL": 11
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.02735,
+                "gain": 0.00298049985808857,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 92.32499999999999,
+                  "gain": 0.005756158946801482,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 777,
+                      "LOCOMOTION": 39,
+                      "SOCIAL": 52,
+                      "SPORT": 6
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 549,
+                      "LOCOMOTION": 104,
+                      "SOCIAL": 50,
+                      "SPORT": 4
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.005350000000000001,
+                  "gain": 0.001977177041695699,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 3350,
+                      "LOCOMOTION": 31,
+                      "SOCIAL": 39,
+                      "SPORT": 5
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 2321,
+                      "LOCOMOTION": 72,
+                      "SOCIAL": 145,
+                      "SPORT": 31
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 1,
+              "threshold": -0.0017499999999999998,
+              "gain": 0.00992544475781637,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 231.10500000000002,
+                "gain": 0.02391954909013294,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.08975,
+                  "gain": 0.008505976514876945,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 385,
+                      "LOCOMOTION": 292,
+                      "SOCIAL": 100,
+                      "SPORT": 10
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 1310,
+                      "LOCOMOTION": 472,
+                      "SOCIAL": 235,
+                      "SPORT": 33
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 378.475,
+                  "gain": 0.002676145576462563,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 674,
+                      "LOCOMOTION": 29,
+                      "SOCIAL": 84,
+                      "SPORT": 80
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 526,
+                      "SOCIAL": 56,
+                      "SPORT": 129
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.01325,
+                "gain": 0.00960336295422104,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 335.28999999999996,
+                  "gain": 0.004437990554994678,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 13763,
+                      "LOCOMOTION": 53,
+                      "SOCIAL": 453,
+                      "SPORT": 19
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 4736,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 695,
+                      "SPORT": 138
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 299.21500000000003,
+                  "gain": 0.009361871074894279,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 3430,
+                      "LOCOMOTION": 287,
+                      "SOCIAL": 695,
+                      "SPORT": 120
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 1502,
+                      "SOCIAL": 208,
+                      "SPORT": 443
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "leaf": false,
+          "feature": 1,
+          "threshold": 0.035,
+          "gain": 0.027833589276534676,
+          "left": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 894.95,
+            "gain": 0.007792058135183466,
+            "left": {
+              "leaf": false,
+              "feature": 1,
+              "threshold": -0.0039,
+              "gain": 0.00472049472592273,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.036449999999999996,
+                "gain": 0.004528501606205881,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.10385,
+                  "gain": 0.006403040260343884,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 34,
+                      "SOCIAL": 4,
+                      "SPORT": 23
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 152,
+                      "SOCIAL": 16,
+                      "SPORT": 52
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 711.735,
+                  "gain": 0.018036318126512407,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 20,
+                      "SOCIAL": 7,
+                      "SPORT": 22
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 55,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 5,
+                      "SPORT": 26
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 731.605,
+                "gain": 0.0021881176224606835,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 634.725,
+                  "gain": 0.0016757297838378427,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 77,
+                      "SOCIAL": 20,
+                      "SPORT": 14
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 794,
+                      "SOCIAL": 89,
+                      "SPORT": 116
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.00795,
+                  "gain": 0.0026864763941413794,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 919,
+                      "SOCIAL": 75,
+                      "SPORT": 230
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 35,
+                      "SOCIAL": 9,
+                      "SPORT": 19
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 1238.09,
+              "gain": 0.00386672156617085,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.00675,
+                "gain": 0.0035409452993374613,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.0448,
+                  "gain": 0.011018777082061115,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 120,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 11,
+                      "SPORT": 65
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 53,
+                      "LOCOMOTION": 6,
+                      "SOCIAL": 9,
+                      "SPORT": 55
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.0004,
+                  "gain": 0.003000789446674257,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 1207,
+                      "LOCOMOTION": 4,
+                      "SOCIAL": 165,
+                      "SPORT": 444
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 56,
+                      "LOCOMOTION": 5,
+                      "SOCIAL": 14,
+                      "SPORT": 43
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.0005,
+                "gain": 0.0047790124066359185,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.031099999999999996,
+                  "gain": 0.021007523554541274,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 50,
+                      "LOCOMOTION": 10,
+                      "SPORT": 29
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 3,
+                      "SPORT": 22
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.00555,
+                  "gain": 0.003620763579583297,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 404,
+                      "LOCOMOTION": 5,
+                      "SOCIAL": 127,
+                      "SPORT": 230
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 23,
+                      "LOCOMOTION": 4,
+                      "SPORT": 23
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 832.14,
+            "gain": 0.01764595225521004,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 726.415,
+              "gain": 0.006507494964776095,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.11815,
+                "gain": 0.008851249235622749,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.07495,
+                  "gain": 0.011308072007660541,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 51,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 11,
+                      "SPORT": 25
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 56,
+                      "SOCIAL": 4,
+                      "SPORT": 14
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.3418,
+                  "gain": 0.007545396513867875,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 89,
+                      "SOCIAL": 4,
+                      "SPORT": 68
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 24,
+                      "SPORT": 9
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.05975,
+                "gain": 0.009340917394826231,
+                "left": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 22,
+                    "SOCIAL": 4,
+                    "SPORT": 7
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.2385,
+                  "gain": 0.008342429173044286,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 87,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 18,
+                      "SPORT": 97
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 39,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 3,
+                      "SPORT": 23
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 1,
+              "threshold": 0.10265,
+              "gain": 0.006555628082242415,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.09625,
+                "gain": 0.005567700200492798,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.0915,
+                  "gain": 0.007952887232976713,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 148,
+                      "LOCOMOTION": 7,
+                      "SOCIAL": 41,
+                      "SPORT": 172
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 16,
+                      "LOCOMOTION": 1,
+                      "SOCIAL": 2,
+                      "SPORT": 5
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "SPORT",
+                  "counts": {
+                    "FINE_MOTOR": 8,
+                    "LOCOMOTION": 2,
+                    "SOCIAL": 2,
+                    "SPORT": 22
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.30765,
+                "gain": 0.004916156351372936,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1344.8200000000002,
+                  "gain": 0.0028805735321815185,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 271,
+                      "LOCOMOTION": 10,
+                      "SOCIAL": 28,
+                      "SPORT": 462
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 39,
+                      "LOCOMOTION": 7,
+                      "SPORT": 41
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.54095,
+                  "gain": 0.007590580765790944,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 55,
+                      "LOCOMOTION": 2,
+                      "SOCIAL": 3,
+                      "SPORT": 170
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "SPORT": 18
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "leaf": false,
+      "feature": 0,
+      "threshold": 6440.3150000000005,
+      "gain": 0.06819289140987006,
+      "left": {
+        "leaf": false,
+        "feature": 1,
+        "threshold": -0.00805,
+        "gain": 0.030377652883944783,
+        "left": {
+          "leaf": false,
+          "feature": 0,
+          "threshold": 2506.2200000000003,
+          "gain": 0.04832345326310561,
+          "left": {
+            "leaf": false,
+            "feature": 1,
+            "threshold": -0.20655,
+            "gain": 0.036143272166625495,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 1873.815,
+              "gain": 0.03848276972624787,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.24625,
+                "gain": 0.030049987232551034,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1659.3449999999998,
+                  "gain": 0.019737760085361322,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 17,
+                      "LOCOMOTION": 16,
+                      "SPORT": 2
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 16,
+                      "FINE_MOTOR": 7,
+                      "SPORT": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "FINE_MOTOR": 9,
+                    "LOCOMOTION": 12,
+                    "SOCIAL": 1,
+                    "SPORT": 11
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 2258.48,
+                "gain": 0.020626194791557473,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.30274999999999996,
+                  "gain": 0.007722390682120883,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 22,
+                      "FINE_MOTOR": 4,
+                      "SOCIAL": 1,
+                      "SPORT": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 12,
+                      "LOCOMOTION": 29,
+                      "SPORT": 2
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 35,
+                    "FINE_MOTOR": 1,
+                    "SPORT": 1
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 1917.46,
+              "gain": 0.009096214337795283,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.07575000000000001,
+                "gain": 0.011699061999245641,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.08615,
+                  "gain": 0.0069547313334666905,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 73,
+                      "LOCOMOTION": 43,
+                      "SOCIAL": 4,
+                      "SPORT": 45
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 2,
+                      "SPORT": 6
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.0207,
+                  "gain": 0.01407328864408186,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 49,
+                      "LOCOMOTION": 31,
+                      "SOCIAL": 5,
+                      "SPORT": 79
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 17,
+                      "LOCOMOTION": 11,
+                      "SOCIAL": 1,
+                      "SPORT": 9
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.12290000000000001,
+                "gain": 0.013457971306804595,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 2328.46,
+                  "gain": 0.012451704903515548,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 32,
+                      "SOCIAL": 3,
+                      "SPORT": 12
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 14,
+                      "FINE_MOTOR": 4,
+                      "SPORT": 12
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.0927,
+                  "gain": 0.013092176825762025,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 12,
+                      "LOCOMOTION": 6,
+                      "SPORT": 24
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 55,
+                      "LOCOMOTION": 65,
+                      "SPORT": 67
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 1,
+            "threshold": -0.17895,
+            "gain": 0.021351319113463774,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 2633.725,
+              "gain": 0.006323323487609445,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.26155,
+                "gain": 0.0614264258579128,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 24,
+                    "FINE_MOTOR": 3
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "FINE_MOTOR": 9,
+                    "LOCOMOTION": 11,
+                    "SPORT": 2
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.25215,
+                "gain": 0.00460493829309952,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 4967.125,
+                  "gain": 0.0014922907271645858,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 8,
+                      "LOCOMOTION": 226,
+                      "SPORT": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 20,
+                      "SOCIAL": 1,
+                      "SPORT": 2
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 2818.66,
+                  "gain": 0.00885573857189037,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 21,
+                      "FINE_MOTOR": 7,
+                      "SPORT": 3
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 9,
+                      "LOCOMOTION": 148,
+                      "SOCIAL": 5,
+                      "SPORT": 9
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 3505.88,
+              "gain": 0.021861177750978622,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.10464999999999999,
+                "gain": 0.010492274166471471,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.11995,
+                  "gain": 0.010139542996685957,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 16,
+                      "LOCOMOTION": 61,
+                      "SOCIAL": 3,
+                      "SPORT": 20
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 9,
+                      "LOCOMOTION": 15,
+                      "SOCIAL": 1,
+                      "SPORT": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 3316.615,
+                  "gain": 0.005399092222148183,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 50,
+                      "LOCOMOTION": 79,
+                      "SOCIAL": 1,
+                      "SPORT": 58
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 6,
+                      "LOCOMOTION": 20,
+                      "SPORT": 8
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.02565,
+                "gain": 0.00959144255790434,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.13005,
+                  "gain": 0.003416590382023632,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 1,
+                      "LOCOMOTION": 86,
+                      "SOCIAL": 1,
+                      "SPORT": 12
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 23,
+                      "LOCOMOTION": 250,
+                      "SOCIAL": 10,
+                      "SPORT": 54
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 5541.39,
+                  "gain": 0.008411214751091411,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 4,
+                      "LOCOMOTION": 33,
+                      "SOCIAL": 1,
+                      "SPORT": 23
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 2,
+                      "LOCOMOTION": 15,
+                      "SPORT": 5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "leaf": false,
+          "feature": 1,
+          "threshold": 0.015649999999999997,
+          "gain": 0.023673078355088695,
+          "left": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 2172.065,
+            "gain": 0.025209904442390796,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 1693.715,
+              "gain": 0.0039085911412031216,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.0056,
+                "gain": 0.0018141967004209336,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1629.38,
+                  "gain": 0.0008917495449668467,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 344,
+                      "LOCOMOTION": 8,
+                      "SOCIAL": 157,
+                      "SPORT": 300
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 77,
+                      "LOCOMOTION": 3,
+                      "SOCIAL": 43,
+                      "SPORT": 87
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "FINE_MOTOR",
+                  "counts": {
+                    "FINE_MOTOR": 13,
+                    "LOCOMOTION": 2,
+                    "SOCIAL": 1,
+                    "SPORT": 5
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.00019999999999999998,
+                "gain": 0.0031655943001213105,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1816.835,
+                  "gain": 0.0012403085588950091,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 139,
+                      "LOCOMOTION": 7,
+                      "SOCIAL": 66,
+                      "SPORT": 160
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 275,
+                      "LOCOMOTION": 15,
+                      "SOCIAL": 154,
+                      "SPORT": 417
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.00865,
+                  "gain": 0.018022486772486745,
+                  "left": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 10,
+                      "LOCOMOTION": 7,
+                      "SPORT": 10
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "LOCOMOTION": 5,
+                      "FINE_MOTOR": 4,
+                      "SPORT": 12
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 4466.195,
+              "gain": 0.007692861222553304,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.0001,
+                "gain": 0.008105286376262177,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.00030000000000000003,
+                  "gain": 0.004914477032827769,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 8,
+                      "LOCOMOTION": 26,
+                      "SOCIAL": 1,
+                      "SPORT": 18
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 603,
+                      "LOCOMOTION": 159,
+                      "SOCIAL": 308,
+                      "SPORT": 2199
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.0066,
+                  "gain": 0.014395511290481444,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 5,
+                      "LOCOMOTION": 28,
+                      "SPORT": 16
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 10,
+                      "LOCOMOTION": 28,
+                      "SPORT": 35
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 5602.6900000000005,
+                "gain": 0.005726869138228952,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.00045,
+                  "gain": 0.003159893582229123,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 130,
+                      "LOCOMOTION": 180,
+                      "SOCIAL": 45,
+                      "SPORT": 713
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 2,
+                      "LOCOMOTION": 11,
+                      "SPORT": 10
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 6278.805,
+                  "gain": 0.0007960157073021445,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 46,
+                      "LOCOMOTION": 184,
+                      "SOCIAL": 13,
+                      "SPORT": 344
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 18,
+                      "LOCOMOTION": 42,
+                      "SOCIAL": 8,
+                      "SPORT": 93
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 3404.8050000000003,
+            "gain": 0.02719983363761913,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 2277.425,
+              "gain": 0.009529063003554494,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.16604999999999998,
+                "gain": 0.0072555035916387345,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 1776.2800000000002,
+                  "gain": 0.0053558476498560825,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 149,
+                      "LOCOMOTION": 65,
+                      "SOCIAL": 12,
+                      "SPORT": 242
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 119,
+                      "LOCOMOTION": 126,
+                      "SOCIAL": 4,
+                      "SPORT": 234
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.53575,
+                  "gain": 0.005647246485687818,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 197,
+                      "LOCOMOTION": 83,
+                      "SOCIAL": 10,
+                      "SPORT": 539
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "FINE_MOTOR",
+                    "counts": {
+                      "FINE_MOTOR": 15,
+                      "LOCOMOTION": 9,
+                      "SPORT": 13
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.13119999999999998,
+                "gain": 0.006248247657929529,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 2603.17,
+                  "gain": 0.005886700435521752,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 28,
+                      "LOCOMOTION": 59,
+                      "SOCIAL": 1,
+                      "SPORT": 99
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 90,
+                      "LOCOMOTION": 120,
+                      "SOCIAL": 2,
+                      "SPORT": 145
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 2601.8599999999997,
+                  "gain": 0.003666867410754171,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 36,
+                      "LOCOMOTION": 67,
+                      "SPORT": 181
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 75,
+                      "LOCOMOTION": 220,
+                      "SPORT": 362
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 5965.5599999999995,
+              "gain": 0.006588538034046021,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.5407500000000001,
+                "gain": 0.0028725484627335485,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 5101.035,
+                  "gain": 0.0012434825913822944,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 115,
+                      "LOCOMOTION": 832,
+                      "SOCIAL": 2,
+                      "SPORT": 935
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 17,
+                      "LOCOMOTION": 402,
+                      "SOCIAL": 14,
+                      "SPORT": 376
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 5145.46,
+                  "gain": 0.06832871652816264,
+                  "left": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "FINE_MOTOR": 2,
+                      "LOCOMOTION": 27,
+                      "SPORT": 28
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 49,
+                      "SPORT": 8
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.3621,
+                "gain": 0.03995249519532096,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.3407,
+                  "gain": 0.0016228817669146078,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 3,
+                      "LOCOMOTION": 151,
+                      "SOCIAL": 13,
+                      "SPORT": 130
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 17,
+                      "SPORT": 10
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 6331.33,
+                  "gain": 0.017848539213763392,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 128,
+                      "SOCIAL": 2,
+                      "SPORT": 16
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 24,
+                      "SPORT": 13
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "right": {
+        "leaf": false,
+        "feature": 0,
+        "threshold": 18170.370000000003,
+        "gain": 0.01710226332857201,
+        "left": {
+          "leaf": false,
+          "feature": 1,
+          "threshold": -0.057999999999999996,
+          "gain": 0.013324205749163154,
+          "left": {
+            "leaf": false,
+            "feature": 1,
+            "threshold": -0.09305,
+            "gain": 0.004057852966316486,
+            "left": {
+              "leaf": false,
+              "feature": 1,
+              "threshold": -0.12630000000000002,
+              "gain": 0.000558772689204106,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 7619.030000000001,
+                "gain": 0.0002108290997661997,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 7256.365,
+                  "gain": 0.0024553571428571966,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 77
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 32,
+                      "SOCIAL": 2,
+                      "SPORT": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 331
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 8536.57,
+                "gain": 0.01084326813769787,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 24,
+                    "SOCIAL": 4,
+                    "SPORT": 1
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 62
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 8937.435000000001,
+              "gain": 0.03690413970466233,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": -0.07719999999999999,
+                "gain": 0.03553440412452902,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 12,
+                    "SOCIAL": 8
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 15,
+                    "SOCIAL": 2,
+                    "SPORT": 4
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 10374.685,
+                "gain": 0.0027965198863636395,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 20,
+                    "SOCIAL": 1,
+                    "SPORT": 1
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 42
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 1,
+            "threshold": 0.42815000000000003,
+            "gain": 0.012539644011556828,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 10420.2,
+              "gain": 0.007295016727034143,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.02395,
+                "gain": 0.005608129933734829,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": -0.006500000000000001,
+                  "gain": 0.007583522956749356,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 78,
+                      "FINE_MOTOR": 1,
+                      "SOCIAL": 11,
+                      "SPORT": 13
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 186,
+                      "LOCOMOTION": 1200,
+                      "SOCIAL": 58,
+                      "SPORT": 1199
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 8682.255000000001,
+                  "gain": 0.005192815689501695,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 10,
+                      "LOCOMOTION": 679,
+                      "SOCIAL": 75,
+                      "SPORT": 496
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 1,
+                      "LOCOMOTION": 349,
+                      "SOCIAL": 56,
+                      "SPORT": 151
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.03,
+                "gain": 0.0040113399565451235,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 14398.529999999999,
+                  "gain": 0.009014447159744865,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 83,
+                      "LOCOMOTION": 878,
+                      "SOCIAL": 18,
+                      "SPORT": 614
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 25,
+                      "LOCOMOTION": 911,
+                      "SOCIAL": 4,
+                      "SPORT": 356
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 15332.395,
+                  "gain": 0.01518889697713044,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 545,
+                      "FINE_MOTOR": 1,
+                      "SOCIAL": 13,
+                      "SPORT": 146
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 75,
+                      "SPORT": 62
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 16345.43,
+              "gain": 0.003468857935997882,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 6760.975,
+                "gain": 0.002540901450213573,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.5554,
+                  "gain": 0.03159583070031691,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 29,
+                      "SPORT": 20
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 19,
+                      "SPORT": 3
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.50595,
+                  "gain": 0.001968584377182836,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 446,
+                      "SOCIAL": 17,
+                      "SPORT": 105
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 658,
+                      "SOCIAL": 32,
+                      "SPORT": 91
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.5662,
+                "gain": 0.02394627042876002,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 17054.260000000002,
+                  "gain": 0.00433046144355459,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 29,
+                      "SPORT": 12
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 53,
+                      "SPORT": 13
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.60485,
+                  "gain": 0.02492850201305008,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 16,
+                      "SPORT": 9
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "SPORT",
+                    "counts": {
+                      "LOCOMOTION": 10,
+                      "SPORT": 14
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "leaf": false,
+          "feature": 0,
+          "threshold": 39102.62,
+          "gain": 0.007188001658971321,
+          "left": {
+            "leaf": false,
+            "feature": 1,
+            "threshold": 0.2764,
+            "gain": 0.004961497959585226,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 22776.14,
+              "gain": 0.0025555474362846664,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 21227.59,
+                "gain": 0.0005213506820032077,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 18886.114999999998,
+                  "gain": 0.001287021157424073,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 4,
+                      "LOCOMOTION": 175,
+                      "SPORT": 69
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 15,
+                      "LOCOMOTION": 572,
+                      "SOCIAL": 1,
+                      "SPORT": 163
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 21710.230000000003,
+                  "gain": 0.00264071592742926,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 2,
+                      "LOCOMOTION": 95,
+                      "SPORT": 46
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 5,
+                      "LOCOMOTION": 211,
+                      "SOCIAL": 1,
+                      "SPORT": 69
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 36682.455,
+                "gain": 0.00047574735423261405,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 32352.809999999998,
+                  "gain": 0.00030452486321769223,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 14,
+                      "LOCOMOTION": 1392,
+                      "SOCIAL": 2,
+                      "SPORT": 297
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "FINE_MOTOR": 4,
+                      "LOCOMOTION": 246,
+                      "SPORT": 65
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 37326.979999999996,
+                  "gain": 0.00614771812928494,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 26,
+                      "SPORT": 7
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 85,
+                      "SPORT": 8
+                    }
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 20513.195,
+              "gain": 0.0046135399247838604,
+              "left": {
+                "leaf": false,
+                "feature": 1,
+                "threshold": 0.40669999999999995,
+                "gain": 0.004190049864351952,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.36455,
+                  "gain": 0.031123094500188353,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 19,
+                      "SPORT": 2
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 17,
+                      "SPORT": 9
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 19297.585,
+                  "gain": 0.0016493666432088883,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 117,
+                      "SPORT": 18
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 134,
+                      "SPORT": 11
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 21453.184999999998,
+                "gain": 0.0009381074841894876,
+                "left": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.5065500000000001,
+                  "gain": 0.002494041867954877,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 49,
+                      "SPORT": 5
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 45,
+                      "SPORT": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 1,
+                  "threshold": 0.47885,
+                  "gain": 0.0002738721231519761,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 125,
+                      "SPORT": 3
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 115
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "right": {
+            "leaf": false,
+            "feature": 0,
+            "threshold": 47150.255000000005,
+            "gain": 0.0026934371862080697,
+            "left": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 40881.95,
+              "gain": 0.0025440372946576306,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 40040.28,
+                "gain": 0.022953627682052336,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "FINE_MOTOR": 2,
+                    "LOCOMOTION": 34,
+                    "SPORT": 1
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 40497.84,
+                  "gain": 0.004556182398747999,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 21,
+                      "SPORT": 6
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 15,
+                      "SPORT": 7
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 46575.33,
+                "gain": 0.002232756768225458,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 43951.53,
+                  "gain": 0.0007670221170909819,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 152,
+                      "SPORT": 16
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 135,
+                      "SPORT": 8
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 25,
+                    "SPORT": 6
+                  }
+                }
+              }
+            },
+            "right": {
+              "leaf": false,
+              "feature": 0,
+              "threshold": 68429.66,
+              "gain": 0.0004083889949716493,
+              "left": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 47901.895000000004,
+                "gain": 0.00013909523699560944,
+                "left": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 33
+                  }
+                },
+                "right": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 50306.9,
+                  "gain": 0.00037652235204777007,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 115,
+                      "SPORT": 8
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 471,
+                      "SPORT": 15
+                    }
+                  }
+                }
+              },
+              "right": {
+                "leaf": false,
+                "feature": 0,
+                "threshold": 90544.07999999999,
+                "gain": 2.3108993701505612e-05,
+                "left": {
+                  "leaf": false,
+                  "feature": 0,
+                  "threshold": 86744.91,
+                  "gain": 0.000201397259875764,
+                  "left": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 228,
+                      "SPORT": 1
+                    }
+                  },
+                  "right": {
+                    "leaf": true,
+                    "label": "LOCOMOTION",
+                    "counts": {
+                      "LOCOMOTION": 26,
+                      "SPORT": 1
+                    }
+                  }
+                },
+                "right": {
+                  "leaf": true,
+                  "label": "LOCOMOTION",
+                  "counts": {
+                    "LOCOMOTION": 87
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "classes": [
+    "FINE_MOTOR",
+    "LOCOMOTION",
+    "SOCIAL",
+    "SPORT"
+  ],
+  "feature_names": [
+    "jerk_p95_ms3",
+    "imu_coupling_r",
+    "accel_std",
+    "gyro_energy",
+    "dominant_freq_hz",
+    "jerk_peak_ms3"
+  ],
+  "feature_importance": {
+    "jerk_p95_ms3": 0.8319536625327871,
+    "imu_coupling_r": 0.1680463374672095
+  },
+  "version": "1.4",
+  "n_records": 103352,
+  "n_features": 6,
+  "domains": [
+    "FINE_MOTOR",
+    "LOCOMOTION",
+    "SOCIAL",
+    "SPORT"
+  ],
+  "merge_fine_motor": true,
+  "accuracy": 0.7655,
+  "cv_std": 0.0017,
+  "trained_at": "2026-03-02T21:46:24Z"
+}

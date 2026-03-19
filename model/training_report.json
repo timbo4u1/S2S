@@ -1,0 +1,18 @@
+{
+  "version": "1.4",
+  "n_records": 103352,
+  "domains": [
+    "FINE_MOTOR",
+    "LOCOMOTION",
+    "SOCIAL",
+    "SPORT"
+  ],
+  "merge_fine_motor": true,
+  "cv_accuracy": 0.7655,
+  "cv_std": 0.0017,
+  "train_accuracy": 0.7689,
+  "feature_importance": {
+    "jerk_p95_ms3": 0.8319536625327871,
+    "imu_coupling_r": 0.1680463374672095
+  }
+}

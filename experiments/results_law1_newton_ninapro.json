@@ -1,0 +1,78 @@
+{
+  "experiment": "S2S Law 1 Newton NinaPro DB5",
+  "dataset": "NinaPro DB5 \u2014 10 subjects, EMG+accel, 2000Hz",
+  "n_subjects": 10,
+  "n_windows": 500,
+  "mean_lag_ms": 117.53,
+  "std_lag_ms": 59.98,
+  "mean_lag_shuffle": 88.47,
+  "pct_in_range": 81.6,
+  "law1_range_ms": [
+    50,
+    200
+  ],
+  "law1_proven": true,
+  "subject_results": {
+    "s1": {
+      "mean_lag_ms": 104.7,
+      "std_lag_ms": 57.4,
+      "n_windows": 50,
+      "pct_in_range": 76.0
+    },
+    "s2": {
+      "mean_lag_ms": 125.5,
+      "std_lag_ms": 64.7,
+      "n_windows": 50,
+      "pct_in_range": 78.0
+    },
+    "s3": {
+      "mean_lag_ms": 120.1,
+      "std_lag_ms": 52.9,
+      "n_windows": 50,
+      "pct_in_range": 88.0
+    },
+    "s4": {
+      "mean_lag_ms": 128.5,
+      "std_lag_ms": 58.8,
+      "n_windows": 50,
+      "pct_in_range": 86.0
+    },
+    "s5": {
+      "mean_lag_ms": 155.1,
+      "std_lag_ms": 56.1,
+      "n_windows": 50,
+      "pct_in_range": 90.0
+    },
+    "s6": {
+      "mean_lag_ms": 117.7,
+      "std_lag_ms": 54.8,
+      "n_windows": 50,
+      "pct_in_range": 84.0
+    },
+    "s7": {
+      "mean_lag_ms": 106.9,
+      "std_lag_ms": 59.5,
+      "n_windows": 50,
+      "pct_in_range": 80.0
+    },
+    "s8": {
+      "mean_lag_ms": 108.7,
+      "std_lag_ms": 63.8,
+      "n_windows": 50,
+      "pct_in_range": 72.0
+    },
+    "s9": {
+      "mean_lag_ms": 112.7,
+      "std_lag_ms": 54.7,
+      "n_windows": 50,
+      "pct_in_range": 86.0
+    },
+    "s10": {
+      "mean_lag_ms": 95.4,
+      "std_lag_ms": 54.9,
+      "n_windows": 50,
+      "pct_in_range": 76.0
+    }
+  },
+  "total_time_s": 2
+}

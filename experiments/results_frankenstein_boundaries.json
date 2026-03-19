@@ -1,0 +1,250 @@
+{
+  "n_pairs_tested": 50,
+  "law_boundary_stats": {
+    "resonance_frequency": {
+      "mean_boundary": 0.2916666666666667,
+      "std_boundary": 0.20289533624412873,
+      "min_boundary": 0.03125,
+      "max_boundary": 0.5546875,
+      "n_triggers": 24,
+      "interpretation": "resonance_frequency breaks at 29.2% \u00b1 20.3% contamination"
+    },
+    "imu_internal_consistency": {
+      "mean_boundary": 0.30570652173913043,
+      "std_boundary": 0.2462600730633862,
+      "min_boundary": 0.03125,
+      "max_boundary": 0.984375,
+      "n_triggers": 23,
+      "interpretation": "imu_internal_consistency breaks at 30.6% \u00b1 24.6% contamination"
+    },
+    "jerk_bounds": {
+      "mean_boundary": 0.5370065789473685,
+      "std_boundary": 0.11007302244063916,
+      "min_boundary": 0.4453125,
+      "max_boundary": 0.984375,
+      "n_triggers": 19,
+      "interpretation": "jerk_bounds breaks at 53.7% \u00b1 11.0% contamination"
+    }
+  },
+  "individual_boundaries": [
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 39,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.3671875,
+      "boundary_laws": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 24,
+      "interpretation": "Data stays valid until 36.7% contamination"
+    },
+    {
+      "boundary_ratio": 0.5234375,
+      "boundary_laws": [
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 30,
+      "interpretation": "Data stays valid until 52.3% contamination"
+    },
+    {
+      "boundary_ratio": 0.03125,
+      "boundary_laws": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 28,
+      "interpretation": "Data stays valid until 3.1% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 49,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.5546875,
+      "boundary_laws": [
+        "resonance_frequency",
+        "jerk_bounds"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 29,
+      "interpretation": "Data stays valid until 55.5% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 42,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.578125,
+      "boundary_laws": [
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 41,
+      "interpretation": "Data stays valid until 57.8% contamination"
+    },
+    {
+      "boundary_ratio": 0.546875,
+      "boundary_laws": [
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 39,
+      "interpretation": "Data stays valid until 54.7% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 51,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 48,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.3671875,
+      "boundary_laws": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 24,
+      "interpretation": "Data stays valid until 36.7% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 45,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.984375,
+      "boundary_laws": [
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 36,
+      "interpretation": "Data stays valid until 98.4% contamination"
+    },
+    {
+      "boundary_ratio": 0.5234375,
+      "boundary_laws": [
+        "resonance_frequency",
+        "jerk_bounds"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 34,
+      "interpretation": "Data stays valid until 52.3% contamination"
+    },
+    {
+      "boundary_ratio": 0.5078125,
+      "boundary_laws": [
+        "resonance_frequency",
+        "jerk_bounds"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 33,
+      "interpretation": "Data stays valid until 50.8% contamination"
+    },
+    {
+      "boundary_ratio": 0.5234375,
+      "boundary_laws": [
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 29,
+      "interpretation": "Data stays valid until 52.3% contamination"
+    },
+    {
+      "boundary_ratio": 0.1015625,
+      "boundary_laws": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 20,
+      "interpretation": "Data stays valid until 10.2% contamination"
+    },
+    {
+      "boundary_ratio": 1.0,
+      "boundary_laws": [],
+      "good_tier": "SILVER",
+      "bad_tier": "BRONZE",
+      "good_score": 74,
+      "bad_score": 36,
+      "interpretation": "Data stays valid until 100.0% contamination"
+    },
+    {
+      "boundary_ratio": 0.4921875,
+      "boundary_laws": [
+        "resonance_frequency",
+        "jerk_bounds"
+      ],
+      "good_tier": "SILVER",
+      "bad_tier": "REJECTED",
+      "good_score": 74,
+      "bad_score": 26,
+      "interpretation": "Data stays valid until 49.2% contamination"
+    }
+  ]
+}

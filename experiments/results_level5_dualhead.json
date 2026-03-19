@@ -1,0 +1,29 @@
+{
+  "experiment": "Level 5 Dual-Head Physical AI",
+  "date": "2026-03-13",
+  "n_pairs": 3487,
+  "n_features": 13,
+  "n_motion_targets": 8,
+  "motion_targets": [
+    "pos_x",
+    "pos_y",
+    "pos_z",
+    "vel_x",
+    "vel_y",
+    "vel_z",
+    "jerk_rms",
+    "smoothness"
+  ],
+  "sources": {
+    "NinaPro": 3151,
+    "Amputee": 93,
+    "RoboTurk": 243
+  },
+  "epochs": 100,
+  "device": "mps",
+  "best_val_loss": 0.6447,
+  "final_quality_acc": 0.7221,
+  "final_motion_mse": 0.7344,
+  "smoothness_correlation": 0.904,
+  "level5_dualhead_proven": true
+}

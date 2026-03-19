@@ -1,0 +1,46 @@
+{
+  "experiment": "s2s_v3",
+  "timestamp": "2026-03-04T07:08:34",
+  "conditions": {
+    "A_all_data": {
+      "accuracy": 0.8397,
+      "macro_f1": 0.5576,
+      "per_domain_f1": {
+        "PRECISION": 0.947,
+        "SOCIAL": 0.0,
+        "LOCOMOTION": 1.0,
+        "DAILY_LIVING": 0.0,
+        "SPORT": 0.8408
+      },
+      "train_n": 57423,
+      "test_n": 14355
+    },
+    "B_certified": {
+      "accuracy": 0.8109,
+      "macro_f1": 0.5562,
+      "per_domain_f1": {
+        "PRECISION": 0.866,
+        "SOCIAL": 0.0,
+        "LOCOMOTION": 0.994,
+        "DAILY_LIVING": 0.0,
+        "SPORT": 0.9212
+      },
+      "train_n": 22491,
+      "test_n": 14355
+    },
+    "C_random_subsample": {
+      "accuracy": 0.8369,
+      "macro_f1": 0.5559,
+      "per_domain_f1": {
+        "PRECISION": 0.9443,
+        "SOCIAL": 0.0,
+        "LOCOMOTION": 1.0,
+        "DAILY_LIVING": 0.0,
+        "SPORT": 0.835
+      },
+      "train_n": 22491,
+      "test_n": 14355
+    }
+  },
+  "note": "AdaGrad optimizer, 5 features (jerk_log, coupling, score, tier, laws_passed)"
+}

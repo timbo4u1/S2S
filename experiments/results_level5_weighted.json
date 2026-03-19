@@ -1,0 +1,49 @@
+{
+  "experiment": "Level 5 Weighted Semi-Supervised",
+  "date": "2026-03-13",
+  "certified_pairs": 3487,
+  "raw_pairs": 243,
+  "cycles": 5,
+  "cycle_history": [
+    {
+      "cycle": 1,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.9,
+      "raw_weight_mean": 0.991,
+      "raw_weight_max": 1.0
+    },
+    {
+      "cycle": 2,
+      "quality_acc": 0.6719,
+      "smoothness_corr": 0.906,
+      "raw_weight_mean": 0.548,
+      "raw_weight_max": 0.635
+    },
+    {
+      "cycle": 3,
+      "quality_acc": 0.7101,
+      "smoothness_corr": 0.91,
+      "raw_weight_mean": 0.681,
+      "raw_weight_max": 0.846
+    },
+    {
+      "cycle": 4,
+      "quality_acc": 0.7098,
+      "smoothness_corr": 0.911,
+      "raw_weight_mean": 0.61,
+      "raw_weight_max": 0.695
+    },
+    {
+      "cycle": 5,
+      "quality_acc": 0.7098,
+      "smoothness_corr": 0.911,
+      "raw_weight_mean": 0.661,
+      "raw_weight_max": 0.775
+    }
+  ],
+  "final_quality_acc": 0.7098,
+  "final_smoothness_corr": 0.911,
+  "raw_promoted": 37,
+  "raw_total": 243,
+  "description": "Trains on all data, weights certified=1.0, raw=0.1\u2192quality_score. Each cycle model re-evaluates raw data and promotes high-quality windows."
+}

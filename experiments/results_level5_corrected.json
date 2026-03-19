@@ -1,0 +1,140 @@
+{
+  "experiment": "Level 5 Corrected \u2014 correct gyro from rotation_delta",
+  "data_mismatch_fixed": true,
+  "gyro_method": "rotation_delta double-diff acceleration (same as certify_roboturk.py)",
+  "data": {
+    "total": 4145,
+    "tiers": {
+      "BRONZE": 2425,
+      "SILVER": 1493,
+      "GOLD": 227
+    }
+  },
+  "final": {
+    "quality_acc": 0.6767,
+    "smoothness_corr": 0.941,
+    "best_smooth": 0.941
+  },
+  "history": [
+    {
+      "cycle": 1,
+      "quality_acc": 0.6548,
+      "smoothness_corr": 0.916,
+      "speed_corr": 0.868
+    },
+    {
+      "cycle": 2,
+      "quality_acc": 0.6555,
+      "smoothness_corr": 0.931,
+      "speed_corr": 0.868
+    },
+    {
+      "cycle": 3,
+      "quality_acc": 0.6555,
+      "smoothness_corr": 0.931,
+      "speed_corr": 0.867
+    },
+    {
+      "cycle": 4,
+      "quality_acc": 0.6555,
+      "smoothness_corr": 0.937,
+      "speed_corr": 0.866
+    },
+    {
+      "cycle": 5,
+      "quality_acc": 0.6555,
+      "smoothness_corr": 0.936,
+      "speed_corr": 0.866
+    },
+    {
+      "cycle": 6,
+      "quality_acc": 0.6593,
+      "smoothness_corr": 0.939,
+      "speed_corr": 0.868
+    },
+    {
+      "cycle": 7,
+      "quality_acc": 0.6586,
+      "smoothness_corr": 0.939,
+      "speed_corr": 0.87
+    },
+    {
+      "cycle": 8,
+      "quality_acc": 0.6593,
+      "smoothness_corr": 0.938,
+      "speed_corr": 0.87
+    },
+    {
+      "cycle": 9,
+      "quality_acc": 0.6642,
+      "smoothness_corr": 0.939,
+      "speed_corr": 0.871
+    },
+    {
+      "cycle": 10,
+      "quality_acc": 0.668,
+      "smoothness_corr": 0.939,
+      "speed_corr": 0.871
+    },
+    {
+      "cycle": 11,
+      "quality_acc": 0.6639,
+      "smoothness_corr": 0.938,
+      "speed_corr": 0.872
+    },
+    {
+      "cycle": 12,
+      "quality_acc": 0.6683,
+      "smoothness_corr": 0.94,
+      "speed_corr": 0.873
+    },
+    {
+      "cycle": 13,
+      "quality_acc": 0.6678,
+      "smoothness_corr": 0.94,
+      "speed_corr": 0.873
+    },
+    {
+      "cycle": 14,
+      "quality_acc": 0.6745,
+      "smoothness_corr": 0.94,
+      "speed_corr": 0.874
+    },
+    {
+      "cycle": 15,
+      "quality_acc": 0.6743,
+      "smoothness_corr": 0.94,
+      "speed_corr": 0.874
+    },
+    {
+      "cycle": 16,
+      "quality_acc": 0.6685,
+      "smoothness_corr": 0.938,
+      "speed_corr": 0.87
+    },
+    {
+      "cycle": 17,
+      "quality_acc": 0.6762,
+      "smoothness_corr": 0.941,
+      "speed_corr": 0.874
+    },
+    {
+      "cycle": 18,
+      "quality_acc": 0.6765,
+      "smoothness_corr": 0.94,
+      "speed_corr": 0.873
+    },
+    {
+      "cycle": 19,
+      "quality_acc": 0.6758,
+      "smoothness_corr": 0.941,
+      "speed_corr": 0.874
+    },
+    {
+      "cycle": 20,
+      "quality_acc": 0.6767,
+      "smoothness_corr": 0.941,
+      "speed_corr": 0.875
+    }
+  ]
+}

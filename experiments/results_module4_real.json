@@ -1,0 +1,19 @@
+{
+  "description": "Module 4 retrained on real certified data",
+  "date": "2026-03-12",
+  "n_windows": 4860,
+  "sources": [
+    "NinaPro DB5",
+    "EMG Amputee",
+    "RoboTurk Open-X"
+  ],
+  "synthetic_baseline": 0.8864,
+  "real_data_results": {
+    "RandomForest": 0.7798,
+    "GradientBoosting": 0.7726
+  },
+  "improvement": {
+    "RandomForest": -0.1066,
+    "GradientBoosting": -0.1138
+  }
+}

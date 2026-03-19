@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>S2S Pose — Physics Certification</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400&display=swap');
+:root {
+  --bg:#04080c;--panel:rgba(6,14,20,0.93);--border:#0f2030;
+  --gold:#ffd060;--silver:#80c8f0;--bronze:#e08840;--reject:#ff3030;
+  --green:#20ff90;--cyan:#00d4ff;--dim:#1a3040;--text:#80b0c8;
+  --orb:'Orbitron',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);font-family:var(--mono);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+#viewport{position:relative;flex:1;overflow:hidden;background:#000;}
+#video{position:absolute;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);opacity:0.8;}
+#poseCanvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);}
+#viewport::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.012) 2px,rgba(0,212,255,0.012) 4px);pointer-events:none;z-index:10;}
+.corner{position:absolute;width:24px;height:24px;border-color:var(--cyan);border-style:solid;opacity:0.5;z-index:20;}
+.corner.tl{top:12px;left:12px;border-width:2px 0 0 2px;}
+.corner.tr{top:12px;right:12px;border-width:2px 2px 0 0;}
+.corner.bl{bottom:12px;left:12px;border-width:0 0 2px 2px;}
+.corner.br{bottom:12px;right:12px;border-width:0 2px 2px 0;}
+#scoreFloat{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:30;text-align:center;pointer-events:none;}
+.score-tier{font-family:var(--orb);font-size:26px;font-weight:900;letter-spacing:4px;color:var(--dim);transition:color 0.3s,text-shadow 0.3s;line-height:1;}
+.score-tier.active{text-shadow:0 0 20px currentColor;}
+.score-num{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--dim);margin-top:3px;transition:color 0.3s;}
+#panel{background:var(--panel);border-top:1px solid var(--border);padding:10px 14px 12px;backdrop-filter:blur(8px);z-index:40;}
+.panel-row{display:flex;gap:8px;margin-bottom:8px;}
+.metric{flex:1;background:rgba(4,8,12,0.8);border:1px solid var(--border);border-radius:3px;padding:6px 8px;transition:border-color 0.3s;}
+.metric.pass{border-color:rgba(32,255,144,0.25);}
+.metric.fail{border-color:rgba(255,48,48,0.25);}
+.metric-name{font-size:7px;letter-spacing:2px;color:var(--dim);margin-bottom:3px;}
+.metric-val{font-size:13px;color:var(--text);transition:color 0.3s;}
+.metric.pass .metric-val{color:var(--green);}
+.metric.fail .metric-val{color:var(--reject);}
+.metric-unit{font-size:7px;color:var(--dim);margin-top:1px;}
+.bar-wrap{height:3px;background:var(--border);border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.bar-fill{height:100%;width:0%;border-radius:2px;background:var(--cyan);transition:width 0.3s ease,background 0.3s;}
+.bottom-row{display:flex;justify-content:space-between;align-items:center;}
+.domain-tag{font-family:var(--orb);font-size:10px;letter-spacing:3px;color:var(--gold);}
+.status-tag{font-size:9px;letter-spacing:2px;color:var(--dim);display:flex;align-items:center;gap:5px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--dim);transition:background 0.3s;}
+.live-dot.on{background:var(--green);animation:blink 1s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+#startScreen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;padding:32px;text-align:center;}
+#startScreen.hidden{display:none;}
+.start-logo{font-family:var(--orb);font-size:42px;font-weight:900;letter-spacing:8px;margin-bottom:4px;}
+.start-logo span{color:var(--cyan);}
+.start-sub{font-size:9px;letter-spacing:4px;color:var(--dim);margin-bottom:28px;}
+.start-desc{font-size:11px;color:var(--text);line-height:1.9;margin-bottom:28px;max-width:300px;}
+.start-desc strong{color:var(--cyan);}
+#startBtn{font-family:var(--orb);font-size:12px;letter-spacing:4px;color:var(--bg);background:var(--cyan);border:none;border-radius:2px;padding:16px 36px;cursor:pointer;width:100%;max-width:300px;-webkit-tap-highlight-color:transparent;}
+.start-note{font-size:9px;color:var(--dim);margin-top:12px;line-height:1.7;}
+#loadingScreen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:90;gap:16px;}
+#loadingScreen.hidden{display:none;}
+.loading-title{font-family:var(--orb);font-size:11px;letter-spacing:4px;color:var(--cyan);}
+.loading-sub{font-size:9px;color:var(--dim);letter-spacing:2px;}
+.loading-bar-wrap{width:200px;height:2px;background:var(--border);border-radius:1px;overflow:hidden;}
+.loading-bar{height:100%;background:var(--cyan);width:0%;transition:width 0.4s ease;}
+#errorMsg{font-size:10px;color:var(--reject);margin-top:8px;display:none;text-align:center;max-width:280px;line-height:1.6;}
+#retryBtn{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--bg);background:var(--silver);border:none;border-radius:2px;padding:10px 20px;cursor:pointer;display:none;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div id="startScreen">
+  <div class="start-logo">S<span>2</span>S</div>
+  <div class="start-sub">POSE CERTIFICATION</div>
+  <div class="start-desc">
+    Point camera at a person.<br>
+    S2S tracks <strong>17 body joints</strong> and checks<br>
+    biomechanical physics laws live.<br><br>
+    <strong>Rigid body · Jerk · Symmetry · Flow</strong>
+  </div>
+  <button id="startBtn">START CAMERA</button>
+  <div class="start-note">Camera stays on device · No data sent anywhere</div>
+</div>
+
+<div id="loadingScreen" class="hidden">
+  <div class="loading-title">LOADING POSE MODEL</div>
+  <div class="loading-sub">~3MB · one time download</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loadBar"></div></div>
+  <div id="errorMsg"></div>
+  <button id="retryBtn" onclick="location.reload()">RETRY</button>
+</div>
+
+<div id="viewport">
+  <video id="video" autoplay muted playsinline></video>
+  <canvas id="poseCanvas"></canvas>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div id="scoreFloat">
+    <div class="score-tier" id="tierDisp">——</div>
+    <div class="score-num" id="scoreDisp">— / 100</div>
+  </div>
+</div>
+
+<div id="panel">
+  <div class="panel-row">
+    <div class="metric" id="m-rigid"><div class="metric-name">RIGID BODY</div><div class="metric-val" id="v-rigid">—</div><div class="metric-unit">consistency</div></div>
+    <div class="metric" id="m-jerk"><div class="metric-name">JOINT JERK</div><div class="metric-val" id="v-jerk">—</div><div class="metric-unit">smoothness</div></div>
+    <div class="metric" id="m-sym"><div class="metric-name">SYMMETRY</div><div class="metric-val" id="v-sym">—</div><div class="metric-unit">bilateral</div></div>
+    <div class="metric" id="m-flow"><div class="metric-name">FLOW</div><div class="metric-val" id="v-flow">—</div><div class="metric-unit">motion</div></div>
+  </div>
+  <div class="bar-wrap"><div class="bar-fill" id="barFill"></div></div>
+  <div class="bottom-row">
+    <div class="domain-tag" id="domainDisp">SCANNING...</div>
+    <div class="status-tag"><div class="live-dot" id="liveDot"></div><span id="fpsDisp">— FPS</span></div>
+  </div>
+</div>
+
+<!-- TensorFlow.js + MoveNet (lighter, faster than MediaPipe) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.0/dist/pose-detection.min.js"></script>
+
+<script>
+// MoveNet keypoint indices
+const KP = {
+  nose:0, l_eye:1, r_eye:2, l_ear:3, r_ear:4,
+  l_shoulder:5, r_shoulder:6, l_elbow:7, r_elbow:8,
+  l_wrist:9, r_wrist:10, l_hip:11, r_hip:12,
+  l_knee:13, r_knee:14, l_ankle:15, r_ankle:16
+};
+
+const CONNECTIONS = [
+  [5,6],[5,7],[7,9],[6,8],[8,10],
+  [5,11],[6,12],[11,12],[11,13],[12,14],[13,15],[14,16]
+];
+
+let history = [];
+const HIST = 25;
+let detector = null;
+let animId = null;
+let frameCount = 0, lastFps = Date.now(), fps = 0;
+
+// ── S2S Physics
+function rigidBody(hist) {
+  if (hist.length < 4) return 0.5;
+  const segs = [[5,7],[6,8],[7,9],[8,10],[11,13],[12,14],[13,15],[14,16]];
+  let totalCV = 0, valid = 0;
+  for (const [a,b] of segs) {
+    const lens = hist.map(kps => {
+      const ka=kps[a], kb=kps[b];
+      if (!ka||!kb||ka.score<0.3||kb.score<0.3) return null;
+      return Math.hypot(ka.x-kb.x, ka.y-kb.y);
+    }).filter(v=>v!==null);
+    if (lens.length < 3) continue;
+    const mean = lens.reduce((s,v)=>s+v,0)/lens.length;
+    if (mean < 1) continue;
+    const std = Math.sqrt(lens.reduce((s,v)=>s+(v-mean)**2,0)/lens.length);
+    totalCV += std/mean;
+    valid++;
+  }
+  return valid ? Math.max(0, 1 - (totalCV/valid)*8) : 0.5;
+}
+
+function jointJerk(hist) {
+  if (hist.length < 6) return 0.5;
+  const joints = [KP.l_wrist, KP.r_wrist, KP.l_ankle, KP.r_ankle];
+  let maxJerk = 0;
+  for (const j of joints) {
+    const pos = hist.map(kps=>kps[j]).filter(v=>v&&v.score>0.3);
+    if (pos.length < 5) continue;
+    const vel = pos.slice(1).map((p,i)=>({x:p.x-pos[i].x, y:p.y-pos[i].y}));
+    const acc = vel.slice(1).map((v,i)=>({x:v.x-vel[i].x, y:v.y-vel[i].y}));
+    for (let i=1;i<acc.length;i++) {
+      maxJerk = Math.max(maxJerk, Math.hypot(acc[i].x-acc[i-1].x, acc[i].y-acc[i-1].y));
+    }
+  }
+  return Math.max(0, 1 - maxJerk/15);
+}
+
+function symmetry(kps) {
+  const pairs=[[5,6],[7,8],[9,10],[11,12],[13,14],[15,16]];
+  let scores=[];
+  const cx = kps.reduce((s,k)=>s+(k?k.x:0),0) / kps.filter(k=>k&&k.score>0.3).length || 0.5;
+  for (const [l,r] of pairs) {
+    const lk=kps[l], rk=kps[r];
+    if (!lk||!rk||lk.score<0.3||rk.score<0.3) continue;
+    const ld=Math.abs(lk.x-cx), rd=Math.abs(rk.x-cx);
+    const avg=(ld+rd)/2+0.001;
+    scores.push(1-Math.min(Math.abs(ld-rd)/avg,1));
+  }
+  return scores.length ? scores.reduce((s,v)=>s+v,0)/scores.length : 0.5;
+}
+
+function motionFlow(hist) {
+  if (hist.length < 6) return 0.5;
+  const j = KP.r_wrist;
+  const pos = hist.map(kps=>kps[j]).filter(v=>v&&v.score>0.3);
+  if (pos.length < 5) return 0.5;
+  const spd = pos.slice(1).map((p,i)=>Math.hypot(p.x-pos[i].x, p.y-pos[i].y));
+  const mean = spd.reduce((s,v)=>s+v,0)/spd.length;
+  const std = Math.sqrt(spd.reduce((s,v)=>s+(v-mean)**2,0)/spd.length);
+  return Math.max(0, 1-(mean>0.5?std/mean:1));
+}
+
+function classifyDomain(kps_hist, jerkScore) {
+  if (kps_hist.length < 5) return 'SCANNING';
+  const j = KP.l_ankle;
+  const pos = kps_hist.map(k=>k[j]).filter(v=>v&&v.score>0.3);
+  let speed = 0;
+  if (pos.length >= 2) {
+    const d = pos.slice(1).map((p,i)=>Math.hypot(p.x-pos[i].x,p.y-pos[i].y));
+    speed = d.reduce((s,v)=>s+v,0)/d.length;
+  }
+  if (speed > 8) return 'LOCOMOTION';
+  if (jerkScore < 0.4) return 'SPORT';
+  if (speed < 1 && jerkScore > 0.8) return 'DAILY_LIVING';
+  if (jerkScore > 0.85) return 'PRECISION';
+  return 'SOCIAL';
+}
+
+function certify(hist) {
+  if (hist.length < 5) return null;
+  const r = rigidBody(hist);
+  const j = jointJerk(hist);
+  const s = symmetry(hist[hist.length-1]);
+  const f = motionFlow(hist);
+  let score = 0;
+  if (r>0.6) score+=35; else if(r>0.3) score+=15;
+  if (j>0.6) score+=25; else if(j>0.3) score+=12;
+  if (s>0.6) score+=20; else if(s>0.3) score+=10;
+  if (f>0.5) score+=20; else if(f>0.2) score+=10;
+  let tier,color;
+  if(score>=90){tier='GOLD';color='#ffd060';}
+  else if(score>=60){tier='SILVER';color='#80c8f0';}
+  else if(score>=30){tier='BRONZE';color='#e08840';}
+  else{tier='REJECTED';color='#ff3030';}
+  return {score,tier,color,r,j,s,f,domain:classifyDomain(hist,j)};
+}
+
+// ── Draw skeleton
+function drawSkeleton(canvas, keypoints, result) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if (!keypoints||!keypoints.length) return;
+  const color = result?result.color:'#00d4ff';
+
+  ctx.lineWidth = 2.5;
+  for (const [a,b] of CONNECTIONS) {
+    const ka=keypoints[a], kb=keypoints[b];
+    if (!ka||!kb||ka.score<0.3||kb.score<0.3) continue;
+    const g = ctx.createLinearGradient(ka.x,ka.y,kb.x,kb.y);
+    g.addColorStop(0,color+'cc'); g.addColorStop(1,'#00d4ff88');
+    ctx.strokeStyle=g;
+    ctx.beginPath(); ctx.moveTo(ka.x,ka.y); ctx.lineTo(kb.x,kb.y); ctx.stroke();
+  }
+
+  for (const kp of keypoints) {
+    if (!kp||kp.score<0.3) continue;
+    ctx.beginPath(); ctx.arc(kp.x,kp.y,5,0,Math.PI*2);
+    ctx.fillStyle=color+'30'; ctx.fill();
+    ctx.beginPath(); ctx.arc(kp.x,kp.y,2.5,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
+  }
+
+  if (result && keypoints[11]&&keypoints[12]&&keypoints[11].score>0.3&&keypoints[12].score>0.3) {
+    const cx=(keypoints[11].x+keypoints[12].x)/2;
+    const cy=(keypoints[11].y+keypoints[12].y)/2 - 24;
+    ctx.font='bold 14px "IBM Plex Mono"';
+    ctx.fillStyle=color; ctx.textAlign='center';
+    ctx.shadowColor=color; ctx.shadowBlur=8;
+    ctx.fillText(result.score+'/100',cx,cy);
+    ctx.shadowBlur=0;
+  }
+}
+
+// ── UI
+function setMetric(id,valId,val,display,pass) {
+  document.getElementById(id).className='metric '+(pass?'pass':'fail');
+  document.getElementById(valId).textContent=display;
+}
+function updateUI(result) {
+  if (!result) return;
+  const {score,tier,color,r,j,s,f,domain}=result;
+  const te=document.getElementById('tierDisp');
+  te.textContent=tier; te.style.color=color; te.className='score-tier active';
+  const se=document.getElementById('scoreDisp');
+  se.textContent=score+' / 100'; se.style.color=color;
+  document.getElementById('barFill').style.width=score+'%';
+  document.getElementById('barFill').style.background=color;
+  setMetric('m-rigid','v-rigid',r,r.toFixed(2),r>0.6);
+  setMetric('m-jerk','v-jerk',j,j.toFixed(2),j>0.6);
+  setMetric('m-sym','v-sym',s,s.toFixed(2),s>0.6);
+  setMetric('m-flow','v-flow',f,f.toFixed(2),f>0.5);
+  document.getElementById('domainDisp').textContent=domain;
+}
+
+// ── Main loop
+async function detect() {
+  const video=document.getElementById('video');
+  const canvas=document.getElementById('poseCanvas');
+  if (video.readyState < 2) { animId=requestAnimationFrame(detect); return; }
+  canvas.width=video.videoWidth; canvas.height=video.videoHeight;
+
+  frameCount++;
+  const now=Date.now();
+  if(now-lastFps>=1000){fps=frameCount;frameCount=0;lastFps=now;document.getElementById('fpsDisp').textContent=fps+' FPS';}
+
+  try {
+    const poses=await detector.estimatePoses(video);
+    if(poses.length>0) {
+      const kps=poses[0].keypoints;
+      history.push(kps);
+      if(history.length>HIST) history.shift();
+      const result=certify(history);
+      drawSkeleton(canvas,kps,result);
+      updateUI(result);
+      document.getElementById('liveDot').className='live-dot on';
+    } else {
+      drawSkeleton(canvas,[],null);
+      document.getElementById('domainDisp').textContent='NO PERSON DETECTED';
+      document.getElementById('liveDot').className='live-dot';
+    }
+  } catch(e) {}
+  animId=requestAnimationFrame(detect);
+}
+
+// ── Init
+function setLoadBar(pct) {
+  document.getElementById('loadBar').style.width=pct+'%';
+}
+
+async function init() {
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  setLoadBar(10);
+
+  try {
+    // Camera first
+    const stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false
+    });
+    document.getElementById('video').srcObject=stream;
+    setLoadBar(30);
+
+    // Load MoveNet Lightning (smallest, fastest)
+    setLoadBar(50);
+    await tf.ready();
+    setLoadBar(65);
+
+    detector=await poseDetection.createDetector(
+      poseDetection.SupportedModels.MoveNet,
+      {modelType:poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING}
+    );
+    setLoadBar(100);
+
+    setTimeout(()=>{
+      document.getElementById('loadingScreen').classList.add('hidden');
+      detect();
+    },400);
+
+  } catch(e) {
+    const em=document.getElementById('errorMsg');
+    em.style.display='block';
+    document.getElementById('retryBtn').style.display='block';
+    if(e.name==='NotAllowedError') {
+      em.textContent='Camera permission denied. Allow camera access and retry.';
+    } else {
+      em.textContent='Failed to load model: '+e.message+'\nCheck internet connection and retry.';
+    }
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click',init);
+</script>
+</body>
+</html>

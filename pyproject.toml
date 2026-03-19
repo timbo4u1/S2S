@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "s2s-certify"
+version = "1.5.0"
+description = "Physics-certified motion data toolkit for Physical AI training"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Timur Davkarayev", email = "timur.davkarayev@gmail.com" }
+]
+keywords = [
+  "biomechanics", "imu", "motion-capture", "physical-ai",
+  "robotics", "prosthetics", "sensor-certification", "physics"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = []   # zero runtime dependencies — stdlib only
+
+[project.optional-dependencies]
+ml = ["torch>=2.0", "numpy>=1.24"]
+dashboard = ["streamlit>=1.30", "numpy>=1.24"]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[project.urls]
+Homepage = "https://github.com/timbo4u1/S2S"
+Repository = "https://github.com/timbo4u1/S2S"
+"Bug Tracker" = "https://github.com/timbo4u1/S2S/issues"
+Documentation = "https://timbo4u1.github.io/S2S"
+
+[project.scripts]
+s2s-certify = "s2s_standard_v1_3.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["s2s_standard_v1_3*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

@@ -1,0 +1,204 @@
+{
+  "audit": "S2S Open-X Embodiment Audit",
+  "dataset": "nyu_rot_dataset (Open-X Embodiment)",
+  "date": "2026-03-11",
+  "s2s_version": "v1.5.0",
+  "hz": 10,
+  "segment": "forearm",
+  "n_episodes": 14,
+  "n_windows": 16,
+  "pass_rate_pct": 0.0,
+  "tiers": {
+    "GOLD": 0,
+    "SILVER": 0,
+    "BRONZE": 16,
+    "REJECTED": 0
+  },
+  "top_failing_laws": {
+    "jerk_bounds": 16
+  },
+  "episodes": [
+    {
+      "episode": "sample_000000000000.data.pickle",
+      "instruction": "erase the board",
+      "n_steps": 40,
+      "n_windows": 2,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 2
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000001.data.pickle",
+      "instruction": "pour the almonds into the cup",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000002.data.pickle",
+      "instruction": "hang the bag on the hook",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000003.data.pickle",
+      "instruction": "open the box",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000004.data.pickle",
+      "instruction": "hang the mug on the hook",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000005.data.pickle",
+      "instruction": "reach the blue mark on the table",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000006.data.pickle",
+      "instruction": "hang the hanger on the rod",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000007.data.pickle",
+      "instruction": "press the button",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000008.data.pickle",
+      "instruction": "close the door",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000009.data.pickle",
+      "instruction": "insert the peg in the cup",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000010.data.pickle",
+      "instruction": "insert the peg in the cup",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000011.data.pickle",
+      "instruction": "turn the knob",
+      "n_steps": 40,
+      "n_windows": 2,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 2
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000012.data.pickle",
+      "instruction": "insert the peg in the cup",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    },
+    {
+      "episode": "sample_000000000013.data.pickle",
+      "instruction": "stack the cups",
+      "n_steps": 30,
+      "n_windows": 1,
+      "avg_score": 36.0,
+      "tiers": {
+        "BRONZE": 1
+      },
+      "laws_failed": [
+        "jerk_bounds"
+      ]
+    }
+  ]
+}

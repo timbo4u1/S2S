@@ -1,0 +1,769 @@
+{
+  "queries": {
+    "pick up the cup": [
+      {
+        "rank_score": 0.658,
+        "semantic": 0.5,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6204,
+        "semantic": 0.25,
+        "physics": 83,
+        "smoothness": 0.0356,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "ascending stairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.602,
+        "semantic": 0.25,
+        "physics": 71,
+        "smoothness": 0.2208,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.595,
+        "semantic": 0.25,
+        "physics": 69,
+        "smoothness": 0.4221,
+        "tier": "SILVER",
+        "source": "emg_amputee",
+        "instruction": "prosthetic grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.5915,
+        "semantic": 0.25,
+        "physics": 68,
+        "smoothness": 0.2222,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "walk forward": [
+      {
+        "rank_score": 0.741,
+        "semantic": 0.5,
+        "physics": 76,
+        "smoothness": 0.1314,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6965,
+        "semantic": 0.5,
+        "physics": 73,
+        "smoothness": 0.1259,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.693,
+        "semantic": 0.5,
+        "physics": 72,
+        "smoothness": 0.0695,
+        "tier": "SILVER",
+        "source": "pamap2",
+        "instruction": "nordic walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.693,
+        "semantic": 0.5,
+        "physics": 72,
+        "smoothness": 0.131,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6825,
+        "semantic": 0.5,
+        "physics": 69,
+        "smoothness": 0.1317,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "run fast": [
+      {
+        "rank_score": 0.7856,
+        "semantic": 1.0,
+        "physics": 76,
+        "smoothness": 0.0174,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "running",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7112,
+        "semantic": 1.0,
+        "physics": 68,
+        "smoothness": 0.0143,
+        "tier": "SILVER",
+        "source": "pamap2",
+        "instruction": "running",
+        "laws_passed": [
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.573,
+        "semantic": 0.0,
+        "physics": 78,
+        "smoothness": 0.7906,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "laying",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.566,
+        "semantic": 0.0,
+        "physics": 76,
+        "smoothness": 0.1314,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.5625,
+        "semantic": 0.0,
+        "physics": 75,
+        "smoothness": 0.1387,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking downstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "fold laundry": [
+      {
+        "rank_score": 0.8295,
+        "semantic": 1.0,
+        "physics": 61,
+        "smoothness": 0.0782,
+        "tier": "SILVER",
+        "source": "pamap2",
+        "instruction": "ironing",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.8171,
+        "semantic": 1.0,
+        "physics": 69,
+        "smoothness": 0.0399,
+        "tier": "SILVER",
+        "source": "pamap2",
+        "instruction": "ironing",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7601,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0049,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7584,
+        "semantic": 1.0,
+        "physics": 84,
+        "smoothness": 0.0036,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7565,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.004,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "climb stairs": [
+      {
+        "rank_score": 0.8829,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0356,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "ascending stairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.8645,
+        "semantic": 1.0,
+        "physics": 71,
+        "smoothness": 0.2208,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.854,
+        "semantic": 1.0,
+        "physics": 68,
+        "smoothness": 0.2222,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.8505,
+        "semantic": 1.0,
+        "physics": 67,
+        "smoothness": 0.2178,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.847,
+        "semantic": 1.0,
+        "physics": 66,
+        "smoothness": 0.2374,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking upstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "grab and grasp object": [
+      {
+        "rank_score": 0.6825,
+        "semantic": 0.5,
+        "physics": 69,
+        "smoothness": 0.4221,
+        "tier": "SILVER",
+        "source": "emg_amputee",
+        "instruction": "prosthetic grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.665,
+        "semantic": 0.5,
+        "physics": 64,
+        "smoothness": 0.1152,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.665,
+        "semantic": 0.5,
+        "physics": 64,
+        "smoothness": 0.1326,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.658,
+        "semantic": 0.5,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.651,
+        "semantic": 0.5,
+        "physics": 60,
+        "smoothness": 0.1461,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "sit down": [
+      {
+        "rank_score": 0.7375,
+        "semantic": 0.5,
+        "physics": 75,
+        "smoothness": 0.1387,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking downstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7027,
+        "semantic": 0.5,
+        "physics": 75,
+        "smoothness": 0.0413,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "sitting",
+        "laws_passed": [
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7,
+        "semantic": 0.5,
+        "physics": 74,
+        "smoothness": 0.0505,
+        "tier": "SILVER",
+        "source": "pamap2",
+        "instruction": "sitting",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6965,
+        "semantic": 0.5,
+        "physics": 73,
+        "smoothness": 0.1463,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "walking downstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6965,
+        "semantic": 0.5,
+        "physics": 73,
+        "smoothness": 0.7348,
+        "tier": "SILVER",
+        "source": "uci_har",
+        "instruction": "sitting",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "reach and catch": [
+      {
+        "rank_score": 0.7408,
+        "semantic": 0.667,
+        "physics": 69,
+        "smoothness": 0.4221,
+        "tier": "SILVER",
+        "source": "emg_amputee",
+        "instruction": "prosthetic grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7233,
+        "semantic": 0.667,
+        "physics": 64,
+        "smoothness": 0.1152,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7233,
+        "semantic": 0.667,
+        "physics": 64,
+        "smoothness": 0.1326,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7093,
+        "semantic": 0.667,
+        "physics": 60,
+        "smoothness": 0.1461,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.7093,
+        "semantic": 0.667,
+        "physics": 60,
+        "smoothness": 0.0605,
+        "tier": "SILVER",
+        "source": "ninapro_db5",
+        "instruction": "grasping",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "stack blocks build tower": [
+      {
+        "rank_score": 0.6647,
+        "semantic": 0.75,
+        "physics": 82,
+        "smoothness": 0.0038,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6646,
+        "semantic": 0.75,
+        "physics": 83,
+        "smoothness": 0.0029,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6639,
+        "semantic": 0.75,
+        "physics": 82,
+        "smoothness": 0.0036,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.6633,
+        "semantic": 0.75,
+        "physics": 80,
+        "smoothness": 0.0052,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.663,
+        "semantic": 0.75,
+        "physics": 83,
+        "smoothness": 0.0025,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ],
+    "write on paper": [
+      {
+        "rank_score": 0.573,
+        "semantic": 0.0,
+        "physics": 78,
+        "smoothness": 0.7906,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "laying",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.566,
+        "semantic": 0.0,
+        "physics": 76,
+        "smoothness": 0.1314,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.5625,
+        "semantic": 0.0,
+        "physics": 75,
+        "smoothness": 0.1387,
+        "tier": "GOLD",
+        "source": "uci_har",
+        "instruction": "walking downstairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.5329,
+        "semantic": 0.0,
+        "physics": 83,
+        "smoothness": 0.0356,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "ascending stairs",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      },
+      {
+        "rank_score": 0.5277,
+        "semantic": 0.0,
+        "physics": 75,
+        "smoothness": 0.0413,
+        "tier": "GOLD",
+        "source": "pamap2",
+        "instruction": "sitting",
+        "laws_passed": [
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ]
+      }
+    ]
+  }
+}

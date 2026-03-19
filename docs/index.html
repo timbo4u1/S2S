@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>S2S Live — Physics Certification</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg:       #080c10;
+    --panel:    #0d1318;
+    --border:   #1a2530;
+    --gold:     #f0c040;
+    --silver:   #a0c8e0;
+    --bronze:   #c87830;
+    --rejected: #e03030;
+    --green:    #30e080;
+    --dim:      #304050;
+    --text:     #c8d8e8;
+    --mono:     'Share Tech Mono', monospace;
+    --sans:     'Rajdhani', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--panel);
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--silver);
+  }
+  .logo span { color: var(--gold); }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--dim);
+    transition: background 0.3s;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .status-dot.live {
+    background: var(--green);
+    animation: pulse-dot 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { box-shadow: 0 0 0 0 rgba(48,224,128,0.4); }
+    50%      { box-shadow: 0 0 0 6px rgba(48,224,128,0); }
+  }
+
+  /* ── TIER DISPLAY ── */
+  .tier-block {
+    margin: 20px 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--panel);
+    padding: 20px 16px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tier-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--tier-color, var(--dim));
+    transition: background 0.4s;
+  }
+
+  .tier-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .tier-name {
+    font-family: var(--sans);
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--tier-color, var(--dim));
+    line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .tier-score {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--dim);
+    margin-top: 6px;
+    transition: color 0.4s;
+  }
+  .tier-score.active { color: var(--tier-color); }
+
+  .score-bar-wrap {
+    margin-top: 12px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .score-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--tier-color, var(--dim));
+    border-radius: 2px;
+    transition: width 0.3s ease, background 0.4s;
+  }
+
+  /* ── LAWS GRID ── */
+  .laws-grid {
+    margin: 12px 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .law-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .law-card.pass  { border-color: rgba(48,224,128,0.3); }
+  .law-card.fail  { border-color: rgba(224,48,48,0.3); }
+
+  .law-name {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    margin-bottom: 4px;
+  }
+  .law-val {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text);
+    transition: color 0.3s;
+  }
+  .law-card.pass .law-val { color: var(--green); }
+  .law-card.fail .law-val { color: var(--rejected); }
+
+  .law-unit {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+
+  .law-indicator {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+  /* ── OSCILLOSCOPE ── */
+  .scope-wrap {
+    margin: 12px 16px 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px 8px;
+  }
+  .scope-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    margin-bottom: 6px;
+  }
+  canvas {
+    width: 100%;
+    height: 60px;
+    display: block;
+  }
+
+  /* ── START BUTTON ── */
+  .start-wrap {
+    margin: 20px 16px;
+    text-align: center;
+  }
+
+  #startBtn {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--bg);
+    background: var(--silver);
+    border: none;
+    border-radius: 2px;
+    padding: 14px 32px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #startBtn:active { transform: scale(0.97); }
+  #startBtn.running {
+    background: var(--green);
+    letter-spacing: 4px;
+  }
+  #startBtn.denied {
+    background: var(--rejected);
+  }
+
+  .hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 10px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* ── DOMAIN ── */
+  .domain-wrap {
+    margin: 0 16px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .domain-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--dim);
+  }
+  .domain-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .footer-link:hover { color: var(--silver); }
+  .footer-ver {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  /* ── PERMISSION SCREEN ── */
+  #permScreen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    z-index: 100;
+    text-align: center;
+  }
+  #permScreen.hidden { display: none; }
+
+  .perm-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  .perm-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--silver);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .perm-body {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.8;
+    margin-bottom: 28px;
+    max-width: 280px;
+  }
+  #permBtn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--bg);
+    background: var(--gold);
+    border: none;
+    border-radius: 2px;
+    padding: 14px 28px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+  }
+  .perm-skip {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<!-- Permission screen (iOS requires explicit gesture) -->
+<div id="permScreen">
+  <div class="perm-icon">📡</div>
+  <div class="perm-title">S2S LIVE DEMO</div>
+  <div class="perm-body">
+    This demo uses your phone's accelerometer and gyroscope to certify your motion in real time using biomechanical physics laws.<br><br>
+    No data leaves your device.
+  </div>
+  <button id="permBtn">ENABLE SENSORS</button>
+  <div class="perm-skip" id="skipPerm">I'm on desktop — skip →</div>
+</div>
+
+<!-- Main UI -->
+<header>
+  <div class="logo">S<span>2</span>S</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px" id="statusText">OFFLINE</div>
+    <div class="status-dot" id="statusDot"></div>
+  </div>
+</header>
+
+<div class="tier-block" id="tierBlock" style="--tier-color: #304050">
+  <div class="tier-label">CERTIFICATION TIER</div>
+  <div class="tier-name" id="tierName">——</div>
+  <div class="tier-score" id="tierScore">score: —/100</div>
+  <div class="score-bar-wrap">
+    <div class="score-bar" id="scoreBar"></div>
+  </div>
+</div>
+
+<div class="laws-grid">
+  <div class="law-card" id="card-jerk">
+    <div class="law-name">JERK BOUNDS</div>
+    <div class="law-val" id="val-jerk">—</div>
+    <div class="law-unit">m/s³  ≤ 500</div>
+    <div class="law-indicator" id="ind-jerk">·</div>
+  </div>
+  <div class="law-card" id="card-coupling">
+    <div class="law-name">IMU COUPLING</div>
+    <div class="law-val" id="val-coupling">—</div>
+    <div class="law-unit">r  (rigid body)</div>
+    <div class="law-indicator" id="ind-coupling">·</div>
+  </div>
+  <div class="law-card" id="card-freq">
+    <div class="law-name">RESONANCE FREQ</div>
+    <div class="law-val" id="val-freq">—</div>
+    <div class="law-unit">Hz  (8–12 tremor)</div>
+    <div class="law-indicator" id="ind-freq">·</div>
+  </div>
+  <div class="law-card" id="card-rigid">
+    <div class="law-name">RIGID BODY</div>
+    <div class="law-val" id="val-rigid">—</div>
+    <div class="law-unit">consistency r</div>
+    <div class="law-indicator" id="ind-rigid">·</div>
+  </div>
+</div>
+
+<div class="scope-wrap">
+  <div class="scope-label">ACCEL MAGNITUDE  ·  LIVE</div>
+  <canvas id="scope" height="60"></canvas>
+</div>
+
+<div class="domain-wrap">
+  <div class="domain-label">MOTION DOMAIN</div>
+  <div class="domain-val" id="domainVal">UNKNOWN</div>
+</div>
+
+<div class="start-wrap">
+  <button id="startBtn">TAP TO CERTIFY</button>
+  <div class="hint" id="hintText">
+    Move your phone · S2S checks 4 biomechanical laws live<br>
+    Gold ≥ 90 · Silver 60–89 · Bronze 30–59 · Rejected &lt;30
+  </div>
+</div>
+
+<footer>
+  <a href="https://github.com/timbo4u1/S2S" class="footer-link" target="_blank">github/timbo4u1/S2S</a>
+  <div class="footer-ver">v1.3 · BSL-1.1</div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  S2S Physics Engine — JavaScript port of s2s_physics_v1_3.py
+// ══════════════════════════════════════════════════════
+
+const WINDOW_SIZE = 100;   // samples per window
+const SAMPLE_HZ   = 50;    // target Hz (DeviceMotion is ~50-60Hz)
+const UPDATE_HZ   = 4;     // certification updates per second
+
+let accelBuf = [];   // {t, x, y, z}
+let gyroBuf  = [];   // {t, x, y, z}
+let scopeBuf = new Array(120).fill(9.81);
+let running  = false;
+let accelHandler, gyroHandler;
+let lastCertTime = 0;
+
+// ── Magnitude
+function mag(v) { return Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z); }
+
+// ── Jerk P95
+function computeJerk(samples) {
+  if (samples.length < 4) return 0;
+  const mags = samples.map(mag);
+  const jerks = [];
+  for (let i = 1; i < mags.length; i++) {
+    const dt = (samples[i].t - samples[i-1].t) / 1000;
+    if (dt > 0 && dt < 0.1) jerks.push(Math.abs(mags[i] - mags[i-1]) / dt);
+  }
+  if (!jerks.length) return 0;
+  jerks.sort((a,b) => a-b);
+  return jerks[Math.floor(jerks.length * 0.95)];
+}
+
+// ── IMU Coupling correlation (accel_mag vs gyro_mag)
+function computeCoupling(acc, gyr) {
+  const n = Math.min(acc.length, gyr.length);
+  if (n < 10) return 0;
+  const am = acc.slice(0,n).map(mag);
+  const gm = gyr.slice(0,n).map(mag);
+  const ma = am.reduce((s,v)=>s+v,0)/n;
+  const mg = gm.reduce((s,v)=>s+v,0)/n;
+  let num=0, da=0, dg=0;
+  for (let i=0;i<n;i++) {
+    const a = am[i]-ma, g = gm[i]-mg;
+    num += a*g; da += a*a; dg += g*g;
+  }
+  const denom = Math.sqrt(da*dg);
+  return denom > 0 ? num/denom : 0;
+}
+
+// ── Dominant frequency via simple DFT
+function computeDomFreq(samples) {
+  const n = Math.min(64, samples.length);
+  if (n < 16) return 0;
+  const sig = samples.slice(0,n).map(mag);
+  const mean = sig.reduce((s,v)=>s+v,0)/n;
+  const s = sig.map(v=>v-mean);
+  let best=0, bestIdx=1;
+  for (let k=1;k<n/2;k++) {
+    let re=0,im=0;
+    for (let j=0;j<n;j++) {
+      re += s[j]*Math.cos(2*Math.PI*k*j/n);
+      im += s[j]*Math.sin(2*Math.PI*k*j/n);
+    }
+    const amp = re*re+im*im;
+    if (amp > best) { best=amp; bestIdx=k; }
+  }
+  return bestIdx * SAMPLE_HZ / n;
+}
+
+// ── Rigid body consistency (variance of |a|-9.81 should be low during slow moves)
+function computeRigidBody(acc) {
+  if (acc.length < 10) return 0;
+  const mags = acc.map(mag);
+  const mean = mags.reduce((s,v)=>s+v,0)/mags.length;
+  const variance = mags.reduce((s,v)=>s+(v-mean)**2,0)/mags.length;
+  // Lower variance = better rigid body consistency, map to 0-1
+  const consistency = Math.exp(-variance / 5);
+  return consistency;
+}
+
+// ── Classify domain from features
+function classifyDomain(jerk, coupling, freq) {
+  if (jerk > 800) return 'SPORT';
+  if (jerk > 400) return 'SOCIAL';
+  if (coupling < -0.15) return 'LOCOMOTION';
+  if (jerk < 80 && freq < 3) return 'PRECISION';
+  return 'DAILY_LIVING';
+}
+
+// ── Main certification
+function certify(acc, gyr) {
+  const jerk     = computeJerk(acc);
+  const coupling = computeCoupling(acc, gyr);
+  const freq     = computeDomFreq(acc);
+  const rigid    = computeRigidBody(acc);
+
+  // Score laws
+  let score = 0;
+  const laws = {};
+
+  // Jerk bounds (Flash-Hogan 1985): human motion ≤ 500 m/s³
+  laws.jerk = jerk <= 500;
+  if (laws.jerk) score += 30;
+  else if (jerk <= 800) score += 15;
+
+  // IMU coupling: accel & gyro from same rigid body must correlate
+  laws.coupling = Math.abs(coupling) > 0.05;
+  if (laws.coupling) score += 25;
+
+  // Resonance frequency: human forearm tremor 8-12 Hz
+  laws.freq = freq >= 1 && freq <= 25;
+  if (laws.freq) score += 20;
+  else if (freq >= 0.5) score += 10;
+
+  // Rigid body consistency
+  laws.rigid = rigid > 0.3;
+  if (laws.rigid) score += 25;
+  else if (rigid > 0.15) score += 12;
+
+  const domain = classifyDomain(jerk, coupling, freq);
+
+  let tier, color;
+  if (score >= 90)      { tier = 'GOLD';     color = '#f0c040'; }
+  else if (score >= 60) { tier = 'SILVER';   color = '#a0c8e0'; }
+  else if (score >= 30) { tier = 'BRONZE';   color = '#c87830'; }
+  else                  { tier = 'REJECTED'; color = '#e03030'; }
+
+  return { score, tier, color, laws, jerk, coupling, freq, rigid, domain };
+}
+
+// ══════════════════════════════════════════════════════
+//  UI UPDATE
+// ══════════════════════════════════════════════════════
+
+function setCard(id, valId, indId, value, displayVal, pass) {
+  const card = document.getElementById(id);
+  const val  = document.getElementById(valId);
+  const ind  = document.getElementById(indId);
+  card.className = 'law-card ' + (pass ? 'pass' : 'fail');
+  val.textContent = displayVal;
+  ind.textContent = pass ? '✓' : '✗';
+}
+
+function updateUI(result) {
+  const { score, tier, color, laws, jerk, coupling, freq, rigid, domain } = result;
+
+  // Tier block
+  document.getElementById('tierBlock').style.setProperty('--tier-color', color);
+  document.getElementById('tierName').textContent  = tier;
+  document.getElementById('tierName').style.color  = color;
+  document.getElementById('tierScore').textContent = `score: ${score}/100`;
+  document.getElementById('tierScore').style.color = color;
+  document.getElementById('tierScore').className   = 'tier-score active';
+  document.getElementById('scoreBar').style.width  = score + '%';
+  document.getElementById('scoreBar').style.background = color;
+
+  // Law cards
+  setCard('card-jerk',     'val-jerk',     'ind-jerk',     jerk,     jerk.toFixed(0),            laws.jerk);
+  setCard('card-coupling', 'val-coupling', 'ind-coupling', coupling, coupling.toFixed(3),         laws.coupling);
+  setCard('card-freq',     'val-freq',     'ind-freq',     freq,     freq.toFixed(1),             laws.freq);
+  setCard('card-rigid',    'val-rigid',    'ind-rigid',    rigid,    rigid.toFixed(3),            laws.rigid);
+
+  // Domain
+  document.getElementById('domainVal').textContent = domain;
+}
+
+// ══════════════════════════════════════════════════════
+//  OSCILLOSCOPE
+// ══════════════════════════════════════════════════════
+
+function drawScope() {
+  const canvas = document.getElementById('scope');
+  const W = canvas.offsetWidth * window.devicePixelRatio;
+  const H = 60 * window.devicePixelRatio;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#0d1318';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#1a2530';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = (i / 4) * H;
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+  }
+
+  if (scopeBuf.length < 2) return;
+
+  const minV = Math.min(...scopeBuf);
+  const maxV = Math.max(...scopeBuf) + 0.1;
+  const range = Math.max(maxV - minV, 2);
+
+  ctx.strokeStyle = '#30e080';
+  ctx.lineWidth = 1.5 * window.devicePixelRatio;
+  ctx.beginPath();
+
+  scopeBuf.forEach((v, i) => {
+    const x = (i / (scopeBuf.length - 1)) * W;
+    const y = H - ((v - minV) / range) * H * 0.85 - H * 0.075;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Glow
+  ctx.strokeStyle = 'rgba(48,224,128,0.15)';
+  ctx.lineWidth = 6 * window.devicePixelRatio;
+  ctx.stroke();
+
+  requestAnimationFrame(drawScope);
+}
+
+// ══════════════════════════════════════════════════════
+//  SENSOR LOOP
+// ══════════════════════════════════════════════════════
+
+function startSensors() {
+  running = true;
+  document.getElementById('statusDot').classList.add('live');
+  document.getElementById('statusText').textContent = 'LIVE';
+  document.getElementById('startBtn').textContent = '● CERTIFYING';
+  document.getElementById('startBtn').classList.add('running');
+  document.getElementById('hintText').textContent = 'Move your hand · Hold still · Shake · Walk · S2S classifies live';
+
+  // Accelerometer
+  window.addEventListener('devicemotion', function handler(e) {
+    accelHandler = handler;
+    const a = e.accelerationIncludingGravity;
+    if (!a) return;
+    const t = Date.now();
+    accelBuf.push({ t, x: a.x||0, y: a.y||0, z: a.z||0 });
+    if (accelBuf.length > WINDOW_SIZE * 2) accelBuf.shift();
+
+    // Scope buffer
+    scopeBuf.push(mag({ x: a.x||0, y: a.y||0, z: a.z||0 }));
+    if (scopeBuf.length > 120) scopeBuf.shift();
+
+    // Certify every UPDATE_HZ
+    const now = Date.now();
+    if (now - lastCertTime > 1000/UPDATE_HZ && accelBuf.length >= 30) {
+      lastCertTime = now;
+      const result = certify(
+        accelBuf.slice(-WINDOW_SIZE),
+        gyroBuf.slice(-WINDOW_SIZE)
+      );
+      updateUI(result);
+    }
+  });
+
+  // Gyroscope
+  window.addEventListener('deviceorientation', function handler(e) {
+    gyroHandler = handler;
+    if (e.beta === null) return;
+    // Use orientation as proxy for gyro
+    const t = Date.now();
+    const toRad = Math.PI/180;
+    gyroBuf.push({
+      t,
+      x: (e.beta||0)  * toRad,
+      y: (e.gamma||0) * toRad,
+      z: (e.alpha||0) * toRad
+    });
+    if (gyroBuf.length > WINDOW_SIZE * 2) gyroBuf.shift();
+  });
+
+  drawScope();
+}
+
+// ══════════════════════════════════════════════════════
+//  PERMISSION HANDLING
+// ══════════════════════════════════════════════════════
+
+async function requestPermission() {
+  // iOS 13+ requires explicit permission
+  if (typeof DeviceMotionEvent !== 'undefined' &&
+      typeof DeviceMotionEvent.requestPermission === 'function') {
+    try {
+      const state = await DeviceMotionEvent.requestPermission();
+      if (state === 'granted') {
+        document.getElementById('permScreen').classList.add('hidden');
+        startSensors();
+      } else {
+        document.getElementById('permBtn').textContent = 'PERMISSION DENIED';
+        document.getElementById('permBtn').style.background = '#e03030';
+      }
+    } catch(e) {
+      document.getElementById('permScreen').classList.add('hidden');
+      startSensors();
+    }
+  } else {
+    // Android / desktop — no permission needed
+    document.getElementById('permScreen').classList.add('hidden');
+    startSensors();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  EVENTS
+// ══════════════════════════════════════════════════════
+
+document.getElementById('permBtn').addEventListener('click', requestPermission);
+
+document.getElementById('skipPerm').addEventListener('click', () => {
+  document.getElementById('permScreen').classList.add('hidden');
+  // Desktop simulation mode: feed random walk data
+  document.getElementById('statusText').textContent = 'SIMULATE';
+  document.getElementById('hintText').textContent = 'Desktop mode: simulating sensor data';
+  document.getElementById('startBtn').classList.add('running');
+  document.getElementById('startBtn').textContent = '● SIMULATING';
+
+  let t = 0;
+  let vx=0, vy=0, vz=9.81;
+  setInterval(() => {
+    t += 0.02;
+    vx += (Math.random()-0.5)*2;
+    vy += (Math.random()-0.5)*2;
+    vz = 9.81 + Math.sin(t)*0.5;
+    vx *= 0.9; vy *= 0.9;
+    const ts = Date.now();
+    accelBuf.push({ t:ts, x:vx, y:vy, z:vz });
+    gyroBuf.push({ t:ts, x:Math.sin(t)*0.3, y:Math.cos(t)*0.2, z:t*0.01%1 });
+    if (accelBuf.length > WINDOW_SIZE*2) accelBuf.shift();
+    if (gyroBuf.length > WINDOW_SIZE*2) gyroBuf.shift();
+    scopeBuf.push(mag({x:vx,y:vy,z:vz}));
+    if (scopeBuf.length > 120) scopeBuf.shift();
+  }, 20);
+
+  setInterval(() => {
+    if (accelBuf.length >= 30) {
+      updateUI(certify(accelBuf.slice(-WINDOW_SIZE), gyroBuf.slice(-WINDOW_SIZE)));
+    }
+  }, 250);
+
+  document.getElementById('statusDot').classList.add('live');
+  drawScope();
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if (!running) requestPermission();
+});
+
+// Resize scope canvas on load
+window.addEventListener('resize', () => {
+  const canvas = document.getElementById('scope');
+  canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+});
+</script>
+</body>
+</html>

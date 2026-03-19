@@ -1,0 +1,55 @@
+{
+  "experiment": "UCI HAR Level 2 Curriculum",
+  "dataset": "UCI HAR 50Hz 30 subjects 6 activities",
+  "results": {
+    "A_clean": {
+      "acc": 0.4761,
+      "f1": 0.4258,
+      "n": 8814,
+      "desc": "Clean baseline",
+      "time_s": 213
+    },
+    "B_corrupted": {
+      "acc": 0.4404,
+      "f1": 0.3563,
+      "n": 8814,
+      "desc": "Corrupted 35%",
+      "time_s": 214
+    },
+    "C_floor": {
+      "acc": 0.5044,
+      "f1": 0.4509,
+      "n": 4334,
+      "desc": "S2S floor filtered",
+      "time_s": 105
+    },
+    "D_weighted": {
+      "acc": 0.4586,
+      "f1": 0.3932,
+      "n": 4334,
+      "desc": "Tier-weighted",
+      "time_s": 105
+    },
+    "E_curriculum": {
+      "acc": 0.4532,
+      "f1": 0.3485,
+      "n": 4334,
+      "desc": "Curriculum GOLD\u2192SILVER\u2192ALL",
+      "time_s": 79
+    },
+    "F_weighted_sample": {
+      "acc": 0.4148,
+      "f1": 0.3073,
+      "n": 4334,
+      "desc": "Weighted sampling (GOLD always present)",
+      "time_s": 72
+    }
+  },
+  "level1_floor_net_f1": 0.0251,
+  "level2_curriculum_phases_f1": -0.0773,
+  "level2_weighted_sample_f1": -0.1185,
+  "gold_thresh": 58,
+  "silver_thresh": 53,
+  "floor_thresh": 48,
+  "total_time_s": 787
+}

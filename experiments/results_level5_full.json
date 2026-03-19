@@ -1,0 +1,192 @@
+{
+  "experiment": "Level 5 Full System",
+  "date": "2026-03-13",
+  "data": {
+    "certified_pairs": 3487,
+    "raw_pairs": 0,
+    "total_pairs": 3487,
+    "features": 13,
+    "motion_targets": 9
+  },
+  "training": {
+    "cycles": 20,
+    "epochs_per_cycle": 20,
+    "total_epochs": 400,
+    "elapsed_s": 80.8
+  },
+  "final": {
+    "quality_acc": 0.7442,
+    "smoothness_corr": 0.92,
+    "speed_corr": 0.856,
+    "best_smoothness": 0.92,
+    "raw_promoted": 0,
+    "raw_total": 0
+  },
+  "commands": [
+    "layout laundry",
+    "object search",
+    "create tower"
+  ],
+  "cycle_history": [
+    {
+      "cycle": 1,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.901,
+      "speed_corr": 0.855,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 2,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.907,
+      "speed_corr": 0.857,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 3,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.909,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 4,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.91,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 5,
+      "quality_acc": 0.7104,
+      "smoothness_corr": 0.908,
+      "speed_corr": 0.857,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 6,
+      "quality_acc": 0.7109,
+      "smoothness_corr": 0.911,
+      "speed_corr": 0.857,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 7,
+      "quality_acc": 0.7129,
+      "smoothness_corr": 0.912,
+      "speed_corr": 0.859,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 8,
+      "quality_acc": 0.7172,
+      "smoothness_corr": 0.914,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 9,
+      "quality_acc": 0.7155,
+      "smoothness_corr": 0.915,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 10,
+      "quality_acc": 0.7218,
+      "smoothness_corr": 0.916,
+      "speed_corr": 0.859,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 11,
+      "quality_acc": 0.7244,
+      "smoothness_corr": 0.915,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 12,
+      "quality_acc": 0.723,
+      "smoothness_corr": 0.915,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 13,
+      "quality_acc": 0.7253,
+      "smoothness_corr": 0.917,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 14,
+      "quality_acc": 0.7342,
+      "smoothness_corr": 0.918,
+      "speed_corr": 0.859,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 15,
+      "quality_acc": 0.7353,
+      "smoothness_corr": 0.919,
+      "speed_corr": 0.859,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 16,
+      "quality_acc": 0.7396,
+      "smoothness_corr": 0.919,
+      "speed_corr": 0.858,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 17,
+      "quality_acc": 0.7385,
+      "smoothness_corr": 0.917,
+      "speed_corr": 0.859,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 18,
+      "quality_acc": 0.7342,
+      "smoothness_corr": 0.917,
+      "speed_corr": 0.855,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 19,
+      "quality_acc": 0.739,
+      "smoothness_corr": 0.919,
+      "speed_corr": 0.857,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    },
+    {
+      "cycle": 20,
+      "quality_acc": 0.7442,
+      "smoothness_corr": 0.92,
+      "speed_corr": 0.856,
+      "raw_weight_mean": 1.0,
+      "promoted": 0
+    }
+  ]
+}

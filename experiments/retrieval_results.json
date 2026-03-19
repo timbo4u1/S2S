@@ -1,0 +1,612 @@
+{
+  "queries": {
+    "pick up the cup": [
+      {
+        "rank_score": 0.833,
+        "semantic": 1.0,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0008,
+          0.0127,
+          0.0087
+        ]
+      },
+      {
+        "rank_score": 0.7768,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0078,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2534,
+          0.0426,
+          -0.1569
+        ]
+      },
+      {
+        "rank_score": 0.7636,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0056,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2829,
+          -0.4361,
+          -0.1968
+        ]
+      },
+      {
+        "rank_score": 0.7605,
+        "semantic": 1.0,
+        "physics": 81,
+        "smoothness": 0.0045,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0792,
+          -0.2342,
+          -0.1624
+        ]
+      },
+      {
+        "rank_score": 0.7561,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0026,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.265,
+          0.0022,
+          -0.0716
+        ]
+      }
+    ],
+    "grab object from table": [
+      {
+        "rank_score": 0.833,
+        "semantic": 1.0,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0008,
+          0.0127,
+          0.0087
+        ]
+      },
+      {
+        "rank_score": 0.7768,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0078,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2534,
+          0.0426,
+          -0.1569
+        ]
+      },
+      {
+        "rank_score": 0.7636,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0056,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2829,
+          -0.4361,
+          -0.1968
+        ]
+      },
+      {
+        "rank_score": 0.7605,
+        "semantic": 1.0,
+        "physics": 81,
+        "smoothness": 0.0045,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0792,
+          -0.2342,
+          -0.1624
+        ]
+      },
+      {
+        "rank_score": 0.7561,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0026,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.265,
+          0.0022,
+          -0.0716
+        ]
+      }
+    ],
+    "stack blocks to build tower": [
+      {
+        "rank_score": 0.7612,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0052,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.163,
+          -0.3331,
+          -0.1975
+        ]
+      },
+      {
+        "rank_score": 0.7598,
+        "semantic": 1.0,
+        "physics": 82,
+        "smoothness": 0.0038,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0212,
+          -0.1656,
+          -0.2532
+        ]
+      },
+      {
+        "rank_score": 0.7588,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0048,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.5106,
+          -0.1384,
+          0.1186
+        ]
+      },
+      {
+        "rank_score": 0.7586,
+        "semantic": 1.0,
+        "physics": 82,
+        "smoothness": 0.0036,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2362,
+          -0.1522,
+          -0.1884
+        ]
+      },
+      {
+        "rank_score": 0.7579,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0029,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "create tower",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.068,
+          -0.2435,
+          -0.1773
+        ]
+      }
+    ],
+    "fold and arrange laundry": [
+      {
+        "rank_score": 0.7699,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0049,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.1744,
+          -0.205,
+          -0.0746
+        ]
+      },
+      {
+        "rank_score": 0.7658,
+        "semantic": 1.0,
+        "physics": 82,
+        "smoothness": 0.0048,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0265,
+          0.0221,
+          -0.0394
+        ]
+      },
+      {
+        "rank_score": 0.7656,
+        "semantic": 1.0,
+        "physics": 84,
+        "smoothness": 0.0036,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0182,
+          -0.013,
+          -0.1058
+        ]
+      },
+      {
+        "rank_score": 0.765,
+        "semantic": 1.0,
+        "physics": 78,
+        "smoothness": 0.007,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "rank_score": 0.7645,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.004,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0848,
+          -0.0709,
+          -0.0673
+        ]
+      }
+    ],
+    "reach and grasp": [
+      {
+        "rank_score": 0.833,
+        "semantic": 1.0,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0008,
+          0.0127,
+          0.0087
+        ]
+      },
+      {
+        "rank_score": 0.7768,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0078,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2534,
+          0.0426,
+          -0.1569
+        ]
+      },
+      {
+        "rank_score": 0.7636,
+        "semantic": 1.0,
+        "physics": 80,
+        "smoothness": 0.0056,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.2829,
+          -0.4361,
+          -0.1968
+        ]
+      },
+      {
+        "rank_score": 0.7605,
+        "semantic": 1.0,
+        "physics": 81,
+        "smoothness": 0.0045,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0792,
+          -0.2342,
+          -0.1624
+        ]
+      },
+      {
+        "rank_score": 0.7561,
+        "semantic": 1.0,
+        "physics": 83,
+        "smoothness": 0.0026,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.265,
+          0.0022,
+          -0.0716
+        ]
+      }
+    ],
+    "place item carefully": [
+      {
+        "rank_score": 0.6515,
+        "semantic": 0.481,
+        "physics": 62,
+        "smoothness": 0.4767,
+        "tier": "SILVER",
+        "source": "roboturk",
+        "instruction": "object search",
+        "laws_passed": [
+          "resonance_frequency",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0008,
+          0.0127,
+          0.0087
+        ]
+      },
+      {
+        "rank_score": 0.6014,
+        "semantic": 0.519,
+        "physics": 83,
+        "smoothness": 0.0049,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.1744,
+          -0.205,
+          -0.0746
+        ]
+      },
+      {
+        "rank_score": 0.5973,
+        "semantic": 0.519,
+        "physics": 82,
+        "smoothness": 0.0048,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0265,
+          0.0221,
+          -0.0394
+        ]
+      },
+      {
+        "rank_score": 0.5971,
+        "semantic": 0.519,
+        "physics": 84,
+        "smoothness": 0.0036,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          -0.0182,
+          -0.013,
+          -0.1058
+        ]
+      },
+      {
+        "rank_score": 0.5965,
+        "semantic": 0.519,
+        "physics": 78,
+        "smoothness": 0.007,
+        "tier": "GOLD",
+        "source": "roboturk",
+        "instruction": "layout laundry",
+        "laws_passed": [
+          "resonance_frequency",
+          "rigid_body_kinematics",
+          "jerk_bounds",
+          "imu_internal_consistency"
+        ],
+        "pos_start": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  }
+}

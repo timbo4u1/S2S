@@ -1,0 +1,178 @@
+{
+  "summary": {
+    "NinaproDB5": "GESTURE",
+    "EMG_Amputee_Accel": "ACTIVITY",
+    "EMG_Amputee_EMG": "GESTURE",
+    "EMG_Amputee_Gyro": "ACTIVITY",
+    "EMG_Gestures": "GESTURE",
+    "NinaproDB1": "GESTURE",
+    "Unknown": "GENERIC",
+    "Unknown_EMG": "GESTURE",
+    "NPY_Unknown": "GENERIC",
+    "PTT_PPG": "CARDIAC",
+    "JSON_Unknown": "GENERIC",
+    "S2S_JSON": "CERTIFIED"
+  },
+  "sample_routes": [
+    {
+      "path": "/Users/timbo/ninapro_db5/s1/S1_E1_A1.mat",
+      "file": "s1/S1_E1_A1.mat",
+      "head": "GESTURE",
+      "hz": 2000,
+      "dataset": "NinaproDB5",
+      "note": "Double Myo EMG 16ch \u2014 metadata Hz=200.0 overridden to 2000"
+    },
+    {
+      "path": "/Users/timbo/ninapro_db5/s1/S1_E2_A1.mat",
+      "file": "s1/S1_E2_A1.mat",
+      "head": "GESTURE",
+      "hz": 2000,
+      "dataset": "NinaproDB5",
+      "note": "Double Myo EMG 16ch \u2014 metadata Hz=200.0 overridden to 2000"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/accelerometer-1520328911.csv",
+      "file": "AMP1/AMP1/mov 1/accelerometer-1520328911.csv",
+      "head": "ACTIVITY",
+      "hz": 50,
+      "dataset": "EMG_Amputee_Accel",
+      "note": "filename=accelerometer-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/accelerometer-1520328972.csv",
+      "file": "AMP1/AMP1/mov 1/accelerometer-1520328972.csv",
+      "head": "ACTIVITY",
+      "hz": 50,
+      "dataset": "EMG_Amputee_Accel",
+      "note": "filename=accelerometer-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/emg-1520328911.csv",
+      "file": "AMP1/AMP1/mov 1/emg-1520328911.csv",
+      "head": "GESTURE",
+      "hz": 200,
+      "dataset": "EMG_Amputee_EMG",
+      "note": "filename=emg-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/emg-1520328972.csv",
+      "file": "AMP1/AMP1/mov 1/emg-1520328972.csv",
+      "head": "GESTURE",
+      "hz": 200,
+      "dataset": "EMG_Amputee_EMG",
+      "note": "filename=emg-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/gyro-1520328911.csv",
+      "file": "AMP1/AMP1/mov 1/gyro-1520328911.csv",
+      "head": "ACTIVITY",
+      "hz": 50,
+      "dataset": "EMG_Amputee_Gyro",
+      "note": "filename=gyro-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Amputee/AMP1/AMP1/mov 1/gyro-1520328972.csv",
+      "file": "AMP1/AMP1/mov 1/gyro-1520328972.csv",
+      "head": "ACTIVITY",
+      "hz": 50,
+      "dataset": "EMG_Amputee_Gyro",
+      "note": "filename=gyro-*"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Gestures/EMG/Edited_label/0.csv",
+      "file": "EMG/Edited_label/0.csv",
+      "head": "GESTURE",
+      "hz": 100,
+      "dataset": "EMG_Gestures",
+      "note": "EMG Gestures dataset \u2014 8ch EMG, 100Hz"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/EMG_Gestures/EMG/Edited_label/1.csv",
+      "file": "EMG/Edited_label/1.csv",
+      "head": "GESTURE",
+      "hz": 100,
+      "dataset": "EMG_Gestures",
+      "note": "EMG Gestures dataset \u2014 8ch EMG, 100Hz"
+    },
+    {
+      "path": "/Users/timbo/S2S_Project/NinaproDB1/Ninapro DB1 12 Gestures.csv",
+      "file": "Ninapro DB1 12 Gestures.csv",
+      "head": "GESTURE",
+      "hz": 100,
+      "dataset": "NinaproDB1",
+      "note": "NinaproDB1 \u2014 10ch EMG, normalized float, 100Hz"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/ptt_ppg/S1_walk.csv",
+      "file": "ptt_ppg/S1_walk.csv",
+      "head": "GENERIC",
+      "hz": 0,
+      "dataset": "Unknown",
+      "note": "header=['<!doctype html>']"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/ptt_ppg/s10_walk.csv",
+      "file": "ptt_ppg/s10_walk.csv",
+      "head": "GESTURE",
+      "hz": 100,
+      "dataset": "Unknown_EMG",
+      "note": "20-column CSV \u2014 likely EMG"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/training_X_physics.npy",
+      "file": "training_X_physics.npy",
+      "head": "GENERIC",
+      "hz": 0,
+      "dataset": "NPY_Unknown",
+      "note": "19 columns"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/training_X_raw.npy",
+      "file": "training_X_raw.npy",
+      "head": "CARDIAC",
+      "hz": 500,
+      "dataset": "PTT_PPG",
+      "note": "Pre-windowed 256-col npy \u2014 PTT-PPG wrist cardiac"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/training_subjects.npy",
+      "file": "training_subjects.npy",
+      "head": "GENERIC",
+      "hz": 0,
+      "dataset": "NPY_Unknown",
+      "note": "1 columns"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/wisdm_recertified/DAILY_LIVING/wisdm_1600_folding_clothes_001323b7d48cc29c.json",
+      "file": "wisdm_recertified/DAILY_LIVING/wisdm_1600_folding_clothes_001323b7d48cc29c.json",
+      "head": "GENERIC",
+      "hz": 0,
+      "dataset": "JSON_Unknown",
+      "note": "JSON without S2S schema"
+    },
+    {
+      "path": "/Users/timbo/S2S/data/wisdm_recertified/DAILY_LIVING/wisdm_1600_folding_clothes_0556782d5a8d1681.json",
+      "file": "wisdm_recertified/DAILY_LIVING/wisdm_1600_folding_clothes_0556782d5a8d1681.json",
+      "head": "GENERIC",
+      "hz": 0,
+      "dataset": "JSON_Unknown",
+      "note": "JSON without S2S schema"
+    },
+    {
+      "path": "/Users/timbo/S2S/s2s_dataset/DAILY_LIVING/iron/iron_pamap2_s101_0001.json",
+      "file": "DAILY_LIVING/iron/iron_pamap2_s101_0001.json",
+      "head": "CERTIFIED",
+      "hz": 0,
+      "dataset": "S2S_JSON",
+      "note": "Already certified \u2014 action=iron tier=GOLD"
+    },
+    {
+      "path": "/Users/timbo/S2S/s2s_dataset/DAILY_LIVING/iron/iron_pamap2_s102_0001.json",
+      "file": "DAILY_LIVING/iron/iron_pamap2_s102_0001.json",
+      "head": "CERTIFIED",
+      "hz": 0,
+      "dataset": "S2S_JSON",
+      "note": "Already certified \u2014 action=iron tier=GOLD"
+    }
+  ]
+}

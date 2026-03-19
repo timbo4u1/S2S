@@ -1,0 +1,33 @@
+{
+  "experiment": "s2s_v3",
+  "timestamp": "2026-03-03T08:12:54",
+  "conditions": {
+    "A_all_data": {
+      "accuracy": 0.6473,
+      "macro_f1": 0.459,
+      "per_domain_f1": {
+        "PRECISION": 0.949,
+        "SOCIAL": 0.0,
+        "LOCOMOTION": 0.8638,
+        "DAILY_LIVING": 0.0201,
+        "SPORT": 0.4621
+      },
+      "train_n": 82688,
+      "test_n": 20672
+    },
+    "B_certified": {
+      "accuracy": 0.6184,
+      "macro_f1": 0.4222,
+      "per_domain_f1": {
+        "PRECISION": 0.9441,
+        "SOCIAL": 0.0,
+        "LOCOMOTION": 0.8829,
+        "DAILY_LIVING": 0.0588,
+        "SPORT": 0.2253
+      },
+      "train_n": 32889,
+      "test_n": 20672
+    }
+  },
+  "note": "AdaGrad optimizer, 5 features (jerk_log, coupling, score, tier, laws_passed)"
+}

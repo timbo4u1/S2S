@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S2S — Physics Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080a0e;--surface:#0d1117;--border:#1e2530;--accent:#00ff88;--accent2:#ff4444;--text:#e2e8f0;--muted:#64748b;--silver:#94a3b8;--bronze:#cd7f32;--rejected:#ef4444;--gold:#ffd700}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.wrap{max-width:860px;margin:0 auto;padding:60px 24px;position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:2px;letter-spacing:0.1em;margin-bottom:20px}
+.badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);font-size:1rem;max-width:560px;line-height:1.6;margin-bottom:48px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:40px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:14px}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:3px}
+.stat-l{font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.examples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:600px){.examples{grid-template-columns:1fr}}
+.ex-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px;cursor:pointer;transition:all 0.2s;text-align:left}
+.ex-btn:hover{transform:translateY(-2px)}
+.ex-btn.high{border-color:rgba(148,163,184,0.3)}.ex-btn.high:hover{border-color:var(--silver);background:rgba(148,163,184,0.05)}
+.ex-btn.mid{border-color:rgba(205,127,50,0.3)}.ex-btn.mid:hover{border-color:var(--bronze);background:rgba(205,127,50,0.05)}
+.ex-btn.low{border-color:rgba(239,68,68,0.3)}.ex-btn.low:hover{border-color:var(--rejected);background:rgba(239,68,68,0.05)}
+.ex-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;margin-bottom:6px}
+.ex-btn.high .ex-label{color:var(--silver)}.ex-btn.mid .ex-label{color:var(--bronze)}.ex-btn.low .ex-label{color:var(--rejected)}
+.ex-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ex-desc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);line-height:1.5}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.1em}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.upload-zone{border:2px dashed var(--border);border-radius:8px;padding:40px 24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface);margin-bottom:20px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(0,255,136,0.03)}
+.upload-icon{font-size:2rem;margin-bottom:12px;display:block}
+.upload-title{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:6px}
+.upload-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8}
+input[type=file]{display:none}
+.hz-row{display:flex;align-items:center;gap:10px;margin-bottom:32px;flex-wrap:wrap}
+.hz-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.08em}
+.hz-btn{padding:5px 12px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;border-radius:3px;transition:all 0.2s}
+.hz-btn.active,.hz-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,136,0.05)}
+.result-panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:40px;display:none}
+.result-panel.show{display:block}
+.result-panel.tier-GOLD{border-color:var(--gold)}.result-panel.tier-SILVER{border-color:var(--silver)}
+.result-panel.tier-BRONZE{border-color:var(--bronze)}.result-panel.tier-REJECTED{border-color:var(--rejected)}
+.r-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)}
+.r-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:65%}
+.tier-badge{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:4px 14px;border-radius:2px;letter-spacing:0.12em;flex-shrink:0}
+.tier-GOLD .tier-badge{background:rgba(255,215,0,0.15);color:var(--gold)}
+.tier-SILVER .tier-badge{background:rgba(148,163,184,0.15);color:var(--silver)}
+.tier-BRONZE .tier-badge{background:rgba(205,127,50,0.15);color:var(--bronze)}
+.tier-REJECTED .tier-badge{background:rgba(239,68,68,0.15);color:var(--rejected)}
+.r-body{padding:24px;display:grid;grid-template-columns:180px 1fr;gap:24px}
+@media(max-width:600px){.r-body{grid-template-columns:1fr}}
+.score-lbl{font-size:10px;color:var(--muted);letter-spacing:0.1em;font-family:'JetBrains Mono',monospace}
+.score-val{font-size:3.5rem;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+.tier-GOLD .score-val{color:var(--gold)}.tier-SILVER .score-val{color:var(--silver)}
+.tier-BRONZE .score-val{color:var(--bronze)}.tier-REJECTED .score-val{color:var(--rejected)}
+.score-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:6px}
+.score-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+.tier-GOLD .score-fill{background:var(--gold)}.tier-SILVER .score-fill{background:var(--silver)}
+.tier-BRONZE .score-fill{background:var(--bronze)}.tier-REJECTED .score-fill{background:var(--rejected)}
+.score-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;line-height:1.8}
+.laws-block{display:flex;flex-direction:column;gap:6px}
+.law-row{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;padding:8px 12px;border-radius:3px;background:rgba(255,255,255,0.02)}
+.law-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.law-row.passed .law-dot{background:var(--accent)}.law-row.failed .law-dot{background:var(--accent2)}
+.law-row.failed{color:var(--muted)}
+.raw-json{border-top:1px solid var(--border);padding:14px 20px}
+.raw-json summary{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;letter-spacing:0.08em;user-select:none}
+pre{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);line-height:1.6;overflow-x:auto}
+.loading-state{padding:32px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent)}
+.loading-bar{height:2px;background:var(--border);margin:16px 0 0;border-radius:1px;overflow:hidden}
+.loading-bar::after{content:'';display:block;height:100%;background:var(--accent);animation:load 1.2s infinite}
+@keyframes load{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
+.fmt{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px 24px;margin-bottom:32px}
+.fmt h3{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:12px}
+.code{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:3px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);line-height:1.8;overflow-x:auto}
+.cm{color:var(--muted)}
+.footer{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.footer a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:color 0.2s}
+.footer a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="margin-bottom:48px">
+    <div class="badge">LIVE API</div>
+    <h1>Does your sensor data<br>obey <span>physics?</span></h1>
+    <p class="sub">Upload your IMU CSV — S2S checks it against biomechanical laws and issues a certificate. Try the examples or upload your own data.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-v">11</div><div class="stat-l">Physics laws</div></div>
+    <div class="stat"><div class="stat-v">5</div><div class="stat-l">Datasets proven</div></div>
+    <div class="stat"><div class="stat-v">80.8%</div><div class="stat-l">Reject recall</div></div>
+    <div class="stat"><div class="stat-v">110</div><div class="stat-l">Tests passing</div></div>
+  </div>
+  
+  <div class="upload-zone" id="dz" onclick="document.getElementById('fi').click()" ondragover="dzEv(event,'over')" ondragleave="dzEv(event,'leave')" ondrop="dzEv(event,'drop')">
+    <span class="upload-icon">📂</span>
+    <div class="upload-title">DROP YOUR CSV HERE — or click to upload</div>
+    <div class="upload-sub">Format: ax,ay,az per row &nbsp;·&nbsp; Min 32 samples &nbsp;·&nbsp; Optional: ax,ay,az,gx,gy,gz</div>
+    <input type="file" id="fi" accept=".csv,.txt" onchange="certifyFile(this.files[0])">
+  </div>
+  <div class="hz-row">
+    <span class="hz-label">YOUR FILE SAMPLE RATE:</span>
+    <button class="hz-btn" onclick="setHz(20,this)">20 Hz</button>
+    <button class="hz-btn active" onclick="setHz(50,this)">50 Hz</button>
+    <button class="hz-btn" onclick="setHz(100,this)">100 Hz</button>
+    <button class="hz-btn" onclick="setHz(500,this)">500 Hz</button>
+    <input style="width:90px;padding:5px 10px;border:1px solid #1e2530;background:#0d1117;color:#e2e8f0;font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:3px;outline:none" type="number" placeholder="custom Hz" min="1" max="2000" onchange="setHz(+this.value,null)">
+  </div>
+  <div class="result-panel" id="rp"></div>
+  <div class="fmt">
+    <h3>CSV FORMAT</h3>
+    <div class="code"><span class="cm"># ax,ay,az — accelerometer in m/s²</span>
+0.12,-0.05,9.78
+0.15,-0.03,9.81
+<span class="cm"># With gyro: ax,ay,az,gx,gy,gz (rad/s)</span>
+0.12,-0.05,9.78,0.01,-0.02,0.00
+<span class="cm"># Header row auto-skipped</span></div>
+  </div>
+  <div class="footer">
+    <div style="display:flex;gap:20px">
+      <a href="https://github.com/timbo4u1/S2S">GitHub</a>
+      <a href="https://s2s-65sy.onrender.com">API</a>
+      <a href="https://pypi.org/project/s2s-certify/">pip install s2s-certify</a>
+    </div>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#64748b">BSL-1.1 · free for research</span>
+  </div>
+</div>
+<script>
+const API="https://s2s-65sy.onrender.com/certify";
+const BASE="https://timbo4u1.github.io/S2S/examples/";
+let userHz=50;
+const LAWS={resonance:'Segment Resonance ω=√(K/I)',rigid_body:'Rigid Body Kinematics',jerk:'Motor Control Jerk ∂³x/∂t³',imu_consistency:'IMU Internal Consistency'};
+function setHz(v,b){userHz=v;document.querySelectorAll('.hz-btn').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');}
+function dzEv(e,t){e.preventDefault();const el=document.getElementById('dz');if(t==='over')el.classList.add('drag');else if(t==='leave')el.classList.remove('drag');else{el.classList.remove('drag');if(e.dataTransfer.files[0])certifyFile(e.dataTransfer.files[0]);}}
+function showLoading(n){const p=document.getElementById('rp');p.className='result-panel show';p.innerHTML=`<div class="loading-state">Certifying ${n}...</div><div class="loading-bar"></div>`;}
+function showError(m){const p=document.getElementById('rp');p.className='result-panel show';p.innerHTML=`<div class="loading-state" style="color:var(--accent2)">${m}</div>`;}
+function renderResult(data,name,n){
+  const p=document.getElementById('rp');
+  p.className=`result-panel show tier-${data.tier}`;
+  const passed=new Set(data.laws_passed);
+  const lawsHTML=Object.entries(LAWS).map(([k,v])=>`<div class="law-row ${passed.has(k)?'passed':'failed'}"><div class="law-dot"></div><span>${v}</span></div>`).join('');
+  p.innerHTML=`<div class="r-header"><span class="r-name">${name}</span><span class="tier-badge">${data.tier}</span></div><div class="r-body"><div class="score-block"><span class="score-lbl">PHYSICS SCORE</span><span class="score-val">${data.score}</span><div class="score-bar"><div class="score-fill" style="width:${data.score}%"></div></div><div class="score-meta">${n} samples<br>${data.windows} windows<br>${data.sample_rate_hz} Hz</div></div><div class="laws-block"><span class="score-lbl" style="margin-bottom:4px">LAWS CHECKED</span>${lawsHTML}</div></div><details class="raw-json"><summary>RAW JSON</summary><pre>${JSON.stringify(data,null,2)}</pre></details>`;
+  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function parseCSV(text){
+  const lines=text.trim().split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
+  const start=isNaN(parseFloat(lines[0].split(/[,\t]/)[0]))?1:0;
+  const accel=[],gyro=[];let hasGyro=false;
+  for(const line of lines.slice(start)){const p=line.trim().split(/[,\t]/).map(Number);if(p.length>=3&&!p.slice(0,3).some(isNaN)){accel.push([p[0],p[1],p[2]]);if(p.length>=6&&!p.slice(3,6).some(isNaN)){gyro.push([p[3],p[4],p[5]]);hasGyro=true;}}}
+  return{accel,gyro:hasGyro?gyro:null};
+}
+async function callAPI(accel,gyro,hz,name,n){
+  try{
+    const body={accel,sample_rate_hz:hz};if(gyro)body.gyro=gyro;
+    const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data=await res.json();
+    renderResult(data,name,n);
+  }catch(e){showError('API cold start (free tier — 50s delay). Try again in a moment.');}
+}
+async function certifyExample(type,label,hz){
+  showLoading(label);
+  try{
+    const res=await fetch(BASE+type+'.csv');
+    const text=await res.text();
+    const{accel,gyro}=parseCSV(text);
+    if(accel.length<32){showError('Example file parse error.');return;}
+    await callAPI(accel,gyro,hz,label,accel.length);
+  }catch(e){showError('Could not load example. Try again.');}
+}
+async function certifyFile(file){
+  if(!file)return;
+  showLoading(file.name);
+  const text=await file.text();
+  const{accel,gyro}=parseCSV(text);
+  if(accel.length<32){showError(`Need at least 32 valid rows. Got ${accel.length} from ${file.name}.`);return;}
+  await callAPI(accel,gyro,userHz,file.name,accel.length);
+}
+</script>
+</body>
+</html>

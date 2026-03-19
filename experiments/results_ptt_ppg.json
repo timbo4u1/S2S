@@ -1,0 +1,97 @@
+{
+  "level2_imu": {
+    "level": 2,
+    "description": "Real wrist IMU from PTT-PPG dataset",
+    "sensor": "Wrist accelerometer + gyroscope, 500Hz",
+    "n_windows": 1164,
+    "avg_physics_score": 37.19,
+    "pass_rate": 0.6168,
+    "tier_counts": {
+      "BRONZE": 715,
+      "REJECTED": 446,
+      "SILVER": 3,
+      "GOLD": 0
+    },
+    "by_activity": {
+      "walk": 39.1,
+      "sit": 32.5,
+      "run": 40.0
+    }
+  },
+  "level3_ppg": {
+    "level": 3,
+    "description": "Real PPG from PTT-PPG dataset, wrist wearable",
+    "sensor": "6-channel PPG + skin temperature, 500Hz, real humans",
+    "n_windows": 1164,
+    "pass_rate": 0.0,
+    "tier_counts": {
+      "REJECTED": 1164,
+      "GOLD": 0,
+      "SILVER": 0,
+      "BRONZE": 0,
+      "UNKNOWN": 0
+    },
+    "by_activity": {
+      "walk": {
+        "n": 388,
+        "pass": 0
+      },
+      "sit": {
+        "n": 388,
+        "pass": 0
+      },
+      "run": {
+        "n": 388,
+        "pass": 0
+      }
+    },
+    "hr_mean_bpm": 106.1,
+    "hrv_mean_ms": 21.0
+  },
+  "level4_fusion": {
+    "level": 4,
+    "description": "Real 3-sensor fusion: PPG + IMU + Thermal",
+    "sensor": "PTT-PPG wrist device: 6ch PPG + accel/gyro + temp, 500Hz",
+    "n_windows": 1164,
+    "avg_hil_score": 38.86,
+    "pass_rate": 1.0,
+    "fusion_tier_counts": {
+      "BRONZE": 1164,
+      "GOLD": 0,
+      "SILVER": 0,
+      "REJECTED": 0
+    },
+    "by_activity": {
+      "walk": 39.1,
+      "sit": 38.3,
+      "run": 39.2
+    },
+    "real_temp_mean_c": 33.59,
+    "hr_mean_bpm": 104.8
+  },
+  "meta": {
+    "experiment": "s2s_ptt_ppg_real_data",
+    "dataset": "PhysioNet PTT-PPG v1.1.0",
+    "subjects": [
+      "s10_walk",
+      "s10_sit",
+      "s10_run",
+      "s11_walk",
+      "s11_sit",
+      "s11_run",
+      "s12_walk",
+      "s12_sit",
+      "s12_run",
+      "s13_walk",
+      "s13_sit",
+      "s13_run"
+    ],
+    "window_s": 5.0,
+    "hz": 500,
+    "n_windows": 1164,
+    "elapsed_s": 4593.1,
+    "s2s_version": "1.4.4",
+    "sensors": "PPG (6ch) + IMU (accel+gyro) + Thermal \u2014 all real, wrist device",
+    "note": "100% real human data. No synthetic signals."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "A_clean": {
+    "description": "Clean SILVER reference",
+    "accuracy": 0.8822,
+    "macro_f1": 0.736,
+    "train_n": 11714
+  },
+  "B_mixed": {
+    "description": "SILVER+BRONZE, no repair",
+    "accuracy": 0.8726,
+    "macro_f1": 0.6777,
+    "train_n": 29188
+  },
+  "C_floor": {
+    "description": "Floor only \u2014 BRONZE removed",
+    "accuracy": 0.8822,
+    "macro_f1": 0.736,
+    "train_n": 11714
+  },
+  "D_adaptive": {
+    "description": "Floor + kalman recon (w=0.5, dual check)",
+    "accuracy": 0.8855,
+    "macro_f1": 0.7504,
+    "train_n": 11734
+  },
+  "meta": {
+    "experiment": "s2s_level3_adaptive_wisdm",
+    "dataset": "wisdm",
+    "hz": 20,
+    "recon_method": "kalman",
+    "dual_acceptance": {
+      "physics_threshold": 75,
+      "spectral_similarity_threshold": 0.8
+    },
+    "bronze_windows": 17474,
+    "accepted_reconstructed": 20,
+    "acceptance_rate": 0.1,
+    "avg_score_before": 73.7,
+    "avg_score_after": 77.8,
+    "avg_spectral_similarity": 0.85,
+    "adaptive_floor": 70
+  }
+}
