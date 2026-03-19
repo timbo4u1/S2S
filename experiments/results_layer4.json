@@ -1,0 +1,75 @@
+{
+  "layer": 4,
+  "sub_layer": "4a_sequence_prediction",
+  "n_train": 2964,
+  "n_val": 523,
+  "epochs": 150,
+  "best_val_loss": 0.876255,
+  "mean_correlation_r": 0.378,
+  "smoothness_correlation_r": 0.922,
+  "output_correlations": [
+    -0.049,
+    0.408,
+    0.036,
+    -0.003,
+    0.563,
+    0.201,
+    0.951,
+    0.922
+  ],
+  "history": [
+    {
+      "epoch": 141,
+      "train_loss": 0.24192,
+      "val_loss": 1.193648
+    },
+    {
+      "epoch": 142,
+      "train_loss": 0.248444,
+      "val_loss": 1.201481
+    },
+    {
+      "epoch": 143,
+      "train_loss": 0.23741,
+      "val_loss": 1.196815
+    },
+    {
+      "epoch": 144,
+      "train_loss": 0.242543,
+      "val_loss": 1.202625
+    },
+    {
+      "epoch": 145,
+      "train_loss": 0.243277,
+      "val_loss": 1.208122
+    },
+    {
+      "epoch": 146,
+      "train_loss": 0.251402,
+      "val_loss": 1.211209
+    },
+    {
+      "epoch": 147,
+      "train_loss": 0.240697,
+      "val_loss": 1.211135
+    },
+    {
+      "epoch": 148,
+      "train_loss": 0.235895,
+      "val_loss": 1.21008
+    },
+    {
+      "epoch": 149,
+      "train_loss": 0.239461,
+      "val_loss": 1.209974
+    },
+    {
+      "epoch": 150,
+      "train_loss": 0.24229,
+      "val_loss": 1.209871
+    }
+  ],
+  "model_path": "experiments/layer4_model.pt",
+  "tier_filter": "all",
+  "n_params": 415880
+}
