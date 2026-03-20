@@ -1,0 +1,29 @@
+{
+  "dataset": "WESAD",
+  "total_windows": 8995,
+  "certified": 5285,
+  "certification_rate": 0.588,
+  "tier_counts": {
+    "REJECTED": 3710,
+    "total": 8995,
+    "BRONZE": 5285
+  },
+  "by_condition": {
+    "baseline": {
+      "total": 3523,
+      "certified": 2097
+    },
+    "stress": {
+      "total": 1993,
+      "certified": 1230
+    },
+    "meditation": {
+      "total": 2362,
+      "certified": 1362
+    },
+    "amusement": {
+      "total": 1117,
+      "certified": 596
+    }
+  }
+}
