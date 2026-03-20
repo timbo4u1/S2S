@@ -1,0 +1,10 @@
+{
+  "dataset": "WESAD",
+  "total_windows": 8995,
+  "certified_windows": 5285,
+  "certification_rate": 0.588,
+  "f1_all_windows": 0.312,
+  "f1_certified_only": 0.3218,
+  "f1_delta": 0.0097,
+  "f1_improvement_pct": 3.12
+}
