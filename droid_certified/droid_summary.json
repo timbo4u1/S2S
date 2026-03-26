@@ -1,0 +1,63 @@
+{
+  "dataset": "DROID-100",
+  "n_episodes": 50,
+  "total_windows": 1150,
+  "certified": 1150,
+  "cert_rate": 1.0,
+  "tier_counts": {
+    "BRONZE": 735,
+    "SILVER": 415
+  },
+  "instructions_sample": [
+    {
+      "instruction": "Put the marker inside the silver pot",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "Put the candy bar on the left side of the first shelf",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "Put one green sachet in the grey bowl.",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "exterior_image_1_left",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "is_last",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "joint_position",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "Take the marker from the bowl and put it on the table",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "is_terminal",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "Move the pan to the right.",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    },
+    {
+      "instruction": "Move the glass in the dish washer to the middle row",
+      "cert_rate": 1.0,
+      "n_windows": 23
+    }
+  ]
+}
