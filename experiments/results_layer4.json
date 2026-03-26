@@ -4,69 +4,69 @@
   "n_train": 18612,
   "n_val": 3284,
   "epochs": 100,
-  "best_val_loss": 0.144878,
-  "mean_correlation_r": 0.931,
+  "best_val_loss": 0.148397,
+  "mean_correlation_r": 0.929,
   "smoothness_correlation_r": 0.919,
   "output_correlations": [
     0.974,
-    0.875,
-    0.945,
+    0.868,
+    0.943,
     0.975,
-    0.879,
-    0.949,
-    0.933,
+    0.872,
+    0.947,
+    0.938,
     0.919
   ],
   "history": [
     {
       "epoch": 91,
-      "train_loss": 0.092078,
-      "val_loss": 0.144878
+      "train_loss": 0.093025,
+      "val_loss": 0.149202
     },
     {
       "epoch": 92,
-      "train_loss": 0.092732,
-      "val_loss": 0.145377
+      "train_loss": 0.093343,
+      "val_loss": 0.150132
     },
     {
       "epoch": 93,
-      "train_loss": 0.091869,
-      "val_loss": 0.145198
+      "train_loss": 0.09309,
+      "val_loss": 0.149023
     },
     {
       "epoch": 94,
-      "train_loss": 0.092609,
-      "val_loss": 0.146546
+      "train_loss": 0.092368,
+      "val_loss": 0.149434
     },
     {
       "epoch": 95,
-      "train_loss": 0.0916,
-      "val_loss": 0.145379
+      "train_loss": 0.092427,
+      "val_loss": 0.148988
     },
     {
       "epoch": 96,
-      "train_loss": 0.091867,
-      "val_loss": 0.145122
+      "train_loss": 0.09097,
+      "val_loss": 0.149456
     },
     {
       "epoch": 97,
-      "train_loss": 0.091647,
-      "val_loss": 0.145231
+      "train_loss": 0.092251,
+      "val_loss": 0.149111
     },
     {
       "epoch": 98,
-      "train_loss": 0.09086,
-      "val_loss": 0.145258
+      "train_loss": 0.09156,
+      "val_loss": 0.148989
     },
     {
       "epoch": 99,
-      "train_loss": 0.092282,
-      "val_loss": 0.145208
+      "train_loss": 0.090948,
+      "val_loss": 0.148971
     },
     {
       "epoch": 100,
-      "train_loss": 0.091328,
-      "val_loss": 0.145202
+      "train_loss": 0.091278,
+      "val_loss": 0.148964
     }
   ],
   "model_path": "experiments/layer4_model.pt",
