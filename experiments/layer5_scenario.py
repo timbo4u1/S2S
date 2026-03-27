@@ -22,7 +22,7 @@ Usage:
     python3.9 experiments/layer5_scenario.py --chain
     python3.9 experiments/layer5_scenario.py --train
 """
-import os, sys, json, struct, glob, argparse, re, time, random
+import os, sys, json, struct, glob, argparse, re, time, random, io
 from pathlib import Path
 from collections import defaultdict
 
@@ -31,6 +31,18 @@ sys.path.insert(0, os.path.expanduser("~/S2S"))
 import numpy as np
 
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+
+try:
+    import clip as _clip
+    CLIP_OK = True
+except ImportError:
+    CLIP_OK = False
+
+try:
+    from sentence_transformers import SentenceTransformer as _ST
+    ST_OK = True
+except ImportError:
+    ST_OK = False
 
 NPZ_PATH    = Path("experiments/sequences_real.npz")
 DROID_DIR   = Path.home() / "droid_data"
@@ -332,16 +344,17 @@ def parse_all(droid_dir=DROID_DIR, max_episodes=50):
             raw_records = read_tfrecords(rec_path, max_records=None)
             for raw in raw_records:
                 ep = parse_droid_episode(raw)
-                # Filter protobuf key names that leak as fake instructions
-                if ep["instruction"] and ep["n_steps"] > WINDOW_SIZE:
-                    BLOCKLIST = {"joint_position","joint_positio","is_last",
-                                 "is_terminal","is_first","action_dict","discount",
-                                 "exterior_image_1_left","exterior_image_2_left",
-                                 "wrist_image_left","gripper_position","gripper_p",
-                                 "language_instruction_2","language_instruction_3",
-                                 "episode_metadata","steps","observation"}
-                    if ep["instruction"] not in BLOCKLIST and len(ep["instruction"]) > 10:
-                        episodes.append(ep)
+                BLOCKLIST = {
+                    "joint_position", "joint_positio", "is_last", "is_terminal",
+                    "is_first", "action_dict", "discount", "exterior_image_1_left",
+                    "exterior_image_2_left", "wrist_image_left", "gripper_position",
+                    "gripper_p", "language_instruction_2", "language_instruction_3",
+                    "episode_metadata", "steps", "observation", "language_instruction",
+                }
+                if (ep["instruction"] and ep["n_steps"] > WINDOW_SIZE
+                        and ep["instruction"] not in BLOCKLIST
+                        and len(ep["instruction"]) > 10):
+                    episodes.append(ep)
                     if len(episodes) >= max_episodes:
                         break
         except Exception as e:
@@ -499,6 +512,135 @@ def run_chain_all(episodes, max_ep=20):
 
 
 # ---------------------------------------------------------------------------
+# CLIP scene understanding
+# ---------------------------------------------------------------------------
+
+def clip_scene(droid_dir, max_episodes=5):
+    """
+    Full Layer 5 chain: video frame + language instruction → CLIP scene match.
+    For each episode: extract first JPEG frame, encode with CLIP,
+    encode instruction with sentence-transformers, compute similarity.
+    """
+    if not CLIP_OK:
+        print("CLIP not installed. Run: pip3.9 install git+https://github.com/openai/CLIP.git")
+        return
+    if not ST_OK:
+        print("sentence-transformers not installed.")
+        return
+
+    import torch
+    import torch.nn as nn
+
+    print("Loading CLIP ViT-B/32...")
+    clip_model, preprocess = _clip.load("ViT-B/32", device="cpu")
+    clip_model.eval()
+
+    print("Loading sentence-transformers...")
+    st_model = _ST("all-MiniLM-L6-v2")
+
+    records = sorted(glob.glob(str(droid_dir / "**/*.tfrecord*"), recursive=True))
+    if not records:
+        records = sorted(glob.glob(str(droid_dir / "droid_100/**/*.tfrecord*"),
+                                   recursive=True))
+
+    BLOCKLIST = {
+        "joint_position", "joint_positio", "is_last", "is_terminal",
+        "is_first", "action_dict", "discount", "exterior_image_1_left",
+        "exterior_image_2_left", "wrist_image_left", "gripper_position",
+        "gripper_p", "language_instruction_2", "language_instruction_3",
+        "episode_metadata", "steps", "observation",
+    }
+
+    print(f"\nLayer 5 — CLIP Scene Understanding")
+    print("=" * 65)
+    print(f"{'Instruction':<45} {'CLIP sim':>10}")
+    print("─" * 65)
+
+    results = []
+    ep_count = 0
+
+    for rec_path in records:
+        if ep_count >= max_episodes:
+            break
+        try:
+            raw_records = read_tfrecords(rec_path, max_records=3)
+            for raw in raw_records:
+                if ep_count >= max_episodes:
+                    break
+
+                # Get instruction
+                instruction = parse_text_after_key(raw, "steps/language_instruction")
+                if not instruction or instruction in BLOCKLIST or len(instruction) < 10:
+                    continue
+
+                # Extract first JPEG frame
+                pos, frame_bytes = 0, None
+                while pos < len(raw) - 3:
+                    if raw[pos:pos+3] == b"\xFF\xD8\xFF":
+                        end = raw.find(b"\xFF\xD9", pos+2)
+                        if end > pos and end - pos > 5000:
+                            frame_bytes = raw[pos:end+2]
+                            break
+                        pos += 1
+                    else:
+                        pos += 1
+
+                if frame_bytes is None:
+                    continue
+
+                try:
+                    from PIL import Image as _Image
+                    img = preprocess(
+                        _Image.open(io.BytesIO(frame_bytes))
+                    ).unsqueeze(0)
+                except Exception:
+                    continue
+
+                # CLIP encode image
+                with torch.no_grad():
+                    img_emb   = clip_model.encode_image(img)
+                    img_emb  /= img_emb.norm(dim=-1, keepdim=True)
+
+                    # CLIP encode instruction text
+                    text_tok  = _clip.tokenize([instruction[:77]])
+                    text_emb  = clip_model.encode_text(text_tok)
+                    text_emb /= text_emb.norm(dim=-1, keepdim=True)
+
+                    scene_sim = float((img_emb @ text_emb.T)[0][0])
+
+                # sentence-transformers encode for Layer 4c
+                st_emb = st_model.encode([instruction])[0]
+
+                print(f"{instruction[:45]:<45} {scene_sim:>10.4f}")
+
+                results.append({
+                    "instruction":  instruction,
+                    "clip_sim":     round(scene_sim, 4),
+                    "img_emb_dim":  img_emb.shape[-1],
+                    "st_emb_dim":   len(st_emb),
+                })
+                ep_count += 1
+
+        except Exception as e:
+            print(f"  {Path(rec_path).name}: {e}")
+
+    print("─" * 65)
+    if results:
+        mean_sim = sum(r["clip_sim"] for r in results) / len(results)
+        print(f"Mean CLIP similarity: {mean_sim:.4f}  ({len(results)} episodes)")
+        print(f"\nLayer 5 chain confirmed:")
+        print(f"  Video frame  → CLIP ViT-B/32  → {results[0]['img_emb_dim']}-dim image embedding")
+        print(f"  Instruction  → sentence-transformers → {results[0]['st_emb_dim']}-dim text embedding")
+        print(f"  Scene match  → CLIP cosine similarity → {mean_sim:.4f} mean")
+        print(f"  → Ready to route to Layer 4c intent retrieval")
+
+    Path("experiments/results_layer5_clip.json").write_text(
+        json.dumps(results, indent=2))
+    print(f"\nSaved → experiments/results_layer5_clip.json")
+    return results
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -510,6 +652,8 @@ def main():
                         help="Certify all episodes through PhysicsEngine")
     parser.add_argument("--chain",   action="store_true",
                         help="Run full Layer 1→4 chain on episodes")
+    parser.add_argument("--clip",    action="store_true",
+                        help="Run CLIP scene understanding on video frames")
     parser.add_argument("--max",     type=int, default=50)
     parser.add_argument("--droid",   default=str(DROID_DIR))
     args = parser.parse_args()
@@ -539,6 +683,9 @@ def main():
     elif args.chain:
         episodes = parse_all(droid_dir, max_episodes=args.max)
         run_chain_all(episodes, max_ep=args.max)
+
+    elif args.clip:
+        clip_scene(droid_dir, max_episodes=args.max)
 
     else:
         parser.print_help()
