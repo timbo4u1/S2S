@@ -852,6 +852,7 @@ class PhysicsEngine:
             "laws_passed":        passed,
             "laws_failed":        failed,
             "body_segment":       segment,
+            "source_type": "HIL_BIOLOGICAL",
             "law_details":        {k: det for k, (_, _, det) in results.items()},
             "flags":              flags,
             "physical_constants": {
