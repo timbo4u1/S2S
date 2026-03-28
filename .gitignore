@@ -71,3 +71,5 @@ openx_data/
 wear_dataset/
 experiments/retrieval_index_v3.json
 experiments/wisdm_index.json
+droid_certified/
+wesad_certified/
