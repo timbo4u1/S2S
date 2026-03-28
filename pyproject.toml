@@ -32,7 +32,8 @@ requires-python = ">=3.9"
 dependencies = []   # zero runtime dependencies — stdlib only
 
 [project.optional-dependencies]
-ml = ["torch>=2.0", "numpy>=1.24"]
+ml = ["torch>=2.0", "numpy>=1.24", "scipy>=1.10", "scikit-learn>=1.0"]
+research = ["scipy>=1.10", "wfdb>=4.0", "matplotlib>=3.5", "seaborn>=0.12"]
 dashboard = ["streamlit>=1.30", "numpy>=1.24"]
 dev = ["pytest>=7.0", "pytest-cov"]
 
