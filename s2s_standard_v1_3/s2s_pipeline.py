@@ -146,8 +146,9 @@ class S2SPipeline:
                             dim_feedforward=hidden*4, batch_first=True)
                         self.transformer = nn.TransformerEncoder(enc, num_layers=n_layers)
                         self.head = nn.Sequential(
-                            nn.Linear(hidden, hidden//2), nn.ReLU(),
-                            nn.Linear(hidden//2, d_out))
+                            nn.Linear(hidden, hidden), nn.ReLU(),
+                            nn.Dropout(0.1),
+                            nn.Linear(hidden, d_out))
                     def forward(self, x):
                         x = x.float()
                         if x.dim() == 2: x = x.unsqueeze(1)
@@ -166,8 +167,9 @@ class S2SPipeline:
                 model.load_state_dict(ckpt["model_state"])
                 model.eval()
                 self._layer4a      = model
-                self._layer4a_mean = np.array(ckpt["feat_mean"], dtype=np.float32)
-                self._layer4a_std  = np.array(ckpt["feat_std"],  dtype=np.float32)
+                stats = ckpt.get("stats", {})
+                self._layer4a_mean = np.array(stats.get("X_mean", ckpt.get("feat_mean", [0]*13)), dtype=np.float32)
+                self._layer4a_std  = np.array(stats.get("X_std",  ckpt.get("feat_std",  [1]*13)), dtype=np.float32)
                 self._log("Layer 4a loaded")
             except Exception as e:
                 self._log(f"Layer 4a not loaded: {e}")
