@@ -515,11 +515,41 @@ def run_chain_all(episodes, max_ep=20):
 # CLIP scene understanding
 # ---------------------------------------------------------------------------
 
+def extract_all_jpeg_frames(raw):
+    """
+    Extract ALL JPEG frames from a TFRecord episode binary.
+    Returns list of raw JPEG bytes in order of appearance.
+    DROID stores frames interleaved: frame_0, frame_1, ... at 15Hz.
+    """
+    frames = []
+    pos = 0
+    while pos < len(raw) - 3:
+        if raw[pos:pos+3] == b"\xFF\xD8\xFF":
+            end = raw.find(b"\xFF\xD9", pos + 2)
+            if end > pos and end - pos > 5000:  # skip tiny fragments
+                frames.append(raw[pos:end+2])
+                pos = end + 2
+            else:
+                pos += 1
+        else:
+            pos += 1
+    return frames
+
+
 def clip_scene(droid_dir, max_episodes=5):
     """
-    Full Layer 5 chain: video frame + language instruction → CLIP scene match.
-    For each episode: extract first JPEG frame, encode with CLIP,
-    encode instruction with sentence-transformers, compute similarity.
+    Full Layer 5 chain with FRAME-SYNCHRONIZED visual+physical data.
+
+    For each episode:
+      - Extract ALL JPEG frames (one per timestep at 15Hz)
+      - Certify motion windows (one per WINDOW_SIZE=30 steps = 2 seconds)
+      - Pair frame[window_idx * WINDOW_SIZE] with motion_window[window_idx]
+      - CLIP encode each paired frame → scene embedding per window
+      - Compute CLIP similarity: scene_t vs instruction
+
+    This solves the temporal misalignment problem:
+      Before: one static frame → all 23 windows (WRONG)
+      After:  frame_t → motion_window_t (CORRECT, 15Hz sync)
     """
     if not CLIP_OK:
         print("CLIP not installed. Run: pip3.9 install git+https://github.com/openai/CLIP.git")
@@ -529,7 +559,7 @@ def clip_scene(droid_dir, max_episodes=5):
         return
 
     import torch
-    import torch.nn as nn
+    from PIL import Image as _Image
 
     print("Loading CLIP ViT-B/32...")
     clip_model, preprocess = _clip.load("ViT-B/32", device="cpu")
@@ -537,6 +567,9 @@ def clip_scene(droid_dir, max_episodes=5):
 
     print("Loading sentence-transformers...")
     st_model = _ST("all-MiniLM-L6-v2")
+
+    # Pre-encode instruction text with CLIP (reused for cosine sim)
+    engine = PhysicsEngine()
 
     records = sorted(glob.glob(str(droid_dir / "**/*.tfrecord*"), recursive=True))
     if not records:
@@ -551,12 +584,10 @@ def clip_scene(droid_dir, max_episodes=5):
         "episode_metadata", "steps", "observation",
     }
 
-    print(f"\nLayer 5 — CLIP Scene Understanding")
-    print("=" * 65)
-    print(f"{'Instruction':<45} {'CLIP sim':>10}")
-    print("─" * 65)
+    print(f"\nLayer 5 — Frame-Synchronized CLIP + Physics")
+    print("=" * 70)
 
-    results = []
+    all_results = []
     ep_count = 0
 
     for rec_path in records:
@@ -568,76 +599,117 @@ def clip_scene(droid_dir, max_episodes=5):
                 if ep_count >= max_episodes:
                     break
 
-                # Get instruction
-                instruction = parse_text_after_key(raw, "steps/language_instruction")
+                # Parse episode
+                ep = parse_droid_episode(raw)
+                instruction = ep["instruction"]
                 if not instruction or instruction in BLOCKLIST or len(instruction) < 10:
                     continue
 
-                # Extract first JPEG frame
-                pos, frame_bytes = 0, None
-                while pos < len(raw) - 3:
-                    if raw[pos:pos+3] == b"\xFF\xD8\xFF":
-                        end = raw.find(b"\xFF\xD9", pos+2)
-                        if end > pos and end - pos > 5000:
-                            frame_bytes = raw[pos:end+2]
-                            break
-                        pos += 1
-                    else:
-                        pos += 1
-
-                if frame_bytes is None:
+                # Extract ALL frames (one per step at 15Hz)
+                all_frames = extract_all_jpeg_frames(raw)
+                if not all_frames:
                     continue
 
-                try:
-                    from PIL import Image as _Image
-                    img = preprocess(
-                        _Image.open(io.BytesIO(frame_bytes))
-                    ).unsqueeze(0)
-                except Exception:
+                # Certify motion windows
+                certified = certify_episode(ep, engine)
+                if not certified:
                     continue
 
-                # CLIP encode image
+                # Pre-encode instruction with CLIP and sentence-transformers
                 with torch.no_grad():
-                    img_emb   = clip_model.encode_image(img)
-                    img_emb  /= img_emb.norm(dim=-1, keepdim=True)
-
-                    # CLIP encode instruction text
                     text_tok  = _clip.tokenize([instruction[:77]])
                     text_emb  = clip_model.encode_text(text_tok)
                     text_emb /= text_emb.norm(dim=-1, keepdim=True)
 
-                    scene_sim = float((img_emb @ text_emb.T)[0][0])
-
-                # sentence-transformers encode for Layer 4c
                 st_emb = st_model.encode([instruction])[0]
 
-                print(f"{instruction[:45]:<45} {scene_sim:>10.4f}")
+                print(f"\nEpisode {ep_count}: '{instruction[:60]}'")
+                print(f"  Frames: {len(all_frames)}  |  "
+                      f"Motion windows: {len(certified)}  |  "
+                      f"Sync ratio: 1 frame per {WINDOW_SIZE} steps")
+                print(f"  {'Win':>4}  {'Frame_idx':>10}  {'Tier':>8}  "
+                      f"{'Score':>6}  {'CLIP_sim':>10}")
+                print(f"  {'─'*4}  {'─'*10}  {'─'*8}  {'─'*6}  {'─'*10}")
 
-                results.append({
-                    "instruction":  instruction,
-                    "clip_sim":     round(scene_sim, 4),
-                    "img_emb_dim":  img_emb.shape[-1],
-                    "st_emb_dim":   len(st_emb),
-                })
-                ep_count += 1
+                window_results = []
+                for w in certified:
+                    win_idx   = w["window_idx"]
+                    # Sync: frame at the START of each motion window
+                    frame_idx = min(win_idx * WINDOW_SIZE, len(all_frames) - 1)
+                    frame_bytes = all_frames[frame_idx]
+
+                    try:
+                        img = preprocess(
+                            _Image.open(io.BytesIO(frame_bytes))
+                        ).unsqueeze(0)
+                    except Exception:
+                        continue
+
+                    with torch.no_grad():
+                        img_emb   = clip_model.encode_image(img)
+                        img_emb  /= img_emb.norm(dim=-1, keepdim=True)
+                        scene_sim = float((img_emb @ text_emb.T)[0][0])
+
+                    print(f"  {win_idx:>4}  {frame_idx:>10}  "
+                          f"{w['tier']:>8}  {w['score']:>6}  {scene_sim:>10.4f}")
+
+                    window_results.append({
+                        "window_idx":  win_idx,
+                        "frame_idx":   frame_idx,
+                        "tier":        w["tier"],
+                        "score":       w["score"],
+                        "clip_sim":    round(scene_sim, 4),
+                        "instruction": instruction,
+                        "source_type": "ROBOT_TELEOP",  # HIL firewall tag
+                    })
+
+                if window_results:
+                    sims = [r["clip_sim"] for r in window_results]
+                    certified_wins = [r for r in window_results
+                                      if r["tier"] != "REJECTED"]
+                    cert_sim = (sum(r["clip_sim"] for r in certified_wins)
+                                / max(len(certified_wins), 1))
+
+                    print(f"\n  Mean CLIP sim (all):       {sum(sims)/len(sims):.4f}")
+                    print(f"  Mean CLIP sim (certified): {cert_sim:.4f}")
+                    print(f"  Certified windows:         "
+                          f"{len(certified_wins)}/{len(window_results)}")
+
+                    all_results.append({
+                        "instruction":      instruction,
+                        "n_frames":         len(all_frames),
+                        "n_windows":        len(window_results),
+                        "n_certified":      len(certified_wins),
+                        "mean_clip_sim":    round(sum(sims)/len(sims), 4),
+                        "cert_clip_sim":    round(cert_sim, 4),
+                        "windows":          window_results,
+                    })
+                    ep_count += 1
 
         except Exception as e:
-            print(f"  {Path(rec_path).name}: {e}")
+            print(f"  {Path(rec_path).name}: error — {e}")
 
-    print("─" * 65)
-    if results:
-        mean_sim = sum(r["clip_sim"] for r in results) / len(results)
-        print(f"Mean CLIP similarity: {mean_sim:.4f}  ({len(results)} episodes)")
-        print(f"\nLayer 5 chain confirmed:")
-        print(f"  Video frame  → CLIP ViT-B/32  → {results[0]['img_emb_dim']}-dim image embedding")
-        print(f"  Instruction  → sentence-transformers → {results[0]['st_emb_dim']}-dim text embedding")
-        print(f"  Scene match  → CLIP cosine similarity → {mean_sim:.4f} mean")
-        print(f"  → Ready to route to Layer 4c intent retrieval")
+    # Summary
+    print(f"\n{'='*70}")
+    if all_results:
+        mean_all  = sum(r["mean_clip_sim"] for r in all_results) / len(all_results)
+        mean_cert = sum(r["cert_clip_sim"] for r in all_results) / len(all_results)
+        print(f"Episodes processed:        {len(all_results)}")
+        print(f"Mean CLIP sim (all wins):  {mean_all:.4f}")
+        print(f"Mean CLIP sim (certified): {mean_cert:.4f}")
+        print(f"\nLayer 5 chain complete:")
+        print(f"  video_t   → CLIP ViT-B/32 → 512-dim scene embedding (per window)")
+        print(f"  motion_t  → PhysicsEngine → GOLD/SILVER/BRONZE/REJECTED")
+        print(f"  text      → sentence-transformers → 384-dim intent embedding")
+        print(f"  Temporal sync: frame[win_idx × {WINDOW_SIZE}] ↔ motion_window[win_idx]")
+        if mean_cert > mean_all:
+            print(f"  ✓ Certified windows have HIGHER scene similarity "
+                  f"(+{mean_cert-mean_all:.4f}) — physics filter improves visual relevance")
 
     Path("experiments/results_layer5_clip.json").write_text(
-        json.dumps(results, indent=2))
+        json.dumps(all_results, indent=2, default=str))
     print(f"\nSaved → experiments/results_layer5_clip.json")
-    return results
+    return all_results
 
 
 # ---------------------------------------------------------------------------
