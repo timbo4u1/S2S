@@ -51,7 +51,7 @@ try:
     from .s2s_ppg_certify_v1_3     import PPGStreamCertifier, certify_ppg_channels
     from .s2s_fusion_v1_3          import FusionCertifier
     from .s2s_signing_v1_3         import CertSigner, attach_signer_to_certifier
-    from .s2s_registry_v1_3        import RegistryValidator
+    from .s2s_registry_v1_3        import DeviceRegistry as RegistryValidator
     from .constants                 import (STREAM_WINDOW_DEFAULT, STREAM_STEP_DEFAULT,
                                             VERSION_MAJOR, VERSION_MINOR)
 except Exception:
@@ -64,7 +64,7 @@ except Exception:
     from s2s_ppg_certify_v1_3     import PPGStreamCertifier, certify_ppg_channels
     from s2s_fusion_v1_3          import FusionCertifier
     from s2s_signing_v1_3         import CertSigner, attach_signer_to_certifier
-    from s2s_registry_v1_3        import RegistryValidator
+    from s2s_registry_v1_3        import DeviceRegistry as RegistryValidator
     from constants                 import (STREAM_WINDOW_DEFAULT, STREAM_STEP_DEFAULT,
                                            VERSION_MAJOR, VERSION_MINOR)
 
@@ -84,7 +84,7 @@ def _sign(cert: Dict[str, Any]) -> Dict[str, Any]:
 def _registry_check(device_id: Optional[str]) -> Tuple[bool, str]:
     if not _validator or not device_id:
         return True, "OK"
-    d = _validator.registry.get(device_id)
+    d = _validator.devices.get(device_id)
     if not d:
         return False, f"DEVICE_NOT_REGISTERED: {device_id}"
     if d.get("revoked"):
@@ -238,7 +238,7 @@ class S2SHandler(BaseHTTPRequestHandler):
                 "s2s_version": f"{VERSION_MAJOR}.{VERSION_MINOR}",
                 "signing_mode": _signer.mode if _signer else "disabled",
                 "signing_key_id": _signer.key_id if _signer else None,
-                "registry": _validator.registry.summary() if _validator else None,
+                "registry": list(_validator.devices.keys()) if _validator else None,
                 "sensors": ["imu","emg","lidar","thermal","ppg","fusion"],
                 "endpoints": [
                     "GET  /health", "GET  /version", "GET  /sessions",
@@ -469,7 +469,7 @@ def main() -> None:
             _validator = RegistryValidator(args.registry)
             if not args.quiet:
                 print(json.dumps({"event":"registry_enabled",
-                                  "summary": _validator.registry.summary()}))
+                                  "summary": list(_validator.devices.keys())}))
         except Exception as e:
             print(json.dumps({"event":"registry_error","error":str(e)}))
 
