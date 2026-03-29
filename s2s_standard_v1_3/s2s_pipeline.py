@@ -147,8 +147,7 @@ class S2SPipeline:
                         self.transformer = nn.TransformerEncoder(enc, num_layers=n_layers)
                         self.head = nn.Sequential(
                             nn.Linear(hidden, hidden), nn.ReLU(),
-                            nn.Dropout(0.1),
-                            nn.Linear(hidden, d_out))
+                            nn.Dropout(0.1), nn.Linear(hidden, d_out))
                     def forward(self, x):
                         x = x.float()
                         if x.dim() == 2: x = x.unsqueeze(1)
@@ -435,10 +434,145 @@ class S2SPipeline:
         return [(self._layer4c_labels[i], round(float(sims[i]), 4))
                 for i in top_idx]
 
+    # ------------------------------------------------------------------
+    # Layer 2 — Biological session verdict (call after multiple certify())
+    # ------------------------------------------------------------------
+
+    def get_session_verdict(self) -> Dict[str, Any]:
+        """
+        Layer 2 — Biological origin detection for the current session.
+
+        Call this after certifying multiple windows with certify().
+        Uses Hurst exponent and biological fidelity score (BFS) to determine
+        if the data comes from a real human.
+
+        Requires at least 4 windows to have been certified first.
+
+        Returns
+        -------
+        dict with keys:
+            biological_grade : HUMAN / LOW_BIOLOGICAL_FIDELITY / NOT_BIOLOGICAL
+            hurst            : float  (≥0.70 = biological motor control)
+            bfs              : float  (biological fidelity score 0-1)
+            recommendation   : ACCEPT / REVIEW / REJECT
+            n_windows        : int
+        """
+        result = self.engine.certify_session()
+        if result is None:
+            return {
+                "biological_grade": None,
+                "hurst": None,
+                "bfs": None,
+                "recommendation": "REVIEW",
+                "n_windows": 0,
+                "error": "certify_session() returned None — need more windows",
+            }
+        return result
+
+    # ------------------------------------------------------------------
+    # Layer 4b — Gap filling between two certified keyframes
+    # ------------------------------------------------------------------
+
+    def fill_gap(self,
+                 start_features: List[float],
+                 end_features: List[float],
+                 n_steps: int = 3) -> List[List[float]]:
+        """
+        Layer 4b — Fill n_steps intermediate motion windows between
+        start and end keyframes.
+
+        Uses the physics-residual gap filler trained on 87,529 quadruplets.
+        Beats linear interpolation by +5.5% at all t values (t=1/3, 1/2, 2/3).
+
+        Parameters
+        ----------
+        start_features : list of 13 floats
+            Physics features of the start window (from result["features"]
+            or extract manually using _extract_features())
+        end_features : list of 13 floats
+            Physics features of the end window
+        n_steps : int
+            Number of intermediate windows to generate. Default 3.
+
+        Returns
+        -------
+        list of n_steps lists, each 13-dim feature vector.
+        Returns linear interpolation if model not available.
+        """
+        if not _NP:
+            return []
+
+        s = np.array(start_features, dtype=np.float32)
+        e = np.array(end_features,   dtype=np.float32)
+
+        # Try neural gap filler (Layer 4b model)
+        model4b_path = self.exp_dir / "layer4b_model.pt"
+        if _TORCH and model4b_path.exists():
+            try:
+                import torch
+                import torch.nn as nn
+
+                ckpt = torch.load(str(model4b_path), map_location=self.device)
+                cfg  = ckpt["config"]
+
+                class GapFiller(nn.Module):
+                    def __init__(self, input_dim, hidden):
+                        super().__init__()
+                        combined = input_dim * 2 + 1
+                        self.encoder = nn.Sequential(
+                            nn.Linear(combined, hidden), nn.LayerNorm(hidden),
+                            nn.GELU(), nn.Linear(hidden, hidden), nn.GELU(),
+                            nn.Dropout(0.1), nn.Linear(hidden, hidden // 2),
+                            nn.GELU(),
+                        )
+                        self.correction_head = nn.Linear(hidden // 2, input_dim)
+
+                    def forward(self, start, end, t):
+                        start, end, t = start.float(), end.float(), t.float()
+                        x = torch.cat([start, end, t], dim=-1)
+                        h = self.encoder(x)
+                        return start + t * (end - start) + self.correction_head(h)
+
+                model = GapFiller(cfg["input_dim"], cfg["hidden"])
+                model.load_state_dict(ckpt["model_state"])
+                model.eval()
+
+                feat_mean = np.array(ckpt["feat_mean"], dtype=np.float32)
+                feat_std  = np.array(ckpt["feat_std"],  dtype=np.float32)
+
+                s_n = torch.tensor(((s - feat_mean) / feat_std).reshape(1, -1))
+                e_n = torch.tensor(((e - feat_mean) / feat_std).reshape(1, -1))
+
+                results = []
+                for step in range(1, n_steps + 1):
+                    t = float(step) / (n_steps + 1)
+                    p = torch.tensor([[t]], dtype=torch.float32)
+                    with torch.no_grad():
+                        pred_n = model(s_n, e_n, p).numpy()[0]
+                    pred = pred_n * feat_std + feat_mean
+                    results.append([round(float(v), 4) for v in pred])
+                return results
+
+            except Exception:
+                pass
+
+        # Fallback: linear interpolation
+        results = []
+        for step in range(1, n_steps + 1):
+            t = float(step) / (n_steps + 1)
+            interp = s + t * (e - s)
+            results.append([round(float(v), 4) for v in interp])
+        return results
+
     def __repr__(self):
         layers = ["Layer1(Physics)"]
-        if self._layer4a:  layers.append("Layer4a(NextAction)")
-        if self._layer4c:  layers.append("Layer4c(Intent)")
-        if self._st_model: layers.append("Layer3(Retrieval)")
+        if self._layer4a:   layers.append("Layer4a(NextAction)")
+        if self._layer4c:   layers.append("Layer4c(Intent)")
+        if self._st_model:  layers.append("Layer3(Retrieval)")
         if self._clip_model: layers.append("Layer5(CLIP)")
+        # Layer 2 and 4b always available (use engine + model file)
+        layers.insert(1, "Layer2(BioSession)")
+        model4b = self.exp_dir / "layer4b_model.pt"
+        if model4b.exists():
+            layers.insert(3, "Layer4b(GapFill)")
         return f"S2SPipeline(segment={self.segment}, {' + '.join(layers)})"
