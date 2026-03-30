@@ -407,7 +407,6 @@ class S2SPipeline:
                 if len(obj) >= 2:
                     prompts += [f"a {obj[-1]} on a table", f"a {obj[0]} object", f"robot arm near {obj[-1]}"]
                 if obj: prompts.append(f"tabletop with {obj[-1]}")
-                print(f"DEBUG prompts: {prompts}")
                 with torch.no_grad():
                     img_emb   = self._clip_model.encode_image(img)
                     text_toks = _clip_lib.tokenize(prompts[:5])
