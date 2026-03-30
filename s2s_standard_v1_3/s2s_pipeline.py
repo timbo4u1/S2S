@@ -399,14 +399,23 @@ class S2SPipeline:
                 img = self._clip_preprocess(
                     Image.open(io.BytesIO(video_frame))
                 ).unsqueeze(0)
-                text = _clip_lib.tokenize([instruction[:77]])
+                # Decompose instruction into visual object words
+                words = instruction.lower().replace("."," ").split()
+                stop = {"put","the","a","an","in","on","to","and","of","from","into","onto","up","off","out","over","under","it","is","get","take","move","place","slide","pick","bring","push","pull"}
+                obj = [w for w in words if w not in stop]
+                prompts = [instruction[:77]]
+                if len(obj) >= 2:
+                    prompts += [f"a {obj[-1]} on a table", f"a {obj[0]} object", f"robot arm near {obj[-1]}"]
+                if obj: prompts.append(f"tabletop with {obj[-1]}")
+                print(f"DEBUG prompts: {prompts}")
                 with torch.no_grad():
-                    img_emb  = self._clip_model.encode_image(img)
-                    text_emb = self._clip_model.encode_text(text)
+                    img_emb   = self._clip_model.encode_image(img)
+                    text_toks = _clip_lib.tokenize(prompts[:5])
+                    text_embs = self._clip_model.encode_text(text_toks)
                     img_emb  /= img_emb.norm(dim=-1, keepdim=True)
-                    text_emb /= text_emb.norm(dim=-1, keepdim=True)
-                    result["clip_sim"] = round(
-                        float((img_emb @ text_emb.T)[0][0]), 4)
+                    text_embs /= text_embs.norm(dim=-1, keepdim=True)
+                    sims = (img_emb @ text_embs.T)[0]
+                    result["clip_sim"] = round(float(sims.max()), 4)
             except Exception:
                 pass
 
