@@ -1083,5 +1083,4906 @@
         "source_type": "ROBOT_TELEOP"
       }
     ]
+  },
+  {
+    "instruction": "Slide the black lid off",
+    "n_frames": 567,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2226,
+    "cert_clip_sim": 0.2226,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.228,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2412,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2611,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.2458,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2556,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2432,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.227,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2211,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.1984,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.191,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1858,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1876,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1857,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2322,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2411,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2264,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.209,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2183,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2226,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 566,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2247,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 566,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2247,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 566,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2247,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 566,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2247,
+        "instruction": "Slide the black lid off",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the orange object in the pot",
+    "n_frames": 276,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2662,
+    "cert_clip_sim": 0.2662,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 40,
+        "clip_sim": 0.2555,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2283,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2101,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1931,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2289,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2142,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2345,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2765,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2968,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2742,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 275,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 275,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 275,
+        "tier": "BRONZE",
+        "score": 37,
+        "clip_sim": 0.2855,
+        "instruction": "Put the orange object in the pot",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Turn the light off.",
+    "n_frames": 744,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2429,
+    "cert_clip_sim": 0.2429,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2357,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2272,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2273,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.23,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2399,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2575,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2683,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2274,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2435,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2712,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2728,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2642,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2644,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2575,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.244,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2514,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.2467,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2193,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2091,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2205,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2314,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2425,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2352,
+        "instruction": "Turn the light off.",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the tissues in the rubbish bin.",
+    "n_frames": 3198,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.254,
+    "cert_clip_sim": 0.254,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2375,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.259,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2741,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2513,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2536,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2611,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2342,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2601,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2836,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2518,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2334,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2176,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2268,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2678,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2887,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2871,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2902,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2341,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2295,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2368,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2689,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2551,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2399,
+        "instruction": "Put the tissues in the rubbish bin.",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the  cable in the storage box",
+    "n_frames": 357,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2758,
+    "cert_clip_sim": 0.2758,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.245,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2453,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2367,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2697,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2766,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2762,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2815,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2783,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2791,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2782,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2879,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2737,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 356,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 356,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2833,
+        "instruction": "Put the  cable in the storage box",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the bread in the toaster",
+    "n_frames": 1098,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.266,
+    "cert_clip_sim": 0.266,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2602,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2542,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2478,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2495,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2469,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.289,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2986,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.3053,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2472,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2766,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2901,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2972,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2719,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2662,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2565,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2504,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2448,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2416,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2567,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2384,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2534,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2897,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2865,
+        "instruction": "Put the bread in the toaster",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the white book on top of the tissue box.",
+    "n_frames": 1194,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2701,
+    "cert_clip_sim": 0.2701,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2464,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2748,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2837,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2724,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2767,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.2799,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2875,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2825,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.276,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.258,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2743,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2575,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2897,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2768,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2706,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.248,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2201,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2384,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2492,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2894,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2875,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 40,
+        "clip_sim": 0.2716,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.3005,
+        "instruction": "Put the white book on top of the tissue box.",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the towel on the table into the box",
+    "n_frames": 4041,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2436,
+    "cert_clip_sim": 0.2436,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2596,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2563,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2547,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2439,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2299,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2376,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2459,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2347,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2323,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2504,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2496,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2235,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2401,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2283,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2428,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2509,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2359,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.237,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2429,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2574,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2474,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2505,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2516,
+        "instruction": "Put the towel on the table into the box",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+    "n_frames": 1815,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2405,
+    "cert_clip_sim": 0.2405,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2555,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2418,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2557,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2332,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2507,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2367,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.229,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2564,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2355,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2233,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2328,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.236,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2319,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2257,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2206,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2352,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.254,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2406,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2252,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2515,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2409,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2585,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2613,
+        "instruction": "Turn the tap on and off and put the spoon in the dishes tray",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the marker inside the blue cup",
+    "n_frames": 378,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2275,
+    "cert_clip_sim": 0.2275,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2019,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 37,
+        "clip_sim": 0.1964,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2023,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.1859,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1706,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2964,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2277,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2104,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2444,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2462,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2486,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2635,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2681,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 377,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 377,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 40,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 377,
+        "tier": "BRONZE",
+        "score": 45,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 377,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2269,
+        "instruction": "Put the marker inside the blue cup",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+    "n_frames": 1806,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2165,
+    "cert_clip_sim": 0.2165,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2295,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2078,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.1984,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2176,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 45,
+        "clip_sim": 0.2338,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2162,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1954,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2154,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2077,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.218,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2165,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.215,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1877,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.1998,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2194,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2017,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2114,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.1992,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2147,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2073,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.1961,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2918,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.2794,
+        "instruction": "wPick up the towels and put them in the basket and then pick up the marker and the masking table and put them in the cup",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Press a button on the keyboard",
+    "n_frames": 912,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2367,
+    "cert_clip_sim": 0.2367,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2708,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2654,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2269,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 38,
+        "clip_sim": 0.2349,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2641,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2614,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2641,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.28,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2684,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2507,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.243,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2285,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2321,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2141,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2277,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2206,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2239,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2205,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2159,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2051,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2115,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.211,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2044,
+        "instruction": "Press a button on the keyboard",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Put the green object in the bowl",
+    "n_frames": 432,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2392,
+    "cert_clip_sim": 0.2392,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2474,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2509,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2245,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2113,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.21,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2163,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.265,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2477,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2333,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2517,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2505,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2454,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2324,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2439,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2318,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 431,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 431,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 431,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2424,
+        "instruction": "Put the green object in the bowl",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Take the lid off the smaller pot",
+    "n_frames": 633,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2351,
+    "cert_clip_sim": 0.2351,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2549,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2389,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2225,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2296,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2204,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.243,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2371,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2359,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2472,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2306,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2218,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2204,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2384,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2387,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2518,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2429,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2326,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2178,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2183,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.246,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2273,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2461,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 632,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.2458,
+        "instruction": "Take the lid off the smaller pot",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Move the orange objects from the pullout table to the desk",
+    "n_frames": 1203,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2685,
+    "cert_clip_sim": 0.2685,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2232,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2626,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2807,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2861,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2774,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2831,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2857,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2634,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.2781,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2803,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2842,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2772,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.251,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2338,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2738,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.256,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2651,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2727,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 36,
+        "clip_sim": 0.2731,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2702,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2684,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2651,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.265,
+        "instruction": "Move the orange objects from the pullout table to the desk",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Move the yellow mug forward",
+    "n_frames": 501,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2303,
+    "cert_clip_sim": 0.2303,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.222,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2302,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 38,
+        "clip_sim": 0.2247,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2135,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2278,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2099,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2458,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2353,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.223,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2225,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.226,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2452,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2181,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2403,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2223,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2302,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.241,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 500,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 500,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 500,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 500,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 500,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 500,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2364,
+        "instruction": "Move the yellow mug forward",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Center the faucet and then lift the handle",
+    "n_frames": 912,
+    "n_windows": 22,
+    "n_certified": 22,
+    "mean_clip_sim": 0.2641,
+    "cert_clip_sim": 0.2641,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2518,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.247,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2485,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2386,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 38,
+        "clip_sim": 0.2453,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2353,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2422,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2391,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2446,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2589,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.258,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2897,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2851,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2762,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.278,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 48,
+        "clip_sim": 0.2768,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.275,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.279,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2855,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2862,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2933,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2758,
+        "instruction": "Center the faucet and then lift the handle",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Pick up the yellow tube and put it in the cup",
+    "n_frames": 300,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2418,
+    "cert_clip_sim": 0.2418,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2639,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.242,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2211,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2126,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2371,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2191,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2049,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2092,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2587,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2705,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 299,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 299,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 299,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 299,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2478,
+        "instruction": "Pick up the yellow tube and put it in the cup",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Move the silver pot to the left",
+    "n_frames": 375,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2175,
+    "cert_clip_sim": 0.2175,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 49,
+        "clip_sim": 0.2199,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2357,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2464,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2454,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2604,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2324,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2208,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.1994,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2213,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2243,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2197,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2072,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2043,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 374,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 36,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 374,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2066,
+        "instruction": "Move the silver pot to the left",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Move the faucet to the center of the sink",
+    "n_frames": 630,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2699,
+    "cert_clip_sim": 0.2699,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.293,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2959,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2778,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2952,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2831,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2737,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2925,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.3014,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2701,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.243,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2343,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2436,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2609,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2488,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.246,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 42,
+        "clip_sim": 0.2376,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2771,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2301,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2822,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2762,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2889,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 629,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2778,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 629,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2778,
+        "instruction": "Move the faucet to the center of the sink",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Get the marker from the table and place it in the colorless cup",
+    "n_frames": 1011,
+    "n_windows": 21,
+    "n_certified": 21,
+    "mean_clip_sim": 0.2535,
+    "cert_clip_sim": 0.2535,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2911,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2887,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.3056,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 43,
+        "clip_sim": 0.2904,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2754,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.242,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2417,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 38,
+        "clip_sim": 0.2696,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2536,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2605,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2457,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2743,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2398,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2486,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2319,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2358,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.232,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2335,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2244,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2178,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2218,
+        "instruction": "Get the marker from the table and place it in the colorless cup",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+    "n_frames": 1731,
+    "n_windows": 23,
+    "n_certified": 23,
+    "mean_clip_sim": 0.2439,
+    "cert_clip_sim": 0.2439,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "BRONZE",
+        "score": 47,
+        "clip_sim": 0.2515,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "BRONZE",
+        "score": 44,
+        "clip_sim": 0.248,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2361,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2424,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "BRONZE",
+        "score": 41,
+        "clip_sim": 0.2421,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2199,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2574,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.259,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2565,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2435,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2814,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2908,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.267,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2349,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2057,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2293,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 16,
+        "frame_idx": 480,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2401,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 17,
+        "frame_idx": 510,
+        "tier": "BRONZE",
+        "score": 46,
+        "clip_sim": 0.2338,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 18,
+        "frame_idx": 540,
+        "tier": "BRONZE",
+        "score": 35,
+        "clip_sim": 0.2257,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 19,
+        "frame_idx": 570,
+        "tier": "BRONZE",
+        "score": 53,
+        "clip_sim": 0.2488,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 20,
+        "frame_idx": 600,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2469,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 21,
+        "frame_idx": 630,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2339,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 22,
+        "frame_idx": 660,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2146,
+        "instruction": "Pick the two bottles on the stove and place them on the counter, then pick the cooking stick from the pot and place it on the stove",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
+  },
+  {
+    "instruction": "Take the blocks out of the gift disappointed",
+    "n_frames": 3360,
+    "n_windows": 16,
+    "n_certified": 16,
+    "mean_clip_sim": 0.24,
+    "cert_clip_sim": 0.24,
+    "windows": [
+      {
+        "window_idx": 0,
+        "frame_idx": 0,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2354,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 1,
+        "frame_idx": 30,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2281,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 2,
+        "frame_idx": 60,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2304,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 3,
+        "frame_idx": 90,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2426,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 4,
+        "frame_idx": 120,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2516,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 5,
+        "frame_idx": 150,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2449,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 6,
+        "frame_idx": 180,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2386,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 7,
+        "frame_idx": 210,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2459,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 8,
+        "frame_idx": 240,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2555,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 9,
+        "frame_idx": 270,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.248,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 10,
+        "frame_idx": 300,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2009,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 11,
+        "frame_idx": 330,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2388,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 12,
+        "frame_idx": 360,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.251,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 13,
+        "frame_idx": 390,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2414,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 14,
+        "frame_idx": 420,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2454,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      },
+      {
+        "window_idx": 15,
+        "frame_idx": 450,
+        "tier": "SILVER",
+        "score": 58,
+        "clip_sim": 0.2413,
+        "instruction": "Take the blocks out of the gift disappointed",
+        "source_type": "ROBOT_TELEOP"
+      }
+    ]
   }
 ]

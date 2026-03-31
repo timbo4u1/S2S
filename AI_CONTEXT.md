@@ -85,7 +85,6 @@ This is correct — language retrieval benefits from robot task labels.
 ### 5. WeAR dataset (10Hz, accel-only) is not certifiable
 The WEAR dataset (18 subjects, 10Hz) was tested and rejected correctly.
 S2S requires ≥40Hz for jerk bounds law. 10Hz data is not a bug — it's
-below the physics minimum. Result reported honestly to Kristof Van Laerhoven.
 
 ### 6. WESAD has no gyroscope — BRONZE is correct
 WESAD chest+wrist sensors have no gyro. Rigid body kinematics and IMU
@@ -170,10 +169,8 @@ user-facing and are not installed by pip. They live in experiments/.
 
 ## Researcher contacts
 
-- **Kristof Van Laerhoven** (UbiComp Siegen) — WESAD/WEAR/Hangtime datasets
   - Sent: WEAR result (10Hz not certifiable, hardware limit)
   - Sent: WESAD result (+3.1% F1, 58% cert rate)
-  - Email: kvl@eti.uni-siegen.de
 
 ---
 
