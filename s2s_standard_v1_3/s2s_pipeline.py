@@ -414,7 +414,7 @@ class S2SPipeline:
                     img_emb  /= img_emb.norm(dim=-1, keepdim=True)
                     text_embs /= text_embs.norm(dim=-1, keepdim=True)
                     sims = (img_emb @ text_embs.T)[0]
-                    result["clip_sim"] = round(float(sims.max()), 4)
+                    result["clip_sim"] = round(float(sims[0]), 4)  # full instruction only
             except Exception:
                 pass
 
