@@ -96,10 +96,12 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
   ───────────────────────────────────────────────────────
   LAYER 2 — Biological Origin (Session)
   ───────────────────────────────────────────────────────
-  biological_grade       HUMAN
-  hurst                  0.743        (≥0.70 = biological motor control)
-  bfs_score              0.891
-  recommendation         ACCEPT
+  biological_grade       NOT_BIOLOGICAL
+  hurst                  0.4917       (synthetic test signal, <0.70)
+  bfs_score              0.7468
+  n_windows              9
+  recommendation         REJECT
+  note                   HUMAN grade requires real session data (NinaPro r=0.929)
 
   ───────────────────────────────────────────────────────
   LAYER 3 — Semantic Motion Retrieval
