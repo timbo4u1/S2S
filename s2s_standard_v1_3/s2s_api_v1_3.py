@@ -68,7 +68,7 @@ except Exception:
     from constants                 import (STREAM_WINDOW_DEFAULT, STREAM_STEP_DEFAULT,
                                            VERSION_MAJOR, VERSION_MINOR)
 
-API_VERSION = "1.3.0"
+API_VERSION = "1.6.2"
 
 # ---------------------------------------------------------------------------
 # Global middleware (set at startup)
