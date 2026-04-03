@@ -165,6 +165,22 @@ An irrelevant command scores 41% lower on the same scene. Zero-shot, no fine-tun
 
 ---
 
+## Status & Roadmap
+
+The core 7-layer pipeline is complete and working.
+Next development direction depends on what real users need.
+
+If you are using S2S on your data — even just experimenting —
+open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
+One sentence about your use case helps more than you think.
+
+Current planned work without user input:
+- Layer 6: LLM semantic reasoning (jerk limits from natural language)
+- CLIP fine-tuning on DROID (0.23 → 0.6+ scene similarity)
+- Amputee-specific physics thresholds ([Issue #5](https://github.com/timbo4u1/S2S/issues/5))
+
+---
+
 ## Architecture
 
 ```
