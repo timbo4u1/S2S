@@ -44,6 +44,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 FUSION_MIN_OVERLAP_FRACTION = 0.70
 FUSION_MIN_STREAMS = 2
+FUSION_ALIGNMENT_TOLERANCE_NS = 50_000_000   # 50ms — max allowed start-time skew
+FUSION_ALIGNMENT_WARN_NS     = 10_000_000   # 10ms — warn but don't reject
 SENSOR_WEIGHTS = {"IMU": 1.0, "EMG": 2.0, "PPG": 2.0, "THERMAL": 1.5, "LIDAR": 0.8}
 TIER_SCORE = {"GOLD": 100, "SILVER": 70, "BRONZE": 40, "REJECTED": 0}
 
@@ -53,6 +55,69 @@ SENSOR_GROUPS = {
     "biological": ["EMG", "PPG"],
     "environmental": ["THERMAL"],
 }
+
+
+def _check_alignment(streams: list) -> dict:
+    """
+    Enforce strict cross-stream temporal alignment.
+
+    For each pair of streams, measure the skew between their start timestamps.
+    If any pair exceeds FUSION_ALIGNMENT_TOLERANCE_NS (50ms), the window is
+    flagged MISALIGNED and the fusion cert is downgraded or rejected.
+
+    Returns alignment_report dict with:
+      aligned         : bool — True if all streams within tolerance
+      max_skew_ns     : int  — worst-case skew across all pairs
+      max_skew_ms     : float
+      pairs           : list of per-pair skew details
+      flags           : list of flag strings
+    """
+    flags = []
+    pairs = []
+    max_skew = 0
+
+    starts = {
+        s["_stream_id"]: s.get("frame_start_ts_ns")
+        for s in streams
+        if s.get("frame_start_ts_ns") is not None
+    }
+
+    stream_ids = list(starts.keys())
+    for i in range(len(stream_ids)):
+        for j in range(i + 1, len(stream_ids)):
+            id_a, id_b = stream_ids[i], stream_ids[j]
+            skew = abs(starts[id_a] - starts[id_b])
+            max_skew = max(max_skew, skew)
+            skew_ms = round(skew / 1e6, 3)
+            status = "OK"
+            if skew > FUSION_ALIGNMENT_TOLERANCE_NS:
+                status = "MISALIGNED"
+                flags.append(
+                    f"ALIGNMENT_FAIL_{id_a.upper()}_vs_{id_b.upper()}"
+                    f":{skew_ms}ms_exceeds_50ms_tolerance"
+                )
+            elif skew > FUSION_ALIGNMENT_WARN_NS:
+                status = "WARN"
+                flags.append(
+                    f"ALIGNMENT_WARN_{id_a.upper()}_vs_{id_b.upper()}"
+                    f":{skew_ms}ms"
+                )
+            pairs.append({
+                "streams": f"{id_a}_vs_{id_b}",
+                "skew_ns": skew,
+                "skew_ms": skew_ms,
+                "status": status,
+            })
+
+    aligned = not any(p["status"] == "MISALIGNED" for p in pairs)
+    return {
+        "aligned":      aligned,
+        "max_skew_ns":  max_skew,
+        "max_skew_ms":  round(max_skew / 1e6, 3),
+        "tolerance_ms": FUSION_ALIGNMENT_TOLERANCE_NS / 1e6,
+        "pairs":        pairs,
+        "flags":        flags,
+    }
 
 
 def _ov(sa: Dict, sb: Dict) -> float:
@@ -367,6 +432,12 @@ class FusionCertifier:
                 "issued_at_ns": time.time_ns()
             }
 
+        # ── Temporal alignment gate (first-class check) ──────────────
+        alignment = _check_alignment(self._streams)
+        flags.extend(alignment["flags"])
+        if not alignment["aligned"]:
+            flags.append("FUSION_REJECTED_MISALIGNED_STREAMS")
+
         for s in self._streams:
             if _synth(s): flags.append(f"STREAM_{s['_stream_id'].upper()}_SUSPECT_SYNTHETIC")
 
@@ -398,8 +469,11 @@ class FusionCertifier:
                 "issued_at_ns": time.time_ns()
             }
 
-        all_ok = failed == 0
+        all_ok = failed == 0 and alignment["aligned"]
         score = _hil(self._streams, coh_r, flags)
+        # Downgrade score if streams are misaligned but not rejected
+        if not alignment["aligned"]:
+            score = int(score * 0.5)
         valid = [s for s in self._streams if s.get("tier") != "REJECTED"]
         t = _tier(valid, score, all_ok)
         total_p = len(coh_r)  # Actual pairs checked
@@ -420,6 +494,7 @@ class FusionCertifier:
             "fusion_duration_ms": round((f1-f0)/1e6, 2) if (f0 and f1) else None,
             "streams": self._sum(),
             "coherence_checks": coh_d,
+            "alignment_report": alignment,
             "flags": list(dict.fromkeys(flags)),
             "notes": {
                 "total_pairs_checked": total_p,
