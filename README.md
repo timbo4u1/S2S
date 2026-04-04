@@ -32,6 +32,8 @@ S2S asks: does this data *obey the physics of human movement?* A perfect statist
 
 S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 7-law certification before becoming training data.
 
+For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (7 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), and rejection of fake or corrupted windows.
+
 **Validated results across 7 datasets:**
 
 | Dataset | Hz | Sensors | Result |
