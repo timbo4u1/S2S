@@ -168,6 +168,32 @@ An irrelevant command scores 41% lower on the same scene. Zero-shot, no fine-tun
 
 ---
 
+## Reproducible benchmark
+
+Run in one command:
+
+```bash
+pip install s2s-certify
+git clone https://github.com/timbo4u1/S2S
+cd S2S
+python3.9 experiments/s2s_demo_benchmark.py
+```
+
+Expected output:
+
+```
+real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
+corrupted_spikes (NinaPro+injected): correctly downgraded
+pure_synthetic (Gaussian noise):    correctly rejected
+
+PAMAP2 without S2S filtering: baseline F1
+PAMAP2 with S2S filtering:    +4.23% F1
+WESAD stress classification:  +3.1% F1
+RoboTurk teleoperation data:  21.9% rejected as physically invalid
+```
+
+Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
+
 ## Status & Roadmap
 
 The core 7-layer pipeline is complete and working.
