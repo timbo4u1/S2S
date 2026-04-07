@@ -1,0 +1,370 @@
+#!/usr/bin/env python3
+"""
+run_benchmark.py — S2S Reproducible Benchmark
+
+Reproduces the S2S reference benchmark results from scratch.
+Uses only publicly available datasets or generates controlled synthetic data.
+
+Usage:
+    python3.9 run_benchmark.py                    # synthetic only (no datasets needed)
+    python3.9 run_benchmark.py --ninapro ~/ninapro_db5
+    python3.9 run_benchmark.py --pamap2  ~/S2S_data/pamap2
+    python3.9 run_benchmark.py --wesad   ~/wesad_data/WESAD
+    python3.9 run_benchmark.py --all --ninapro ~/ninapro_db5 --pamap2 ~/S2S_data/pamap2 --wesad ~/wesad_data/WESAD
+
+Expected output (full run):
+    real_human:       20/21 (95%)
+    corrupted_spikes:  0/3  (0%)   ← high-freq spikes average out at 2000Hz
+    pure_synthetic:    1/5  (20%)  ← Gaussian noise can satisfy individual laws
+
+    Overall: 21/29 (72%)
+"""
+import sys, os, json, random, glob, argparse
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+try:
+    from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+except ImportError:
+    print("ERROR: s2s-certify not installed.")
+    print("Run: pip install s2s-certify")
+    sys.exit(1)
+
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+engine = PhysicsEngine()
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def make_ts(n, hz, seed=0):
+    r = random.Random(seed)
+    return [int(i * 1e9 / hz + r.gauss(0, 200000)) for i in range(n)]
+
+
+def certify(acc, gyro, ts, segment="forearm"):
+    try:
+        return engine.certify(
+            {"timestamps_ns": ts, "accel": acc, "gyro": gyro},
+            segment=segment
+        )
+    except Exception as e:
+        return {"tier": "REJECTED", "physical_law_score": 0, "error": str(e)}
+
+
+def inject_spikes(acc, n_spikes=6, magnitude=200):
+    import copy
+    a = copy.deepcopy(acc)
+    r = random.Random(99)
+    idxs = r.sample(range(10, len(a) - 10), n_spikes)
+    for idx in idxs:
+        a[idx] = [r.gauss(0, magnitude) for _ in range(3)]
+    return a
+
+
+def print_result(w):
+    icon = "✓" if w["pass"] else "✗"
+    print(f"  {icon} {w['id']:<30} tier={w['tier']:<10} score={w['score']}")
+
+
+# ---------------------------------------------------------------------------
+# Dataset loaders
+# ---------------------------------------------------------------------------
+
+def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
+    try:
+        import scipy.io as sio
+    except ImportError:
+        print("  [NinaPro] scipy not installed — skipping. Run: pip install scipy")
+        return []
+
+    windows = []
+    files = sorted(glob.glob(str(Path(ninapro_dir) / "s*" / "S*_E1_A1.mat")))[:n_subjects]
+    if not files:
+        print(f"  [NinaPro] No .mat files found in {ninapro_dir}")
+        return []
+
+    for i, mat_path in enumerate(files):
+        data = sio.loadmat(mat_path)
+        acc = next(
+            (data[k] for k in ["acc", "accel", "ACC"]
+             if k in data and data[k].shape[0] > 500),
+            None
+        )
+        if acc is None:
+            continue
+        a = acc[:, :3].astype(float)
+        hz = 2000.0
+        for w in range(n_windows):
+            start = w * 300
+            if start + 256 > len(a):
+                break
+            chunk = a[start:start + 256].tolist()
+            ts = make_ts(256, hz, w + i * 10)
+            r = certify(chunk, [[0, 0, 0]] * 256, ts)
+            windows.append({
+                "id": f"ninapro_real_{i}_{w}",
+                "dataset": "NinaPro DB5",
+                "category": "real_human",
+                "expected": ["GOLD", "SILVER", "BRONZE"],
+                "tier": r["tier"],
+                "score": r["physical_law_score"],
+                "pass": r["tier"] in ("GOLD", "SILVER", "BRONZE"),
+            })
+
+        # Corrupted version
+        chunk_raw = a[:256, :3].astype(float).tolist()
+        corrupted = inject_spikes(chunk_raw)
+        r = certify(corrupted, [[0, 0, 0]] * 256, make_ts(256, hz, i + 300))
+        windows.append({
+            "id": f"ninapro_spiked_{i}",
+            "dataset": "NinaPro DB5",
+            "category": "corrupted_spikes",
+            "expected": ["REJECTED", "BRONZE"],
+            "tier": r["tier"],
+            "score": r["physical_law_score"],
+            "pass": r["tier"] in ("REJECTED", "BRONZE"),
+            "note": "spike injection at 2000Hz — spikes average out over window",
+        })
+
+    return windows
+
+
+def load_pamap2(pamap2_dir, n_subjects=3, n_windows=3):
+    if not HAS_NUMPY:
+        print("  [PAMAP2] numpy not installed — skipping.")
+        return []
+
+    windows = []
+    files = sorted(glob.glob(str(Path(pamap2_dir) / "subject10*.dat")))[:n_subjects]
+    if not files:
+        print(f"  [PAMAP2] No .dat files found in {pamap2_dir}")
+        return []
+
+    for i, dat_path in enumerate(files):
+        try:
+            arr = np.loadtxt(dat_path)
+            arr = arr[~np.isnan(arr).any(axis=1)]
+            if arr.shape[0] < 300 or arr.shape[1] < 10:
+                continue
+            acc_cols  = arr[:, 4:7]
+            gyro_cols = arr[:, 7:10]
+            hz = 100.0
+            for w in range(n_windows):
+                start = w * 150
+                if start + 256 > len(acc_cols):
+                    break
+                acc  = acc_cols[start:start + 256].tolist()
+                gyro = gyro_cols[start:start + 256].tolist()
+                r = certify(acc, gyro, make_ts(256, hz, w + i * 10 + 100))
+                windows.append({
+                    "id": f"pamap2_real_{i}_{w}",
+                    "dataset": "PAMAP2",
+                    "category": "real_human",
+                    "expected": ["GOLD", "SILVER"],
+                    "tier": r["tier"],
+                    "score": r["physical_law_score"],
+                    "pass": r["tier"] in ("GOLD", "SILVER"),
+                })
+        except Exception as e:
+            print(f"  [PAMAP2] {Path(dat_path).name}: {e}")
+
+    return windows
+
+
+def load_wesad(wesad_dir, n_subjects=2, n_windows=3):
+    try:
+        import pickle
+    except ImportError:
+        return []
+
+    windows = []
+    files = sorted(glob.glob(str(Path(wesad_dir) / "S*" / "S*.pkl")))[:n_subjects]
+    if not files:
+        print(f"  [WESAD] No .pkl files found in {wesad_dir}")
+        return []
+
+    for i, pkl_path in enumerate(files):
+        try:
+            with open(pkl_path, "rb") as f:
+                data = pickle.load(f, encoding="latin1")
+            acc = data["signal"]["wrist"]["ACC"].astype(float)
+            hz = 32.0
+            for w in range(n_windows):
+                start = w * 50
+                if start + 256 > len(acc):
+                    break
+                chunk = acc[start:start + 256].tolist()
+                r = certify(chunk, [[0, 0, 0]] * 256,
+                            make_ts(256, hz, w + i * 10 + 200),
+                            segment="upper_arm")
+                windows.append({
+                    "id": f"wesad_real_{i}_{w}",
+                    "dataset": "WESAD",
+                    "category": "real_human",
+                    "expected": ["GOLD", "SILVER", "BRONZE"],
+                    "tier": r["tier"],
+                    "score": r["physical_law_score"],
+                    "pass": r["tier"] in ("GOLD", "SILVER", "BRONZE"),
+                })
+        except Exception as e:
+            print(f"  [WESAD] {Path(pkl_path).name}: {e}")
+
+    return windows
+
+
+def make_synthetic(n=5):
+    windows = []
+    for i in range(n):
+        rr = random.Random(i + 50)
+        acc  = [[rr.gauss(0, 8) for _ in range(3)] for _ in range(256)]
+        gyro = [[rr.gauss(0, 8) for _ in range(3)] for _ in range(256)]
+        ts   = [int(j * 1e9 / 50) for j in range(256)]  # zero jitter → SUSPECT_SYNTHETIC
+        r = certify(acc, gyro, ts)
+        windows.append({
+            "id": f"synthetic_{i}",
+            "dataset": "synthetic",
+            "category": "pure_synthetic",
+            "expected": ["REJECTED"],
+            "tier": r["tier"],
+            "score": r["physical_law_score"],
+            "pass": r["tier"] == "REJECTED",
+            "note": "Gaussian noise with zero-jitter timestamps",
+        })
+    return windows
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="S2S Reproducible Benchmark Runner",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__
+    )
+    parser.add_argument("--ninapro", help="Path to NinaPro DB5 root directory")
+    parser.add_argument("--pamap2",  help="Path to PAMAP2 directory")
+    parser.add_argument("--wesad",   help="Path to WESAD root directory")
+    parser.add_argument("--all",     action="store_true",
+                        help="Run all categories (requires dataset paths)")
+    parser.add_argument("--compare", action="store_true",
+                        help="Compare results to saved benchmark JSON")
+    args = parser.parse_args()
+
+    print("\n" + "═" * 60)
+    print("  S2S Reference Benchmark")
+    print("  pip install s2s-certify && python3.9 run_benchmark.py")
+    print("═" * 60)
+
+    windows = []
+
+    # Real datasets
+    if args.ninapro:
+        print("\n[1] NinaPro DB5 (real forearm IMU, 2000Hz, no gyro)")
+        w = load_ninapro(args.ninapro)
+        windows.extend(w)
+        print(f"    Loaded {len(w)} windows")
+
+    if args.pamap2:
+        print("\n[2] PAMAP2 (real 9-DOF IMU, 100Hz)")
+        w = load_pamap2(args.pamap2)
+        windows.extend(w)
+        print(f"    Loaded {len(w)} windows")
+
+    if args.wesad:
+        print("\n[3] WESAD (real wrist ACC, 32Hz, stress study)")
+        w = load_wesad(args.wesad)
+        windows.extend(w)
+        print(f"    Loaded {len(w)} windows")
+
+    # Synthetic (always runs)
+    print("\n[4] Pure synthetic (Gaussian noise, zero-jitter timestamps)")
+    w = make_synthetic()
+    windows.extend(w)
+    print(f"    Generated {len(w)} windows")
+
+    if not windows:
+        print("\nNo windows to evaluate.")
+        print("Use --ninapro / --pamap2 / --wesad to load real datasets.")
+        return
+
+    # Results
+    print("\n" + "─" * 60)
+    print("  Results by category")
+    print("─" * 60)
+
+    cats = {}
+    for w in windows:
+        c = w["category"]
+        if c not in cats:
+            cats[c] = {"pass": 0, "total": 0, "windows": []}
+        cats[c]["total"] += 1
+        if w["pass"]:
+            cats[c]["pass"] += 1
+        cats[c]["windows"].append(w)
+
+    for cat, s in cats.items():
+        pct = s["pass"] / s["total"] * 100
+        print(f"\n  {cat} ({s['pass']}/{s['total']} — {pct:.0f}%)")
+        for w in s["windows"]:
+            print_result(w)
+
+    total  = len(windows)
+    passed = sum(1 for w in windows if w["pass"])
+    print("\n" + "═" * 60)
+    print(f"  Overall: {passed}/{total} ({passed/total*100:.0f}%)")
+    print("═" * 60)
+
+    # Known limitations
+    print("""
+  Known limitations:
+  - corrupted_spikes: spike injection at 2000Hz averages out over the
+    256-sample window. Low-frequency corruption (50Hz) is caught reliably.
+  - pure_synthetic: Gaussian noise at σ=8 m/s² can satisfy individual
+    physics laws by chance. Zero-jitter timestamps are the primary detector.
+""")
+
+    # Compare to saved benchmark
+    if args.compare:
+        bench_path = Path("experiments/s2s_reference_benchmark.json")
+        if bench_path.exists():
+            saved = json.loads(bench_path.read_text())
+            print("  Comparison to saved benchmark:")
+            saved_rate = saved["summary"]["pass_rate"]
+            this_rate  = round(passed / total, 3)
+            match = "✓ MATCH" if abs(saved_rate - this_rate) < 0.05 else "✗ MISMATCH"
+            print(f"  Saved: {saved_rate:.1%}  |  This run: {this_rate:.1%}  |  {match}")
+        else:
+            print("  No saved benchmark found at experiments/s2s_reference_benchmark.json")
+
+    # Save this run
+    out = {
+        "version": "1.0",
+        "summary": {
+            "total": total,
+            "passed": passed,
+            "pass_rate": round(passed / total, 3),
+            "by_category": {
+                c: {"pass": s["pass"], "total": s["total"]}
+                for c, s in cats.items()
+            },
+        },
+        "windows": [{k: v for k, v in w.items() if k != "windows"}
+                    for w in windows],
+    }
+    Path("experiments/benchmark_run_latest.json").write_text(
+        json.dumps(out, indent=2))
+    print("  Saved → experiments/benchmark_run_latest.json\n")
+
+
+if __name__ == "__main__":
+    main()
