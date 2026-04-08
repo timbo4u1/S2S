@@ -1,0 +1,390 @@
+{
+  "version": "1.0",
+  "summary": {
+    "total": 29,
+    "passed": 24,
+    "pass_rate": 0.828,
+    "by_category": {
+      "real_human": {
+        "pass": 20,
+        "total": 21
+      },
+      "corrupted_spikes": {
+        "pass": 3,
+        "total": 3
+      },
+      "pure_synthetic": {
+        "pass": 1,
+        "total": 5
+      }
+    }
+  },
+  "windows": [
+    {
+      "id": "ninapro_real_0_0",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 52,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_0_1",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 70,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_0_2",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 70,
+      "pass": true
+    },
+    {
+      "id": "ninapro_spiked_0",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
+    },
+    {
+      "id": "ninapro_real_1_0",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 52,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_1_1",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 57,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_1_2",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 70,
+      "pass": true
+    },
+    {
+      "id": "ninapro_spiked_1",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
+    },
+    {
+      "id": "ninapro_real_2_0",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_2_1",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 49,
+      "pass": true
+    },
+    {
+      "id": "ninapro_real_2_2",
+      "dataset": "NinaPro DB5",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 47,
+      "pass": true
+    },
+    {
+      "id": "ninapro_spiked_2",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
+    },
+    {
+      "id": "pamap2_real_1_0",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "GOLD",
+      "score": 82,
+      "pass": true
+    },
+    {
+      "id": "pamap2_real_1_1",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "GOLD",
+      "score": 85,
+      "pass": true
+    },
+    {
+      "id": "pamap2_real_1_2",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "GOLD",
+      "score": 83,
+      "pass": true
+    },
+    {
+      "id": "pamap2_real_2_0",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "GOLD",
+      "score": 80,
+      "pass": true
+    },
+    {
+      "id": "pamap2_real_2_1",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "SILVER",
+      "score": 73,
+      "pass": true
+    },
+    {
+      "id": "pamap2_real_2_2",
+      "dataset": "PAMAP2",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER"
+      ],
+      "tier": "SILVER",
+      "score": 70,
+      "pass": true
+    },
+    {
+      "id": "wesad_real_0_0",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "REJECTED",
+      "score": 29,
+      "pass": false
+    },
+    {
+      "id": "wesad_real_0_1",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 60,
+      "pass": true
+    },
+    {
+      "id": "wesad_real_0_2",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 56,
+      "pass": true
+    },
+    {
+      "id": "wesad_real_1_0",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 40,
+      "pass": true
+    },
+    {
+      "id": "wesad_real_1_1",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 56,
+      "pass": true
+    },
+    {
+      "id": "wesad_real_1_2",
+      "dataset": "WESAD",
+      "category": "real_human",
+      "expected": [
+        "GOLD",
+        "SILVER",
+        "BRONZE"
+      ],
+      "tier": "SILVER",
+      "score": 56,
+      "pass": true
+    },
+    {
+      "id": "synthetic_0",
+      "dataset": "synthetic",
+      "category": "pure_synthetic",
+      "expected": [
+        "REJECTED"
+      ],
+      "tier": "REJECTED",
+      "score": 40,
+      "pass": true,
+      "note": "Gaussian noise with zero-jitter timestamps"
+    },
+    {
+      "id": "synthetic_1",
+      "dataset": "synthetic",
+      "category": "pure_synthetic",
+      "expected": [
+        "REJECTED"
+      ],
+      "tier": "SILVER",
+      "score": 56,
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
+    },
+    {
+      "id": "synthetic_2",
+      "dataset": "synthetic",
+      "category": "pure_synthetic",
+      "expected": [
+        "REJECTED"
+      ],
+      "tier": "BRONZE",
+      "score": 46,
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
+    },
+    {
+      "id": "synthetic_3",
+      "dataset": "synthetic",
+      "category": "pure_synthetic",
+      "expected": [
+        "REJECTED"
+      ],
+      "tier": "BRONZE",
+      "score": 41,
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
+    },
+    {
+      "id": "synthetic_4",
+      "dataset": "synthetic",
+      "category": "pure_synthetic",
+      "expected": [
+        "REJECTED"
+      ],
+      "tier": "BRONZE",
+      "score": 41,
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
+    }
+  ]
+}
