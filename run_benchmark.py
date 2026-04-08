@@ -339,6 +339,9 @@ def main():
     256-sample window. Low-frequency corruption (50Hz) is caught reliably.
   - pure_synthetic: Gaussian noise at σ=8 m/s² can satisfy individual
     physics laws by chance. Zero-jitter timestamps are the primary detector.
+  - WESAD/NinaPro (no gyro): only 3 of 7 laws run (jerk, resonance, BCG).
+    Rigid body kinematics and IMU consistency skip with score=50 (neutral).
+    SILVER on these datasets means 3/7 laws passed, not 7/7.
 """)
 
     # Compare to saved benchmark
