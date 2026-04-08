@@ -183,8 +183,11 @@ Expected output:
 
 ```
 real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
-corrupted_spikes (NinaPro+injected): correctly downgraded
-pure_synthetic (Gaussian noise):    correctly rejected
+corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
+pure_synthetic (Gaussian noise):     1/5 rejected (Gaussian can satisfy laws by chance)
+Overall: 24/29 (83%) — adaptive window fix applied April 2026
+
+Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
 
 PAMAP2 without S2S filtering: baseline F1
 PAMAP2 with S2S filtering:    +4.23% F1
