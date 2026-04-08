@@ -1,23 +1,16 @@
 {
   "version": "1.0",
-  "created": "2026-04-02",
-  "description": "S2S reference benchmark \u2014 real sensor data, 3 public datasets",
-  "datasets": [
-    "NinaPro DB5",
-    "PAMAP2",
-    "WESAD"
-  ],
   "summary": {
     "total": 29,
-    "passed": 21,
-    "pass_rate": 0.724,
+    "passed": 24,
+    "pass_rate": 0.828,
     "by_category": {
       "real_human": {
         "pass": 20,
         "total": 21
       },
       "corrupted_spikes": {
-        "pass": 0,
+        "pass": 3,
         "total": 3
       },
       "pure_synthetic": {
@@ -36,8 +29,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 58,
+      "tier": "BRONZE",
+      "score": 52,
       "pass": true
     },
     {
@@ -50,7 +43,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 58,
+      "score": 70,
       "pass": true
     },
     {
@@ -63,8 +56,21 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 58,
+      "score": 70,
       "pass": true
+    },
+    {
+      "id": "ninapro_spiked_0",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
     {
       "id": "ninapro_real_1_0",
@@ -75,8 +81,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 58,
+      "tier": "BRONZE",
+      "score": 52,
       "pass": true
     },
     {
@@ -89,7 +95,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 58,
+      "score": 57,
       "pass": true
     },
     {
@@ -102,8 +108,21 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 58,
+      "score": 70,
       "pass": true
+    },
+    {
+      "id": "ninapro_spiked_1",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
     {
       "id": "ninapro_real_2_0",
@@ -114,8 +133,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 58,
+      "tier": "BRONZE",
+      "score": 45,
       "pass": true
     },
     {
@@ -127,8 +146,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 58,
+      "tier": "BRONZE",
+      "score": 49,
       "pass": true
     },
     {
@@ -140,9 +159,22 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 58,
+      "tier": "BRONZE",
+      "score": 47,
       "pass": true
+    },
+    {
+      "id": "ninapro_spiked_2",
+      "dataset": "NinaPro DB5",
+      "category": "corrupted_spikes",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
     {
       "id": "pamap2_real_1_0",
@@ -295,42 +327,6 @@
       "pass": true
     },
     {
-      "id": "ninapro_spiked_0",
-      "dataset": "NinaPro DB5",
-      "category": "corrupted_spikes",
-      "expected": [
-        "REJECTED",
-        "BRONZE"
-      ],
-      "tier": "SILVER",
-      "score": 58,
-      "pass": false
-    },
-    {
-      "id": "ninapro_spiked_1",
-      "dataset": "NinaPro DB5",
-      "category": "corrupted_spikes",
-      "expected": [
-        "REJECTED",
-        "BRONZE"
-      ],
-      "tier": "SILVER",
-      "score": 58,
-      "pass": false
-    },
-    {
-      "id": "ninapro_spiked_2",
-      "dataset": "NinaPro DB5",
-      "category": "corrupted_spikes",
-      "expected": [
-        "REJECTED",
-        "BRONZE"
-      ],
-      "tier": "SILVER",
-      "score": 58,
-      "pass": false
-    },
-    {
       "id": "synthetic_0",
       "dataset": "synthetic",
       "category": "pure_synthetic",
@@ -339,7 +335,8 @@
       ],
       "tier": "REJECTED",
       "score": 40,
-      "pass": true
+      "pass": true,
+      "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
       "id": "synthetic_1",
@@ -350,7 +347,8 @@
       ],
       "tier": "SILVER",
       "score": 56,
-      "pass": false
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
       "id": "synthetic_2",
@@ -361,7 +359,8 @@
       ],
       "tier": "BRONZE",
       "score": 46,
-      "pass": false
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
       "id": "synthetic_3",
@@ -372,7 +371,8 @@
       ],
       "tier": "BRONZE",
       "score": 41,
-      "pass": false
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
       "id": "synthetic_4",
@@ -383,7 +383,8 @@
       ],
       "tier": "BRONZE",
       "score": 41,
-      "pass": false
+      "pass": false,
+      "note": "Gaussian noise with zero-jitter timestamps"
     }
   ]
 }

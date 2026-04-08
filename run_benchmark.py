@@ -78,6 +78,11 @@ def print_result(w):
 # Dataset loaders
 # ---------------------------------------------------------------------------
 
+def adaptive_window(hz):
+    """Rate-aware window size — minimum 2 tremor cycles at lowest band (8Hz)"""
+    min_for_resonance = int(2.0 / 8.0 * hz)  # 2 cycles of 8Hz
+    return max(256, min(512, min_for_resonance))
+
 def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
     try:
         import scipy.io as sio
@@ -102,12 +107,14 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
             continue
         a = acc[:, :3].astype(float)
         hz = 2000.0
+        win = adaptive_window(hz)  # 500 samples at 2000Hz
+        step = win // 2
         for w in range(n_windows):
-            start = w * 300
-            if start + 256 > len(a):
+            start = w * step
+            if start + win > len(a):
                 break
-            chunk = a[start:start + 256].tolist()
-            ts = make_ts(256, hz, w + i * 10)
+            chunk = a[start:start + win].tolist()
+            ts = make_ts(win, hz, w + i * 10)
             r = certify(chunk, [[0, 0, 0]] * 256, ts)
             windows.append({
                 "id": f"ninapro_real_{i}_{w}",
@@ -120,7 +127,8 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
             })
 
         # Corrupted version
-        chunk_raw = a[:256, :3].astype(float).tolist()
+        win = adaptive_window(2000.0)
+        chunk_raw = a[:win, :3].astype(float).tolist()
         corrupted = inject_spikes(chunk_raw)
         r = certify(corrupted, [[0, 0, 0]] * 256, make_ts(256, hz, i + 300))
         windows.append({
