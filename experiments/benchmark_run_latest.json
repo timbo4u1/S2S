@@ -29,8 +29,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 52,
+      "tier": "SILVER",
+      "score": 59,
       "pass": true
     },
     {
@@ -221,7 +221,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 80,
+      "score": 83,
       "pass": true
     },
     {
@@ -232,8 +232,8 @@
         "GOLD",
         "SILVER"
       ],
-      "tier": "SILVER",
-      "score": 73,
+      "tier": "GOLD",
+      "score": 80,
       "pass": true
     },
     {
@@ -245,7 +245,7 @@
         "SILVER"
       ],
       "tier": "SILVER",
-      "score": 70,
+      "score": 74,
       "pass": true
     },
     {

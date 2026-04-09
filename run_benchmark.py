@@ -115,7 +115,7 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
                 break
             chunk = a[start:start + win].tolist()
             ts = make_ts(win, hz, w + i * 10)
-            r = certify(chunk, [[0, 0, 0]] * 256, ts)
+            r = certify(chunk, [[0, 0, 0]] * 256, ts, segment="forearm")
             windows.append({
                 "id": f"ninapro_real_{i}_{w}",
                 "dataset": "NinaPro DB5",
@@ -130,7 +130,7 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
         win = adaptive_window(2000.0)
         chunk_raw = a[:win, :3].astype(float).tolist()
         corrupted = inject_spikes(chunk_raw)
-        r = certify(corrupted, [[0, 0, 0]] * 256, make_ts(256, hz, i + 300))
+        r = certify(corrupted, [[0, 0, 0]] * 256, make_ts(256, hz, i + 300), segment="forearm")
         windows.append({
             "id": f"ninapro_spiked_{i}",
             "dataset": "NinaPro DB5",
