@@ -394,10 +394,16 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
         passed = True
     else:
         dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
-        d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}–{f_hi}Hz for {segment}"
-        d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz (ω=√(K/I) gives {f_lo}–{f_hi}Hz)"
-        conf = max(0, int(50 - dev * 8))
-        passed = dev < 3.0
+        if 3.0 <= peak_f < f_lo:
+            d["note"] = "LOW_FREQ_MOTION: sub-tremor frequency, normal slow deliberate motion"
+            d["interpretation"] = "Voluntary movement below tremor band - valid human motion"
+            conf = 55
+            passed = True
+        else:
+            d["violation"] = f"RESONANCE_MISMATCH: {peak_f:.1f}Hz outside {f_lo}-{f_hi}Hz for {segment}"
+            d["interpretation"] = f"{segment} cannot resonate at {peak_f:.1f}Hz"
+            conf = max(0, int(50 - dev * 8))
+            passed = dev < 3.0
 
     d["confidence"] = conf
     return passed, conf, d
@@ -454,6 +460,7 @@ def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[bool, int, Dict]:
 
     ratio = rms_p / max(rms_m, 1e-6)
 
+    r_corr = 0.0 if math.isnan(r_corr) else r_corr
     d.update({"pearson_r_measured_vs_predicted": round(r_corr, 4),
                "rms_measured_ms2": round(rms_m, 4),
                "rms_predicted_ms2": round(rms_p, 4),
@@ -710,6 +717,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
                "p95_jerk_ms3": round(p95_j, 1), "peak_jerk_normalized_ms3": round(peak_j_normalized, 1),
                "rms_jerk_normalized_ms3": round(rms_j_normalized, 6), "p95_jerk_normalized_ms3": round(p95_j_normalized, 1),
                "human_limit_ms3": jerk_limit,
+               "normalization_note": "raw jerk divided by (hz/50)^3 to compare at any sample rate to 50Hz baseline",
                "smooth_window_samples": JERK_SMOOTH_WINDOW})
 
     if p95_j_normalized > jerk_limit:
