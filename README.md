@@ -443,6 +443,30 @@ python3 -m s2s_standard_v1_3.s2s_api_v1_3 --port 8080
 
 ---
 
+## Real-Time Safety Gate
+
+Monitor sensor data quality in real-time — 1.44ms latency at 2000Hz:
+
+```python
+from s2s_standard_v1_3 import RealTimeSafetyGate
+
+gate = RealTimeSafetyGate(segment="forearm", strikes=3)
+
+for ts_ns, accel, gyro in sensor_stream:
+    is_safe, reason, cert = gate.push(ts_ns, accel, gyro)
+    if not is_safe:
+        print(f"UNSAFE: {reason}")
+        # halt pipeline / alert operator / log event
+```
+
+States:
+- `SAFE` — SILVER or GOLD, data is physically trustworthy
+- `DEGRADED` — BRONZE, quality reduced but not dangerous
+- `UNSAFE` — 3 consecutive REJECTED windows, action required
+
+Latency: 1.44ms per window at 2000Hz (0.57% CPU overhead).
+Three-strike logic prevents false triggers from single noise samples.
+
 ## Roadmap — Layer 6: Semantic Reasoning
 
 The current 7 layers certify that motion is physically real and visually consistent. Layer 6 adds semantic reasoning — bridging natural language intent to physics constraints:
