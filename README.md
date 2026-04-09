@@ -49,6 +49,29 @@ For robotics and embodied AI pipelines, S2S covers the full data trust checklist
 
 ---
 
+## Real-time performance
+
+Certified on real NinaPro DB5 data (2000Hz, 500-sample windows):
+
+| Metric | Value |
+|---|---|
+| Mean latency | 1.44ms |
+| Window duration | 250ms |
+| CPU overhead | 0.57% |
+| Real-time feasible | ✅ Yes (175× faster than real-time) |
+| Prosthetics safety threshold | 50ms — S2S is 35× below |
+
+Laws run on IMU-only data (no gyro hardware):
+- resonance_frequency: RUNS (conf=26)
+- rigid_body_kinematics: RUNS (conf=45, zero gyro = low coupling)
+- jerk_bounds: RUNS (conf=92) ← primary detector at 2000Hz
+- imu_internal_consistency: RUNS (conf=45)
+- newton_second_law: skipped (needs EMG)
+- ballistocardiography: skipped (needs PPG)
+- joule_heating: skipped (needs thermal)
+
+With full sensor stack (IMU + EMG + PPG + gyro): all 7 laws run.
+
 ## Install
 
 ```bash
