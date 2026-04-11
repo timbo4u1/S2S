@@ -502,6 +502,19 @@ s2s-certify yourfile.csv --output report.json --segment forearm
 
 ---
 
+## Support this project
+
+S2S is free for research. If it saved you time or helped your pipeline:
+
+**Crypto donations (any amount):**
+| Network | Address |
+|---|---|
+| USDT TRC20 | `TXRSTigHsk5QgAiuN2JJyByRuXmawVxdBP` |
+| ETH ERC20  | `0x6E7B9d022DC49bfc21C3011E15A0bF2868ec9c26` |
+| SOL        | `4gVZxGec3GefmkME4UXpn1CmrzvsiHguASqArxnSjSHY` |
+
+Or open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — feedback is worth more than money at this stage.
+
 ## License
 
 BSL-1.1 — free for research and non-commercial use. Apache 2.0 from 2028-01-01.
