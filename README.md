@@ -445,6 +445,24 @@ python3 -m s2s_standard_v1_3.s2s_api_v1_3 --port 8080
 
 ---
 
+## LeRobot / Hugging Face Integration
+
+Certify any LeRobot dataset episode directly:
+
+```python
+from s2s_standard_v1_3.adapters.lerobot import certify_lerobot_dataframe
+import pandas as pd
+
+df = pd.read_parquet('episode_000000.parquet')
+result = certify_lerobot_dataframe(df, hz=30.0, segment='forearm')
+
+print(result['pass_rate'])     # 0.847
+print(result['summary_tier'])  # SILVER
+print(result['rejected'])      # windows with physics violations
+```
+
+Works with any LeRobot-format Parquet file from Hugging Face datasets.
+
 ## Real-Time Safety Gate
 
 Monitor sensor data quality in real-time — 1.44ms latency at 2000Hz:
