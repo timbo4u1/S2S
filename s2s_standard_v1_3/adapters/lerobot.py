@@ -172,10 +172,26 @@ def certify_lerobot_dataframe(
     Auto-detects acceleration columns if accel_cols not provided.
     """
     if accel_cols is None:
-        # Auto-detect: look for columns with 'accel', 'acc', or 'observation'
+        # Auto-detect: look for columns with IMU-specific names
+        # NOTE: Standard LeRobot datasets (PushT, ALOHA, etc.) use
+        # observation.state for joint positions/pixel coords — NOT IMU data.
+        # S2S requires real acceleration data in m/s².
+        # Pass accel_cols explicitly for datasets with IMU streams.
         candidates = [c for c in df.columns
-                      if any(k in c.lower() for k in ('accel', 'acc', 'state', 'obs'))]
-        accel_cols = candidates[:1] if candidates else list(df.columns[:1])
+                      if any(k in c.lower() for k in
+                             ('accel', 'imu', 'acceleration', 'gyro', 'inertial'))]
+        if not candidates:
+            return {
+                'error': (
+                    'No IMU/acceleration columns found. '
+                    'Standard LeRobot datasets (PushT, ALOHA) use joint positions, '
+                    'not raw IMU. Pass accel_cols explicitly for datasets with IMU. '
+                    f'Available columns: {list(df.columns)}'
+                ),
+                'total_windows': 0, 'certified': 0, 'rejected': 0,
+                'pass_rate': 0.0, 'windows': [], 'summary_tier': 'N/A',
+            }
+        accel_cols = candidates[:1]
 
     frames = []
     for _, row in df.iterrows():

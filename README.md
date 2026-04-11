@@ -461,7 +461,9 @@ print(result['summary_tier'])  # SILVER
 print(result['rejected'])      # windows with physics violations
 ```
 
-Works with any LeRobot-format Parquet file from Hugging Face datasets.
+For datasets with real IMU/acceleration streams. Standard simulation datasets
+(PushT, ALOHA) use joint positions — pass `accel_cols` explicitly for those.
+See [adapters/lerobot.py](s2s_standard_v1_3/adapters/lerobot.py) for details.
 
 ## Real-Time Safety Gate
 
