@@ -83,7 +83,8 @@ SEGMENT_PARAMS = {
 
 EMG_ACCEL_DELAY_MS          = 75.0         # ms — electromechanical delay (EMG → force → accel)
 EMG_FORCE_MIN_LAGGED_R      = 0.10         # minimum lagged Pearson r for F=ma check
-JERK_SMOOTH_WINDOW          = 7            # samples to smooth before jerk differentiation
+JERK_SMOOTH_WINDOW          = 7
+            # samples to smooth before jerk differentiation
 JERK_MAX_MS3                = 500.0        # m/s³ — Flash-Hogan 1985 voluntary arm movement
 BCG_MIN_ENERGY              = 0.005        # minimum normalised energy for BCG confirmation
 MUSCLE_THERMAL_EFFICIENCY   = 0.25         # 25% mechanical → 75% heat
@@ -642,7 +643,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
             s1 = np_smooth(arr_compensated, w)
             vel = np_diff(s1)
             s2 = np_smooth(vel, w)
-            jerk_raw = np_diff(s2)  # Third derivative: position → vel → accel → jerk
+            jerk_raw = np_diff(s2)
             jerk = jerk_raw.tolist()
         else:
             # Pure Python: remove gravity → smooth → diff → smooth → diff → diff
@@ -658,6 +659,23 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
         if not jerk:
             continue
         all_jerk.extend(jerk)
+
+        # Micro-window spike detector (64-sample sub-windows) — INNOVATION
+        # Catches spikes that average out in the main window.
+        # Threshold now segment-aware (fingers allow sharper natural jerks).
+        if _NP:
+            jerk_abs_full = np.abs(np.asarray(jerk, dtype=np.float64))
+            main_mean = float(np.mean(jerk_abs_full)) if len(jerk_abs_full) > 0 else 0
+            # segment-aware multiplier (keeps 64 unchanged)
+            mult = 8.0 if segment in ('finger', 'hand') else 5.0
+            spike_threshold = max(main_mean * mult, 100.0)
+            micro_win = 64
+            for ms in range(0, len(jerk_abs_full) - micro_win, micro_win // 2):
+                micro_seg = jerk_abs_full[ms:ms + micro_win]
+                micro_p95 = float(np.percentile(micro_seg, 95))
+                if micro_p95 > spike_threshold:
+                    d.setdefault("micro_spike_windows", 0)
+                    d["micro_spike_windows"] = d.get("micro_spike_windows", 0) + 1
 
         # P95 per window
         if _NP:
