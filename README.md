@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.6.2-orange)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-116%2F116-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.6.3-orange)](https://pypi.org/project/s2s-certify/1.6.3/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-116%2F116-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -57,11 +57,11 @@ Certified on real NinaPro DB5 data (2000Hz, 500-sample windows):
 
 | Metric | Value |
 |---|---|
-| Mean latency | 1.44ms |
+| Mean latency | 2.8ms |
 | Window duration | 250ms |
-| CPU overhead | 0.57% |
-| Real-time feasible | ✅ Yes (175× faster than real-time) |
-| Prosthetics safety threshold | 50ms — S2S is 35× below |
+| CPU overhead | 1.1% |
+| Real-time feasible | ✅ Yes (89× faster than real-time) |
+| Prosthetics safety threshold | 50ms — S2S is 18× below |
 
 Laws run on IMU-only data (no gyro hardware):
 - resonance_frequency: RUNS (conf=26)
@@ -169,7 +169,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
   CHAIN SUMMARY
 ════════════════════════════════════════════════════════════
   Physics tier:       SILVER (score 66/100)
-  Biological grade:   HUMAN (Hurst 0.743)
+  Biological grade:   NOT_BIOLOGICAL (Hurst 0.4917, synthetic test signal)
   Top intent:         Put the marker inside the silver pot (1.0)
   Next motion:        ✓ predicted
   Gap fill:           ✓ 3 intermediates
@@ -486,7 +486,7 @@ States:
 - `DEGRADED` — BRONZE, quality reduced but not dangerous
 - `UNSAFE` — 3 consecutive REJECTED windows, action required
 
-Latency: 1.44ms per window at 2000Hz (0.57% CPU overhead).
+Latency: 2.8ms per window at 2000Hz (1.1% CPU overhead).
 Three-strike logic prevents false triggers from single noise samples.
 
 ## Roadmap — Layer 6: Semantic Reasoning
