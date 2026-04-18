@@ -148,6 +148,14 @@ def certify_file(filepath: str, segment: str = "forearm",
     acc_cols  = detection["accel"][:3]
     gyro_cols = detection["gyro"][:3]
 
+    # Fallback: if fewer than 3 accel cols detected, try consecutive columns
+    # near detected ones (handles near-zero X/Y axes misidentified as gyro)
+    if len(acc_cols) < 3 and acc_cols:
+        first = acc_cols[0]
+        candidates = [first, first+1, first+2]
+        if all(c < data.shape[1] for c in candidates):
+            acc_cols = candidates
+
     if not acc_cols:
         return {"error": "No accelerometer columns detected",
                 "detected": detection, "tier": "N/A"}
