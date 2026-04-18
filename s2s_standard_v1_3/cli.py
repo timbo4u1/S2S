@@ -58,7 +58,7 @@ def load_csv(path):
         print(f"\n{TIER_COLORS['SILVER']}Column names not recognized — trying statistical auto-detection...{RESET}")
         try:
             from s2s_standard_v1_3.adapters.column_detect import certify_file
-            result = certify_file(filepath, segment=args.segment)
+            result = certify_file(args.file, segment=args.segment)
             tier = result.get("tier", "N/A")
             color = TIER_COLORS.get(tier, RESET)
             print(f"\n{color}Tier: {tier}{RESET}")
