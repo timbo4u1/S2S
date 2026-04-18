@@ -94,7 +94,11 @@ def detect_from_file(filepath: str, delimiter: str = None) -> Dict:
         delimiter = ',' if ext == '.csv' else ' '
     
     # Read first 500 rows for speed
-    data = np.genfromtxt(filepath, delimiter=delimiter, max_rows=500)
+    with open(filepath) as _f:
+        _first = _f.readline().strip()
+    _has_hdr = any(c.isalpha() for c in _first.replace('nan','').replace('NaN',''))
+    data = np.genfromtxt(filepath, delimiter=delimiter, max_rows=500,
+                         skip_header=1 if _has_hdr else 0)
     if data.ndim == 1:
         data = data.reshape(-1, 1)
     
@@ -130,8 +134,16 @@ def certify_file(filepath: str, segment: str = "forearm",
     import random
 
     detection = detect_from_file(filepath, delimiter)
+    _delim = delimiter if delimiter else detection.get("_delim", " ")
+    # Detect if first row is a header (contains non-numeric text)
+    with open(filepath) as _f:
+        _first = _f.readline().strip()
+    _has_header = any(c.isalpha() for c in _first.replace('nan','').replace('NaN',''))
     data = np.genfromtxt(filepath,
-                         delimiter=detection.get("_delim", " " if delimiter is None else delimiter))
+                         delimiter=_delim,
+                         skip_header=1 if _has_header else 0)
+    if data.ndim == 1:
+        data = data.reshape(1, -1)
 
     acc_cols  = detection["accel"][:3]
     gyro_cols = detection["gyro"][:3]
