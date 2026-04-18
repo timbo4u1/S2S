@@ -102,3 +102,105 @@ def detect_from_file(filepath: str, delimiter: str = None) -> Dict:
     result['file'] = filepath
     result['shape'] = data.shape
     return result
+
+
+def certify_file(filepath: str, segment: str = "forearm",
+                 delimiter: str = None, max_windows: int = 100) -> dict:
+    """
+    Certify any sensor file with zero configuration.
+    Auto-detects accel, gyro, EMG columns from data statistics.
+    
+    Args:
+        filepath: path to CSV or space-delimited sensor file
+        segment:  body segment (forearm, upper_arm, hand, walking)
+        delimiter: auto-detected if None
+        max_windows: maximum windows to certify
+        
+    Returns:
+        dict with tier, score, pass_rate, law_details, detected_columns
+    
+    Example:
+        from s2s_standard_v1_3.adapters.column_detect import certify_file
+        result = certify_file("my_sensor_data.csv", segment="forearm")
+        print(result["tier"], result["pass_rate"])
+    """
+    import sys
+    sys.path.insert(0, ".")
+    from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+    import random
+
+    detection = detect_from_file(filepath, delimiter)
+    data = np.genfromtxt(filepath,
+                         delimiter=detection.get("_delim", " " if delimiter is None else delimiter))
+
+    acc_cols  = detection["accel"][:3]
+    gyro_cols = detection["gyro"][:3]
+
+    if not acc_cols:
+        return {"error": "No accelerometer columns detected",
+                "detected": detection, "tier": "N/A"}
+
+    acc_raw = data[:, acc_cols]
+    if gyro_cols:
+        gyro_raw = data[:, gyro_cols]
+        valid = (~np.isnan(acc_raw).any(axis=1) &
+                 ~np.isnan(gyro_raw).any(axis=1))
+        acc  = acc_raw[valid] * 0.00981
+        gyro = gyro_raw[valid] / 1000.0
+    else:
+        valid = ~np.isnan(acc_raw).any(axis=1)
+        acc  = acc_raw[valid] * 0.00981
+        gyro = np.zeros_like(acc)
+
+    engine = PhysicsEngine()
+    r = random.Random(42)
+    window = 256
+    step   = 256
+    hz     = 30.0
+
+    tiers  = []
+    scores = []
+    for start in range(0, min(len(acc) - window, max_windows * step), step):
+        chunk_a = acc[start:start+window].tolist()
+        chunk_g = gyro[start:start+window].tolist()
+        ts = [int(i * 1e9 / hz) for i in range(window)]
+        cert = engine.certify(
+            {"timestamps_ns": ts, "accel": chunk_a, "gyro": chunk_g},
+            segment=segment
+        )
+        tiers.append(cert["tier"])
+        scores.append(cert["physical_law_score"])
+
+    if not tiers:
+        return {"error": "No windows processed", "tier": "N/A"}
+
+    from collections import Counter
+    counts = Counter(tiers)
+    certified = counts["GOLD"] + counts["SILVER"] + counts["BRONZE"]
+    pass_rate = certified / len(tiers)
+
+    # Overall tier by majority
+    if counts["GOLD"] > len(tiers) * 0.5:
+        summary = "GOLD"
+    elif counts["REJECTED"] > len(tiers) * 0.3:
+        summary = "REJECTED"
+    elif pass_rate > 0.7:
+        summary = "SILVER"
+    else:
+        summary = "BRONZE"
+
+    return {
+        "tier":             summary,
+        "pass_rate":        round(pass_rate, 3),
+        "mean_score":       round(sum(scores)/len(scores), 1),
+        "total_windows":    len(tiers),
+        "certified":        certified,
+        "rejected":         counts["REJECTED"],
+        "tier_counts":      dict(counts),
+        "detected_columns": {
+            "accel":      acc_cols,
+            "gyro":       gyro_cols,
+            "confidence": detection["confidence"]
+        },
+        "segment":          segment,
+    }
