@@ -165,18 +165,64 @@ def certify_file(filepath: str, segment: str = "forearm",
         gyro_raw = data[:, gyro_cols]
         valid = (~np.isnan(acc_raw).any(axis=1) &
                  ~np.isnan(gyro_raw).any(axis=1))
-        acc  = acc_raw[valid] * 0.00981
-        gyro = gyro_raw[valid] / 1000.0
+        # Auto-detect accel unit from median absolute value
+        acc_med = float(np.nanmedian(np.abs(acc_raw[valid])))
+        if 5.0 <= acc_med <= 15.0:
+            acc = acc_raw[valid]              # already m/s2
+        elif 500 <= acc_med <= 1500:
+            acc = acc_raw[valid] * 0.00981    # milli-g → m/s2
+        elif 0.5 <= acc_med <= 1.5:
+            acc = acc_raw[valid] * 9.81       # g → m/s2
+        else:
+            acc = acc_raw[valid] * 0.00981    # assume milli-g
+
+        # Auto-detect gyro unit
+        gyro_med = float(np.nanmedian(np.abs(gyro_raw[valid])))
+        if gyro_med < 20.0:
+            gyro = gyro_raw[valid]            # already rad/s
+        else:
+            gyro = gyro_raw[valid] / 1000.0   # scaled → rad/s
     else:
         valid = ~np.isnan(acc_raw).any(axis=1)
-        acc  = acc_raw[valid] * 0.00981
+        acc_med = float(np.nanmedian(np.abs(acc_raw[valid])))
+        if 5.0 <= acc_med <= 15.0:
+            acc = acc_raw[valid]
+        elif 500 <= acc_med <= 1500:
+            acc = acc_raw[valid] * 0.00981
+        elif 0.5 <= acc_med <= 1.5:
+            acc = acc_raw[valid] * 9.81
+        else:
+            acc = acc_raw[valid] * 0.00981
         gyro = np.zeros_like(acc)
 
     engine = PhysicsEngine()
     r = random.Random(42)
     window = 256
     step   = 256
-    hz     = 30.0
+
+    # Auto-detect Hz from timestamp column
+    hz = 30.0  # default
+    # Use lowest-index timestamp column (most likely the primary clock)
+    ts_candidates = [v[0] for v in detection.get("_votes",[]) if "timestamp" in v[1]]
+    ts_col = min(ts_candidates) if ts_candidates else None
+    if ts_col is not None:
+        try:
+            ts_vals = data[:50, ts_col]
+            ts_vals = ts_vals[~np.isnan(ts_vals)]
+            if len(ts_vals) > 2:
+                diffs = np.diff(ts_vals)
+                med_diff = float(np.median(diffs[diffs > 0]))
+                if med_diff > 1e6:        # nanoseconds
+                    hz = round(1e9 / med_diff, 1)
+                elif med_diff > 1000:     # microseconds
+                    hz = round(1e6 / med_diff, 1)
+                elif med_diff > 1:        # milliseconds
+                    hz = round(1e3 / med_diff, 1)
+                elif 0 < med_diff <= 1:   # seconds
+                    hz = round(1.0 / med_diff, 1)
+                hz = max(1.0, min(hz, 10000.0))  # sanity clamp
+        except Exception:
+            hz = 30.0
 
     tiers  = []
     scores = []
@@ -222,5 +268,6 @@ def certify_file(filepath: str, segment: str = "forearm",
             "gyro":       gyro_cols,
             "confidence": detection["confidence"]
         },
+        "detected_hz":      hz,
         "segment":          segment,
     }
