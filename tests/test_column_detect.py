@@ -1,10 +1,17 @@
 """
 Tests for smart column auto-detection and certify_file().
 """
-import numpy as np
 import tempfile
 import os
 import pytest
+
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+pytestmark = pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 
 
 def test_detect_accel_from_gravity():
