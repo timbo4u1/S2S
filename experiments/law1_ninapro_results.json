@@ -1,0 +1,15 @@
+{
+  "dataset": "NinaPro DB5",
+  "files": 30,
+  "windows_per_file": 3,
+  "total_windows": 90,
+  "law1_confirmed": 70,
+  "law1_fail": 20,
+  "confirmation_rate": 0.778,
+  "mean_lagged_r": 0.001,
+  "positive_r_gt_0.1": 19,
+  "hz": 2000,
+  "emg_channels": 16,
+  "segment": "forearm",
+  "note": "Low mean r expected \u2014 EMG captures muscle bursts, IMU captures whole-forearm motion. Rest and transition windows show decoupling."
+}
