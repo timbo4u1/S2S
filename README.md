@@ -100,7 +100,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.6.2)
+  S2S — Full Chain Demo  (v1.6.4)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
@@ -201,7 +201,7 @@ Run in one command:
 pip install s2s-certify
 git clone https://github.com/timbo4u1/S2S
 cd S2S
-python3.9 experiments/s2s_demo_benchmark.py
+python3.9 run_benchmark.py
 ```
 
 Expected output:
@@ -210,7 +210,7 @@ Expected output:
 real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
 corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
 pure_synthetic (Gaussian noise):     1/5 rejected (Gaussian can satisfy laws by chance)
-Overall: 24/29 (83%) — adaptive window fix applied April 2026
+Overall: 27/32 (84%) — hard negatives added, adaptive window fix applied April 2026
 
 Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
 
