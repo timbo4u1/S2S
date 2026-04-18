@@ -55,10 +55,26 @@ def load_csv(path):
     has_accel = all(i is not None for i in [ax_i, ay_i, az_i])
 
     if not has_accel:
-        print(f"\n{TIER_COLORS['REJECTED']}Could not find accelerometer columns.{RESET}")
-        print(f"Columns found: {headers}")
-        print("Expected columns like: acc_x, acc_y, acc_z  (or ax/ay/az)")
-        sys.exit(1)
+        print(f"\n{TIER_COLORS['SILVER']}Column names not recognized — trying statistical auto-detection...{RESET}")
+        try:
+            from s2s_standard_v1_3.adapters.column_detect import certify_file
+            result = certify_file(filepath, segment=args.segment)
+            tier = result.get("tier", "N/A")
+            color = TIER_COLORS.get(tier, RESET)
+            print(f"\n{color}Tier: {tier}{RESET}")
+            print(f"Pass rate:  {result.get('pass_rate', 0)*100:.1f}%")
+            print(f"Mean score: {result.get('mean_score', 0)}/100")
+            print(f"Windows:    {result.get('total_windows', 0)}")
+            det = result.get("detected_columns", {})
+            print(f"Auto-detected accel cols: {det.get('accel', [])}")
+            print(f"Auto-detected gyro cols:  {det.get('gyro', [])}")
+            print(f"Detection confidence:     {det.get('confidence', 0)*100:.0f}%")
+            sys.exit(0)
+        except Exception as e:
+            print(f"Auto-detection failed: {e}")
+            print(f"Columns found: {headers}")
+            print("Expected columns like: acc_x, acc_y, acc_z  (or ax/ay/az)")
+            sys.exit(1)
 
     timestamps, accel, gyro = [], [], []
     for row in rows[1:]:
