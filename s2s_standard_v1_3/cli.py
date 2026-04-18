@@ -104,7 +104,7 @@ def load_csv(path):
 def print_banner():
     print(f"""
 {BOLD}╔══════════════════════════════════════════╗
-║   S2S Physics Certification  v1.4.4      ║
+║   S2S Physics Certification  v1.6.3      ║
 ║   github.com/timbo4u1/S2S                ║
 ╚══════════════════════════════════════════╝{RESET}""")
 

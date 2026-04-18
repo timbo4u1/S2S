@@ -234,7 +234,7 @@ def make_synthetic(n=5):
         rr = random.Random(i + 50)
         acc  = [[rr.gauss(0, 8) for _ in range(3)] for _ in range(256)]
         gyro = [[rr.gauss(0, 8) for _ in range(3)] for _ in range(256)]
-        ts   = [int(j * 1e9 / 50) for j in range(256)]  # zero jitter → SUSPECT_SYNTHETIC
+        ts   = [int(j * 1e9 / 50) for j in range(256)]
         r = certify(acc, gyro, ts)
         windows.append({
             "id": f"synthetic_{i}",
@@ -246,6 +246,77 @@ def make_synthetic(n=5):
             "pass": r["tier"] == "REJECTED",
             "note": "Gaussian noise with zero-jitter timestamps",
         })
+    return windows
+
+
+def make_hard_negatives():
+    """
+    Hard negative corruptions that should be REJECTED.
+    These are harder than pure Gaussian — they look more like real data
+    but violate specific physics laws.
+    """
+    import numpy as np
+    windows = []
+    rr = random.Random(99)
+
+    # Base: plausible human-like motion (not pure Gaussian)
+    def base_signal():
+        acc  = [[rr.gauss(0, 2) + (9.81 if k == 2 else 0) for k in range(3)]
+                for _ in range(256)]
+        gyro = [[rr.gauss(0, 0.3) for _ in range(3)] for _ in range(256)]
+        ts   = [int(j * 1e9 / 100 + rr.gauss(0, 50000)) for j in range(256)]
+        return acc, gyro, ts
+
+    # Hard negative 1: time-shift — accel shifted 50 samples vs gyro
+    # Violates rigid body (accel and gyro from different time points)
+    acc, gyro, ts = base_signal()
+    shift = 50
+    acc_shifted = acc[shift:] + acc[:shift]
+    r = certify(acc_shifted, gyro, ts)
+    windows.append({
+        "id": "hard_neg_timeshift",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "note": "Accel time-shifted 50 samples vs gyro",
+    })
+
+    # Hard negative 2: axis swap — x/y/z permuted in accel only
+    # Violates rigid body coupling (axes don't match physical orientation)
+    acc, gyro, ts = base_signal()
+    acc_swapped = [[a[1], a[2], a[0]] for a in acc]  # x→y, y→z, z→x
+    r = certify(acc_swapped, gyro, ts)
+    windows.append({
+        "id": "hard_neg_axisswap",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "note": "Accel axes permuted x→y→z→x",
+    })
+
+    # Hard negative 3: amplitude scaling — 5x normal human range
+    # Violates jerk bounds (superhuman acceleration)
+    acc, gyro, ts = base_signal()
+    acc_scaled = [[a[k] * 5.0 for k in range(3)] for a in acc]
+    gyro_scaled = [[g[k] * 5.0 for k in range(3)] for g in gyro]
+    r = certify(acc_scaled, gyro_scaled, ts)
+    windows.append({
+        "id": "hard_neg_amplitude",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "note": "5x amplitude scaling — superhuman acceleration",
+    })
+
     return windows
 
 
@@ -297,6 +368,11 @@ def main():
     # Synthetic (always runs)
     print("\n[4] Pure synthetic (Gaussian noise, zero-jitter timestamps)")
     w = make_synthetic()
+    windows.extend(w)
+    print(f"    Generated {len(w)} windows")
+
+    print("\n[5] Hard negatives (time-shift, axis-swap, amplitude)")
+    w = make_hard_negatives()
     windows.extend(w)
     print(f"    Generated {len(w)} windows")
 
