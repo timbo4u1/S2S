@@ -1,9 +1,9 @@
 {
   "version": "1.0",
   "summary": {
-    "total": 29,
-    "passed": 24,
-    "pass_rate": 0.828,
+    "total": 32,
+    "passed": 27,
+    "pass_rate": 0.844,
     "by_category": {
       "real_human": {
         "pass": 20,
@@ -16,6 +16,10 @@
       "pure_synthetic": {
         "pass": 1,
         "total": 5
+      },
+      "hard_negatives": {
+        "pass": 3,
+        "total": 3
       }
     }
   },
@@ -385,6 +389,45 @@
       "score": 41,
       "pass": false,
       "note": "Gaussian noise with zero-jitter timestamps"
+    },
+    {
+      "id": "hard_neg_timeshift",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "REJECTED",
+      "score": 38,
+      "pass": true,
+      "note": "Accel time-shifted 50 samples vs gyro"
+    },
+    {
+      "id": "hard_neg_axisswap",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "BRONZE",
+      "score": 45,
+      "pass": true,
+      "note": "Accel axes permuted x\u2192y\u2192z\u2192x"
+    },
+    {
+      "id": "hard_neg_amplitude",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "REJECTED",
+      "score": 38,
+      "pass": true,
+      "note": "5x amplitude scaling \u2014 superhuman acceleration"
     }
   ]
 }
