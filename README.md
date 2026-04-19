@@ -46,7 +46,8 @@ For robotics and embodied AI pipelines, S2S covers the full data trust checklist
 | WISDM 2019 | 20Hz | IMU | +1.74% F1 vs corrupted baseline |
 | WESAD | 700Hz | IMU + BVP | +3.1% F1 stress classification |
 | RoboTurk Open-X | 15Hz | Robot arm | 21.9% of teleoperation data rejected as physically invalid |
-| NinaPro DB5 | 2000Hz | Forearm EMG+IMU | 9,552 windows certified |
+| NinaPro DB5 | 2000Hz | Forearm EMG+IMU | 9,552 windows certified, Law 1 EMG validated 78% |
+| OPPORTUNITY | 30Hz | Body IMU ×7 | 25.7% rejection rate found with real gyro |
 | PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU | 1,164 windows certified |
 
 ---
@@ -467,7 +468,7 @@ See [adapters/lerobot.py](s2s_standard_v1_3/adapters/lerobot.py) for details.
 
 ## Real-Time Safety Gate
 
-Monitor sensor data quality in real-time — 1.44ms latency at 2000Hz:
+Monitor sensor data quality in real-time — 2.8ms latency at 2000Hz:
 
 ```python
 from s2s_standard_v1_3 import RealTimeSafetyGate
