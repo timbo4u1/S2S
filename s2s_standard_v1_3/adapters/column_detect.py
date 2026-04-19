@@ -143,7 +143,7 @@ def certify_file(filepath: str, segment: str = "forearm",
 
     # Streaming chunk reader — works on files of any size, low RAM usage
     # Reads chunk_size rows at a time instead of loading entire file
-    chunk_size = max_windows * window  # only read what we need
+    chunk_size = max_windows * 256  # 256 samples per window
     data = np.genfromtxt(filepath,
                          delimiter=_delim,
                          skip_header=skip,
