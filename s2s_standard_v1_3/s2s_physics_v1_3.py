@@ -856,8 +856,16 @@ class PhysicsEngine:
         is skipped with score=50 (neutral) rather than crashing the caller.
         The result will include an 'errors' field listing any failures.
 
-        Timeout: no built-in timeout. For field use on Linux/Raspberry Pi,
-        wrap with signal.alarm(1) for 1-second timeout protection.
+        Timeout: no built-in timeout. For field use on Linux/Raspberry Pi:
+            import signal
+            def _timeout(s, f): raise TimeoutError()
+            signal.signal(signal.SIGALRM, _timeout)
+            signal.alarm(1)
+            try:
+                result = engine.certify(imu_raw, segment='forearm')
+            finally:
+                signal.alarm(0)
+        Not implemented internally — would break cross-platform support.
         """
         results: Dict[str, Tuple[bool, int, Dict]] = {}
         _errors: list = []
