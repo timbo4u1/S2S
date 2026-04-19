@@ -515,6 +515,24 @@ s2s-certify yourfile.csv
 s2s-certify yourfile.csv --output report.json --segment forearm
 ```
 
+**Zero-config Python API — auto-detects columns, Hz, and units:**
+
+```python
+from s2s_standard_v1_3.adapters.column_detect import certify_file
+
+# Works on any CSV or space-delimited sensor file
+# No column names needed — detects accel/gyro from data statistics
+result = certify_file("your_sensor_data.csv", segment="forearm")
+
+print(result["tier"])             # SILVER
+print(result["pass_rate"])        # 0.93
+print(result["detected_hz"])      # 30.3 (auto-detected from timestamps)
+print(result["detected_columns"]) # {"accel": [2,5,17], "gyro": [1,16,39]}
+```
+
+Auto-detect is best for unknown datasets without documentation.
+For documented datasets, specify columns explicitly for highest accuracy.
+
 ---
 
 ## Live demos
