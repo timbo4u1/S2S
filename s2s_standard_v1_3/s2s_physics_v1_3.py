@@ -628,10 +628,25 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
             arr = np.asarray(sig_raw, dtype=np.float64)
             w = JERK_SMOOTH_WINDOW
             
-            # Remove gravity (median bias)
-            gravity = np.median(arr)
+            # Remove gravity using quasi-static window estimation
+            # Better than median: works at any sensor mounting angle
+            # Find low-variance windows (sensor nearly static = gravity dominant)
+            if len(arr) >= 30:
+                win_size = 15
+                variances = np.array([
+                    np.var(arr[i:i+win_size])
+                    for i in range(0, len(arr)-win_size, win_size)
+                ])
+                static_threshold = np.percentile(variances, 25)
+                static_mask = np.zeros(len(arr), dtype=bool)
+                for i, v in enumerate(variances):
+                    if v <= static_threshold:
+                        static_mask[i*win_size:i*win_size+win_size] = True
+                gravity = float(np.mean(arr[static_mask])) if static_mask.any() else float(np.median(arr))
+            else:
+                gravity = float(np.median(arr))
             arr_compensated = arr - gravity
-            d["gravity_removed_m_s2"] = float(gravity)  # Debug: show gravity value
+            d["gravity_removed_m_s2"] = float(gravity)
             
             def np_smooth(a, win):
                 k = np.ones(2 * win + 1) / (2 * win + 1)
