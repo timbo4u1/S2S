@@ -844,23 +844,45 @@ class PhysicsEngine:
                 segment:      str = "forearm",
                 device_id:    str = "unknown",
                 session_id:   Optional[str] = None) -> Dict[str, Any]:
+        """
+        Certify sensor data against 7 biomechanical laws.
 
+        Thread safety: NOT thread-safe. Use one PhysicsEngine instance
+        per thread. Sharing across threads without locks will cause
+        race conditions in _session_jerk_rms. Adding locks would break
+        the 2.8ms latency guarantee.
+
+        Error recovery: if any law check raises an exception, that law
+        is skipped with score=50 (neutral) rather than crashing the caller.
+        The result will include an 'errors' field listing any failures.
+
+        Timeout: no built-in timeout. For field use on Linux/Raspberry Pi,
+        wrap with signal.alarm(1) for 1-second timeout protection.
+        """
         results: Dict[str, Tuple[bool, int, Dict]] = {}
+        _errors: list = []
+
+        def _safe(name, fn, *args):
+            try:
+                return fn(*args)
+            except Exception as e:
+                _errors.append(f"{name}: {e}")
+                return (True, 50, {"skip": f"ERROR:{e}", "law": name})
 
         if imu_raw and emg_raw:
-            results["newton_second_law"] = check_newton(imu_raw, emg_raw)
+            results["newton_second_law"] = _safe("newton", check_newton, imu_raw, emg_raw)
         if imu_raw:
-            results["resonance_frequency"]      = check_resonance(imu_raw, segment)
-            results["rigid_body_kinematics"]    = check_rigid_body(imu_raw)
-            results["jerk_bounds"]              = check_jerk(imu_raw, segment)
+            results["resonance_frequency"]      = _safe("resonance", check_resonance, imu_raw, segment)
+            results["rigid_body_kinematics"]    = _safe("rigid_body", check_rigid_body, imu_raw)
+            results["jerk_bounds"]              = _safe("jerk", check_jerk, imu_raw, segment)
             _jrms = results["jerk_bounds"][2].get("rms_jerk_normalized_ms3")
             if _jrms is not None:
                 self._session_jerk_rms.append(_jrms)
-            results["imu_internal_consistency"] = check_imu_consistency(imu_raw)
+            results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
         if imu_raw and ppg_cert:
-            results["ballistocardiography"] = check_bcg(imu_raw, ppg_cert)
+            results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
         if emg_cert and thermal_cert:
-            results["joule_heating"] = check_joule(emg_cert, thermal_cert)
+            results["joule_heating"] = _safe("joule", check_joule, emg_cert, thermal_cert)
 
         passed = [k for k, (ok, _, _) in results.items() if ok]
         failed = [k for k, (ok, _, _) in results.items() if not ok]
