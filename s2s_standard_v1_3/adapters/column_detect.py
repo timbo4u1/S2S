@@ -139,9 +139,15 @@ def certify_file(filepath: str, segment: str = "forearm",
     with open(filepath) as _f:
         _first = _f.readline().strip()
     _has_header = any(c.isalpha() for c in _first.replace('nan','').replace('NaN',''))
+    skip = 1 if _has_header else 0
+
+    # Streaming chunk reader — works on files of any size, low RAM usage
+    # Reads chunk_size rows at a time instead of loading entire file
+    chunk_size = max_windows * window  # only read what we need
     data = np.genfromtxt(filepath,
                          delimiter=_delim,
-                         skip_header=1 if _has_header else 0)
+                         skip_header=skip,
+                         max_rows=chunk_size)
     if data.ndim == 1:
         data = data.reshape(1, -1)
 
