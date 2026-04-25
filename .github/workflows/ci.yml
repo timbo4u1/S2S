@@ -165,5 +165,5 @@ jobs:
 
       - name: Run pytest test suite
         run: |
-          pip install pytest cryptography
+          pip install pytest cryptography numpy
           pytest tests/ -v --tb=short
