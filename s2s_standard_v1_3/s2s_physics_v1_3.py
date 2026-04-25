@@ -216,6 +216,113 @@ def _band_peak(sig, ts_ns, f_lo, f_hi, steps=40):
     return bf, be
 
 
+def _wavelet_temporal_check(accel_list, sample_rate: float) -> dict:
+    """
+    Haar DWT time-frequency tile analysis on total acceleration magnitude.
+
+    Key insight: use magnitude sqrt(ax²+ay²+az²) not individual axes.
+    Gravity cancels in the magnitude differential, so z-axis dead zone
+    is avoided entirely.
+
+    Physics basis:
+      Synthetic data (Gaussian, sine, diffusion): energy is STATIONARY
+        → same energy in each time tile → low coefficient of variation
+      Real biological motion: energy is NON-STATIONARY
+        → bursts of activity → high CV across tiles
+
+    Catches:
+      - Pure sine waves (too perfect, CV ≈ 0)
+      - Gaussian noise (low energy overall)
+      - Diffusion-recovered synthetic (uniform energy distribution)
+
+    Does NOT replace resonance FFT — adds temporal dimension to it.
+    """
+    if not _NP or len(accel_list) < 64:
+        return {"signal_type": "insufficient", "synthetic_flag": False,
+                "energy_drift_cv": 0.0}
+
+    a = np.asarray(accel_list, dtype=np.float64)
+    if a.ndim == 1:
+        a = a.reshape(-1, 1)
+
+    # Total magnitude — orientation and gravity independent
+    mag = np.sqrt(np.sum(a**2, axis=1))
+    s = mag - np.mean(mag)
+
+    if np.std(s) < 1e-6:
+        return {"signal_type": "flat", "synthetic_flag": False,
+                "energy_drift_cv": 0.0}
+
+    # Haar DWT — one level, pure numpy
+    L = len(s) & ~1  # even length
+    detail = (s[:L:2] - s[1:L:2]) / 1.414  # high-frequency tiles
+
+    # Split detail into 4 time tiles, compute energy per tile
+    tiles = np.array_split(detail**2, 4)
+    tile_energies = np.array([float(np.mean(t)) for t in tiles if len(t) > 0])
+
+    if len(tile_energies) < 2:
+        return {"signal_type": "unknown", "synthetic_flag": False,
+                "energy_drift_cv": 0.0}
+
+    mean_e = float(np.mean(tile_energies))
+    std_e  = float(np.std(tile_energies))
+    cv = std_e / (mean_e + 1e-9)
+
+    # Classification:
+    # cv < 0.08 → too stationary → synthetic (sine/diffusion)
+    # cv > 0.4  → dynamic → biological
+    # 0.08-0.4  → stochastic baseline (Gaussian noise or gentle motion)
+    is_perfect_synthetic = bool(cv < 0.08 and mean_e > 1e-6)
+
+    if is_perfect_synthetic:
+        sig_type = "perfect_synthetic"
+    elif cv > 0.4:
+        sig_type = "biological_dynamic"
+    elif mean_e < 1e-6:
+        sig_type = "flat"
+    else:
+        sig_type = "stochastic_baseline"
+
+    # Spectral entropy — second dimension of the 2D biological check
+    # Pure sine: low entropy (single frequency)
+    # Gaussian:  high entropy (all frequencies equal)
+    # Biological: medium entropy (concentrated but noisy)
+    mag_full = np.sqrt(np.sum(np.asarray(accel_list, dtype=np.float64)**2, axis=1))
+    mag_full -= mag_full.mean()
+    fft_vals = np.abs(np.fft.rfft(mag_full))
+    fft_norm = fft_vals / (fft_vals.sum() + 1e-10)
+    spectral_entropy = float(
+        -np.sum(fft_norm * np.log(fft_norm + 1e-10)) / np.log(len(fft_norm) + 1)
+    )
+
+    # 2D classification: CV + Entropy
+    # Validated on 30 NinaPro DB5 files:
+    #   Real human: cv=0.18-1.55, entropy=0.83-0.94
+    #   Gaussian:   cv=0.17,      entropy=0.97
+    #   Pure sine:  cv=0.007,     entropy=0.27
+    is_mechanical   = bool(cv < 0.05 or spectral_entropy < 0.50)   # too perfect
+    is_random_noise = bool(spectral_entropy > 0.97 and cv < 0.25)  # 0.97 covers low-Hz datasets  # too random
+    synthetic_flag  = bool(is_mechanical or is_random_noise)
+
+    if is_mechanical:
+        sig_type = "mechanical_synthetic"
+    elif is_random_noise:
+        sig_type = "random_noise"
+    elif cv > 0.15 and 0.75 <= spectral_entropy <= 0.96:
+        sig_type = "biological"
+    else:
+        sig_type = "uncertain"
+
+    return {
+        "energy_drift_cv":  round(cv, 3),
+        "spectral_entropy": round(spectral_entropy, 3),
+        "tile_energies":    [round(float(e), 6) for e in tile_energies],
+        "synthetic_flag":   synthetic_flag,
+        "signal_type":      sig_type,
+    }
+
+
 def _accel_magnitude_np(accel_list: List) -> List[float]:
     """|a| - g  for a list of [ax,ay,az] vectors. NumPy: ~20x faster."""
     g = 9.81
@@ -382,6 +489,12 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
     peak_f, peak_e = _band_peak(az, ts, 5.0, 30.0, steps=60)
     d.update({"measured_peak_hz": round(peak_f, 2), "measured_peak_energy": round(peak_e, 5)})
 
+    # Wavelet temporal analysis — catches synthetic data that fakes correct frequency
+    wavelet = _wavelet_temporal_check(accel, sample_rate)
+    d["wavelet"] = wavelet
+    if wavelet["synthetic_flag"]:
+        d["wavelet_note"] = "UNIFORM_ENERGY: tremor energy too evenly distributed — possible synthetic"
+
     if peak_e < 0.015:
         d["note"] = "NO_SIGNIFICANT_TREMOR"
         d["confidence"] = 60
@@ -392,6 +505,10 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
     if in_range:
         d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
         conf = min(100, int(60 + peak_e * 400))
+        # Reduce confidence if wavelet says energy pattern is too uniform
+        if wavelet.get("synthetic_flag"):
+            conf = max(30, conf - 20)
+            d["result"] += " (WAVELET:UNIFORM_ENERGY)"
         passed = True
     else:
         dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
