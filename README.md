@@ -242,7 +242,7 @@ Current planned work without user input:
 ## Architecture
 
 ```
-Layer 1  Physics Certification    7 biomechanical laws, GOLD/SILVER/BRONZE/REJECTED
+Layer 1  Physics Certification    8 biomechanical laws, GOLD/SILVER/BRONZE/REJECTED
 Layer 2  Biological Origin        Hurst exponent H≥0.70, HUMAN/NOT_BIOLOGICAL
 Layer 3  Motion Retrieval         text → certified motion, 11,246 windows, 6 datasets
 Layer 4a Next Action Prediction   Transformer, mean r=0.929, 21,896 training pairs
@@ -266,6 +266,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Joule Heating | Q = 0.75×P×t | EMG + thermal | EMG bursts must produce thermal elevation |
 | Motor Control Jerk | d³x/dt³ ≤ 500 m/s³ | IMU | Human motion limit (Flash & Hogan 1985) |
 | IMU Internal Consistency | Var(accel) ~ Var(gyro) | IMU + gyro | Independent generators produce zero coupling |
+| Inter-window Continuity | \|Δaccel\| ≤ V_max/dt | IMU | Catches timestamp regression and session splices between windows |
 
 Missing sensors are skipped — they do not penalise the score.
 
