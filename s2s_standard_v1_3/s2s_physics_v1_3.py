@@ -889,6 +889,105 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
 
 
 # ---------------------------------------------------------------------------
+# Law 8: Inter-window Continuity (Lagrangian-lite)
+# ---------------------------------------------------------------------------
+def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[bool, int, Dict]:
+    """
+    Law 8 — Inter-window Continuity Check (v1.7.0)
+
+    Ensures consecutive windows form a physically valid sequence.
+    Catches "teleportation" artifacts in robot teleoperation datasets
+    where two valid individual windows are placed in impossible order.
+
+    Physics basis:
+      A human arm cannot instantly change position between windows.
+      Maximum velocity of human arm ≈ 5.0 m/s (throwing motion).
+      If acceleration vector jumps more than V_max * dt allows → violation.
+
+    Pure Python — zero numpy dependency — runs on Raspberry Pi / microcontroller.
+
+    Parameters:
+      imu_raw:    current window IMU data
+      last_state: dict with 'timestamp_ns' and 'accel' from previous window
+                  None for first window → returns True (initialized)
+
+    Returns:
+      (passed, confidence, details)
+    """
+    d = {"law": "Inter_Window_Continuity",
+         "equation": "|accel_delta| <= V_max * dt * scale",
+         "physical_meaning": "Human limb cannot teleport between consecutive windows"}
+
+    ts = imu_raw.get("timestamps_ns", [])
+    accel = imu_raw.get("accel", [])
+
+    if not ts or not accel:
+        d["skip"] = "NO_TIMESTAMP_DATA"
+        return True, 50, d
+
+    # First window — initialize state, always passes
+    if last_state is None or last_state.get("timestamp_ns") is None:
+        d["info"] = "FIRST_WINDOW_INITIALIZED"
+        return True, 100, d
+
+    # Temporal gap check
+    t_current = ts[0]
+    t_prev = last_state["timestamp_ns"]
+    dt = (t_current - t_prev) * 1e-9  # nanoseconds → seconds
+
+    if dt <= 0:
+        # Timestamp regression = new session or new file — reset state, don't penalize
+        # Only flag as violation if within same session (dt is small negative, not huge)
+        if dt > -0.1:
+            d["violation"] = f"TIMESTAMP_REGRESSION: dt={dt:.4f}s (current <= previous)"
+            d["interpretation"] = "Timestamps went backwards — data splice or shuffle detected"
+            return False, 0, d
+        else:
+            d["info"] = "NEW_SESSION_DETECTED: large timestamp reset — continuity reset"
+            return True, 80, d
+
+    # Allow up to 2 seconds gap (handles deliberate pauses in teleoperation)
+    if dt > 2.0:
+        d["skip"] = f"LARGE_GAP_{dt:.2f}s: session pause or new segment"
+        return True, 70, d
+
+    # Kinematic continuity check
+    # Maximum human arm velocity ≈ 5.0 m/s (Flash & Hogan 1985)
+    V_MAX = 5.0
+
+    curr_a = accel[0] if len(accel[0]) >= 3 else [0.0, 0.0, 9.81]
+    prev_a = last_state.get("accel", [0.0, 0.0, 9.81])
+
+    # Euclidean distance in acceleration space
+    dist = math.sqrt(
+        (curr_a[0] - prev_a[0]) ** 2 +
+        (curr_a[1] - prev_a[1]) ** 2 +
+        (curr_a[2] - prev_a[2]) ** 2
+    )
+
+    # Max allowable acceleration change = V_max / dt
+    # (dimensionally: m/s / s = m/s²)
+    max_allowable = V_MAX / max(dt, 0.001)
+
+    d.update({
+        "dt_gap_s":       round(dt, 4),
+        "accel_delta":    round(dist, 3),
+        "max_allowable":  round(max_allowable, 1),
+        "v_max_ms":       V_MAX,
+    })
+
+    if dist > max_allowable:
+        d["violation"] = (f"KINEMATIC_TELEPORTATION: accel jumped {dist:.1f} m/s² "
+                          f"in {dt:.3f}s (max {max_allowable:.1f})")
+        d["interpretation"] = "Physically impossible acceleration change — data splice or shuffle"
+        conf = max(0, int(100 - (dist / max_allowable) * 50))
+        return False, conf, d
+
+    d["result"] = f"CONTINUITY_CONFIRMED: delta={dist:.2f} m/s² within {max_allowable:.1f} limit"
+    return True, 95, d
+
+
+# ---------------------------------------------------------------------------
 # Law 7: IMU Internal Consistency (accel-gyro co-variance)
 # ---------------------------------------------------------------------------
 def check_imu_consistency(imu_raw: Dict) -> Tuple[bool, int, Dict]:
@@ -951,6 +1050,7 @@ class PhysicsEngine:
 
     def __init__(self):
         self._session_jerk_rms: List[float] = []
+        self._last_terminal_state: Optional[Dict] = None  # Law 8 continuity
 
     def certify(self,
                 imu_raw:      Optional[Dict] = None,
@@ -994,6 +1094,11 @@ class PhysicsEngine:
                 _errors.append(f"{name}: {e}")
                 return (True, 50, {"skip": f"ERROR:{e}", "law": name})
 
+        # Law 8 — Inter-window continuity (runs before other laws)
+        if imu_raw:
+            cont_passed, cont_conf, cont_d = check_continuity(imu_raw, self._last_terminal_state)
+            results["inter_window_continuity"] = (cont_passed, cont_conf, cont_d)
+
         if imu_raw and emg_raw:
             results["newton_second_law"] = _safe("newton", check_newton, imu_raw, emg_raw)
         if imu_raw:
@@ -1008,6 +1113,16 @@ class PhysicsEngine:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
         if emg_cert and thermal_cert:
             results["joule_heating"] = _safe("joule", check_joule, emg_cert, thermal_cert)
+
+        # Update continuity state for next window
+        if imu_raw:
+            ts = imu_raw.get("timestamps_ns", [])
+            acc = imu_raw.get("accel", [])
+            if ts and acc:
+                self._last_terminal_state = {
+                    "timestamp_ns": ts[-1],
+                    "accel": acc[-1] if acc else [0.0, 0.0, 9.81],
+                }
 
         passed = [k for k, (ok, _, _) in results.items() if ok]
         failed = [k for k, (ok, _, _) in results.items() if not ok]
