@@ -1,9 +1,9 @@
 {
   "version": "1.0",
   "summary": {
-    "total": 32,
-    "passed": 27,
-    "pass_rate": 0.844,
+    "total": 36,
+    "passed": 31,
+    "pass_rate": 0.861,
     "by_category": {
       "real_human": {
         "pass": 20,
@@ -18,8 +18,8 @@
         "total": 5
       },
       "hard_negatives": {
-        "pass": 3,
-        "total": 3
+        "pass": 7,
+        "total": 7
       }
     }
   },
@@ -428,6 +428,61 @@
       "score": 46,
       "pass": true,
       "note": "5x amplitude scaling \u2014 superhuman acceleration"
+    },
+    {
+      "id": "hard_neg_clipping",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE",
+        "SILVER"
+      ],
+      "tier": "SILVER",
+      "score": 67,
+      "pass": true,
+      "note": "Sensor clipping at 16g \u2014 IMU hardware limit exceeded"
+    },
+    {
+      "id": "hard_neg_frozen",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE",
+        "SILVER"
+      ],
+      "tier": "SILVER",
+      "score": 63,
+      "pass": true,
+      "note": "Frozen samples (packet drop) \u2014 100 identical values"
+    },
+    {
+      "id": "hard_neg_60hz",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE",
+        "SILVER"
+      ],
+      "tier": "SILVER",
+      "score": 59,
+      "pass": true,
+      "note": "60Hz power line noise \u2014 EM interference"
+    },
+    {
+      "id": "hard_neg_motor_stall",
+      "dataset": "synthetic",
+      "category": "hard_negatives",
+      "expected": [
+        "REJECTED",
+        "BRONZE"
+      ],
+      "tier": "REJECTED",
+      "score": 46,
+      "pass": true,
+      "note": "Motor stall oscillation at 150Hz \u2014 mechanical vibration"
     }
   ]
 }

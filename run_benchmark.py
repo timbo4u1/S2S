@@ -317,6 +317,82 @@ def make_hard_negatives():
         "note": "5x amplitude scaling — superhuman acceleration",
     })
 
+    # Hard negative 4: sensor clipping — values stuck at hardware max (16g)
+    acc, gyro, ts = base_signal()
+    acc_clipped = [[16.0 if abs(a[k]) > 2.0 else a[k] for k in range(3)] for a in acc]
+    # Force flat region
+    for i in range(100, 200):
+        acc_clipped[i] = [16.0, 16.0, 16.0]
+    r = certify(acc_clipped, gyro, ts)
+    windows.append({
+        "id": "hard_neg_clipping",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE", "SILVER"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "note": "Sensor clipping at 16g — IMU hardware limit exceeded",
+    })
+
+    # Hard negative 5: frozen samples — packet drop / I2C bus hang
+    acc, gyro, ts = base_signal()
+    acc_frozen = [list(a) for a in acc]
+    frozen_val = acc_frozen[199]
+    for i in range(100, 156):  # 56 frozen samples (within 256 window)
+        acc_frozen[i] = list(frozen_val)
+    r = certify(acc_frozen, gyro, ts)
+    windows.append({
+        "id": "hard_neg_frozen",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE", "SILVER"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "note": "Frozen samples (packet drop) — 100 identical values",
+    })
+
+    # Hard negative 6: 60Hz power line noise
+    import math as _math
+    acc, gyro, ts = base_signal()
+    hz_est = 100.0  # base_signal uses 100Hz
+    acc_noisy = []
+    for i, a in enumerate(acc):
+        t_i = i / hz_est
+        hum = 2.5 * _math.sin(2 * _math.pi * 60 * t_i)
+        acc_noisy.append([a[0] + hum, a[1] + hum, a[2]])
+    r = certify(acc_noisy, gyro, ts)
+    windows.append({
+        "id": "hard_neg_60hz",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE", "SILVER"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "note": "60Hz power line noise — EM interference",
+    })
+
+    # Hard negative 7: motor stall oscillation (150Hz mechanical vibration)
+    acc, gyro, ts = base_signal()
+    acc_stall = []
+    for i, a in enumerate(acc):
+        t_i = i / 100.0
+        osc = 4.0 * _math.sin(2 * _math.pi * 150 * t_i)
+        acc_stall.append([a[0] + osc, a[1], a[2]])
+    r = certify(acc_stall, gyro, ts)
+    windows.append({
+        "id": "hard_neg_motor_stall",
+        "dataset": "synthetic",
+        "category": "hard_negatives",
+        "expected": ["REJECTED", "BRONZE"],
+        "tier": r["tier"],
+        "score": r["physical_law_score"],
+        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "note": "Motor stall oscillation at 150Hz — mechanical vibration",
+    })
+
     return windows
 
 
