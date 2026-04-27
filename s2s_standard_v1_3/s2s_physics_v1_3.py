@@ -1374,3 +1374,169 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# ---------------------------------------------------------------------------
+# Human-readable audit report
+# ---------------------------------------------------------------------------
+def audit_report(cert_result: Dict) -> Dict:
+    """
+    Convert a certify() result into a human-readable audit report.
+    
+    Provides engineer-friendly explanations for each law result,
+    actionable fixes, and a plain-language verdict.
+    
+    Usage:
+        result = PhysicsEngine().certify(imu_raw=window, segment='forearm')
+        report = audit_report(result)
+        print(report['verdict'])
+        for issue in report['issues']:
+            print(f"  {issue['law']}: {issue['message']}")
+    """
+    tier = cert_result.get('tier', 'UNKNOWN')
+    score = cert_result.get('physical_law_score', 0)
+    details = cert_result.get('law_details', {})
+
+    # Tier verdicts
+    verdicts = {
+        'GOLD':     'GOLD — Excellent data quality. Safe for robot training.',
+        'SILVER':   'SILVER — Good data quality. Minor physics anomalies present.',
+        'BRONZE':   'BRONZE — Degraded data quality. Review before training.',
+        'REJECTED': 'REJECTED — Data violates physical laws. Do not use for training.',
+    }
+
+    # Law-to-human translation
+    law_translations = {
+        'newton_second_law': {
+            'name': 'Newton F=ma (EMG-Accel coupling)',
+            'pass_msg': 'EMG force correctly leads acceleration by ~75ms.',
+            'fail_msg': 'EMG burst timing does not match acceleration onset.',
+            'fix': 'Check EMG electrode placement and sensor synchronization.',
+        },
+        'resonance_frequency': {
+            'name': 'Segment Resonance (physiological tremor)',
+            'pass_msg': 'Tremor frequency matches expected biomechanical range.',
+            'fail_msg': 'Signal frequency outside physiological tremor band.',
+            'fix': 'Check sensor mounting — loose attachment causes artificial frequencies.',
+        },
+        'rigid_body_kinematics': {
+            'name': 'Rigid Body Kinematics (accel-gyro coupling)',
+            'pass_msg': 'Acceleration and gyroscope signals are physically coupled.',
+            'fail_msg': 'Accel and gyro signals are decoupled — not from same rigid body.',
+            'fix': 'Verify sensor is firmly attached. Check for cable interference.',
+        },
+        'jerk_bounds': {
+            'name': 'Motor Control Jerk (Flash & Hogan 1985)',
+            'pass_msg': 'Motion smoothness within human biomechanical limits.',
+            'fail_msg': 'Acceleration changes too fast for human motor control.',
+            'fix': 'Check for robot bang-bang control artifacts or keyframe splicing.',
+        },
+        'imu_internal_consistency': {
+            'name': 'IMU Internal Consistency (accel-gyro variance)',
+            'pass_msg': 'Accel and gyro variance are physically coupled.',
+            'fail_msg': 'Accel and gyro appear to be from independent signal generators.',
+            'fix': 'Verify both sensors share the same physical unit. Check calibration.',
+        },
+        'ballistocardiography': {
+            'name': 'Ballistocardiography (heartbeat in IMU)',
+            'pass_msg': 'Heartbeat recoil visible in IMU at correct PPG rate.',
+            'fail_msg': 'No heartbeat signal detected in IMU at PPG frequency.',
+            'fix': 'Ensure PPG and IMU are co-located (same wrist/chest placement).',
+        },
+        'joule_heating': {
+            'name': 'Joule Heating (EMG thermal signature)',
+            'pass_msg': 'EMG bursts produce expected thermal elevation.',
+            'fail_msg': 'Thermal signal does not follow EMG power dissipation.',
+            'fix': 'Check thermal sensor placement relative to active muscles.',
+        },
+        'inter_window_continuity': {
+            'name': 'Inter-window Continuity (temporal fabric)',
+            'pass_msg': 'Window follows naturally from previous window.',
+            'fail_msg': 'Timestamp regression or impossible acceleration jump detected.',
+            'fix': 'Check for data splicing, packet loss, or timestamp misalignment.',
+        },
+    }
+
+    issues = []
+    passes = []
+
+    laws_passed = set(cert_result.get('laws_passed', []))
+    laws_failed = set(cert_result.get('laws_failed', []))
+    law_details = cert_result.get('law_details', {})
+
+    for law_key, detail in law_details.items():
+        if detail.get('skip'):
+            continue
+        # Skip continuity first-window init — not a real issue
+        if law_key == 'inter_window_continuity' and 'FIRST_WINDOW' in str(detail.get('info','')):
+            continue
+
+        trans = law_translations.get(law_key, {
+            'name': law_key,
+            'pass_msg': 'Law passed.',
+            'fail_msg': 'Law failed.',
+            'fix': 'Review sensor setup.',
+        })
+
+        passed = law_key in laws_passed
+        conf = detail.get('confidence', 50)
+
+        entry = {
+            'law': trans['name'],
+            'key': law_key,
+            'confidence': conf,
+            'passed': passed,
+        }
+
+        if not passed or conf < 60:
+            entry['severity'] = 'ERROR' if not passed else 'WARNING'
+            entry['message'] = trans['fail_msg']
+            entry['fix'] = trans['fix']
+            if detail.get('violation'):
+                entry['detail'] = detail['violation']
+            issues.append(entry)
+        else:
+            entry['message'] = trans['pass_msg']
+            passes.append(entry)
+
+    # Wavelet firewall check
+    res_detail = details.get('resonance_frequency', {})
+    wavelet = res_detail.get('wavelet', {})
+    if wavelet.get('synthetic_flag'):
+        issues.append({
+            'law': 'Wavelet 2D Firewall',
+            'key': 'wavelet_firewall',
+            'severity': 'ERROR',
+            'passed': False,
+            'confidence': 0,
+            'message': f"Signal classified as '{wavelet.get('signal_type')}' — not biological",
+            'fix': 'Data appears synthetic. CV={:.3f}, Entropy={:.3f}. Real human motion has CV>0.15 and entropy 0.75-0.96.'.format(
+                wavelet.get('energy_drift_cv', 0),
+                wavelet.get('spectral_entropy', 0)
+            ),
+        })
+
+    recommendation = ''
+    if tier == 'GOLD':
+        recommendation = 'Data is ready for robot training pipelines.'
+    elif tier == 'SILVER':
+        recommendation = 'Data is usable. Consider applying a low-pass filter at 12Hz to improve quality.'
+    elif tier == 'BRONZE':
+        recommendation = 'Review flagged issues before using for training. Consider removing this window.'
+    elif tier == 'REJECTED':
+        recommendation = 'Do not use this window for training. Investigate hardware or data pipeline.'
+
+    return {
+        'tier':           tier,
+        'score':          score,
+        'verdict':        verdicts.get(tier, f'{tier} — score {score}/100'),
+        'issues':         issues,
+        'passes':         passes,
+        'recommendation': recommendation,
+        'wavelet': {
+            'signal_type':     wavelet.get('signal_type', 'unknown'),
+            'energy_drift_cv': wavelet.get('energy_drift_cv', 0),
+            'spectral_entropy': wavelet.get('spectral_entropy', 0),
+            'synthetic_flag':  wavelet.get('synthetic_flag', False),
+        } if wavelet else {},
+    }
