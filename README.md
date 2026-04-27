@@ -213,7 +213,7 @@ Expected output:
 real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
 corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
 pure_synthetic (Gaussian noise):     1/5 rejected (Gaussian can satisfy laws by chance)
-Overall: 27/32 (84%) — hard negatives added, adaptive window fix applied April 2026
+Overall: 31/36 (86%) — 7 robot failure modes, hard negatives 100%, adaptive window fix applied April 2026
 
 Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
 
