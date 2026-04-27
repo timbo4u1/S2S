@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.6.5-orange)](https://pypi.org/project/s2s-certify/1.6.5/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-121%2F121-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.0-orange)](https://pypi.org/project/s2s-certify/1.7.0/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-122%2F122-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -32,9 +32,11 @@ Most motion datasets contain bad data — corrupted recordings, synthetic signal
 
 S2S asks: does this data *obey the physics of human movement?* A perfect statistical fake fails if it violates Newton's Second Law, segment resonance, or rigid body kinematics.
 
-S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 7-law certification before becoming training data.
+S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 8-law certification before becoming training data.
 
-For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (7 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), and rejection of fake or corrupted windows.
+For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (8 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), rejection of fake or corrupted windows, and 2D wavelet-based synthetic data detection.
+
+**v1.7.0 adds:** Law 8 inter-window continuity, Haar wavelet + spectral entropy firewall (catches Gaussian noise and pure sine waves that fool standard FFT), zero-config certify_file() with auto Hz/unit detection.
 
 
 **Validated results across 7 datasets:**
@@ -73,7 +75,7 @@ Laws run on IMU-only data (no gyro hardware):
 - ballistocardiography: skipped (needs PPG)
 - joule_heating: skipped (needs thermal)
 
-With full sensor stack (IMU + EMG + PPG + gyro): all 7 laws run.
+With full sensor stack (IMU + EMG + PPG + gyro): all 8 laws run.
 
 ## Install
 
@@ -101,7 +103,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.6.4)
+  S2S — Full Chain Demo  (v1.7.0)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
@@ -232,10 +234,17 @@ If you are using S2S on your data — even just experimenting —
 open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
 One sentence about your use case helps more than you think.
 
-Current planned work without user input:
+**Completed in v1.7.0:**
+- Law 8: Inter-window continuity — catches timestamp regression and session splices
+- 2D Physical Firewall: Wavelet CV + Spectral Entropy — catches synthetic data that fools FFT
+- Zero-config certify_file() — auto-detects Hz, units, and columns from any sensor file
+- Field-ready: error recovery, streaming for large files, any sensor mounting angle
+
+**Planned — depends on user needs:**
 - Layer 6: LLM semantic reasoning (jerk limits from natural language)
 - CLIP fine-tuning on DROID (0.23 → 0.6+ scene similarity)
 - Amputee-specific physics thresholds ([Issue #5](https://github.com/timbo4u1/S2S/issues/5))
+- Kinematic chain validation (Denavit-Hartenberg, needs multi-segment IMU dataset)
 
 ---
 
