@@ -1051,6 +1051,8 @@ class PhysicsEngine:
     def __init__(self):
         self._session_jerk_rms: List[float] = []
         self._last_terminal_state: Optional[Dict] = None  # Law 8 continuity
+        self._session_timeline: List[Dict] = []  # per-window tier/score for session report
+        self._session_start_ns: Optional[int] = None  # first window timestamp
 
     def certify(self,
                 imu_raw:      Optional[Dict] = None,
@@ -1123,7 +1125,6 @@ class PhysicsEngine:
                     "timestamp_ns": ts[-1],
                     "accel": acc[-1] if acc else [0.0, 0.0, 9.81],
                 }
-
         passed = [k for k, (ok, _, _) in results.items() if ok]
         failed = [k for k, (ok, _, _) in results.items() if not ok]
         confs  = [c for (_, c, _) in results.values()]
@@ -1144,6 +1145,21 @@ class PhysicsEngine:
             tier = "REJECTED"
 
         flags = [f"PHYSICS_VIOLATION:{k}" for k in failed]
+
+        # Track session timeline (after tier/score computed)
+        if imu_raw:
+            ts_raw = imu_raw.get("timestamps_ns", [])
+            if ts_raw:
+                t0 = ts_raw[0]
+                if self._session_start_ns is None:
+                    self._session_start_ns = t0
+                elapsed_s = (t0 - self._session_start_ns) / 1e9
+                self._session_timeline.append({
+                    "elapsed_s": round(elapsed_s, 3),
+                    "tier": tier,
+                    "score": score,
+                    "laws_failed": failed,
+                })
 
         return {
             "status":             "PASS" if tier not in ("REJECTED", "UNVERIFIED") else "FAIL",
@@ -1194,7 +1210,9 @@ class PhysicsEngine:
         population-level correlation, not a subject-level quality ranking.
         """
         rms_vals = self._session_jerk_rms[:]
+        timeline = self._session_timeline[:]
         self._session_jerk_rms.clear()
+        # Note: _session_timeline cleared in session_report() not here
 
         if len(rms_vals) < 4:
             return {"bfs": None, "reason": "INSUFFICIENT_WINDOWS",
@@ -1321,6 +1339,153 @@ class PhysicsEngine:
             "hurst": round(hurst, 4),
             "n_windows": n,
             "mean_jerk_rms_normalized": round(mu, 4),
+        }
+
+
+    def session_report(self, session_id: str = "session",
+                       segment: str = "forearm") -> Dict[str, Any]:
+        """
+        Generate a human-readable session quality report for HIL recording.
+
+        Call after certify_session() to get:
+        - Quality timeline (which minutes were good/bad)
+        - Problem segments (when to re-record)
+        - Actionable recommendations for the operator
+        - Summary statistics
+
+        Usage:
+            engine = PhysicsEngine()
+            for window in recording:
+                engine.certify(window, segment='forearm')
+            bio = engine.certify_session()
+            report = engine.session_report(session_id='take_001')
+        """
+        timeline = self._session_timeline[:]
+
+        if not timeline:
+            return {"error": "No windows recorded", "session_id": session_id}
+
+        total = len(timeline)
+        tier_counts = {"GOLD": 0, "SILVER": 0, "BRONZE": 0, "REJECTED": 0}
+        for w in timeline:
+            t = w.get("tier", "REJECTED")
+            tier_counts[t] = tier_counts.get(t, 0) + 1
+
+        passed = tier_counts["GOLD"] + tier_counts["SILVER"]
+        pass_rate = passed / total
+
+        # Build quality segments (group consecutive windows by quality)
+        segments = []
+        if timeline:
+            seg_tier = timeline[0]["tier"]
+            seg_start = timeline[0]["elapsed_s"]
+            seg_scores = [timeline[0]["score"]]
+
+            for w in timeline[1:]:
+                if w["tier"] == seg_tier:
+                    seg_scores.append(w["score"])
+                else:
+                    segments.append({
+                        "start_s": seg_start,
+                        "end_s": w["elapsed_s"],
+                        "tier": seg_tier,
+                        "mean_score": round(sum(seg_scores)/len(seg_scores), 1),
+                        "windows": len(seg_scores),
+                    })
+                    seg_tier = w["tier"]
+                    seg_start = w["elapsed_s"]
+                    seg_scores = [w["score"]]
+
+            segments.append({
+                "start_s": seg_start,
+                "end_s": timeline[-1]["elapsed_s"],
+                "tier": seg_tier,
+                "mean_score": round(sum(seg_scores)/len(seg_scores), 1),
+                "windows": len(seg_scores),
+            })
+
+        # Find problem segments (BRONZE or REJECTED)
+        problem_segments = [
+            s for s in segments
+            if s["tier"] in ("BRONZE", "REJECTED")
+        ]
+
+        # Find common failing laws
+        all_failed = []
+        for w in timeline:
+            all_failed.extend(w.get("laws_failed", []))
+
+        law_fail_counts: Dict[str, int] = {}
+        for law in all_failed:
+            law_fail_counts[law] = law_fail_counts.get(law, 0) + 1
+
+        top_failures = sorted(
+            law_fail_counts.items(), key=lambda x: x[1], reverse=True
+        )[:3]
+
+        # Human-readable recommendations
+        recommendations = []
+        if pass_rate < 0.5:
+            recommendations.append(
+                "CRITICAL: Over 50% of windows rejected. "
+                "Check sensor attachment and cable connections."
+            )
+        elif pass_rate < 0.8:
+            recommendations.append(
+                "WARNING: Data quality degraded. "
+                "Consider re-recording problem segments."
+            )
+        else:
+            recommendations.append("Data quality acceptable for training.")
+
+        for law, count in top_failures:
+            pct = count / total * 100
+            fixes = {
+                "resonance_frequency": "Check sensor mounting — possible loose attachment.",
+                "rigid_body_kinematics": "Verify sensor is firmly secured to body segment.",
+                "imu_internal_consistency": "Check sensor calibration and cable integrity.",
+                "jerk_bounds": "Motion too fast or jerky — slow down movements.",
+                "inter_window_continuity": "Check for packet loss or timestamp issues.",
+                "newton_second_law": "Verify EMG electrode placement.",
+                "ballistocardiography": "Ensure PPG sensor is co-located with IMU.",
+            }
+            fix = fixes.get(law, "Review sensor setup.")
+            recommendations.append(
+                f"Law '{law}' failed in {pct:.0f}% of windows. {fix}"
+            )
+
+        if problem_segments:
+            times = [
+                f"{s['start_s']:.1f}s-{s['end_s']:.1f}s ({s['tier']})"
+                for s in problem_segments[:5]
+            ]
+            recommendations.append(
+                f"Re-record these segments: {', '.join(times)}"
+            )
+
+        duration_s = timeline[-1]["elapsed_s"] if timeline else 0
+
+        # Clear timeline after generating report
+        self._session_timeline.clear()
+        self._session_start_ns = None
+
+        return {
+            "session_id":        session_id,
+            "segment":           segment,
+            "duration_s":        round(duration_s, 1),
+            "total_windows":     total,
+            "pass_rate":         round(pass_rate, 3),
+            "tier_counts":       tier_counts,
+            "quality_timeline":  segments,
+            "problem_segments":  problem_segments,
+            "top_failing_laws":  [{"law": k, "count": v} for k, v in top_failures],
+            "recommendations":   recommendations,
+            "verdict": (
+                "EXCELLENT — ready for robot training." if pass_rate >= 0.90 else
+                "GOOD — minor issues, usable for training." if pass_rate >= 0.75 else
+                "DEGRADED — review problem segments before training." if pass_rate >= 0.50 else
+                "POOR — re-record session recommended."
+            ),
         }
 
 
