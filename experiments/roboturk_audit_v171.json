@@ -1,0 +1,408 @@
+{
+  "dataset": "RoboTurk Open-X",
+  "s2s_version": "v1.7.1",
+  "method": "world_vector finite difference acceleration",
+  "hz": 15.0,
+  "total_episodes": 48,
+  "tier_counts": {
+    "GOLD": 1,
+    "SILVER": 42,
+    "REJECTED": 5
+  },
+  "pass_rate": 0.8958333333333334,
+  "rejection_rate": 0.10416666666666667,
+  "top_failing_laws": [
+    [
+      "resonance_frequency",
+      24
+    ],
+    [
+      "imu_internal_consistency",
+      12
+    ],
+    [
+      "rigid_body_kinematics",
+      1
+    ]
+  ],
+  "results": [
+    {
+      "episode": 0,
+      "n_steps": 48,
+      "tier": "GOLD",
+      "score": 75,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "GOLD \u2014 Excellent data quality. Safe for robot training.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 1,
+      "n_steps": 102,
+      "tier": "SILVER",
+      "score": 59,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 2,
+      "n_steps": 26,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 4,
+      "n_steps": 173,
+      "tier": "REJECTED",
+      "score": 50,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds"
+      ],
+      "laws_failed": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "verdict": "REJECTED \u2014 Data violates physical laws. Do not use for training.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 5,
+      "n_steps": 129,
+      "tier": "SILVER",
+      "score": 61,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 6,
+      "n_steps": 17,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": []
+    },
+    {
+      "episode": 7,
+      "n_steps": 156,
+      "tier": "SILVER",
+      "score": 72,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 8,
+      "n_steps": 61,
+      "tier": "SILVER",
+      "score": 71,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 9,
+      "n_steps": 115,
+      "tier": "SILVER",
+      "score": 63,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 10,
+      "n_steps": 10,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": []
+    },
+    {
+      "episode": 11,
+      "n_steps": 72,
+      "tier": "REJECTED",
+      "score": 50,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds"
+      ],
+      "laws_failed": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "verdict": "REJECTED \u2014 Data violates physical laws. Do not use for training.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 12,
+      "n_steps": 59,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds"
+      ],
+      "laws_failed": [
+        "imu_internal_consistency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 13,
+      "n_steps": 95,
+      "tier": "SILVER",
+      "score": 61,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 14,
+      "n_steps": 113,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 15,
+      "n_steps": 8,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": []
+    },
+    {
+      "episode": 16,
+      "n_steps": 209,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 17,
+      "n_steps": 146,
+      "tier": "REJECTED",
+      "score": 50,
+      "laws_passed": [
+        "inter_window_continuity",
+        "rigid_body_kinematics",
+        "jerk_bounds"
+      ],
+      "laws_failed": [
+        "resonance_frequency",
+        "imu_internal_consistency"
+      ],
+      "verdict": "REJECTED \u2014 Data violates physical laws. Do not use for training.",
+      "issues": [
+        "Segment Resonance (physiological tremor)",
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 18,
+      "n_steps": 11,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": []
+    },
+    {
+      "episode": 19,
+      "n_steps": 56,
+      "tier": "SILVER",
+      "score": 74,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 20,
+      "n_steps": 55,
+      "tier": "SILVER",
+      "score": 60,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds"
+      ],
+      "laws_failed": [
+        "imu_internal_consistency"
+      ],
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    }
+  ]
+}
