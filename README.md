@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.1-orange)](https://pypi.org/project/s2s-certify/1.7.1/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-122%2F122-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.1-orange)](https://pypi.org/project/s2s-certify/1.7.1/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-129%2F129-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -103,7 +103,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.7.0)
+  S2S — Full Chain Demo  (v1.7.1)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
@@ -483,7 +483,7 @@ Monitor sensor data quality in real-time — 2.8ms latency at 2000Hz:
 ```python
 from s2s_standard_v1_3 import RealTimeSafetyGate
 
-gate = RealTimeSafetyGate(segment="forearm", strikes=3)
+gate = RealTimeSafetyGate(segment="forearm", strikes_required=3)
 
 for ts_ns, accel, gyro in sensor_stream:
     is_safe, reason, cert = gate.push(ts_ns, accel, gyro)
@@ -542,6 +542,81 @@ print(result["detected_columns"]) # {"accel": [2,5,17], "gyro": [1,16,39]}
 
 Auto-detect is best for unknown datasets without documentation.
 For documented datasets, specify columns explicitly for highest accuracy.
+
+---
+
+## VLA Safety Wrapper — Real-time physics gate for robot commands
+
+Sits between any VLA model (RT-2, Pi-0, etc.) and robot motors.
+Certifies every action command before execution:
+
+```python
+from s2s_standard_v1_3.adapters.vla_wrapper import VLASafetyWrapper
+
+wrapper = VLASafetyWrapper(hz=10.0, segment="forearm", window_size=8)
+
+# For each VLA output command (position or acceleration):
+for step in robot_episode:
+    decision = wrapper.check_position(step["xyz"])  # or check_acceleration()
+    
+    if decision["action"] == "EXECUTE":
+        robot.move(step)
+    elif decision["action"] == "EXECUTE_WITH_CAUTION":
+        robot.move_slow(step)
+    else:  # HOLD
+        robot.stop()
+        print(f"Physics violation: {decision['reason']}")
+
+# States: SAFE / DEGRADED / UNSAFE
+# Three-strike logic prevents false triggers
+```
+
+Validated on NYU Robot dataset (erasing board, pouring, hanging tasks):
+all 14 episodes certified SILVER — robot motion within human biomechanical limits.
+
+---
+
+## Human-readable audit report
+
+```python
+from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine, audit_report
+
+engine = PhysicsEngine()
+result = engine.certify(imu_raw=window, segment="forearm")
+report = audit_report(result)
+
+print(report["verdict"])         # "SILVER — Good data quality"
+print(report["recommendation"])  # "Apply 12Hz low-pass filter"
+for issue in report["issues"]:
+    print(f"  ⚠️  {issue['law']}: {issue['message']}")
+    print(f"     Fix: {issue['fix']}")
+```
+
+---
+
+## HIL Session Quality Report
+
+For recording sessions with human operators:
+
+```python
+engine = PhysicsEngine()
+
+# Certify windows during recording
+for window in live_stream:
+    engine.certify(imu_raw=window, segment="forearm")
+
+# Get session quality report
+report = engine.session_report(session_id="take_001", segment="forearm")
+
+print(report["verdict"])          # "EXCELLENT — ready for robot training."
+print(report["pass_rate"])        # 0.94
+print(report["tier_counts"])      # {"GOLD": 12, "SILVER": 82, ...}
+for rec in report["recommendations"]:
+    print(f"  • {rec}")           # actionable fix suggestions
+# Problem segments to re-record:
+for seg in report["problem_segments"]:
+    print(f"  Re-record: {seg['start_s']:.1f}s-{seg['end_s']:.1f}s ({seg['tier']})")
+```
 
 ---
 
