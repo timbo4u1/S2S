@@ -1,0 +1,293 @@
+{
+  "dataset": "NYU Robot Object Turning",
+  "s2s_version": "v1.7.1",
+  "hz": 10.0,
+  "total_episodes": 14,
+  "tier_counts": {
+    "SILVER": 14
+  },
+  "results": [
+    {
+      "episode": 0,
+      "instruction": "erase the board",
+      "steps": 40,
+      "tier": "SILVER",
+      "score": 66,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 1,
+      "instruction": "pour the almonds into the cup",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 2,
+      "instruction": "hang the bag on the hook",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 3,
+      "instruction": "open the box",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 4,
+      "instruction": "hang the mug on the hook",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 5,
+      "instruction": "reach the blue mark on the table",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 6,
+      "instruction": "hang the hanger on the rod",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 7,
+      "instruction": "press the button",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 450.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 8,
+      "instruction": "close the door",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 9,
+      "instruction": "insert the peg in the cup",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 10,
+      "instruction": "insert the peg in the cup",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 11,
+      "instruction": "turn the knob",
+      "steps": 40,
+      "tier": "SILVER",
+      "score": 66,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 300.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)",
+        "IMU Internal Consistency (accel-gyro variance)"
+      ]
+    },
+    {
+      "episode": 12,
+      "instruction": "insert the peg in the cup",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 250.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    },
+    {
+      "episode": 13,
+      "instruction": "stack the cups",
+      "steps": 30,
+      "tier": "SILVER",
+      "score": 67,
+      "laws_passed": [
+        "inter_window_continuity",
+        "resonance_frequency",
+        "rigid_body_kinematics",
+        "jerk_bounds",
+        "imu_internal_consistency"
+      ],
+      "laws_failed": [],
+      "max_jerk_ms3": 500.0,
+      "verdict": "SILVER \u2014 Good data quality. Minor physics anomalies present.",
+      "issues": [
+        "Rigid Body Kinematics (accel-gyro coupling)"
+      ]
+    }
+  ]
+}
