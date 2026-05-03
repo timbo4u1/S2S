@@ -77,6 +77,21 @@ Laws run on IMU-only data (no gyro hardware):
 
 With full sensor stack (IMU + EMG + PPG + gyro): all 8 laws run.
 
+## Platform Support
+
+S2S runs on any platform Python supports:
+
+| Platform | Status | Notes |
+|---|---|---|
+| Linux (Ubuntu/Debian) | ✅ Tested | Primary platform, Docker/Alpine supported |
+| macOS | ✅ Tested | Intel and Apple Silicon |
+| Windows | ✅ Compatible | Pure Python core, no native dependencies |
+| Raspberry Pi | ✅ Tested | Zero-dependency core runs on 1GB RAM |
+| Alpine Linux (Docker) | ✅ Tested | Minimal container deployment |
+
+Core physics laws require zero dependencies.
+NumPy is optional (automatic fast-path when available).
+
 ## Install
 
 ```bash
