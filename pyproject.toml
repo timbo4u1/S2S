@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "s2s-certify"
-version = "1.7.1"
+version = "1.7.2"
 description = "Physics-certified motion data toolkit for Physical AI training"
 readme = "README.md"
 license = { file = "LICENSE" }
