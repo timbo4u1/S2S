@@ -1335,9 +1335,18 @@ class PhysicsEngine:
         # Hurst floor — primary biological origin detector
         # Human motor control: H > 0.7 (persistent, long-range correlation)
         # Synthetic/robotic: H < 0.55 (periodic or random, no biological structure)
+        # Sample Entropy — secondary biological detector (Richman & Moorman 2000)
+        se_val = sample_entropy(rms_vals[:100] if len(rms_vals) > 100 else rms_vals)
+        SE_MIN, SE_MAX = 0.35, 0.95
+        se_biological = SE_MIN <= se_val <= SE_MAX
+
+        # Combined: Hurst = primary, SampEn = secondary
         if hurst < 0.7:
             biological_grade = "NOT_BIOLOGICAL"
             recommendation = "REJECT"
+        elif not se_biological:
+            biological_grade = "LOW_BIOLOGICAL_FIDELITY"
+            recommendation = "REVIEW"
         elif bfs >= floor_threshold:
             biological_grade = "HUMAN"
             recommendation = "ACCEPT"
@@ -1360,6 +1369,8 @@ class PhysicsEngine:
             "kurtosis_raw": round(kurt, 4),
             "kurtosis_norm": round(kurt_norm, 4),
             "hurst": round(hurst, 4),
+            "sample_entropy": round(se_val, 4),
+            "sample_entropy_biological": se_biological,
             "n_windows": n,
             "mean_jerk_rms_normalized": round(mu, 4),
         }
@@ -1727,4 +1738,102 @@ def audit_report(cert_result: Dict) -> Dict:
             'spectral_entropy': wavelet.get('spectral_entropy', 0),
             'synthetic_flag':  wavelet.get('synthetic_flag', False),
         } if wavelet else {},
+    }
+
+
+# ---------------------------------------------------------------------------
+# Sample Entropy — biological signal complexity detector
+# Richman & Moorman, Am J Physiol Heart Circ Physiol 2000
+# ---------------------------------------------------------------------------
+def sample_entropy(data: List[float], m: int = 2,
+                   r_factor: float = 0.2) -> float:
+    """
+    Sample Entropy (SampEn) — free biomedical complexity measure.
+
+    Human motion biological range: 0.35 - 0.95
+    Pure sine (robot/synthetic): <0.30
+    Gaussian noise: >1.5
+
+    Reference: Richman & Moorman (2000), Am J Physiol.
+    License: Public domain algorithm, no patent.
+
+    Args:
+        data: 1D time series (accel magnitude or single axis)
+        m: template length (default 2 — standard biomedical)
+        r_factor: tolerance as fraction of std (default 0.2)
+
+    Returns:
+        SampEn value. Human range: 0.35-0.95
+    """
+    n = len(data)
+    if n < 10:
+        return 0.0
+    mu = sum(data) / n
+    std = (sum((x - mu) ** 2 for x in data) / n) ** 0.5
+    if std == 0:
+        return 0.0
+    r = r_factor * std
+
+    def _count(template_len: int) -> int:
+        count = 0
+        for i in range(n - template_len):
+            for j in range(i + 1, n - template_len):
+                if all(abs(data[i + k] - data[j + k]) < r
+                       for k in range(template_len)):
+                    count += 1
+        return count
+
+    A = _count(m + 1)
+    B = _count(m)
+    if B == 0:
+        return 0.0
+    return -math.log(A / B) if A > 0 else 2.5
+
+
+def check_sample_entropy(accel: List[List[float]],
+                          hz: float = 100.0) -> Tuple[bool, float, Dict]:
+    """
+    Check biological signal complexity using Sample Entropy.
+
+    Human forearm IMU at any Hz: SampEn 0.35-0.95
+    Robot/synthetic motion: SampEn outside this range
+
+    Returns:
+        (passed, confidence, details)
+    """
+    if len(accel) < 20:
+        return True, 50, {"skip": True, "reason": "insufficient_data"}
+
+    # Use acceleration magnitude
+    mag = []
+    for a in accel[:100]:  # max 100 samples for speed
+        mag.append((a[0]**2 + a[1]**2 + a[2]**2) ** 0.5)
+
+    se = sample_entropy(mag)
+
+    HUMAN_MIN = 0.35
+    HUMAN_MAX = 0.95
+
+    passed = HUMAN_MIN <= se <= HUMAN_MAX
+    
+    # Confidence based on distance from boundaries
+    if passed:
+        margin = min(se - HUMAN_MIN, HUMAN_MAX - se)
+        conf = min(90, int(50 + margin * 100))
+    else:
+        distance = max(HUMAN_MIN - se, se - HUMAN_MAX)
+        conf = max(10, int(50 - distance * 50))
+
+    signal_type = (
+        "biological" if passed else
+        "mechanical_synthetic" if se < HUMAN_MIN else
+        "random_noise"
+    )
+
+    return passed, conf, {
+        "sample_entropy": round(se, 4),
+        "human_range": [HUMAN_MIN, HUMAN_MAX],
+        "signal_type": signal_type,
+        "violation": f"SampEn={se:.3f} outside human range [{HUMAN_MIN},{HUMAN_MAX}]"
+                     if not passed else None,
     }
