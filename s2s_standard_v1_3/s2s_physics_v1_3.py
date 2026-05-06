@@ -319,13 +319,29 @@ def _wavelet_temporal_check(accel_list, sample_rate: float) -> dict:
         -np.sum(fft_norm * np.log(fft_norm + 1e-10)) / np.log(len(fft_norm) + 1)
     )
 
-    # 2D classification: CV + Entropy
+    # 3D classification: CV + Entropy + Autocorrelation
     # Validated on 30 NinaPro DB5 files:
-    #   Real human: cv=0.18-1.55, entropy=0.83-0.94
-    #   Gaussian:   cv=0.17,      entropy=0.97
-    #   Pure sine:  cv=0.007,     entropy=0.27
+    #   Real human: cv=0.18-1.55, entropy=0.83-0.94, acf1=0.85-0.99
+    #   Gaussian:   cv=0.17,      entropy=0.97,       acf1≈0.00
+    #   Pure sine:  cv=0.007,     entropy=0.27,       acf1=0.99
+    #
+    # ACF lag-1: autocorrelation at lag 1 — free, public domain math
+    # Gaussian noise has near-zero ACF[1] (no temporal structure)
+    # Human motion always has high ACF[1] (persistent biomechanical structure)
+    _mag_acf = mag_full
+    _n_acf = len(_mag_acf)
+    _mu_acf = float(np.mean(_mag_acf))
+    _den_acf = float(np.sum((_mag_acf - _mu_acf) ** 2))
+    if _den_acf > 0 and _n_acf > 2:
+        _acf1 = float(np.sum((_mag_acf[:-1] - _mu_acf) * (_mag_acf[1:] - _mu_acf)) / _den_acf)
+    else:
+        _acf1 = 1.0  # default safe — don't flag if can't compute
+
     is_mechanical   = bool(cv < 0.05 or spectral_entropy < 0.50)   # too perfect
-    is_random_noise = bool(spectral_entropy > 0.97 and cv < 0.25)  # 0.97 covers low-Hz datasets  # too random
+    is_random_noise = bool(
+        (spectral_entropy > 0.97 and cv < 0.25) or  # entropy-based detection
+        (_acf1 < 0.30 and cv < 0.30)                # ACF-based: Gaussian has no temporal structure
+    )
     synthetic_flag  = bool(is_mechanical or is_random_noise)
 
     if is_mechanical:
@@ -528,11 +544,16 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
     if in_range:
         d["result"] = f"RESONANCE_CONFIRMED ({peak_f:.1f}Hz matches {segment} ω=√(K/I))"
         conf = min(100, int(60 + peak_e * 400))
-        # Reduce confidence if wavelet says energy pattern is too uniform
         if wavelet.get("synthetic_flag"):
-            conf = max(30, conf - 20)
-            d["result"] += " (WAVELET:UNIFORM_ENERGY)"
-        passed = True
+            # Wavelet 3D firewall (CV + Entropy + ACF) detected synthetic signal
+            # Fail the law — synthetic data should not pass physics certification
+            sig_type = wavelet.get("signal_type", "synthetic")
+            d["violation"] = f"WAVELET_SYNTHETIC: {sig_type} detected by 3D firewall"
+            d["result"] += f" (REJECTED: {sig_type})"
+            conf = max(20, conf - 40)
+            passed = False
+        else:
+            passed = True
     else:
         dev = min(abs(peak_f - f_lo), abs(peak_f - f_hi))
         if 3.0 <= peak_f < f_lo:
