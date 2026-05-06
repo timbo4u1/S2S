@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
-def test_2d_firewall():
+def test_3d_firewall():
     engine = PhysicsEngine()
     ts = [int(i*1e9/100) for i in range(500)]
     gyro = [[0.0,0.0,0.0]]*500
@@ -30,5 +30,5 @@ def test_2d_firewall():
     assert w_sine['signal_type'] == "mechanical_synthetic"
 
 if __name__ == "__main__":
-    test_2d_firewall()
+    test_3d_firewall()
     print("Test passed!")
