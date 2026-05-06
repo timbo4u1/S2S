@@ -1134,6 +1134,7 @@ class PhysicsEngine:
             if _jrms is not None:
                 self._session_jerk_rms.append(_jrms)
             results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
+
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
         if emg_cert and thermal_cert:
