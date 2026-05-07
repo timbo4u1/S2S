@@ -2,11 +2,11 @@
   "version": "1.0",
   "summary": {
     "total": 36,
-    "passed": 31,
-    "pass_rate": 0.861,
+    "passed": 32,
+    "pass_rate": 0.889,
     "by_category": {
       "real_human": {
-        "pass": 20,
+        "pass": 21,
         "total": 21
       },
       "corrupted_spikes": {
@@ -34,7 +34,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 67,
+      "score": 73,
       "pass": true
     },
     {
@@ -46,8 +46,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 72,
+      "tier": "GOLD",
+      "score": 77,
       "pass": true
     },
     {
@@ -60,7 +60,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 72,
+      "score": 73,
       "pass": true
     },
     {
@@ -72,7 +72,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 48,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -86,7 +86,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 58,
+      "score": 65,
       "pass": true
     },
     {
@@ -99,7 +99,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 61,
+      "score": 68,
       "pass": true
     },
     {
@@ -111,8 +111,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "SILVER",
-      "score": 72,
+      "tier": "GOLD",
+      "score": 76,
       "pass": true
     },
     {
@@ -124,7 +124,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 48,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -137,8 +137,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 52,
+      "tier": "SILVER",
+      "score": 58,
       "pass": true
     },
     {
@@ -151,7 +151,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 55,
+      "score": 60,
       "pass": true
     },
     {
@@ -163,8 +163,8 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 53,
+      "tier": "SILVER",
+      "score": 60,
       "pass": true
     },
     {
@@ -176,7 +176,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 48,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -189,7 +189,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 82,
+      "score": 83,
       "pass": true
     },
     {
@@ -201,7 +201,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 84,
+      "score": 83,
       "pass": true
     },
     {
@@ -213,7 +213,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 83,
+      "score": 80,
       "pass": true
     },
     {
@@ -237,7 +237,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 80,
+      "score": 81,
       "pass": true
     },
     {
@@ -249,7 +249,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 75,
+      "score": 78,
       "pass": true
     },
     {
@@ -261,9 +261,9 @@
         "SILVER",
         "BRONZE"
       ],
-      "tier": "REJECTED",
-      "score": 39,
-      "pass": false
+      "tier": "BRONZE",
+      "score": 50,
+      "pass": true
     },
     {
       "id": "wesad_real_0_1",
@@ -275,7 +275,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 64,
+      "score": 71,
       "pass": true
     },
     {
@@ -288,7 +288,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 61,
+      "score": 69,
       "pass": true
     },
     {
@@ -301,7 +301,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 48,
+      "score": 52,
       "pass": true
     },
     {
@@ -314,7 +314,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 61,
+      "score": 68,
       "pass": true
     },
     {
@@ -327,7 +327,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 61,
+      "score": 68,
       "pass": true
     },
     {
@@ -350,7 +350,7 @@
         "REJECTED"
       ],
       "tier": "SILVER",
-      "score": 61,
+      "score": 56,
       "pass": false,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -362,7 +362,7 @@
         "REJECTED"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 51,
       "pass": false,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -424,8 +424,8 @@
         "REJECTED",
         "BRONZE"
       ],
-      "tier": "REJECTED",
-      "score": 46,
+      "tier": "BRONZE",
+      "score": 51,
       "pass": true,
       "note": "5x amplitude scaling \u2014 superhuman acceleration"
     },
@@ -439,7 +439,7 @@
         "SILVER"
       ],
       "tier": "SILVER",
-      "score": 67,
+      "score": 70,
       "pass": true,
       "note": "Sensor clipping at 16g \u2014 IMU hardware limit exceeded"
     },
@@ -453,7 +453,7 @@
         "SILVER"
       ],
       "tier": "SILVER",
-      "score": 63,
+      "score": 67,
       "pass": true,
       "note": "Frozen samples (packet drop) \u2014 100 identical values"
     },
@@ -480,7 +480,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 48,
       "pass": true,
       "note": "Motor stall oscillation at 150Hz \u2014 mechanical vibration"
     }

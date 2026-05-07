@@ -36,7 +36,10 @@ def test_human_motion_passes():
 
 def test_ninapro_passes():
     """Real NinaPro forearm IMU should pass cross-axis cohesion."""
-    import scipy.io as sio
+    try:
+        import scipy.io as sio
+    except ImportError:
+        return  # skip if scipy not available (CI)
     from s2s_standard_v1_3.s2s_physics_v1_3 import check_cross_axis_cohesion
     mats = sorted(glob.glob('/Users/timbo/ninapro_db5/s1/S1_E1_A1.mat'))
     if not mats:
