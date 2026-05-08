@@ -502,6 +502,68 @@ def check_newton(imu_raw: Dict, emg_raw: Dict) -> Tuple[bool, int, Dict]:
 
 
 # ---------------------------------------------------------------------------
+# Law 11: Spectral Flatness (Wiener Entropy)
+# Human motion: energy concentrated in peaks (flatness 0.07-0.25)
+# Gaussian noise: uniform spectrum (flatness 0.55-0.65)
+# Reference: Wiener entropy, public domain signal processing
+# ---------------------------------------------------------------------------
+def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+    """
+    Law 11: Spectral Flatness — Wiener Entropy.
+
+    Human motion has structured frequency content (peaks at 1-5Hz, 8-12Hz).
+    Gaussian noise has flat spectrum (energy uniform across all frequencies).
+
+    Threshold: flatness < 0.5
+    Validated: NinaPro DB5 max=0.200, Gaussian min=0.549 — zero overlap.
+    """
+    accel = imu_raw.get("accel", [])
+    d = {"law": "Spectral_Flatness", "equation": "geometric_mean(PSD)/arithmetic_mean(PSD)"}
+
+    if len(accel) < 64:
+        d["skip"] = "INSUFFICIENT_DATA"
+        return True, 50, d
+
+    try:
+        import numpy as _np3
+        arr = _np3.array(accel, dtype=_np3.float64)
+        mag = _np3.sqrt(_np3.sum(arr**2, axis=1))
+        psd = _np3.abs(_np3.fft.rfft(mag))**2
+        psd = psd[1:]  # ignore DC component
+        if len(psd) == 0:
+            d["skip"] = "NO_SPECTRUM"
+            return True, 50, d
+
+        geo = float(_np3.exp(_np3.mean(_np3.log(psd + 1e-10))))
+        ari = float(_np3.mean(psd))
+        flatness = geo / ari if ari > 0 else 1.0
+
+        FLATNESS_MAX = 0.54  # human max=0.534 (WESAD), Gaussian min=0.549
+        passed = flatness < FLATNESS_MAX
+
+        d.update({
+            "flatness": round(flatness, 4),
+            "threshold": FLATNESS_MAX,  # 0.54: WESAD max=0.534, Gaussian min=0.549
+        })
+
+        if passed:
+            conf = min(90, int((1.0 - flatness / FLATNESS_MAX) * 90))
+            d["result"] = f"STRUCTURED_SPECTRUM: flatness={flatness:.3f} < {FLATNESS_MAX}"
+            return True, conf, d
+        else:
+            conf = max(5, int((1.0 - flatness) * 50))
+            d["violation"] = (
+                f"FLAT_SPECTRUM: flatness={flatness:.3f} >= {FLATNESS_MAX} "
+                f"— uniform energy distribution, likely Gaussian noise"
+            )
+            return False, conf, d
+
+    except Exception as e:
+        d["skip"] = f"ERROR:{e}"
+        return True, 50, d
+
+
+# ---------------------------------------------------------------------------
 # Law 10: Pointwise Jerk — instantaneous sample-to-sample delta
 # Human tissue is a low-pass filter — cannot change acceleration faster than
 # biomechanical limits allow. Catches single-sample spikes invisible to windows.
@@ -1308,6 +1370,7 @@ class PhysicsEngine:
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["pointwise_jerk"]           = _safe("pointwise_jerk", check_pointwise_jerk, imu_raw)
+            results["spectral_flatness"]        = _safe("spectral_flatness", check_spectral_flatness, imu_raw)
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)

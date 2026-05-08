@@ -2,8 +2,8 @@
   "version": "1.0",
   "summary": {
     "total": 36,
-    "passed": 32,
-    "pass_rate": 0.889,
+    "passed": 35,
+    "pass_rate": 0.972,
     "by_category": {
       "real_human": {
         "pass": 21,
@@ -14,7 +14,7 @@
         "total": 3
       },
       "pure_synthetic": {
-        "pass": 1,
+        "pass": 4,
         "total": 5
       },
       "hard_negatives": {
@@ -47,7 +47,7 @@
         "BRONZE"
       ],
       "tier": "GOLD",
-      "score": 77,
+      "score": 75,
       "pass": true
     },
     {
@@ -60,7 +60,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 73,
+      "score": 72,
       "pass": true
     },
     {
@@ -71,8 +71,8 @@
         "REJECTED",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 48,
+      "tier": "REJECTED",
+      "score": 45,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -86,7 +86,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 65,
+      "score": 64,
       "pass": true
     },
     {
@@ -123,8 +123,8 @@
         "REJECTED",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 48,
+      "tier": "REJECTED",
+      "score": 45,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -164,7 +164,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 60,
+      "score": 59,
       "pass": true
     },
     {
@@ -175,8 +175,8 @@
         "REJECTED",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 48,
+      "tier": "REJECTED",
+      "score": 45,
       "pass": true,
       "note": "spike injection at 2000Hz \u2014 spikes average out over window"
     },
@@ -189,7 +189,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 83,
+      "score": 76,
       "pass": true
     },
     {
@@ -201,7 +201,7 @@
         "SILVER"
       ],
       "tier": "GOLD",
-      "score": 83,
+      "score": 76,
       "pass": true
     },
     {
@@ -212,8 +212,8 @@
         "GOLD",
         "SILVER"
       ],
-      "tier": "GOLD",
-      "score": 80,
+      "tier": "SILVER",
+      "score": 72,
       "pass": true
     },
     {
@@ -224,8 +224,8 @@
         "GOLD",
         "SILVER"
       ],
-      "tier": "GOLD",
-      "score": 82,
+      "tier": "SILVER",
+      "score": 73,
       "pass": true
     },
     {
@@ -236,8 +236,8 @@
         "GOLD",
         "SILVER"
       ],
-      "tier": "GOLD",
-      "score": 81,
+      "tier": "SILVER",
+      "score": 74,
       "pass": true
     },
     {
@@ -248,8 +248,8 @@
         "GOLD",
         "SILVER"
       ],
-      "tier": "GOLD",
-      "score": 78,
+      "tier": "SILVER",
+      "score": 71,
       "pass": true
     },
     {
@@ -262,7 +262,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 50,
+      "score": 44,
       "pass": true
     },
     {
@@ -275,7 +275,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 71,
+      "score": 72,
       "pass": true
     },
     {
@@ -288,7 +288,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 69,
+      "score": 70,
       "pass": true
     },
     {
@@ -301,7 +301,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 48,
       "pass": true
     },
     {
@@ -314,7 +314,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 68,
+      "score": 70,
       "pass": true
     },
     {
@@ -327,7 +327,7 @@
         "BRONZE"
       ],
       "tier": "SILVER",
-      "score": 68,
+      "score": 70,
       "pass": true
     },
     {
@@ -338,7 +338,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 48,
+      "score": 44,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -349,8 +349,8 @@
       "expected": [
         "REJECTED"
       ],
-      "tier": "SILVER",
-      "score": 56,
+      "tier": "BRONZE",
+      "score": 50,
       "pass": false,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -361,9 +361,9 @@
       "expected": [
         "REJECTED"
       ],
-      "tier": "BRONZE",
-      "score": 51,
-      "pass": false,
+      "tier": "REJECTED",
+      "score": 47,
+      "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
@@ -373,9 +373,9 @@
       "expected": [
         "REJECTED"
       ],
-      "tier": "BRONZE",
-      "score": 49,
-      "pass": false,
+      "tier": "REJECTED",
+      "score": 46,
+      "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
@@ -385,9 +385,9 @@
       "expected": [
         "REJECTED"
       ],
-      "tier": "BRONZE",
-      "score": 49,
-      "pass": false,
+      "tier": "REJECTED",
+      "score": 45,
+      "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
     {
@@ -399,7 +399,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 43,
       "pass": true,
       "note": "Accel time-shifted 50 samples vs gyro"
     },
@@ -412,7 +412,7 @@
         "BRONZE"
       ],
       "tier": "BRONZE",
-      "score": 52,
+      "score": 47,
       "pass": true,
       "note": "Accel axes permuted x\u2192y\u2192z\u2192x"
     },
@@ -424,8 +424,8 @@
         "REJECTED",
         "BRONZE"
       ],
-      "tier": "BRONZE",
-      "score": 51,
+      "tier": "REJECTED",
+      "score": 47,
       "pass": true,
       "note": "5x amplitude scaling \u2014 superhuman acceleration"
     },
@@ -439,7 +439,7 @@
         "SILVER"
       ],
       "tier": "SILVER",
-      "score": 70,
+      "score": 67,
       "pass": true,
       "note": "Sensor clipping at 16g \u2014 IMU hardware limit exceeded"
     },
@@ -453,7 +453,7 @@
         "SILVER"
       ],
       "tier": "SILVER",
-      "score": 67,
+      "score": 59,
       "pass": true,
       "note": "Frozen samples (packet drop) \u2014 100 identical values"
     },
@@ -466,8 +466,8 @@
         "BRONZE",
         "SILVER"
       ],
-      "tier": "SILVER",
-      "score": 59,
+      "tier": "REJECTED",
+      "score": 54,
       "pass": true,
       "note": "60Hz power line noise \u2014 EM interference"
     },
@@ -480,7 +480,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 48,
+      "score": 44,
       "pass": true,
       "note": "Motor stall oscillation at 150Hz \u2014 mechanical vibration"
     }
