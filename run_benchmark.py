@@ -489,8 +489,9 @@ def main():
   Known limitations:
   - corrupted_spikes: spike injection at 2000Hz averages out over the
     256-sample window. Low-frequency corruption (50Hz) is caught reliably.
-  - pure_synthetic: Gaussian noise at σ=8 m/s² can satisfy individual
-    physics laws by chance. Zero-jitter timestamps are the primary detector.
+  - pure_synthetic: iid Gaussian noise caught by dual coherence check
+    (spatial+temporal independence). Correlated noise (OU process) is a
+    known gap — it bypasses temporal_autocorrelation via high per-axis ACF.
   - WESAD/NinaPro (no gyro): only 3 of 7 laws run (jerk, resonance, BCG).
     Rigid body kinematics and IMU consistency skip with score=50 (neutral).
     SILVER on these datasets means 3/7 laws passed, not 7/7.

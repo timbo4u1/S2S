@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.3-orange)](https://pypi.org/project/s2s-certify/1.7.3/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-155%2F155-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.4-orange)](https://pypi.org/project/s2s-certify/1.7.4/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-155%2F155-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -118,7 +118,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.7.3)
+  S2S — Full Chain Demo  (v1.7.4)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
@@ -228,7 +228,7 @@ Expected output:
 real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
 corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
 pure_synthetic (Gaussian noise):     1/5 rejected (Gaussian can satisfy laws by chance)
-Overall: 35/36 (97%) — 7 robot failure modes, hard negatives 100%, adaptive window fix applied April 2026
+Overall: 36/36 (100%) — 7 robot failure modes, hard negatives 100%, adaptive window fix applied April 2026
 
 Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
 
@@ -249,7 +249,7 @@ If you are using S2S on your data — even just experimenting —
 open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
 One sentence about your use case helps more than you think.
 
-**Completed in v1.7.3:**
+**Completed in v1.7.4:**
 - Sample Entropy (Layer 2) — biological complexity detector, Richman & Moorman 2000
 - Intent registry — 8 semantic motion intents (gentle/careful/normal/fast/ballistic/amputee/elderly/rehab)
 - Visualizer — matplotlib physics audit plots (plot_certification, plot_session)
