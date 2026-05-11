@@ -225,10 +225,10 @@ python3.9 run_benchmark.py
 Expected output:
 
 ```
-real_human (NinaPro/PAMAP2/WESAD): 20/21 certified (95%)
+real_human (NinaPro/PAMAP2/WESAD): 21/21 certified (100%)
 corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
-pure_synthetic (Gaussian noise):     1/5 rejected (Gaussian can satisfy laws by chance)
-Overall: 36/36 (100%) — 7 robot failure modes, hard negatives 100%, adaptive window fix applied April 2026
+pure_synthetic (Gaussian noise):     5/5 rejected — 12-law dual coherence firewall
+Overall: 36/36 (100%) — first clean sweep, v1.7.4
 
 Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
 
