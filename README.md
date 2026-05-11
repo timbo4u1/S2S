@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.4-orange)](https://pypi.org/project/s2s-certify/1.7.4/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-155%2F155-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.4-orange)](https://pypi.org/project/s2s-certify/1.7.4/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-163%2F163-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -32,7 +32,7 @@ Most motion datasets contain bad data — corrupted recordings, synthetic signal
 
 S2S asks: does this data *obey the physics of human movement?* A perfect statistical fake fails if it violates Newton's Second Law, segment resonance, or rigid body kinematics.
 
-S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 8-law certification before becoming training data.
+S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 12-law certification before becoming training data.
 
 For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (8 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), rejection of fake or corrupted windows, and 2D wavelet-based synthetic data detection.
 
@@ -275,7 +275,7 @@ One sentence about your use case helps more than you think.
 ## Architecture
 
 ```
-Layer 1  Physics Certification    8 biomechanical laws, GOLD/SILVER/BRONZE/REJECTED
+Layer 1  Physics Certification    12 biomechanical laws, GOLD/SILVER/BRONZE/REJECTED
 Layer 2  Biological Origin        Hurst H≥0.70 + Sample Entropy 0.35-0.95, HUMAN/NOT_BIOLOGICAL
 Layer 3  Motion Retrieval         text → certified motion, 11,246 windows, 6 datasets
 Layer 4a Next Action Prediction   Transformer, mean r=0.929, 21,896 training pairs
@@ -300,6 +300,10 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Motor Control Jerk | d³x/dt³ ≤ 500 m/s³ | IMU | Human motion limit (Flash & Hogan 1985) |
 | IMU Internal Consistency | Var(accel) ~ Var(gyro) | IMU + gyro | Independent generators produce zero coupling |
 | Inter-window Continuity | \|Δaccel\| ≤ V_max/dt | IMU | Catches timestamp regression and session splices between windows |
+| Cross-Axis Cohesion | max(r_xy,r_yz,r_xz) > 0.115 | IMU | Gaussian noise has independent axes — no biomechanical coupling |
+| Pointwise Jerk | \|a_i − a_{i−1}\| / dt ≤ 10000 m/s³ | IMU | Sub-millisecond spikes impossible for human tissue |
+| Spectral Flatness | geo_mean(PSD) / arith_mean(PSD) < 0.54 | IMU | Gaussian noise has uniform spectrum — human motion has peaks |
+| Temporal Autocorrelation | ACF[lag=1] > 0.20 | IMU | No temporal coherence = iid noise, not biological motor control |
 
 Missing sensors are skipped — they do not penalise the score.
 
@@ -321,7 +325,7 @@ Missing sensors are skipped — they do not penalise the score.
 | GOLD | score ≥ 75 AND passed ≥ n_laws − 1 |
 | SILVER | score ≥ 55 |
 | BRONZE | score ≥ 35 |
-| REJECTED | >30% laws failed OR score < 35 |
+| REJECTED | >30% laws failed OR score < 35 OR dual coherence failure (no spatial+temporal structure) |
 
 ---
 
