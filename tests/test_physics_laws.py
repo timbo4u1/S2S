@@ -342,7 +342,8 @@ class TestFullPipeline:
         """Missing gyro field should either raise ValueError or return REJECTED."""
         bad_input = {
             "timestamps_ns": [i * 10_000_000 for i in range(100)],
-            "accel": [[0.1, 0.2, 9.81]] * 100,
+            "accel": [[0.1 + i*0.001, 0.2 - i*0.0005, 9.81 + i*0.0001]
+                      for i in range(100)],  # varying — not frozen
             # gyro intentionally omitted
         }
         try:

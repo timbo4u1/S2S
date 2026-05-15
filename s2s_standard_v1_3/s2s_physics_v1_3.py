@@ -1362,6 +1362,67 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
 
 # ---------------------------------------------------------------------------
+# Law 13: Sensor Freeze Detection — I2C hang / firmware deadlock
+# Real ADC always has noise floor ≥ 0.001 m/s² — identical consecutive values
+# = hardware fault (bus hang, firmware bug, data copy error)
+# Reference: ADC physics — public domain electronics
+# ---------------------------------------------------------------------------
+def check_sensor_freeze(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+    """
+    Law 13: Sensor Freeze / Deadlock Detection.
+
+    A real MEMS IMU always generates ADC noise ≥ 0.001 m/s².
+    More than 10 consecutive identical samples = sensor deadlock.
+
+    Catches: I2C bus hang, firmware crash, stuck DMA buffer, data copy errors.
+    Threshold: max_run ≤ 10 consecutive identical samples.
+    """
+    accel = imu_raw.get("accel", [])
+    d = {"law": "Sensor_Freeze",
+         "equation": "max_consecutive_identical ≤ 10",
+         "physics": "MEMS ADC noise floor ≥ 0.001 m/s² — zero variance = hardware fault"}
+
+    if len(accel) < 20:
+        d["skip"] = "INSUFFICIENT_DATA"
+        return True, 50, d
+
+    MAX_RUN = 10
+
+    max_run_seen = 0
+    frozen_axis = None
+
+    for ax in range(min(3, len(accel[0]))):
+        vals = [accel[i][ax] for i in range(len(accel))]
+        run = 1
+        for i in range(1, len(vals)):
+            if abs(vals[i] - vals[i - 1]) < 1e-6:
+                run += 1
+                if run > max_run_seen:
+                    max_run_seen = run
+                    frozen_axis = ax
+            else:
+                run = 1
+
+    d.update({
+        "max_consecutive_identical": max_run_seen,
+        "threshold": MAX_RUN,
+        "frozen_axis": frozen_axis,
+    })
+
+    if max_run_seen > MAX_RUN:
+        conf = max(5, int(50 - max_run_seen * 3))
+        d["violation"] = (
+            f"SENSOR_FROZEN: {max_run_seen} consecutive identical "
+            f"samples on axis {frozen_axis} — I2C hang or firmware deadlock"
+        )
+        return False, conf, d
+    else:
+        conf = min(90, int(70 + (MAX_RUN - max_run_seen) * 2))
+        d["result"] = f"SENSOR_LIVE: max_run={max_run_seen} ≤ {MAX_RUN}"
+        return True, conf, d
+
+
+# ---------------------------------------------------------------------------
 # PhysicsEngine
 # ---------------------------------------------------------------------------
 class PhysicsEngine:
@@ -1445,9 +1506,15 @@ class PhysicsEngine:
                 self._session_jerk_rms.append(_jrms)
             results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["pointwise_jerk"]           = _safe("pointwise_jerk", check_pointwise_jerk, imu_raw)
             results["spectral_flatness"]        = _safe("spectral_flatness", check_spectral_flatness, imu_raw)
             results["temporal_autocorrelation"] = _safe("autocorrelation", check_autocorrelation, imu_raw)
+            results["sensor_freeze"]            = _safe("sensor_freeze", check_sensor_freeze, imu_raw)
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
@@ -1476,6 +1543,7 @@ class PhysicsEngine:
         elif "temporal_autocorrelation" in failed and any(
                 law in failed for law in ["cross_axis_cohesion", "imu_internal_consistency"]):
             tier = "REJECTED"  # coherence failure: no temporal structure + no sensor coupling = synthetic
+
         elif score >= 75 and np_ >= max(n - 1, 1):
             tier = "GOLD"
         elif score >= 55:

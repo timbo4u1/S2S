@@ -1,0 +1,72 @@
+[
+  {
+    "subject": "s1",
+    "total": 520,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s10",
+    "total": 598,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s2",
+    "total": 592,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s3",
+    "total": 524,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s4",
+    "total": 605,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s5",
+    "total": 593,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s6",
+    "total": 606,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s7",
+    "total": 603,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s8",
+    "total": 590,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  },
+  {
+    "subject": "s9",
+    "total": 591,
+    "rejected": 0,
+    "reject_pct": 0.0,
+    "failure_modes": {}
+  }
+]
