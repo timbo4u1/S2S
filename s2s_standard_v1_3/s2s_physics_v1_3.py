@@ -1431,6 +1431,68 @@ def check_sensor_freeze(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         return True, conf, d
 
 
+
+def check_powerline_interference(imu_raw):
+    """Law 14: Detect 50/60Hz powerline via narrow-band FFT spike > 8x local mean."""
+    d = {"law": "powerline_interference", "result": "", "conf": 0}
+    accel = imu_raw.get("accel", [])
+    ts    = imu_raw.get("timestamps_ns", [])
+    if len(accel) < 64 or len(ts) < 2:
+        d["skip"] = "INSUFFICIENT_DATA"; return True, 50, d
+    dt_s = (ts[-1] - ts[0]) / 1e9 / max(len(ts) - 1, 1)
+    hz   = 1.0 / dt_s if dt_s > 0 else 100.0
+    if hz < 125:
+        d["skip"] = "HZ_TOO_LOW"; return True, 50, d
+    if not _NP:
+        d["skip"] = "NUMPY_REQUIRED"; return True, 50, d
+    import numpy as _np2
+    n     = len(accel)
+    freqs = _np2.fft.rfftfreq(n, d=1.0/hz)
+    worst_ratio, worst_freq, worst_ax = 0.0, 0.0, 0
+    for ax in range(min(3, len(accel[0]))):
+        vals = _np2.array([float(accel[i][ax]) for i in range(n)], dtype=float)
+        vals -= vals.mean()
+        mag  = _np2.abs(_np2.fft.rfft(vals))
+        for grid in [50.0, 60.0]:
+            sb = _np2.where(_np2.abs(freqs - grid) <= 1.0)[0]
+            lb = _np2.where((_np2.abs(freqs - grid) > 5) & (_np2.abs(freqs - grid) < 20) & (freqs > 5))[0]
+            if len(sb) == 0 or len(lb) < 3:
+                continue
+            ratio = mag[sb].max() / (mag[lb].mean() + 1e-9)
+            if ratio > worst_ratio:
+                worst_ratio, worst_freq, worst_ax = ratio, grid, ax
+    if worst_ratio > 8.0:
+        d["result"] = "POWERLINE_DETECTED:{}Hz ratio={:.1f}x ax={}".format(int(worst_freq), worst_ratio, worst_ax)
+        d["conf"]   = min(90, int(50 + worst_ratio * 2))
+        return False, d["conf"], d
+    d["result"] = "POWERLINE_CLEAN:max_ratio={:.1f}x".format(worst_ratio)
+    d["conf"]   = 70
+    return True, 70, d
+
+
+
+def check_intra_window_splice(imu_raw):
+    """Law 15: Detect mid-window session splice via sustained level shift between halves."""
+    d = {"law": "intra_window_splice", "result": "", "conf": 0}
+    accel = imu_raw.get("accel", [])
+    if len(accel) < 40:
+        d["skip"] = "INSUFFICIENT_DATA"; return True, 50, d
+    import math
+    n    = len(accel)
+    half = n // 2
+    def mag(row): return math.sqrt(sum(v**2 for v in row[:3]))
+    m1 = sum(mag(accel[i]) for i in range(half)) / half
+    m2 = sum(mag(accel[i]) for i in range(half, n)) / (n - half)
+    diff = abs(m1 - m2)
+    if diff > 8.0:
+        d["result"] = "SPLICE_DETECTED:half1={:.2f} half2={:.2f} diff={:.2f}ms2".format(m1, m2, diff)
+        d["conf"]   = min(90, int(40 + diff * 10))
+        return False, d["conf"], d
+    d["result"] = "SPLICE_CLEAN:diff={:.3f}ms2".format(diff)
+    d["conf"]   = 75
+    return True, 75, d
+
+
 # ---------------------------------------------------------------------------
 # PhysicsEngine
 # ---------------------------------------------------------------------------
@@ -1516,14 +1578,12 @@ class PhysicsEngine:
             results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["pointwise_jerk"]           = _safe("pointwise_jerk", check_pointwise_jerk, imu_raw)
             results["spectral_flatness"]        = _safe("spectral_flatness", check_spectral_flatness, imu_raw)
             results["temporal_autocorrelation"] = _safe("autocorrelation", check_autocorrelation, imu_raw)
             results["sensor_freeze"]            = _safe("sensor_freeze", check_sensor_freeze, imu_raw)
+            results["powerline_interference"] = _safe("powerline_interference", check_powerline_interference, imu_raw)
+            results["intra_window_splice"]    = _safe("intra_window_splice", check_intra_window_splice, imu_raw)
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)

@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.5-orange)](https://pypi.org/project/s2s-certify/1.7.5/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-168%2F168-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.6-orange)](https://pypi.org/project/s2s-certify/1.7.6/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-171%2F171-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -266,6 +266,8 @@ One sentence about your use case helps more than you think.
 **Completed in v1.7.5:**
 - Laws 9–12: Cross-Axis Cohesion, Pointwise Jerk, Spectral Flatness, Temporal Autocorrelation — dual coherence firewall
 - Law 13: Sensor Freeze (state-conditioned soft flag) — rest vs active threshold, 36/36 benchmark maintained
+- Law 14: Powerline Interference — FFT spike detection at 50/60Hz, soft flag
+- Law 15: Intra-Window Splice — sustained half-window level shift > 8 m/s², soft flag
 - Sample Entropy (Layer 2) — biological complexity detector, Richman & Moorman 2000
 - Intent registry — 8 semantic motion intents (gentle/careful/normal/fast/ballistic/amputee/elderly/rehab)
 - Visualizer — matplotlib physics audit plots (plot_certification, plot_session)
@@ -304,7 +306,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 
 ## Layer 1 — Physics Certification
 
-12 biomechanical laws validated at runtime (+ Law 13 sensor-quality flag):
+12 biomechanical laws validated at runtime (+ Laws 13-15 quality flags):
 
 | Law | Equation | Requires | What it catches |
 |---|---|---|---|
