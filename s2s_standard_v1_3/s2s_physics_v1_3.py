@@ -1386,7 +1386,16 @@ def check_sensor_freeze(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         d["skip"] = "INSUFFICIENT_DATA"
         return True, 50, d
 
-    MAX_RUN = 10
+    # State-conditioned: rest (low variance) → lenient, active → strict
+    try:
+        import numpy as _np2
+        arr = _np2.asarray(accel[:min(len(accel),256)], dtype=float)
+        var_mag = float(_np2.var(_np2.sqrt(_np2.sum(arr[:,:3]**2, axis=1))))
+    except Exception:
+        mag = [sum(a[k]**2 for k in range(min(3,len(a))))**0.5 for a in accel[:256]]
+        mu = sum(mag)/len(mag); var_mag = sum((m-mu)**2 for m in mag)/len(mag)
+    is_rest = var_mag < 0.5
+    MAX_RUN = 25 if is_rest else 10
 
     max_run_seen = 0
     frozen_axis = None

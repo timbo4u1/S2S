@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.5-orange)](https://pypi.org/project/s2s-certify/1.7.5/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-163%2F163-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.5-orange)](https://pypi.org/project/s2s-certify/1.7.5/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-168%2F168-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -96,6 +96,20 @@ NumPy is optional (automatic fast-path when available).
 
 ```bash
 pip install s2s-certify
+```
+
+**30-second test — zero extra dependencies:**
+```python
+from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+import random
+engine = PhysicsEngine()
+acc = [[random.gauss(0,2), random.gauss(0,2), 9.81+random.gauss(0,0.3)] for _ in range(256)]
+ts  = [int(i*5e6) for i in range(256)]  # 200 Hz
+r   = engine.certify({"timestamps_ns": ts, "accel": acc, "gyro": [[0,0,0]]*256})
+print(r["tier"], r["score"])  # → GOLD  87
+```
+
+```bash
 pip install "s2s-certify[ml]"        # with PyTorch — enables Layers 4 and 5
 pip install "s2s-certify[dashboard]" # with Streamlit
 ```
@@ -250,6 +264,8 @@ open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email
 One sentence about your use case helps more than you think.
 
 **Completed in v1.7.5:**
+- Laws 9–12: Cross-Axis Cohesion, Pointwise Jerk, Spectral Flatness, Temporal Autocorrelation — dual coherence firewall
+- Law 13: Sensor Freeze (state-conditioned soft flag) — rest vs active threshold, 36/36 benchmark maintained
 - Sample Entropy (Layer 2) — biological complexity detector, Richman & Moorman 2000
 - Intent registry — 8 semantic motion intents (gentle/careful/normal/fast/ballistic/amputee/elderly/rehab)
 - Visualizer — matplotlib physics audit plots (plot_certification, plot_session)
@@ -288,7 +304,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 
 ## Layer 1 — Physics Certification
 
-8 biomechanical laws validated at runtime:
+12 biomechanical laws validated at runtime (+ Law 13 sensor-quality flag):
 
 | Law | Equation | Requires | What it catches |
 |---|---|---|---|
@@ -304,6 +320,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Pointwise Jerk | \|a_i − a_{i−1}\| / dt ≤ 10000 m/s³ | IMU | Sub-millisecond spikes impossible for human tissue |
 | Spectral Flatness | geo_mean(PSD) / arith_mean(PSD) < 0.54 | IMU | Gaussian noise has uniform spectrum — human motion has peaks |
 | Temporal Autocorrelation | ACF[lag=1] > 0.20 | IMU | No temporal coherence = iid noise, not biological motor control |
+| Sensor Freeze (soft) | consecutive identical > 10 (active) / 25 (rest) | IMU | Hardware fault vs legitimate static posture — state-conditioned |
 
 Missing sensors are skipped — they do not penalise the score.
 
