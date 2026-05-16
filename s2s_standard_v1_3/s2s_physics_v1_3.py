@@ -731,6 +731,9 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
     dt = (statistics.mean([ts[i + 1] - ts[i] for i in range(min(len(ts) - 1, 50))]) * 1e-9
           if len(ts) > 1 else 1 / 240)
     sample_rate = 1.0 / dt if dt > 0 else 240.0
+    if sample_rate < 40.0:
+        d["skip"] = "HZ_TOO_LOW:{:.0f}Hz<40_Nyquist_insufficient_for_tremor".format(sample_rate)
+        return True, 30, d
     min_samples = max(64, min(500, int(3.0 / 8.0 * sample_rate)))  # cap at 500 — 2 tremor cycles at any rate
     if len(accel) < min_samples:
         d["skip"] = "INSUFFICIENT_DATA"
@@ -1576,6 +1579,8 @@ class PhysicsEngine:
             if _jrms is not None:
                 self._session_jerk_rms.append(_jrms)
             results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
+            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["pointwise_jerk"]           = _safe("pointwise_jerk", check_pointwise_jerk, imu_raw)

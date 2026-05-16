@@ -19,10 +19,11 @@
 ## Top law failures
 | Law | Count | Explanation |
 |---|---|---|
-| resonance_frequency | 130 (65%) | 32Hz Nyquist=16Hz, tremor 8-12Hz barely resolvable — hardware limit, not data fault |
-| sensor_freeze | 80 (40%) | E4 ADC quantization: small rest movements round to same integer value |
-| spectral_flatness | 37 (18%) | Short windows at low Hz produce noisy PSD estimates |
-| temporal_autocorrelation | 30 (15%) | Low Hz reduces lag-1 correlation reliability |
+| resonance_frequency | 0 (0%) | Hz-gated: skipped at <40Hz — Nyquist insufficient for 8-12Hz tremor detection |
+| sensor_freeze | 80 (40%) | E4 ADC quantization at rest — state-conditioned Law 13 partially mitigates |
+| temporal_autocorrelation | 30 (15%) | 32Hz limits lag-1 correlation reliability |
+| spectral_flatness | 37 (18%) | Low Hz + short window = noisy PSD |
+
 | cross_axis_cohesion | 1 (0.5%) | Near-zero — data is genuine biological |
 
 ## Law 14/15 (new)

@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.6-orange)](https://pypi.org/project/s2s-certify/1.7.6/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-171%2F171-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.7-orange)](https://pypi.org/project/s2s-certify/1.7.7/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-171%2F171-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
