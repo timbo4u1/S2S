@@ -1,0 +1,33 @@
+========================================================
+  S2S BATCH REFINERY REPORT
+  2026-05-18 02:06
+========================================================
+  Input:          /Users/timbo/ninapro_db5
+  Segment:        forearm
+  Windows:        24802
+  Processed in:   80.3s
+
+  DATASET QUALITY SCORE: 99%
+  VERDICT: EXCELLENT — ready for robot training pipelines.
+
+  Tier distribution:
+    GOLD:      3207  (12%)
+    SILVER:   21593  (87%)
+    BRONZE:       2  (0%)
+    REJECTED:     0  (0%)
+    USABLE:   24800  (99%)
+
+  Mean score:     71.0/100
+
+  Top failure modes:
+    sensor_freeze                   4104 (16%)
+    cross_axis_cohesion              834 (3%)
+    resonance_frequency              591 (2%)
+    spectral_flatness                 12 (0%)
+    temporal_autocorrelation           1 (0%)
+
+  Recommendation:
+    Use GOLD+SILVER windows for training (24800/24802).
+    Discard REJECTED windows (0).
+    Review BRONZE windows (2) manually.
+========================================================
