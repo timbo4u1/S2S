@@ -1,0 +1,34 @@
+========================================================
+  S2S BATCH REFINERY REPORT
+  2026-05-18 03:05
+========================================================
+  Input:          /Users/timbo/S2S_data/pamap2
+  Segment:        forearm
+  Windows:        9746
+  Processed in:   37.3s
+
+  DATASET QUALITY SCORE: 77%
+  VERDICT: GOOD — usable with minor preprocessing.
+
+  Tier distribution:
+    GOLD:        20  (0%)
+    SILVER:    7529  (77%)
+    BRONZE:     266  (2%)
+    REJECTED:  1931  (19%)
+    USABLE:    7549  (77%)
+
+  Mean score:     64.8/100
+
+  Top failure modes:
+    temporal_autocorrelation        2821 (28%)
+    spectral_flatness               2586 (26%)
+    cross_axis_cohesion             2046 (20%)
+    resonance_frequency             1082 (11%)
+    pointwise_jerk                   100 (1%)
+    jerk_bounds                        8 (0%)
+
+  Recommendation:
+    Use GOLD+SILVER windows for training (7549/9746).
+    Discard REJECTED windows (1931).
+    Review BRONZE windows (266) manually.
+========================================================

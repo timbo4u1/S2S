@@ -30,25 +30,101 @@ WIN         = 256
 SEGMENT     = "forearm"
 
 # ── loaders ──────────────────────────────────────────────────────────────────
-def load_csv(fpath, hz=HZ_DEFAULT):
-    """Load any CSV with numeric columns. Auto-detect accel columns."""
+def load_csv(fpath, hz=HZ_DEFAULT, accel_cols=None):
+    """Load CSV with named or positional accel/gyro columns.
+    Handles datetime timestamps, mixed columns, any sensor format."""
     import csv as _csv
-    rows = []
+    from datetime import datetime as _dt
+
+    # detect delimiter
     with open(fpath) as f:
-        reader = _csv.reader(f)
-        header = None
-        for row in reader:
-            try:
-                vals = [float(v) for v in row]
-                rows.append(vals)
-            except ValueError:
-                if header is None:
-                    header = row
+        sample = f.read(512)
+    delim = "," if sample.count(",") > sample.count(" ") else " "
+    with open(fpath) as f:
+        reader = _csv.reader(f, delimiter=delim)
+        rows   = list(reader)
+
     if not rows:
         return None, hz
-    arr = [[rows[i][j] for j in range(min(3, len(rows[i])))]
-           for i in range(len(rows))]
-    return arr, hz
+
+    header = [c.strip().lower() for c in rows[0]]
+
+    # use explicit column indices if provided
+    if accel_cols and len(accel_cols) >= 3:
+        acc = []
+        for row in data_rows:
+            try:
+                acc.append([float(row[accel_cols[0]]),
+                            float(row[accel_cols[1]]),
+                            float(row[accel_cols[2]])])
+            except (ValueError, IndexError):
+                continue
+        if len(acc) >= WIN:
+            return acc, hz
+    # find accel columns by name
+    AX_NAMES = ["a_x","ax","accel_x","acc_x","acceleration_x","x"]
+    AY_NAMES = ["a_y","ay","accel_y","acc_y","acceleration_y","y"]
+    AZ_NAMES = ["a_z","az","accel_z","acc_z","acceleration_z","z"]
+
+    def find_col(names):
+        for n in names:
+            if n in header: return header.index(n)
+        return None
+
+    xi, yi, zi = find_col(AX_NAMES), find_col(AY_NAMES), find_col(AZ_NAMES)
+
+    # find time column for Hz detection
+    TIME_NAMES = ["time","timestamp","ts","datetime","t"]
+    ti = find_col(TIME_NAMES)
+
+    data_rows = rows[1:]  # skip header
+    if not data_rows:
+        return None, hz
+
+    # parse accel
+    if xi is not None and yi is not None and zi is not None:
+        acc = []
+        for row in data_rows:
+            try:
+                acc.append([float(row[xi]), float(row[yi]), float(row[zi])])
+            except (ValueError, IndexError):
+                continue
+    else:
+        # fallback: find first 3 fully numeric columns
+        numeric_cols = []
+        for ci, col in enumerate(header):
+            vals = []
+            for row in data_rows[:20]:
+                try: vals.append(float(row[ci]))
+                except: break
+            if len(vals) == 20:
+                numeric_cols.append(ci)
+            if len(numeric_cols) == 3:
+                break
+        if len(numeric_cols) < 3:
+            return None, hz
+        acc = []
+        for row in data_rows:
+            try:
+                acc.append([float(row[c]) for c in numeric_cols[:3]])
+            except (ValueError, IndexError):
+                continue
+
+    if len(acc) < WIN:
+        return None, hz
+
+    # detect Hz from timestamps
+    if ti is not None:
+        try:
+            t0 = _dt.fromisoformat(data_rows[0][ti].strip())
+            t1 = _dt.fromisoformat(data_rows[1][ti].strip())
+            dt = (t1 - t0).total_seconds()
+            if dt > 0:
+                hz = round(1.0 / dt)
+        except Exception:
+            pass
+
+    return acc, hz
 
 def load_mat(fpath):
     try:
@@ -82,16 +158,43 @@ def load_pkl(fpath):
     except Exception:
         return None, HZ_DEFAULT
 
-def load_file(fpath):
+def load_dat(fpath, accel_cols=None):
+    """Load space-delimited .dat sensor file using numpy.loadtxt."""
+    if not HAS_NP:
+        return None, HZ_DEFAULT
+    try:
+        import numpy as _np2
+        arr = _np2.loadtxt(fpath)
+        if accel_cols and len(accel_cols) >= 3:
+            cols = accel_cols
+        else:
+            cols = [4, 5, 6]   # PAMAP2 default
+        acc = arr[:, cols].tolist()
+        if len(acc) < WIN:
+            return None, HZ_DEFAULT
+        # detect Hz from timestamp col 0 if available
+        hz = HZ_DEFAULT
+        try:
+            dt = float(arr[1, 0]) - float(arr[0, 0])
+            if 0 < dt < 1:
+                hz = round(1.0 / dt)
+        except Exception:
+            pass
+        return acc, hz
+    except Exception as e:
+        return None, HZ_DEFAULT
+
+def load_file(fpath, accel_cols=None):
     ext = Path(fpath).suffix.lower()
-    if ext == '.csv':  return load_csv(fpath)
+    if ext == '.csv':  return load_csv(fpath, accel_cols=accel_cols)
+    if ext == '.dat':  return load_dat(fpath, accel_cols=accel_cols)
     if ext == '.mat':  return load_mat(fpath)
     if ext == '.pkl':  return load_pkl(fpath)
     return None, HZ_DEFAULT
 
 # ── certify windows ──────────────────────────────────────────────────────────
-def certify_file_windows(fpath, segment=SEGMENT):
-    acc, hz = load_file(fpath)
+def certify_file_windows(fpath, segment=SEGMENT, accel_cols=None):
+    acc, hz = load_file(fpath, accel_cols=accel_cols)
     if acc is None or len(acc) < WIN:
         return []
 
@@ -196,12 +299,16 @@ def main():
     parser.add_argument("--input",   required=True, help="Input folder or file")
     parser.add_argument("--output",  default="refinery_report.csv")
     parser.add_argument("--segment", default="forearm")
+    parser.add_argument("--accel-cols", default=None,
+                        help="Comma-separated 0-based column indices for accel x,y,z e.g. 4,5,6")
     parser.add_argument("--ext",     default="csv,mat,pkl",
                         help="File extensions to process")
     args = parser.parse_args()
 
     input_path = Path(args.input)
     exts       = [f".{e.strip()}" for e in args.ext.split(",")]
+    # .dat files are space-delimited sensor logs
+    if ".dat" not in exts: exts.append(".dat")
 
     if input_path.is_file():
         files = [input_path]
@@ -230,7 +337,10 @@ def main():
 
     for i, fpath in enumerate(sorted(files)):
         print(f"  [{i+1}/{len(files)}] {fpath.name}...", end=" ", flush=True)
-        results = certify_file_windows(str(fpath), segment=args.segment)
+        accel_cols = ([int(x) for x in args.accel_cols.split(",")]
+                      if args.accel_cols else None)
+        results = certify_file_windows(str(fpath), segment=args.segment,
+                                       accel_cols=accel_cols)
         all_results.extend(results)
         tiers = {}
         for r in results:
