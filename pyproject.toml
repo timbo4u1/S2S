@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "s2s-certify"
-version = "1.7.7"
+version = "1.7.8"
 description = "Physics-certified motion data toolkit for Physical AI training"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -45,6 +45,7 @@ Documentation = "https://timbo4u1.github.io/S2S"
 
 [project.scripts]
 s2s-certify = "s2s_standard_v1_3.cli:main"
+s2s-refinery = "s2s_standard_v1_3.batch_refinery:main"
 
 [tool.setuptools.packages.find]
 include = ["s2s_standard_v1_3*"]

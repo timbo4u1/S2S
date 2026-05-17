@@ -206,12 +206,12 @@ def main():
     if input_path.is_file():
         files = [input_path]
     else:
-        # deduplicate by resolved path — catches symlinks and nested duplicates
+        # deduplicate by filename — handles nested duplicate folders
         seen = set()
         files = []
-        for f in input_path.rglob("*"):
-            if f.suffix.lower() in exts and f.resolve() not in seen:
-                seen.add(f.resolve())
+        for f in sorted(input_path.rglob("*")):
+            if f.suffix.lower() in exts and f.name not in seen:
+                seen.add(f.name)
                 files.append(f)
 
     if not files:
