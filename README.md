@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.8-orange)](https://pypi.org/project/s2s-certify/1.7.8/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-171%2F171-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-v1.7.8-orange)](https://pypi.org/project/s2s-certify/1.7.8/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-173%2F173-brightgreen)](tests/)
 
 ```python
 from s2s_standard_v1_3 import S2SPipeline
@@ -263,6 +263,19 @@ If you are using S2S on your data — even just experimenting —
 open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
 One sentence about your use case helps more than you think.
 
+**Completed in v1.7.8:**
+- Batch Refinery (`s2s-refinery` CLI) — process entire dataset folders, output tier/score/law CSV report
+- Duplicate file deduplication — handles nested folder structures
+
+**Completed in v1.7.7:**
+- Resonance frequency hz-gate — skipped at <40Hz (Nyquist insufficient for tremor detection)
+- WESAD audit findings documented — ADC unit correction, 86% SILVER expected at 32Hz
+
+**Completed in v1.7.6:**
+- Law 14: Powerline Interference — FFT spike detection at 50/60Hz, soft flag
+- Law 15: Intra-Window Splice — sustained half-window level shift > 8 m/s², soft flag
+- cross_axis_cohesion ×6 duplication bug fixed
+
 **Completed in v1.7.5:**
 - Laws 9–12: Cross-Axis Cohesion, Pointwise Jerk, Spectral Flatness, Temporal Autocorrelation — dual coherence firewall
 - Law 13: Sensor Freeze (state-conditioned soft flag) — rest vs active threshold, 36/36 benchmark maintained
@@ -323,6 +336,8 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Spectral Flatness | geo_mean(PSD) / arith_mean(PSD) < 0.54 | IMU | Gaussian noise has uniform spectrum — human motion has peaks |
 | Temporal Autocorrelation | ACF[lag=1] > 0.20 | IMU | No temporal coherence = iid noise, not biological motor control |
 | Sensor Freeze (soft) | consecutive identical > 10 (active) / 25 (rest) | IMU | Hardware fault vs legitimate static posture — state-conditioned |
+| Powerline (soft) | FFT spike > 8× local mean at 50/60Hz | IMU | Mains interference in sensor cables — battery-powered sensors clean |
+| Splice (soft) | half-window mean diff > 8 m/s² | IMU | Session concatenation artifact — sustained level shift mid-window |
 
 Missing sensors are skipped — they do not penalise the score.
 
@@ -570,6 +585,9 @@ Requires LLM cross-attention to physical trajectory space. Planned after first e
 ```bash
 s2s-certify yourfile.csv
 s2s-certify yourfile.csv --output report.json --segment forearm
+
+# Dataset quality report — entire folder
+s2s-refinery --input /path/to/dataset --output report.csv --segment forearm
 ```
 
 **Zero-config Python API — auto-detects columns, Hz, and units:**
