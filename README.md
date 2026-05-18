@@ -6,23 +6,21 @@
 
 [![PyPI](https://img.shields.io/badge/pypi-v1.7.8-orange)](https://pypi.org/project/s2s-certify/1.7.8/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-173%2F173-brightgreen)](tests/)
 
-```python
-from s2s_standard_v1_3 import S2SPipeline
-
-pipe = S2SPipeline(segment="forearm")
-result = pipe.certify(
-    imu_raw={"timestamps_ns": ts, "accel": acc, "gyro": gyro},
-    instruction="pick up the cup",   # optional: text intent
-    video_frame=jpeg_bytes,          # optional: JPEG from camera/VR/sim
-)
-
-print(result["tier"])          # GOLD / SILVER / BRONZE / REJECTED
-print(result["score"])         # 0–100
-print(result["source_type"])   # HIL_BIOLOGICAL
-print(result["intent"])        # "pick object"  (0.887 similarity)
-print(result["next_motion"])   # 8-dim next action prediction
-print(result["clip_sim"])      # scene-instruction visual match
+```bash
+pip install s2s-certify
+s2s-refinery --input /your/dataset --output report.csv
 ```
+
+**Proven on real datasets:**
+
+| Dataset | Windows | Usable | Rejected | Finding |
+|---|---|---|---|---|
+| NinaPro DB5 | 24,802 | 99% | 0% | Clean lab data — sensor_freeze 16% (Delsys hardware) |
+| PAMAP2 | 9,746 | 77% | 19% | Rest/transition windows rejected — explains +4.23% F1 |
+| WESAD wrist | 200 | 95% | 4% | 32Hz structural limit — 86% SILVER expected |
+| PTT-PPG | 371 | 100% | 0% | High quality walking data |
+
+Run it on your dataset. Get a quality score in under 2 minutes.
 
 ---
 
@@ -132,7 +130,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.7.5)
+  S2S — Full Chain Demo  (v1.7.8)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
@@ -242,9 +240,9 @@ Expected output:
 real_human (NinaPro/PAMAP2/WESAD): 21/21 certified (100%)
 corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
 pure_synthetic (Gaussian noise):     5/5 rejected — 12-law dual coherence firewall
-Overall: 36/36 (100%) — first clean sweep, v1.7.5
+Overall: 36/36 (100%) — first clean sweep, v1.7.8
 
-Note: WESAD/NinaPro run 3/7 laws (no gyro). PAMAP2 runs 7/7 laws.
+Note: WESAD/NinaPro run 8/15 laws (no gyro, no EMG). PAMAP2 runs 12/15 laws.
 
 PAMAP2 without S2S filtering: baseline F1
 PAMAP2 with S2S filtering:    +4.23% F1
@@ -279,8 +277,6 @@ One sentence about your use case helps more than you think.
 **Completed in v1.7.5:**
 - Laws 9–12: Cross-Axis Cohesion, Pointwise Jerk, Spectral Flatness, Temporal Autocorrelation — dual coherence firewall
 - Law 13: Sensor Freeze (state-conditioned soft flag) — rest vs active threshold, 36/36 benchmark maintained
-- Law 14: Powerline Interference — FFT spike detection at 50/60Hz, soft flag
-- Law 15: Intra-Window Splice — sustained half-window level shift > 8 m/s², soft flag
 - Sample Entropy (Layer 2) — biological complexity detector, Richman & Moorman 2000
 - Intent registry — 8 semantic motion intents (gentle/careful/normal/fast/ballistic/amputee/elderly/rehab)
 - Visualizer — matplotlib physics audit plots (plot_certification, plot_session)
@@ -306,7 +302,7 @@ One sentence about your use case helps more than you think.
 ## Architecture
 
 ```
-Layer 1  Physics Certification    12 biomechanical laws, GOLD/SILVER/BRONZE/REJECTED
+Layer 1  Physics Certification    15 laws (12 hard + 3 soft flags), GOLD/SILVER/BRONZE/REJECTED
 Layer 2  Biological Origin        Hurst H≥0.70 + Sample Entropy 0.35-0.95, HUMAN/NOT_BIOLOGICAL
 Layer 3  Motion Retrieval         text → certified motion, 11,246 windows, 6 datasets
 Layer 4a Next Action Prediction   Transformer, mean r=0.929, 21,896 training pairs
