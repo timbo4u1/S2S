@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/badge/pypi-v1.7.8-orange)](https://pypi.org/project/s2s-certify/1.7.8/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-173%2F173-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-187%2F187-brightgreen)](tests/)
 
 ```bash
 pip install s2s-certify
@@ -28,13 +28,13 @@ Run it on your dataset. Get a quality score in under 2 minutes.
 
 Most motion datasets contain bad data — corrupted recordings, synthetic signals that violate physics, mislabeled actions. You cannot see it by looking at the numbers. Your model trains on it anyway.
 
-S2S asks: does this data *obey the physics of human movement?* A perfect statistical fake fails if it violates Newton's Second Law, segment resonance, or rigid body kinematics.
+S2S asks: does this data *obey the physics of human movement?* A perfect statistical fake fails if it violates Newton's Second Law, segment resonance, or rigid body kinematics. Coupled OU generators — the most sophisticated known synthetic IMU signal — are caught by Law 16 (innovation kurtosis): their Gaussian innovations are mathematically unavoidable.
 
-S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 12-law certification before becoming training data.
+S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 16-law certification before becoming training data.
 
-For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (8 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), rejection of fake or corrupted windows, and 2D wavelet-based synthetic data detection.
+For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (16 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), rejection of fake or corrupted windows, and 2D wavelet-based synthetic data detection.
 
-**v1.7.0 adds:** Law 8 inter-window continuity, Haar wavelet + spectral entropy firewall (catches Gaussian noise and pure sine waves that fool standard FFT), zero-config certify_file() with auto Hz/unit detection.
+**v1.7.9 adds:** Law 16 innovation kurtosis — closes the coupled OU generator gap. Triple coherence firewall now complete: spatial (L9) + temporal (L12) + distributional (L16). 187/187 tests. No known synthetic generator passes all three simultaneously.
 
 
 **Validated results across 7 datasets:**
@@ -73,7 +73,7 @@ Laws run on IMU-only data (no gyro hardware):
 - ballistocardiography: skipped (needs PPG)
 - joule_heating: skipped (needs thermal)
 
-With full sensor stack (IMU + EMG + PPG + gyro): all 8 laws run.
+With full sensor stack (IMU + EMG + PPG + gyro): all 16 laws run.
 
 ## Platform Support
 
@@ -130,7 +130,7 @@ python3.9 s2s_demo.py --droid ~/droid_data/droid_100/1.0.0
 
 ```
 ════════════════════════════════════════════════════════════
-  S2S — Full Chain Demo  (v1.7.8)
+  S2S — Full Chain Demo  (v1.7.9)
   7 Layers: Physics → Biology → Motion → Visual
 ════════════════════════════════════════════════════════════
 
