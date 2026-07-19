@@ -261,6 +261,14 @@ If you are using S2S on your data — even just experimenting —
 open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
 One sentence about your use case helps more than you think.
 
+**Completed in v1.7.9:**
+- Law 16: Innovation Kurtosis — closes the coupled OU synthetic generator gap
+- Triple coherence firewall complete: spatial (L9) + temporal (L12) + distributional (L16)
+- Fixed cross_axis_cohesion duplicate registration (was running 12× per window)
+- Added coupled_ou benchmark category: standard OU 100% caught, aggressive OU 90%
+- 187/187 tests passing
+- docs/S2S_pipeline_guide.md — full architecture reference
+
 **Completed in v1.7.8:**
 - Batch Refinery (`s2s-refinery` CLI) — process entire dataset folders, output tier/score/law CSV report
 - Duplicate file deduplication — handles nested folder structures
@@ -302,7 +310,7 @@ One sentence about your use case helps more than you think.
 ## Architecture
 
 ```
-Layer 1  Physics Certification    15 laws (12 hard + 3 soft flags), GOLD/SILVER/BRONZE/REJECTED
+Layer 1  Physics Certification    16 laws (13 hard + 3 soft flags), GOLD/SILVER/BRONZE/REJECTED
 Layer 2  Biological Origin        Hurst H≥0.70 + Sample Entropy 0.35-0.95, HUMAN/NOT_BIOLOGICAL
 Layer 3  Motion Retrieval         text → certified motion, 11,246 windows, 6 datasets
 Layer 4a Next Action Prediction   Transformer, mean r=0.929, 21,896 training pairs
@@ -315,7 +323,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 
 ## Layer 1 — Physics Certification
 
-12 biomechanical laws validated at runtime (+ Laws 13-15 quality flags):
+16 biomechanical laws validated at runtime (13 hard + Laws 13-15 soft flags + Law 16 distributional):
 
 | Law | Equation | Requires | What it catches |
 |---|---|---|---|
@@ -334,6 +342,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Sensor Freeze (soft) | consecutive identical > 10 (active) / 25 (rest) | IMU | Hardware fault vs legitimate static posture — state-conditioned |
 | Powerline (soft) | FFT spike > 8× local mean at 50/60Hz | IMU | Mains interference in sensor cables — battery-powered sensors clean |
 | Splice (soft) | half-window mean diff > 8 m/s² | IMU | Session concatenation artifact — sustained level shift mid-window |
+| Innovation Kurtosis | excess_kurtosis(AR1_residuals) > 0.63 | IMU + gyro | Coupled OU / Cholesky synthetic generators — Gaussian innovations are mathematically unavoidable in all OU processes |
 
 Missing sensors are skipped — they do not penalise the score.
 
@@ -355,7 +364,7 @@ Missing sensors are skipped — they do not penalise the score.
 | GOLD | score ≥ 75 AND passed ≥ n_laws − 1 |
 | SILVER | score ≥ 55 |
 | BRONZE | score ≥ 35 |
-| REJECTED | >30% laws failed OR score < 35 OR dual coherence failure (no spatial+temporal structure) |
+| REJECTED | >30% laws failed OR score < 35 OR dual coherence failure (no spatial+temporal structure) OR innovation_kurtosis failed (Gaussian innovations detected) |
 
 ---
 
