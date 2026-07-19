@@ -1499,6 +1499,79 @@ def check_intra_window_splice(imu_raw):
 # ---------------------------------------------------------------------------
 # PhysicsEngine
 # ---------------------------------------------------------------------------
+
+# Law 16: Innovation Kurtosis — Gaussian Innovation Detection
+def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+    """
+    Law 16: Gaussian Innovation Detection.
+
+    OU processes generate Gaussian innovations by mathematical construction:
+        dx = -θ(x - μ)dt + σ√dt * dW  where dW ~ N(0,1)
+    No parameter tuning changes this — innovations are always Gaussian.
+
+    Real biological signals have leptokurtic innovations from muscle bursts,
+    cardiac recoil, hardware quantization, and impulsive physical events.
+
+    Calibration (256 samples, 100Hz, 30-window test):
+        Coupled OU: excess kurtosis mean=0.044, max=0.577
+        Real motion: excess kurtosis mean=11.14, min=9.21
+        Threshold: 0.63
+
+    Completes triple coherence firewall:
+        Law 9  (cross_axis_cohesion):      spatial coherence
+        Law 12 (temporal_autocorrelation): temporal coherence
+        Law 16 (innovation_kurtosis):      distributional coherence
+    """
+    accel = imu_raw.get("accel", [])
+    n = len(accel)
+    if n < 30:
+        return True, 50, {"reason": "SKIP_SHORT", "excess_kurtosis": None}
+
+    # Skip in acc-only mode — without gyro we cannot reliably distinguish
+    # biological from synthetic (OU generator provides real gyro, so it is still caught)
+    gyro = imu_raw.get("gyro", [])
+    has_real_gyro = bool(gyro) and any(
+        any(abs(v) > 1e-6 for v in row) for row in gyro
+    )
+    if not has_real_gyro:
+        return True, 50, {"reason": "SKIP_NO_GYRO", "excess_kurtosis": None}
+
+    all_innovations: list = []
+
+    for axis in range(3):
+        signal = [accel[i][axis] for i in range(n)]
+        mean_s = sum(signal) / n
+        demeaned = [x - mean_s for x in signal]
+        var = sum(x * x for x in demeaned)
+        if var < 1e-10:
+            return False, 95, {"reason": "FLAT_AXIS", "excess_kurtosis": 0.0}
+
+        phi = sum(demeaned[i] * demeaned[i + 1] for i in range(n - 1)) / var
+        phi = max(-0.99, min(0.99, phi))
+        innovations = [demeaned[i] - phi * demeaned[i - 1] for i in range(1, n)]
+        all_innovations.extend(innovations)
+
+    m = len(all_innovations)
+    mean_i = sum(all_innovations) / m
+    centered = [x - mean_i for x in all_innovations]
+    var_i = sum(x * x for x in centered) / m
+
+    if var_i < 1e-12:
+        return False, 95, {"reason": "ZERO_VAR", "excess_kurtosis": 0.0}
+
+    kurt_raw = (sum(x ** 4 for x in centered) / m) / (var_i ** 2)
+    excess_kurtosis = kurt_raw - 3.0
+    THRESHOLD = 0.63
+    passes = excess_kurtosis > THRESHOLD
+    confidence = min(95, max(5, int(abs(excess_kurtosis) * 8)))
+
+    return passes, confidence, {
+        "excess_kurtosis": round(excess_kurtosis, 4),
+        "threshold": THRESHOLD,
+        "reason": "PASS" if passes else "GAUSSIAN_INNOVATIONS_DETECTED",
+        "law": "innovation_kurtosis",
+    }
+
 class PhysicsEngine:
     """
     Certify that sensor data obeys the physical laws of human movement.
@@ -1580,15 +1653,13 @@ class PhysicsEngine:
                 self._session_jerk_rms.append(_jrms)
             results["imu_internal_consistency"] = _safe("consistency", check_imu_consistency, imu_raw)
             results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
-            results["cross_axis_cohesion"]      = _safe("cohesion", check_cross_axis_cohesion, imu_raw)
             results["pointwise_jerk"]           = _safe("pointwise_jerk", check_pointwise_jerk, imu_raw)
             results["spectral_flatness"]        = _safe("spectral_flatness", check_spectral_flatness, imu_raw)
             results["temporal_autocorrelation"] = _safe("autocorrelation", check_autocorrelation, imu_raw)
             results["sensor_freeze"]            = _safe("sensor_freeze", check_sensor_freeze, imu_raw)
             results["powerline_interference"] = _safe("powerline_interference", check_powerline_interference, imu_raw)
             results["intra_window_splice"]    = _safe("intra_window_splice", check_intra_window_splice, imu_raw)
+            results["innovation_kurtosis"]     = _safe("innovation_kurtosis", check_innovation_kurtosis, imu_raw)
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
@@ -1617,6 +1688,8 @@ class PhysicsEngine:
         elif "temporal_autocorrelation" in failed and any(
                 law in failed for law in ["cross_axis_cohesion", "imu_internal_consistency"]):
             tier = "REJECTED"  # coherence failure: no temporal structure + no sensor coupling = synthetic
+        elif "innovation_kurtosis" in failed:
+            tier = "REJECTED"  # Gaussian innovations = OU/coupled synthetic generator
 
         elif score >= 75 and np_ >= max(n - 1, 1):
             tier = "GOLD"

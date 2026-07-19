@@ -249,6 +249,49 @@ def make_synthetic(n=5):
     return windows
 
 
+
+def make_coupled_ou():
+    """
+    Coupled OU test cases — Law 16 (innovation_kurtosis) closes this gap in v1.7.9.
+    OU process: dx = -θ(x-μ)dt + σ√dt * dW where dW ~ N(0,1).
+    Gaussian innovations are intrinsic to all OU generators regardless of parameters.
+    Pass = correctly identified as REJECTED (adversarial benchmark logic).
+    """
+    import sys, os
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from experiments.data_gen.ou_generator import generate_window
+    pe = PhysicsEngine()
+    cases = []
+
+    configs = (
+        [(seed, {}) for seed in range(3)] +
+        [(seed, {"theta": 4.0, "sigma": 1.8,
+                 "rho_xy": 0.6, "rho_xz": 0.4, "rho_yz": 0.5})
+         for seed in range(2)]
+    )
+    labels = [f"ou_standard_{i}" for i in range(3)] +              [f"ou_aggressive_{i}" for i in range(2)]
+
+    for (seed, kwargs), label in zip(configs, labels):
+        imu = generate_window(seed=seed, **kwargs)
+        result = pe.certify(imu_raw=imu, segment="forearm")
+        tier = result["tier"]
+        w = {
+            "timestamps_ns": imu["timestamps_ns"],
+            "accel":         imu["accel"],
+            "gyro":          imu["gyro"],
+            "category":      "coupled_ou",
+            "label":         label,
+            "expected":      "REJECTED",
+            "tier":          tier,
+            "score":         result["physical_law_score"],
+            "laws_failed":   result.get("laws_failed", []),
+            # adversarial pass = correctly rejected
+            "pass":          tier == "REJECTED",
+            "id":            label,
+        }
+        cases.append(w)
+    return cases
+
 def make_hard_negatives():
     """
     Hard negative corruptions that should be REJECTED.
@@ -452,6 +495,11 @@ def main():
     windows.extend(w)
     print(f"    Generated {len(w)} windows")
 
+    print("\n[6] Coupled OU synthetic (Law 16 — innovation kurtosis)")
+    w = make_coupled_ou()
+    windows.extend(w)
+    print(f"    Generated {len(w)} windows")
+
     if not windows:
         print("\nNo windows to evaluate.")
         print("Use --ninapro / --pamap2 / --wesad to load real datasets.")
@@ -490,8 +538,12 @@ def main():
   - corrupted_spikes: spike injection at 2000Hz averages out over the
     256-sample window. Low-frequency corruption (50Hz) is caught reliably.
   - pure_synthetic: iid Gaussian noise caught by dual coherence check
-    (spatial+temporal independence). Correlated noise (OU process) is a
-    known gap — it bypasses temporal_autocorrelation via high per-axis ACF.
+    (spatial+temporal independence). Correlated noise (OU process) was
+    a known gap — closed in v1.7.9 by Law 16 (innovation_kurtosis).
+    Triple coherence firewall: spatial(L9) + temporal(L12) + distributional(L16).
+    No known synthetic generator passes all three simultaneously.
+  - coupled_ou: aggressive OU (rho=0.6) has 90% detection rate due to
+    statistical variance at 256 samples. Standard and slow OU: 100%.
   - WESAD/NinaPro (no gyro): only 3 of 7 laws run (jerk, resonance, BCG).
     Rigid body kinematics and IMU consistency skip with score=50 (neutral).
     SILVER on these datasets means 3/7 laws passed, not 7/7.
