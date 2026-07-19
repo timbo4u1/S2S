@@ -74,3 +74,7 @@ experiments/wisdm_index.json
 droid_certified/
 wesad_certified/
 experiments/*.csv
+experiments/data_gen/ablation_results.json
+experiments/data_gen/certified_fills.json
+experiments/data_gen/gaps.json
+experiments/ninapro_full_report.txt
