@@ -368,6 +368,23 @@ Missing sensors are skipped — they do not penalise the score.
 
 ---
 
+## What passes each layer — complete picture
+
+| Signal type | L1 Physics | L2 Biology | L3 Semantic | L5 CLIP |
+|---|---|---|---|---|
+| Gaussian noise | FAIL | — | — | — |
+| Pure sine wave | FAIL | — | — | — |
+| Coupled OU (standard) | FAIL | — | — | — |
+| Coupled OU (aggressive) | FAIL (90%) | — | — | — |
+| Frozen signal (zero gyro) | PASS | FAIL (H≈1) | — | — |
+| Replay wrong label | PASS | PASS | FAIL (soft) | FAIL (if video) |
+| Replay correct label | PASS | PASS | PASS | PASS |
+
+The only input that passes all layers with correct labels is real biological data used correctly.
+That is the intended behavior — the system certifies quality, not identity.
+
+---
+
 ## Layer 2 — Biological Origin
 
 ```python
