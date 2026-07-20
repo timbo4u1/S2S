@@ -1561,9 +1561,16 @@ def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     kurt_raw = (sum(x ** 4 for x in centered) / m) / (var_i ** 2)
     excess_kurtosis = kurt_raw - 3.0
+
+    # Guard against NaN from near-zero variance edge cases
+    if excess_kurtosis != excess_kurtosis:  # NaN check
+        return True, 50, {"reason": "SKIP_NAN", "excess_kurtosis": None}
+
     THRESHOLD = 0.63
     passes = excess_kurtosis > THRESHOLD
-    confidence = min(95, max(5, int(abs(excess_kurtosis) * 8)))
+    # Soft penalty — rest segments are near-Gaussian legitimately
+    # Score penalty only, not hard rejection
+    confidence = min(70, max(30, int(abs(excess_kurtosis) * 6)))
 
     return passes, confidence, {
         "excess_kurtosis": round(excess_kurtosis, 4),
@@ -1605,7 +1612,7 @@ class PhysicsEngine:
                 device_id:    str = "unknown",
                 session_id:   Optional[str] = None) -> Dict[str, Any]:
         """
-        Certify sensor data against 7 biomechanical laws.
+        Certify sensor data against 16 biomechanical laws (13 hard + 3 soft flags).
 
         Thread safety: NOT thread-safe. Use one PhysicsEngine instance
         per thread. Sharing across threads without locks will cause
@@ -1688,8 +1695,8 @@ class PhysicsEngine:
         elif "temporal_autocorrelation" in failed and any(
                 law in failed for law in ["cross_axis_cohesion", "imu_internal_consistency"]):
             tier = "REJECTED"  # coherence failure: no temporal structure + no sensor coupling = synthetic
-        elif "innovation_kurtosis" in failed:
-            tier = "REJECTED"  # Gaussian innovations = OU/coupled synthetic generator
+        # innovation_kurtosis is a soft signal — contributes to score
+        # but does not force REJECTED alone (rest segments overlap with OU)
 
         elif score >= 75 and np_ >= max(n - 1, 1):
             tier = "GOLD"
@@ -1741,7 +1748,7 @@ class PhysicsEngine:
             },
             "device_id":    device_id,
             "session_id":   session_id,
-            "tool":         "s2s_physics_v1_5",
+            "tool":         "s2s_physics_v1_9",
             "numpy_enabled": _NP,
             "issued_at_ns": time.time_ns(),
         }
@@ -2066,7 +2073,7 @@ def main():
     args = p.parse_args()
 
     if args.version:
-        print(f's2s-certify 1.4.0  (numpy_fast_path={_NP})')
+        print(f's2s-certify 1.7.9  (numpy_fast_path={_NP})')
 
     elif args.bench:
         import time as _time

@@ -28,7 +28,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 48,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -40,7 +40,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 48,
+      "score": 50,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -52,7 +52,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 48,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -64,7 +64,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 45,
+      "score": 47,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -76,7 +76,7 @@
         "REJECTED"
       ],
       "tier": "REJECTED",
-      "score": 45,
+      "score": 47,
       "pass": true,
       "note": "Gaussian noise with zero-jitter timestamps"
     },
@@ -89,7 +89,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 44,
+      "score": 46,
       "pass": true,
       "note": "Accel time-shifted 50 samples vs gyro"
     },
@@ -102,7 +102,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 48,
       "pass": true,
       "note": "Accel axes permuted x\u2192y\u2192z\u2192x"
     },
@@ -115,7 +115,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 46,
+      "score": 48,
       "pass": true,
       "note": "5x amplitude scaling \u2014 superhuman acceleration"
     },
@@ -128,7 +128,7 @@
         "BRONZE",
         "SILVER"
       ],
-      "tier": "REJECTED",
+      "tier": "SILVER",
       "score": 64,
       "pass": true,
       "note": "Sensor clipping at 16g \u2014 IMU hardware limit exceeded"
@@ -142,8 +142,8 @@
         "BRONZE",
         "SILVER"
       ],
-      "tier": "REJECTED",
-      "score": 51,
+      "tier": "BRONZE",
+      "score": 53,
       "pass": true,
       "note": "Frozen samples (packet drop) \u2014 100 identical values"
     },
@@ -157,7 +157,7 @@
         "SILVER"
       ],
       "tier": "REJECTED",
-      "score": 50,
+      "score": 52,
       "pass": true,
       "note": "60Hz power line noise \u2014 EM interference"
     },
@@ -170,7 +170,7 @@
         "BRONZE"
       ],
       "tier": "REJECTED",
-      "score": 44,
+      "score": 46,
       "pass": true,
       "note": "Motor stall oscillation at 150Hz \u2014 mechanical vibration"
     },
@@ -3000,8 +3000,8 @@
       "category": "coupled_ou",
       "label": "ou_standard_0",
       "expected": "REJECTED",
-      "tier": "REJECTED",
-      "score": 66,
+      "tier": "SILVER",
+      "score": 68,
       "laws_failed": [
         "imu_internal_consistency",
         "innovation_kurtosis"
@@ -5835,8 +5835,8 @@
       "category": "coupled_ou",
       "label": "ou_standard_1",
       "expected": "REJECTED",
-      "tier": "REJECTED",
-      "score": 65,
+      "tier": "SILVER",
+      "score": 67,
       "laws_failed": [
         "imu_internal_consistency",
         "innovation_kurtosis"
@@ -8670,8 +8670,8 @@
       "category": "coupled_ou",
       "label": "ou_standard_2",
       "expected": "REJECTED",
-      "tier": "REJECTED",
-      "score": 67,
+      "tier": "SILVER",
+      "score": 69,
       "laws_failed": [
         "innovation_kurtosis"
       ],
@@ -11504,8 +11504,8 @@
       "category": "coupled_ou",
       "label": "ou_aggressive_0",
       "expected": "REJECTED",
-      "tier": "REJECTED",
-      "score": 64,
+      "tier": "SILVER",
+      "score": 66,
       "laws_failed": [
         "imu_internal_consistency",
         "innovation_kurtosis"
@@ -14340,7 +14340,7 @@
       "label": "ou_aggressive_1",
       "expected": "REJECTED",
       "tier": "SILVER",
-      "score": 65,
+      "score": 67,
       "laws_failed": [
         "imu_internal_consistency"
       ],

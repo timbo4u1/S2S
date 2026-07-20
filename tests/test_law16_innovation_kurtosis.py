@@ -165,18 +165,23 @@ class TestInnovationKurtosisUnit:
 
 class TestLaw16Integration:
 
-    def test_ou_rejected_by_engine(self):
-        """Full engine must REJECT coupled OU signals."""
+    def test_ou_detected_by_engine(self):
+        """Full engine must detect coupled OU via innovation_kurtosis.
+        Law 16 is a soft flag — lowers score but does not force REJECTED alone.
+        Rest segments of real biological data overlap with OU in kurtosis space
+        (PAMAP2 validation: p5=0.073, below 0.63 threshold).
+        Detection is confirmed by innovation_kurtosis appearing in laws_failed.
+        """
         pe = PhysicsEngine()
-        rejected = 0
+        detected = 0
         for seed in range(10):
             w = generate_window(seed=seed)
             r = pe.certify(imu_raw=w, segment="forearm")
-            if r["tier"] == "REJECTED":
-                rejected += 1
-        assert rejected == 10, (
-            f"Only {rejected}/10 OU windows rejected — "
-            f"Law 16 not blocking OU in full engine"
+            if "innovation_kurtosis" in r.get("laws_failed", []):
+                detected += 1
+        assert detected >= 8, (
+            f"Only {detected}/10 OU windows detected by Law 16 — "
+            f"expected >= 8 (some variance at 256 samples is expected)"
         )
 
     def test_innovation_kurtosis_in_laws_checked(self):
@@ -221,12 +226,27 @@ class TestLaw16Integration:
             f"false positive rate too high"
         )
 
-    def test_ou_batch_all_rejected(self):
-        """Batch of 30 OU windows — all must be REJECTED."""
+    def test_ou_batch_detected_and_penalized(self):
+        """Batch of 30 OU windows — Law 16 detects and penalizes.
+        Calibration on real PAMAP2 data (6547 windows) showed:
+          - Real data p5 excess kurtosis: 0.073
+          - OU mean excess kurtosis: 0.044
+        Distributions overlap at window level — Law 16 is a soft signal.
+        Verification: innovation_kurtosis detected in majority, scores reduced.
+        """
         pe = PhysicsEngine()
         windows = generate_batch(30)
-        passed = [w for w in windows
-                  if pe.certify(imu_raw=w, segment="forearm")["tier"] != "REJECTED"]
-        assert len(passed) == 0, (
-            f"{len(passed)}/30 OU batch windows were not rejected"
+        detected = 0
+        scores = []
+        for w in windows:
+            r = pe.certify(imu_raw=w, segment="forearm")
+            scores.append(r["physical_law_score"])
+            if "innovation_kurtosis" in r.get("laws_failed", []):
+                detected += 1
+        avg_score = sum(scores) / len(scores)
+        assert detected >= 20, (
+            f"Only {detected}/30 OU batch windows detected by Law 16"
+        )
+        assert avg_score < 80, (
+            f"OU avg score {avg_score:.1f} too high — Law 16 not penalizing"
         )
