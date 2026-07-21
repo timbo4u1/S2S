@@ -313,6 +313,7 @@ class S2SPipeline:
             intent_sim    : float or None
             next_motion   : list or None  (8-dim Layer 4a prediction)
             clip_sim      : float or None  (Layer 5 CLIP similarity)
+            flags         : list of str    (PHYSICS_VIOLATION:*, SEMANTIC_MISMATCH)
         """
         seg = segment or self.segment
 
@@ -332,6 +333,8 @@ class S2SPipeline:
             "next_motion":  None,
             # Layer 5 placeholders
             "clip_sim":     None,
+            # Semantic flags (Layer 3)
+            "flags":        list(cert.get("flags", [])),
         }
 
         if not _NP:
@@ -376,6 +379,13 @@ class S2SPipeline:
                 top   = int(np.argmax(sims))
                 result["intent"]     = self._layer4c_labels[top]
                 result["intent_sim"] = round(float(sims[top]), 4)
+                # SEMANTIC_MISMATCH: instruction has no good match in motion library
+                # Calibrated on real query_intent values:
+                #   random nonsense: 0.2227, weakest real instruction: 0.4241
+                #   threshold 0.30 leaves margin of 0.10 on both sides
+                SEMANTIC_THRESHOLD = 0.30
+                if float(sims[top]) < SEMANTIC_THRESHOLD:
+                    result["flags"].append("SEMANTIC_MISMATCH")
             except Exception:
                 pass
 
