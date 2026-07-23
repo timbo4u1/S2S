@@ -1,0 +1,56 @@
+{
+  "A_single_sensor": {
+    "description": "Chest IMU only (Level 1 reference)",
+    "accuracy": 0.803,
+    "macro_f1": 0.7969,
+    "train_n": 11005,
+    "input_features": 14
+  },
+  "B_multi_naive": {
+    "description": "3 IMUs concatenated, no chain check",
+    "accuracy": 0.8329,
+    "macro_f1": 0.8308,
+    "train_n": 11005,
+    "input_features": 21
+  },
+  "C_chain_filtered": {
+    "description": "3 IMUs + kinematic chain filter",
+    "accuracy": 0.8433,
+    "macro_f1": 0.8399,
+    "train_n": 8503,
+    "input_features": 21
+  },
+  "D_chain_weighted": {
+    "description": "3 IMUs + chain filter + tier weights",
+    "accuracy": 0.8433,
+    "macro_f1": 0.8392,
+    "train_n": 8503,
+    "input_features": 21
+  },
+  "meta": {
+    "experiment": "s2s_level4_pamap2",
+    "dataset": "PAMAP2",
+    "sensors": [
+      "hand",
+      "chest",
+      "ankle"
+    ],
+    "hz": 100,
+    "window_size": 256,
+    "epochs": 40,
+    "chain_floor": 52,
+    "chain_score_avg": 62.1,
+    "tier_counts": {
+      "REJECTED": 1507,
+      "BRONZE": 4732,
+      "SILVER": 4227,
+      "GOLD": 539
+    },
+    "physics_laws": [
+      "locomotion_coherence",
+      "segment_coupling",
+      "gyro_accel_coupling",
+      "cross_sensor_jerk_timing"
+    ]
+  }
+}

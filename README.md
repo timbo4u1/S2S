@@ -15,7 +15,7 @@ s2s-refinery --input /your/dataset --output report.csv
 
 | Dataset | Windows | Usable | Rejected | Finding |
 |---|---|---|---|---|
-| NinaPro DB5 | 24,802 | 99% | 0% | Clean lab data — sensor_freeze 16% (Delsys hardware) |
+| NinaPro DB5 | 24,802 | 99% | 0% | Clean lab data — sensor_freeze 16% (Delsys hardware). No gyro — Law 16 skips. Confirmed valid v1.7.9. |
 | PAMAP2 | 9,746 | 77% | 19% | Rest/transition windows rejected — explains +4.23% F1 |
 | WESAD wrist | 200 | 95% | 4% | 32Hz structural limit — 86% SILVER expected |
 | PTT-PPG | 371 | 100% | 0% | High quality walking data |
@@ -41,11 +41,11 @@ For robotics and embodied AI pipelines, S2S covers the full data trust checklist
 
 | Dataset | Hz | Sensors | Result |
 |---|---|---|---|
-| UCI HAR | 50Hz | IMU | +2.51% F1 vs corrupted baseline |
+| UCI HAR | 50Hz | IMU | −5.83% F1 vs clean baseline (artificial 35% corruption — filtering reduces training set more than noise; not a valid S2S use case) |
 | PAMAP2 | 100Hz | IMU ×3 | +4.23% F1 kinematic chain vs single sensor |
 | WISDM 2019 | 20Hz | IMU | +1.74% F1 vs corrupted baseline |
 | WESAD | 700Hz | IMU + BVP | +3.1% F1 stress classification |
-| RoboTurk Open-X | 15Hz | Robot arm | 21.9% of teleoperation data rejected as physically invalid |
+| RoboTurk Open-X | 15Hz | Robot arm | 97.7% pass rate (v1.7.9, 216 episodes, 1143 windows). Note: v1.5.0 showed 78.1% pass under 8-law set — not directly comparable due to law set change |
 | NinaPro DB5 | 2000Hz | Forearm EMG+IMU | 9,552 windows certified, Law 1 EMG validated 78% |
 | OPPORTUNITY | 30Hz | Body IMU ×7 | 25.7% rejection rate found with real gyro |
 | PhysioNet PTT-PPG | 500Hz | Wrist PPG+IMU | 1,164 windows certified |

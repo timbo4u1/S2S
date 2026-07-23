@@ -22,7 +22,7 @@ from collections import defaultdict
 sys.path.insert(0, os.path.expanduser("~/S2S"))
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
-DATA_DIR   = os.path.expanduser("~/S2S/openx_data")
+DATA_DIR   = os.path.expanduser("~/openx_data")
 HZ         = 15
 SEGMENT    = "forearm"
 NYU_COUNT  = 14   # skip first 14 (nyu_rot episodes)

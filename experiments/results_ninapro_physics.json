@@ -11,20 +11,24 @@
     "total_subjects": 10,
     "total_windows": 9552,
     "overall_tier_counts": {
-      "SILVER": 9552
+      "REJECTED": 8430,
+      "BRONZE": 1122
     },
-    "overall_law_failures": {},
+    "overall_law_failures": {
+      "jerk_bounds": 9552,
+      "resonance_frequency": 3103
+    },
     "subject_rejection_rates": {
-      "s1": 0.0,
-      "s10": 0.0,
-      "s2": 0.0,
-      "s3": 0.0,
-      "s4": 0.0,
-      "s5": 0.0,
-      "s6": 0.0,
-      "s7": 0.0,
-      "s8": 0.0,
-      "s9": 0.0
+      "s1": 0.890728476821192,
+      "s10": 0.9018126888217523,
+      "s2": 0.9018867924528302,
+      "s3": 0.901571546732837,
+      "s4": 0.8299319727891157,
+      "s5": 0.8651362984218077,
+      "s6": 0.8796296296296297,
+      "s7": 0.866734486266531,
+      "s8": 0.8716119828815977,
+      "s9": 0.8757142857142857
     }
   },
   "subjects": {
@@ -33,110 +37,240 @@
       "subject_dir": "/Users/timbo/ninapro_db5/s1",
       "total_windows": 906,
       "tier_counts": {
-        "SILVER": 906
+        "REJECTED": 807,
+        "BRONZE": 99
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.890728476821192,
+      "law_failures": {
+        "jerk_bounds": 906,
+        "resonance_frequency": 298
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          906
+        ],
+        [
+          "resonance_frequency",
+          298
+        ]
+      ]
     },
     "s10": {
       "subject_id": "s10",
       "subject_dir": "/Users/timbo/ninapro_db5/s10",
       "total_windows": 1324,
       "tier_counts": {
-        "SILVER": 1324
+        "REJECTED": 1194,
+        "BRONZE": 130
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.9018126888217523,
+      "law_failures": {
+        "jerk_bounds": 1324,
+        "resonance_frequency": 442
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          1324
+        ],
+        [
+          "resonance_frequency",
+          442
+        ]
+      ]
     },
     "s2": {
       "subject_id": "s2",
       "subject_dir": "/Users/timbo/ninapro_db5/s2",
       "total_windows": 1325,
       "tier_counts": {
-        "SILVER": 1325
+        "REJECTED": 1195,
+        "BRONZE": 130
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.9018867924528302,
+      "law_failures": {
+        "jerk_bounds": 1325,
+        "resonance_frequency": 500
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          1325
+        ],
+        [
+          "resonance_frequency",
+          500
+        ]
+      ]
     },
     "s3": {
       "subject_id": "s3",
       "subject_dir": "/Users/timbo/ninapro_db5/s3",
       "total_windows": 1209,
       "tier_counts": {
-        "SILVER": 1209
+        "REJECTED": 1090,
+        "BRONZE": 119
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.901571546732837,
+      "law_failures": {
+        "resonance_frequency": 383,
+        "jerk_bounds": 1209
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          1209
+        ],
+        [
+          "resonance_frequency",
+          383
+        ]
+      ]
     },
     "s4": {
       "subject_id": "s4",
       "subject_dir": "/Users/timbo/ninapro_db5/s4",
       "total_windows": 735,
       "tier_counts": {
-        "SILVER": 735
+        "REJECTED": 610,
+        "BRONZE": 125
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.8299319727891157,
+      "law_failures": {
+        "jerk_bounds": 735,
+        "resonance_frequency": 205
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          735
+        ],
+        [
+          "resonance_frequency",
+          205
+        ]
+      ]
     },
     "s5": {
       "subject_id": "s5",
       "subject_dir": "/Users/timbo/ninapro_db5/s5",
       "total_windows": 697,
       "tier_counts": {
-        "SILVER": 697
+        "REJECTED": 603,
+        "BRONZE": 94
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.8651362984218077,
+      "law_failures": {
+        "resonance_frequency": 203,
+        "jerk_bounds": 697
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          697
+        ],
+        [
+          "resonance_frequency",
+          203
+        ]
+      ]
     },
     "s6": {
       "subject_id": "s6",
       "subject_dir": "/Users/timbo/ninapro_db5/s6",
       "total_windows": 972,
       "tier_counts": {
-        "SILVER": 972
+        "REJECTED": 855,
+        "BRONZE": 117
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.8796296296296297,
+      "law_failures": {
+        "jerk_bounds": 972,
+        "resonance_frequency": 320
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          972
+        ],
+        [
+          "resonance_frequency",
+          320
+        ]
+      ]
     },
     "s7": {
       "subject_id": "s7",
       "subject_dir": "/Users/timbo/ninapro_db5/s7",
       "total_windows": 983,
       "tier_counts": {
-        "SILVER": 983
+        "REJECTED": 852,
+        "BRONZE": 131
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.866734486266531,
+      "law_failures": {
+        "resonance_frequency": 344,
+        "jerk_bounds": 983
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          983
+        ],
+        [
+          "resonance_frequency",
+          344
+        ]
+      ]
     },
     "s8": {
       "subject_id": "s8",
       "subject_dir": "/Users/timbo/ninapro_db5/s8",
       "total_windows": 701,
       "tier_counts": {
-        "SILVER": 701
+        "REJECTED": 611,
+        "BRONZE": 90
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.8716119828815977,
+      "law_failures": {
+        "resonance_frequency": 200,
+        "jerk_bounds": 701
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          701
+        ],
+        [
+          "resonance_frequency",
+          200
+        ]
+      ]
     },
     "s9": {
       "subject_id": "s9",
       "subject_dir": "/Users/timbo/ninapro_db5/s9",
       "total_windows": 700,
       "tier_counts": {
-        "SILVER": 700
+        "REJECTED": 613,
+        "BRONZE": 87
       },
-      "rejection_rate": 0.0,
-      "law_failures": {},
-      "top_failing_laws": []
+      "rejection_rate": 0.8757142857142857,
+      "law_failures": {
+        "jerk_bounds": 700,
+        "resonance_frequency": 208
+      },
+      "top_failing_laws": [
+        [
+          "jerk_bounds",
+          700
+        ],
+        [
+          "resonance_frequency",
+          208
+        ]
+      ]
     }
   }
 }
