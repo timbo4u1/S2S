@@ -58,7 +58,7 @@ Certified on real NinaPro DB5 data (2000Hz, 500-sample windows):
 
 | Metric | Value |
 |---|---|
-| Mean latency | 2.95ms |
+| Mean latency | 1.99ms (v1.7.9, 16 laws, 256-sample window, 2000Hz) |
 | Window duration | 250ms |
 | CPU overhead | 1.1% |
 | Real-time feasible | ✅ Yes (89× faster than real-time) |
