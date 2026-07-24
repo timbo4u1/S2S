@@ -24,6 +24,36 @@ Run it on your dataset. Get a quality score in under 2 minutes.
 
 ---
 
+
+## Where S2S fits in the full physical AI pipeline Human wears sensor
+↓
+Raw IMU/EMG/PPG stream
+↓
+┌─────────────────────────────────┐
+│ S2S Layers 1-5 ← THIS REPO │
+│ L1: physics gate │
+│ L2: biological origin │
+│ L3: semantic retrieval │
+│ L4: next action / gap fill │
+│ L5: visual scene understanding │
+└─────────────────────────────────┘
+↓
+Certified motion tokens (GOLD/SILVER + Ed25519 provenance)
+↓
+[ Policy model training — outside S2S scope ]
+diffusion policy / ACT / OpenVLA
+↓
+Robot / prosthetic actuator
+↓
+┌─────────────────────────────────┐
+│ S2S Real-time safety gate │
+│ 1.99ms latency, 3-strike logic │
+└─────────────────────────────────┘
+↓
+Physical world S2S is the quality layer — not the model. It certifies data going in and validates commands coming out. The policy model in the middle trains on S2S-certified tokens, producing more reliable physical behavior.
+
+---
+
 ## Why this exists
 
 Most motion datasets contain bad data — corrupted recordings, synthetic signals that violate physics, mislabeled actions. You cannot see it by looking at the numbers. Your model trains on it anyway.
