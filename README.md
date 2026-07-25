@@ -25,32 +25,48 @@ Run it on your dataset. Get a quality score in under 2 minutes.
 ---
 
 
-## Where S2S fits in the full physical AI pipeline Human wears sensor
-↓
+
+
+## Where S2S fits in the full physical AI pipeline
+
+Human wears sensor
+|
+v
 Raw IMU/EMG/PPG stream
-↓
-┌─────────────────────────────────┐
-│ S2S Layers 1-5 ← THIS REPO │
-│ L1: physics gate │
-│ L2: biological origin │
-│ L3: semantic retrieval │
-│ L4: next action / gap fill │
-│ L5: visual scene understanding │
-└─────────────────────────────────┘
-↓
+|
+v
++-----------------------------------+
+| S2S Layers 1-5 <- THIS REPO |
+| L1: physics gate |
+| L2: biological origin |
+| L3: semantic retrieval |
+| L4: next action / gap fill |
+| L5: visual scene understanding |
++-----------------------------------+
+|
+v
 Certified motion tokens (GOLD/SILVER + Ed25519 provenance)
-↓
-[ Policy model training — outside S2S scope ]
+|
+v
+[ Policy model training - outside S2S scope ]
 diffusion policy / ACT / OpenVLA
-↓
+|
+v
 Robot / prosthetic actuator
-↓
-┌─────────────────────────────────┐
-│ S2S Real-time safety gate │
-│ 1.99ms latency, 3-strike logic │
-└─────────────────────────────────┘
-↓
-Physical world S2S is the quality layer — not the model. It certifies data going in and validates commands coming out. The policy model in the middle trains on S2S-certified tokens, producing more reliable physical behavior.
+|
+v
++-----------------------------------+
+| S2S Real-time safety gate |
+| 1.99ms latency, 3-strike logic |
++-----------------------------------+
+|
+v
+Physical world
+
+
+S2S is the quality layer, not the model. It certifies data going in
+and validates commands coming out. The policy model in the middle
+trains on S2S-certified tokens, producing more reliable physical behavior.
 
 ---
 

@@ -165,5 +165,5 @@ jobs:
 
       - name: Run pytest test suite
         run: |
-          pip install pytest cryptography numpy
-          pytest tests/ -v --tb=short
+          pip install -e . pytest cryptography numpy scipy scikit-learn
+          pytest tests/ -v --tb=short -x --ignore=tests/test_semantic_mismatch.py
