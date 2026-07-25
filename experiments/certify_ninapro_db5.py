@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 """
+DEPRECATED — use s2s-refinery instead.
+
+This script has a known bug: hardcoded sample_rate=2000Hz when NinaPro DB5
+actual hardware rate is 200Hz (upsampled). At 2000Hz, jerk thresholds produce
+88% false rejection on valid biological data.
+
+Correct usage:
+    s2s-refinery --input ~/ninapro_db5/s1/ --output report.csv --segment forearm
+
+The refinery auto-detects Hz and produces correct results:
+    NinaPro DB5: 24,802 windows, 99% usable, 0% rejected (v1.7.9 confirmed)
+
+This file is kept for reference only.
+"""
+"""
 Certify NinaPro DB5 dataset with fixed physics engine
 10 subjects, 2000Hz, 16-channel EMG + 3-axis accelerometer
 """
