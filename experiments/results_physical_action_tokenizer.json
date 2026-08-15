@@ -1,0 +1,148 @@
+{
+  "experiment": "physical_action_tokenizer",
+  "dataset": "NinaPro DB5 s1/E1",
+  "n_classes": 3,
+  "gesture_names": {
+    "0": "REST",
+    "1": "FINGER_FLEX",
+    "2": "FINGER_EXT"
+  },
+  "n_windows": 1470,
+  "results": {
+    "condition_A": {
+      "top1": 0.6566757493188011,
+      "top3": 1.0,
+      "mean_entropy": 0.5440963490626874,
+      "tier_entropy": {
+        "GOLD": null,
+        "SILVER": null,
+        "BRONZE": null
+      }
+    },
+    "condition_B": {
+      "top1": 0.6566757493188011,
+      "top3": 1.0,
+      "mean_entropy": 0.7707938880911868,
+      "tier_entropy": {
+        "GOLD": null,
+        "SILVER": null,
+        "BRONZE": null
+      }
+    },
+    "condition_C": {
+      "top1": 0.6566757493188011,
+      "top3": 1.0,
+      "mean_entropy": 0.5235029901452896,
+      "tier_entropy": {
+        "GOLD": 0.3088192367624126,
+        "SILVER": 0.5463500377480452,
+        "BRONZE": 6.257772511146374e-11
+      }
+    }
+  },
+  "sample_tokens": [
+    {
+      "true_label": "FINGER_FLEX",
+      "tier": "SILVER",
+      "score": 66,
+      "laws_failed": [],
+      "action_distribution_unconstrained": {
+        "REST": 0.3462,
+        "FINGER_FLEX": 0.4779,
+        "FINGER_EXT": 0.1759
+      },
+      "action_distribution_physics": {
+        "REST": 0.3161,
+        "FINGER_FLEX": 0.6023,
+        "FINGER_EXT": 0.0816
+      },
+      "entropy_before": 1.0258,
+      "entropy_after": 0.8739,
+      "physics_constrained": false
+    },
+    {
+      "true_label": "FINGER_EXT",
+      "tier": "GOLD",
+      "score": 75,
+      "laws_failed": [],
+      "action_distribution_unconstrained": {
+        "REST": 0.271,
+        "FINGER_FLEX": 0.0224,
+        "FINGER_EXT": 0.7066
+      },
+      "action_distribution_physics": {
+        "REST": 0.0212,
+        "FINGER_FLEX": 0.0,
+        "FINGER_EXT": 0.9788
+      },
+      "entropy_before": 0.6843,
+      "entropy_after": 0.1025,
+      "physics_constrained": false
+    },
+    {
+      "true_label": "REST",
+      "tier": "SILVER",
+      "score": 63,
+      "laws_failed": [],
+      "action_distribution_unconstrained": {
+        "REST": 1.0,
+        "FINGER_FLEX": 0.0,
+        "FINGER_EXT": 0.0
+      },
+      "action_distribution_physics": {
+        "REST": 1.0,
+        "FINGER_FLEX": 0.0,
+        "FINGER_EXT": 0.0
+      },
+      "entropy_before": 0.0,
+      "entropy_after": 0.0,
+      "physics_constrained": false
+    },
+    {
+      "true_label": "REST",
+      "tier": "SILVER",
+      "score": 66,
+      "laws_failed": [],
+      "action_distribution_unconstrained": {
+        "REST": 0.4177,
+        "FINGER_FLEX": 0.4723,
+        "FINGER_EXT": 0.11
+      },
+      "action_distribution_physics": {
+        "REST": 0.4259,
+        "FINGER_FLEX": 0.5446,
+        "FINGER_EXT": 0.0295
+      },
+      "entropy_before": 0.9617,
+      "entropy_after": 0.7985,
+      "physics_constrained": false
+    },
+    {
+      "true_label": "REST",
+      "tier": "SILVER",
+      "score": 59,
+      "laws_failed": [
+        "resonance_frequency"
+      ],
+      "action_distribution_unconstrained": {
+        "REST": 0.4861,
+        "FINGER_FLEX": 0.0508,
+        "FINGER_EXT": 0.4631
+      },
+      "action_distribution_physics": {
+        "REST": 0.5212,
+        "FINGER_FLEX": 0.0057,
+        "FINGER_EXT": 0.4731
+      },
+      "entropy_before": 0.8584,
+      "entropy_after": 0.7231,
+      "physics_constrained": true
+    }
+  ],
+  "law_constraints_used": [
+    "sensor_freeze",
+    "jerk_bounds",
+    "imu_internal_consistency",
+    "innovation_kurtosis"
+  ]
+}
