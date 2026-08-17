@@ -1,0 +1,57 @@
+{
+  "experiment": "PAT_PAMAP2",
+  "n_windows": 4607,
+  "tier_dist": {
+    "SILVER": 4343,
+    "REJECTED": 171,
+    "GOLD": 92,
+    "BRONZE": 1
+  },
+  "results": {
+    "A": {
+      "top1": 0.9244135534317984,
+      "top3": 0.9808861859252823,
+      "entropy": 0.12071041514553611,
+      "tier_entropy": {
+        "GOLD": 0.1906863668001393,
+        "SILVER": 0.1209283425970467,
+        "BRONZE": null,
+        "REJECTED": 0.08125031972689735
+      },
+      "flipped": 0
+    },
+    "B": {
+      "top1": 0.9244135534317984,
+      "top3": 0.9808861859252823,
+      "entropy": 0.36241601971215603,
+      "tier_entropy": {
+        "GOLD": 0.4372777887275128,
+        "SILVER": 0.3674451890020269,
+        "BRONZE": null,
+        "REJECTED": 0.20466983241087036
+      },
+      "flipped": 0
+    },
+    "C": {
+      "top1": 0.9252823631624674,
+      "top3": 0.9808861859252823,
+      "entropy": 0.13921658397180126,
+      "tier_entropy": {
+        "GOLD": 0.03354106375523947,
+        "SILVER": 0.12099430134524689,
+        "BRONZE": null,
+        "REJECTED": 0.6298347131262297
+      },
+      "flipped": 1
+    }
+  },
+  "law_counts": {
+    "imu_internal_consistency": 635,
+    "innovation_kurtosis": 235,
+    "rigid_body_kinematics": 101,
+    "spectral_flatness": 78,
+    "temporal_autocorrelation": 62,
+    "resonance_frequency": 13,
+    "cross_axis_cohesion": 2
+  }
+}
