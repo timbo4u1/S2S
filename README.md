@@ -7,6 +7,16 @@
 [![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-187%2F187-brightgreen)](tests/)
 
 ```bash
+## Demo — Real Human EMG → S2S Certified → Prosthetic Hand
+
+[![S2S Demo](docs/s2s_demo.mp4)](docs/s2s_demo.mp4)
+
+Watch: [docs/s2s_demo.mp4](docs/s2s_demo.mp4)
+
+Real NinaPro DB5 EMG data → S2S 16-law physics certification → gesture classifier trained on GOLD/SILVER windows only → MuJoCo prosthetic hand (REST / FLEX power grasp / EXTEND open hand).
+
+---
+
 pip install s2s-certify
 s2s-refinery --input /your/dataset --output report.csv
 ```
