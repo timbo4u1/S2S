@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18878307.svg)](https://doi.org/10.5281/zenodo.18878307) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-187%2F187-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22912004.svg)](https://doi.org/10.5281/zenodo.22912004) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-187%2F187-brightgreen)](tests/)
 
 ```bash
 ## Demo — Real Human EMG → S2S Certified → Prosthetic Hand
@@ -820,7 +820,7 @@ Tier colors: GOLD=#FFD700, SILVER=#C0C0C0, BRONZE=#CD7F32, REJECTED=#FF4444
 
 ## Live demos
 
-[→ IMU Demo](https://timbo4u1.github.io/S2S/) · [→ Physical AI Demo](https://timbo4u1.github.io/S2S/demo_physical_ai.html) · [→ Live API](https://s2s-65sy.onrender.com/health) · [→ Paper PDF](docs/paper/S2S_Paper_v5.pdf) · [DOI: 10.5281/zenodo.18878307](https://doi.org/10.5281/zenodo.18878307)
+[→ IMU Demo](https://timbo4u1.github.io/S2S/) · [→ Physical AI Demo](https://timbo4u1.github.io/S2S/demo_physical_ai.html) · [→ Live API](https://s2s-65sy.onrender.com/health) · [→ Paper PDF](docs/paper/S2S_Paper_v5.pdf) · [DOI: 10.5281/zenodo.22912004](https://doi.org/10.5281/zenodo.22912004)
 
 ---
 

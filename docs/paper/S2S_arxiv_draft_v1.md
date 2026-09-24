@@ -4,7 +4,7 @@
 Independent Researcher  
 s2s.physical@proton.me  
 github.com/timbo4u1/S2S  
-DOI: 10.5281/zenodo.18878307
+DOI: 10.5281/zenodo.22912004
 
 ---
 
@@ -519,7 +519,7 @@ is zero. In all five datasets we tested, it was not.
 Code, documentation, and all experiment results are available at:
 **github.com/timbo4u1/S2S**  
 **pip install s2s-certify**  
-**DOI: 10.5281/zenodo.18878307**
+**DOI: 10.5281/zenodo.22912004**
 
 ---
 
