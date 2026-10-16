@@ -1669,6 +1669,29 @@ class PhysicsEngine:
             results["powerline_interference"] = _safe("powerline_interference", check_powerline_interference, imu_raw)
             results["intra_window_splice"]    = _safe("intra_window_splice", check_intra_window_splice, imu_raw)
             results["innovation_kurtosis"]     = _safe("innovation_kurtosis", check_innovation_kurtosis, imu_raw)
+        else:
+            # Surface every IMU check explicitly when there is no IMU stream.
+            # This prevents missing input from looking like an absent/pass check.
+            for key, law_name in (
+                ("inter_window_continuity", "Inter_Window_Continuity"),
+                ("resonance_frequency", "Resonance_Frequency"),
+                ("rigid_body_kinematics", "Rigid_Body_Kinematics"),
+                ("jerk_bounds", "Motor_Control_Jerk"),
+                ("imu_internal_consistency", "IMU_Internal_Consistency"),
+                ("cross_axis_cohesion", "Cross_Axis_Cohesion"),
+                ("pointwise_jerk", "Pointwise_Jerk"),
+                ("spectral_flatness", "Spectral_Flatness"),
+                ("temporal_autocorrelation", "Temporal_Autocorrelation"),
+                ("sensor_freeze", "Sensor_Freeze"),
+                ("powerline_interference", "Powerline_Interference"),
+                ("intra_window_splice", "Intra_Window_Splice"),
+                ("innovation_kurtosis", "Innovation_Kurtosis"),
+            ):
+                results[key] = (None, 0, {
+                    "law": law_name,
+                    "skip": "MISSING_IMU",
+                    "required": ["imu_raw"],
+                })
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
