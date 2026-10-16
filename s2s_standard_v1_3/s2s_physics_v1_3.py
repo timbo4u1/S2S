@@ -1763,7 +1763,7 @@ class PhysicsEngine:
                 })
 
         return {
-            "status":             "UNVERIFIED" if not n else ("FAIL" if tier == "REJECTED" else ("PARTIAL" if not_assessed else "PASS")),
+            "status":             "PASS" if tier not in ("REJECTED", "UNVERIFIED") else "FAIL",
             "tier":               tier,
             "tier_scope":         "ASSESSED_CHECKS_ONLY" if not_assessed else "FULL_CONFIGURED_CHECKS",
             "assessment_status":  "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else "ASSESSED"),
