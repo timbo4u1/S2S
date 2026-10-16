@@ -1759,10 +1759,11 @@ class PhysicsEngine:
                     "tier": tier,
                     "score": score,
                     "laws_failed": failed,
+                    "laws_not_assessed": not_assessed,
                 })
 
         return {
-            "status":             "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else ("PASS" if tier != "REJECTED" else "FAIL")),
+            "status":             "UNVERIFIED" if not n else ("FAIL" if tier == "REJECTED" else ("PARTIAL" if not_assessed else "PASS")),
             "tier":               tier,
             "tier_scope":         "ASSESSED_CHECKS_ONLY" if not_assessed else "FULL_CONFIGURED_CHECKS",
             "assessment_status":  "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else "ASSESSED"),
