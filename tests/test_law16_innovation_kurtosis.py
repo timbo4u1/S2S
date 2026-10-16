@@ -96,17 +96,17 @@ class TestInnovationKurtosisUnit:
         assert failures == 0, f"{failures}/20 real-like windows failed Law 16"
 
     def test_short_window_skips(self):
-        """Windows under 30 samples skip gracefully (PASS, conf=50)."""
+        """Windows under 30 samples are NOT_ASSESSED."""
         w = {"accel": [[0.1 * i, 0.0, 9.81] for i in range(10)], "gyro": []}
         passes, conf, detail = check_innovation_kurtosis(w)
-        assert passes is True
+        assert passes is None
         assert detail["reason"] == "SKIP_SHORT"
 
     def test_no_gyro_skips(self):
-        """Acc-only (zero gyro) skips gracefully."""
+        """Acc-only (zero gyro) returns NOT_ASSESSED."""
         w = _acc_only()
         passes, conf, detail = check_innovation_kurtosis(w)
-        assert passes is True
+        assert passes is None
         assert detail["reason"] == "SKIP_NO_GYRO"
 
     def test_flat_signal_fails(self):
@@ -126,7 +126,7 @@ class TestInnovationKurtosisUnit:
         result = check_innovation_kurtosis(w)
         assert isinstance(result, tuple) and len(result) == 3
         passes, conf, detail = result
-        assert isinstance(passes, bool)
+        assert passes is True or passes is False or passes is None
         assert isinstance(conf, int)
         assert isinstance(detail, dict)
         assert "reason" in detail
