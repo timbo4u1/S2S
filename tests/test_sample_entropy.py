@@ -75,4 +75,5 @@ def test_check_sample_entropy_insufficient():
     from s2s_standard_v1_3.s2s_physics_v1_3 import check_sample_entropy
     acc = [[0.1, 0.0, 9.81]] * 5
     passed, conf, detail = check_sample_entropy(acc, hz=100.0)
+    assert passed is None
     assert detail.get('skip') == True
