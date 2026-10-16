@@ -58,7 +58,7 @@ def test_insufficient_data_skips():
     from s2s_standard_v1_3.s2s_physics_v1_3 import check_cross_axis_cohesion
     acc = [[0.1, 0.0, 9.81]] * 10
     passed, conf, detail = check_cross_axis_cohesion({'accel': acc})
-    assert passed  # skip = pass
+    assert passed is None  # skip = NOT_ASSESSED
     assert detail.get('skip') == 'INSUFFICIENT_DATA'
 
 
