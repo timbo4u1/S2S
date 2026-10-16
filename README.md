@@ -405,7 +405,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Splice (soft) | half-window mean diff > 8 m/s² | IMU | Session concatenation artifact — sustained level shift mid-window |
 | Innovation Kurtosis (soft) | excess_kurtosis(AR1_residuals) > 0.63 | IMU + gyro | Coupled OU / Cholesky synthetic generators — Gaussian innovations are mathematically unavoidable in all OU processes. Soft flag: rest-state biological windows overlap with OU in kurtosis space (PAMAP2 p5=0.10) |
 
-Missing sensors are skipped — they do not penalise the score.
+Missing or insufficient inputs are marked `NOT_ASSESSED`; they are excluded from `laws_passed`, `laws_failed`, and the quality-score average. The output includes per-law `PASS` / `FAIL` / `NOT_ASSESSED`, assessment coverage, and `assessment_status`. A tier describes assessed checks only when `tier_scope` is `ASSESSED_CHECKS_ONLY`; it must not be interpreted as a complete assessment of unavailable sensor modalities.
 
 ### Body segment parameters
 
