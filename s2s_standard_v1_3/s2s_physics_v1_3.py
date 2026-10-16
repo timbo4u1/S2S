@@ -1710,9 +1710,9 @@ class PhysicsEngine:
             tier = "REJECTED"  # coherence failure: no temporal structure + no sensor coupling = synthetic
         # innovation_kurtosis is a soft signal — contributes to score
         # but does not force REJECTED alone (rest segments overlap with OU)
-        # GOLD requires every attempted check to be assessed. If a check was
-        # skipped, the available evidence can support SILVER at most.
-        elif not not_assessed and score >= 75 and np_ >= max(n - 1, 1):
+        # The tier describes the checks that were assessed. Completeness is
+        # reported separately so missing optional sensors do not bias the score.
+        elif score >= 75 and np_ >= max(n - 1, 1):
             tier = "GOLD"
         elif score >= 55:
             tier = "SILVER"
@@ -1739,8 +1739,9 @@ class PhysicsEngine:
                 })
 
         return {
-            "status":             "PASS" if tier not in ("REJECTED", "UNVERIFIED") else "FAIL",
+            "status":             "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else ("PASS" if tier != "REJECTED" else "FAIL")),
             "tier":               tier,
+            "tier_scope":         "ASSESSED_CHECKS_ONLY" if not_assessed else "FULL_CONFIGURED_CHECKS",
             "assessment_status":  "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else "ASSESSED"),
             "sensor_type":        "PHYSICS",
             "physical_law_score": score,
