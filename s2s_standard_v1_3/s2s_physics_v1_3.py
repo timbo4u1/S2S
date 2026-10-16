@@ -417,7 +417,7 @@ def _windowed_variance_pearson(a_vecs: List, g_vecs: List, w: int = 10) -> float
 # ---------------------------------------------------------------------------
 # Law 1: Newton's Second Law — F = ma  (with electromechanical delay)
 # ---------------------------------------------------------------------------
-def check_newton(imu_raw: Dict, emg_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_newton(imu_raw: Dict, emg_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "Newton_Second_Law", "equation": "F=ma",
          "note": "EMG force LEADS acceleration by ~75ms (electromechanical delay)"}
 
@@ -428,7 +428,7 @@ def check_newton(imu_raw: Dict, emg_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 20 or not emg or len(emg[0]) < 20:
         d["skip"] = "INSUFFICIENT_RAW_DATA"
-        return True, 50, d
+        return None, 0, d
 
     a_mag = _accel_magnitude_np(accel)
 
@@ -507,7 +507,7 @@ def check_newton(imu_raw: Dict, emg_raw: Dict) -> Tuple[bool, int, Dict]:
 # Gaussian noise: uniform spectrum (flatness 0.55-0.65)
 # Reference: Wiener entropy, public domain signal processing
 # ---------------------------------------------------------------------------
-def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_spectral_flatness(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 11: Spectral Flatness — Wiener Entropy.
 
@@ -522,7 +522,7 @@ def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 64:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     try:
         import numpy as _np3
@@ -532,7 +532,7 @@ def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         psd = psd[1:]  # ignore DC component
         if len(psd) == 0:
             d["skip"] = "NO_SPECTRUM"
-            return True, 50, d
+            return None, 0, d
 
         geo = float(_np3.exp(_np3.mean(_np3.log(psd + 1e-10))))
         ari = float(_np3.mean(psd))
@@ -560,7 +560,7 @@ def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     except Exception as e:
         d["skip"] = f"ERROR:{e}"
-        return True, 50, d
+        return None, 0, d
 
 
 # ---------------------------------------------------------------------------
@@ -569,7 +569,7 @@ def check_spectral_flatness(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 # biomechanical limits allow. Catches single-sample spikes invisible to windows.
 # Reference: bone mass + muscle damping physics — public domain
 # ---------------------------------------------------------------------------
-def check_pointwise_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_pointwise_jerk(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 10: Pointwise Jerk — catches sub-millisecond spikes.
 
@@ -587,7 +587,7 @@ def check_pointwise_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 4:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     # Estimate hz from timestamps
     if len(ts) > 1:
@@ -646,7 +646,7 @@ def check_pointwise_jerk(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 # Gaussian noise: axes independent (max r ≈ 0.04)
 # Reference: biomechanical rigid body constraint — public domain math
 # ---------------------------------------------------------------------------
-def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Cross-axis correlation check — Law 9.
     
@@ -664,7 +664,7 @@ def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 32:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     COHESION_MIN = 0.115  # Gaussian max=0.105, human min=0.145 — safe margin
 
@@ -673,7 +673,7 @@ def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         arr = _np2.array(accel, dtype=_np2.float64)
         if arr.shape[1] < 3:
             d["skip"] = "INSUFFICIENT_AXES"
-            return True, 50, d
+            return None, 0, d
 
         x, y, z = arr[:,0], arr[:,1], arr[:,2]
 
@@ -710,13 +710,13 @@ def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     except Exception as e:
         d["skip"] = f"ERROR:{e}"
-        return True, 50, d
+        return None, 0, d
 
 
 # ---------------------------------------------------------------------------
 # Law 2: Resonance  ω = sqrt(K/I)
 # ---------------------------------------------------------------------------
-def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict]:
+def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[Optional[bool], int, Dict]:
     I, K, f_lo, f_hi = SEGMENT_PARAMS.get(segment, SEGMENT_PARAMS["forearm"])
     omega = math.sqrt(K / I)
     f_fund = omega / (2 * math.pi)
@@ -733,11 +733,11 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
     sample_rate = 1.0 / dt if dt > 0 else 240.0
     if sample_rate < 40.0:
         d["skip"] = "HZ_TOO_LOW:{:.0f}Hz<40_Nyquist_insufficient_for_tremor".format(sample_rate)
-        return True, 30, d
+        return None, 0, d
     min_samples = max(64, min(500, int(3.0 / 8.0 * sample_rate)))  # cap at 500 — 2 tremor cycles at any rate
     if len(accel) < min_samples:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     az = [s[2] if len(s) > 2 else 0.0 for s in accel]
     peak_f, peak_e = _band_peak(az, ts, 5.0, 30.0, steps=60)
@@ -789,7 +789,7 @@ def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int,
 # ---------------------------------------------------------------------------
 # Law 3: Rigid Body Kinematics  a = α×r + ω²×r
 # ---------------------------------------------------------------------------
-def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[bool, int, Dict]:
+def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "Rigid_Body_Kinematics", "equation": "a=alpha*r+omega^2*r",
          "sensor_offset_m": r,
          "physical_meaning": "Gyro angular velocity must predict accelerometer via rigid body mechanics"}
@@ -801,11 +801,11 @@ def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[bool, int, Dict]:
         d["violation"] = "MISSING_GYRO"
         d["interpretation"] = "Gyroscope data is required for rigid body kinematics"
         d["skip"] = "MISSING_GYRO"
-        return True, 50, d
+        return None, 0, d
     n = min(len(accel), len(gyro), len(ts))
     if n < 20:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     dt = (statistics.mean([ts[i + 1] - ts[i] for i in range(min(n - 1, 50))]) * 1e-9
           if n > 1 else 1 / 240)
@@ -864,21 +864,21 @@ def check_rigid_body(imu_raw: Dict, r: float = 0.05) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 4: Ballistocardiography  Newton 3 cardiac recoil
 # ---------------------------------------------------------------------------
-def check_bcg(imu_raw: Dict, ppg_cert: Dict) -> Tuple[bool, int, Dict]:
+def check_bcg(imu_raw: Dict, ppg_cert: Dict) -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "Ballistocardiography", "equation": "F_recoil=rho*Q*v (Newton 3)",
          "physics": "70ml blood × 1m/s ejection → ~0.001 m/s² body recoil at wrist IMU"}
 
     hr_bpm = (ppg_cert.get("vitals") or {}).get("heart_rate_bpm")
     if not hr_bpm or not (30 <= hr_bpm <= 220):
         d["skip"] = "NO_VALID_PPG_HR"
-        return True, 50, d
+        return None, 0, d
 
     hr_hz = hr_bpm / 60.0
     accel = imu_raw.get("accel", [])
     ts = imu_raw.get("timestamps_ns", [])
     if len(accel) < 64:
         d["skip"] = "INSUFFICIENT_IMU_DATA"
-        return True, 50, d
+        return None, 0, d
 
     d.update({"ppg_hr_bpm": hr_bpm, "ppg_hr_hz": round(hr_hz, 4)})
 
@@ -919,7 +919,7 @@ def check_bcg(imu_raw: Dict, ppg_cert: Dict) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 5: Joule Heating  Q ≈ 0.75 × P × t
 # ---------------------------------------------------------------------------
-def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[bool, int, Dict]:
+def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "Joule_Heating", "equation": "Q=0.75*P_metabolic*t",
          "physics": "75% of muscle metabolic energy → heat (thermodynamic inefficiency)"}
 
@@ -964,7 +964,7 @@ def check_joule(emg_cert: Dict, thermal_cert: Dict) -> Tuple[bool, int, Dict]:
 # ---------------------------------------------------------------------------
 # Law 6: Jerk Bounds  d³x/dt³ ≤ 500 m/s³  (Flash & Hogan 1985)
 # ---------------------------------------------------------------------------
-def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict]:
+def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "Motor_Control_Jerk", "equation": "d3x/dt3 <= 500 m/s3",
          "reference": "Flash & Hogan (1985) minimum-jerk model",
          "implementation": "Signal smoothed with w=7 window BEFORE differentiation to separate motion from sensor noise"}
@@ -973,7 +973,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
     ts = imu_raw.get("timestamps_ns", [])
     if len(accel) < 20:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     dt = (statistics.mean([ts[i + 1] - ts[i] for i in range(min(len(ts) - 1, 50))]) * 1e-9
           if len(ts) > 1 else 1 / 240)
@@ -1084,7 +1084,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
 
     if not all_jerk:
         d["skip"] = "COULD_NOT_COMPUTE"
-        return True, 50, d
+        return None, 0, d
 
     if _NP:
         jerk_arr = np.abs(np.asarray(all_jerk, dtype=np.float64))
@@ -1117,7 +1117,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
     if segment == "walking":
         d["skip"] = "jerk_limit_not_established_for_walking_pending_biomechanics_literature"
         d["gravity_removed_m_s2"] = float(np.median(np.asarray(sig_raw))) if _NP else statistics.median(sig_raw)
-        return True, 60, d
+        return None, 0, d
     
     # Choose appropriate jerk limit based on segment
     jerk_limit = JERK_MAX_MS3  # Only arm movement limits are scientifically established
@@ -1150,7 +1150,7 @@ def check_jerk(imu_raw: Dict, segment: str = "forearm") -> Tuple[bool, int, Dict
 # ---------------------------------------------------------------------------
 # Law 8: Inter-window Continuity (Lagrangian-lite)
 # ---------------------------------------------------------------------------
-def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[bool, int, Dict]:
+def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 8 — Inter-window Continuity Check (v1.7.0)
 
@@ -1182,12 +1182,12 @@ def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[bool, i
 
     if not ts or not accel:
         d["skip"] = "NO_TIMESTAMP_DATA"
-        return True, 50, d
+        return None, 0, d
 
     # First window — initialize state, always passes
     if last_state is None or last_state.get("timestamp_ns") is None:
         d["info"] = "FIRST_WINDOW_INITIALIZED"
-        return True, 100, d
+        return None, 0, d
 
     # Temporal gap check
     t_current = ts[0]
@@ -1208,7 +1208,7 @@ def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[bool, i
     # Allow up to 2 seconds gap (handles deliberate pauses in teleoperation)
     if dt > 2.0:
         d["skip"] = f"LARGE_GAP_{dt:.2f}s: session pause or new segment"
-        return True, 70, d
+        return None, 0, d
 
     # Kinematic continuity check
     # Maximum human arm velocity ≈ 5.0 m/s (Flash & Hogan 1985)
@@ -1249,7 +1249,7 @@ def check_continuity(imu_raw: Dict, last_state: Optional[Dict]) -> Tuple[bool, i
 # ---------------------------------------------------------------------------
 # Law 7: IMU Internal Consistency (accel-gyro co-variance)
 # ---------------------------------------------------------------------------
-def check_imu_consistency(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_imu_consistency(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     d = {"law": "IMU_Internal_Consistency", "equation": "Var(accel) co-varies with Var(gyro)",
          "physical_meaning": "Same motion event causes both angular velocity and linear acceleration"}
 
@@ -1259,11 +1259,11 @@ def check_imu_consistency(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         d["violation"] = "MISSING_GYRO"
         d["interpretation"] = "Gyroscope data is required for IMU consistency check"
         d["skip"] = "MISSING_GYRO"
-        return True, 50, d
+        return None, 0, d
     n = min(len(accel), len(gyro))
     if n < 30:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     r = _windowed_variance_pearson(accel[:n], gyro[:n], w=10)
     d.update({"pearson_r_var_coupling": round(r, 4), "expected_r_range": [0.1, 1.0]})
@@ -1295,7 +1295,7 @@ def check_imu_consistency(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 # Validated: WESAD wrist at rest min=0.23, Gaussian 3σ boundary=0.19 (n=256)
 # Safety margin: threshold 0.20 catches 99.9% of Gaussian (3.2σ)
 # ---------------------------------------------------------------------------
-def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_autocorrelation(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 12: Lag-1 Autocorrelation of acceleration magnitude.
 
@@ -1314,7 +1314,7 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 32:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     ACF_MIN = 0.20  # Gaussian 3.2σ (n=256), human min=0.23 (WESAD wrist rest)
 
@@ -1326,7 +1326,7 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
             den = float(np.sum(mag ** 2))
             if den < 1e-10:
                 d["skip"] = "ZERO_VARIANCE"
-                return True, 50, d
+                return None, 0, d
             acf1 = float(np.sum(mag[:-1] * mag[1:])) / den
         else:
             mag = [math.sqrt(sum(a[k] ** 2 for k in range(min(3, len(a))))) for a in accel]
@@ -1335,7 +1335,7 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
             den = sum(m * m for m in mag)
             if den < 1e-10:
                 d["skip"] = "ZERO_VARIANCE"
-                return True, 50, d
+                return None, 0, d
             n = len(mag)
             acf1 = sum(mag[i] * mag[i + 1] for i in range(n - 1)) / den
 
@@ -1361,7 +1361,7 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     except Exception as e:
         d["skip"] = f"ERROR:{e}"
-        return True, 50, d
+        return None, 0, d
 
 
 # ---------------------------------------------------------------------------
@@ -1370,7 +1370,7 @@ def check_autocorrelation(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 # = hardware fault (bus hang, firmware bug, data copy error)
 # Reference: ADC physics — public domain electronics
 # ---------------------------------------------------------------------------
-def check_sensor_freeze(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_sensor_freeze(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 13: Sensor Freeze / Deadlock Detection.
 
@@ -1387,7 +1387,7 @@ def check_sensor_freeze(imu_raw: Dict) -> Tuple[bool, int, Dict]:
 
     if len(accel) < 20:
         d["skip"] = "INSUFFICIENT_DATA"
-        return True, 50, d
+        return None, 0, d
 
     # State-conditioned: rest (low variance) → lenient, active → strict
     try:
@@ -1441,13 +1441,13 @@ def check_powerline_interference(imu_raw):
     accel = imu_raw.get("accel", [])
     ts    = imu_raw.get("timestamps_ns", [])
     if len(accel) < 64 or len(ts) < 2:
-        d["skip"] = "INSUFFICIENT_DATA"; return True, 50, d
+        d["skip"] = "INSUFFICIENT_DATA"; return None, 0, d
     dt_s = (ts[-1] - ts[0]) / 1e9 / max(len(ts) - 1, 1)
     hz   = 1.0 / dt_s if dt_s > 0 else 100.0
     if hz < 125:
-        d["skip"] = "HZ_TOO_LOW"; return True, 50, d
+        d["skip"] = "HZ_TOO_LOW"; return None, 0, d
     if not _NP:
-        d["skip"] = "NUMPY_REQUIRED"; return True, 50, d
+        d["skip"] = "NUMPY_REQUIRED"; return None, 0, d
     import numpy as _np2
     n     = len(accel)
     freqs = _np2.fft.rfftfreq(n, d=1.0/hz)
@@ -1479,7 +1479,7 @@ def check_intra_window_splice(imu_raw):
     d = {"law": "intra_window_splice", "result": "", "conf": 0}
     accel = imu_raw.get("accel", [])
     if len(accel) < 40:
-        d["skip"] = "INSUFFICIENT_DATA"; return True, 50, d
+        d["skip"] = "INSUFFICIENT_DATA"; return None, 0, d
     import math
     n    = len(accel)
     half = n // 2
@@ -1501,7 +1501,7 @@ def check_intra_window_splice(imu_raw):
 # ---------------------------------------------------------------------------
 
 # Law 16: Innovation Kurtosis — Gaussian Innovation Detection
-def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[bool, int, Dict]:
+def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]:
     """
     Law 16: Gaussian Innovation Detection.
 
@@ -1525,7 +1525,7 @@ def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[bool, int, Dict]:
     accel = imu_raw.get("accel", [])
     n = len(accel)
     if n < 30:
-        return True, 50, {"reason": "SKIP_SHORT", "excess_kurtosis": None}
+        return None, 0, {"reason": "SKIP_SHORT", "excess_kurtosis": None}
 
     # Skip in acc-only mode — without gyro we cannot reliably distinguish
     # biological from synthetic (OU generator provides real gyro, so it is still caught)
@@ -1534,7 +1534,7 @@ def check_innovation_kurtosis(imu_raw: Dict) -> Tuple[bool, int, Dict]:
         any(abs(v) > 1e-6 for v in row) for row in gyro
     )
     if not has_real_gyro:
-        return True, 50, {"reason": "SKIP_NO_GYRO", "excess_kurtosis": None}
+        return None, 0, {"reason": "SKIP_NO_GYRO", "excess_kurtosis": None}
 
     all_innovations: list = []
 
@@ -1634,7 +1634,7 @@ class PhysicsEngine:
                 signal.alarm(0)
         Not implemented internally — would break cross-platform support.
         """
-        results: Dict[str, Tuple[bool, int, Dict]] = {}
+        results: Dict[str, Tuple[Optional[bool], int, Dict]] = {}
         _errors: list = []
 
         def _safe(name, fn, *args):
@@ -1642,7 +1642,7 @@ class PhysicsEngine:
                 return fn(*args)
             except Exception as e:
                 _errors.append(f"{name}: {e}")
-                return (True, 50, {"skip": f"ERROR:{e}", "law": name})
+                return (None, 0, {"skip": f"ERROR:{e}", "law": name})
 
         # Law 8 — Inter-window continuity (runs before other laws)
         if imu_raw:
@@ -1651,6 +1651,8 @@ class PhysicsEngine:
 
         if imu_raw and emg_raw:
             results["newton_second_law"] = _safe("newton", check_newton, imu_raw, emg_raw)
+        else:
+            results["newton_second_law"] = (None, 0, {"law": "Newton_Second_Law", "skip": "MISSING_IMU_OR_EMG", "required": ["imu_raw", "emg_raw"]})
         if imu_raw:
             results["resonance_frequency"]      = _safe("resonance", check_resonance, imu_raw, segment)
             results["rigid_body_kinematics"]    = _safe("rigid_body", check_rigid_body, imu_raw)
@@ -1670,8 +1672,12 @@ class PhysicsEngine:
 
         if imu_raw and ppg_cert:
             results["ballistocardiography"] = _safe("bcg", check_bcg, imu_raw, ppg_cert)
+        else:
+            results["ballistocardiography"] = (None, 0, {"law": "Ballistocardiography", "skip": "MISSING_IMU_OR_PPG_CERT", "required": ["imu_raw", "ppg_cert"]})
         if emg_cert and thermal_cert:
             results["joule_heating"] = _safe("joule", check_joule, emg_cert, thermal_cert)
+        else:
+            results["joule_heating"] = (None, 0, {"law": "Joule_Heating", "skip": "MISSING_EMG_OR_THERMAL_CERT", "required": ["emg_cert", "thermal_cert"]})
 
         # Update continuity state for next window
         if imu_raw:
@@ -1682,11 +1688,18 @@ class PhysicsEngine:
                     "timestamp_ns": ts[-1],
                     "accel": acc[-1] if acc else [0.0, 0.0, 9.81],
                 }
-        passed = [k for k, (ok, _, _) in results.items() if ok]
-        failed = [k for k, (ok, _, _) in results.items() if not ok]
-        confs  = [c for (_, c, _) in results.values()]
-        score  = int(sum(confs) / len(confs)) if confs else 0
-        n, np_ = len(results), len(passed)
+        # Each law has a tri-state result: True=PASS, False=FAIL, None=NOT_ASSESSED.
+        # A skipped rule must never inflate the pass count or score.
+        passed = [k for k, (ok, _, _) in results.items() if ok is True]
+        failed = [k for k, (ok, _, _) in results.items() if ok is False]
+        not_assessed = [k for k, (ok, _, _) in results.items() if ok is None]
+        law_statuses = {
+            k: ("PASS" if ok is True else "FAIL" if ok is False else "NOT_ASSESSED")
+            for k, (ok, _, _) in results.items()
+        }
+        assessed_confs = [c for (ok, c, _) in results.values() if ok is not None]
+        score = int(sum(assessed_confs) / len(assessed_confs)) if assessed_confs else 0
+        n, np_ = len(assessed_confs), len(passed)
 
         if n == 0:
             tier = "UNVERIFIED"
@@ -1697,8 +1710,9 @@ class PhysicsEngine:
             tier = "REJECTED"  # coherence failure: no temporal structure + no sensor coupling = synthetic
         # innovation_kurtosis is a soft signal — contributes to score
         # but does not force REJECTED alone (rest segments overlap with OU)
-
-        elif score >= 75 and np_ >= max(n - 1, 1):
+        # GOLD requires every attempted check to be assessed. If a check was
+        # skipped, the available evidence can support SILVER at most.
+        elif not not_assessed and score >= 75 and np_ >= max(n - 1, 1):
             tier = "GOLD"
         elif score >= 55:
             tier = "SILVER"
@@ -1727,15 +1741,22 @@ class PhysicsEngine:
         return {
             "status":             "PASS" if tier not in ("REJECTED", "UNVERIFIED") else "FAIL",
             "tier":               tier,
+            "assessment_status":  "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else "ASSESSED"),
             "sensor_type":        "PHYSICS",
             "physical_law_score": score,
+            "score_basis":        "mean confidence over assessed laws only",
             "laws_checked":       list(results.keys()),
-            "n_laws_checked":     n,
+            "n_laws_checked":     len(results),
+            "laws_assessed":      [k for k, (ok, _, _) in results.items() if ok is not None],
+            "n_laws_assessed":    n,
+            "laws_not_assessed":  not_assessed,
+            "n_laws_not_assessed": len(not_assessed),
+            "law_statuses":       law_statuses,
             "laws_passed":        passed,
             "laws_failed":        failed,
             "body_segment":       segment,
             "source_type": "HIL_BIOLOGICAL",
-            "law_details":        {k: det for k, (_, _, det) in results.items()},
+            "law_details":        {k: {**det, "status": law_statuses[k]} for k, (_, _, det) in results.items()},
             "flags":              flags,
             "physical_constants": {
                 "forearm_I_kgm2":       FOREARM_MOMENT_OF_INERTIA,
@@ -2342,7 +2363,7 @@ def check_sample_entropy(accel: List[List[float]],
         (passed, confidence, details)
     """
     if len(accel) < 20:
-        return True, 50, {"skip": True, "reason": "insufficient_data"}
+        return None, 0, {"skip": True, "reason": "insufficient_data"}
 
     # Use acceleration magnitude
     mag = []
