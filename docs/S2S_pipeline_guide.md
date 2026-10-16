@@ -54,8 +54,9 @@ This is the main gate. 16 independent checks run on every window.
 
 ### How the score works
 
-Each law returns a confidence score (0-100). The final score is the average.
-Too many failures → REJECTED. High score, few failures → GOLD.
+Each assessed law returns a confidence score (0-100). Each law has one of three statuses: `PASS`, `FAIL`, or `NOT_ASSESSED`. A skipped check is never counted as passed and does not contribute a neutral score to the average. Results expose per-law status and assessment coverage.
+
+Too many assessed failures → REJECTED. High score with nearly all assessed checks passing → GOLD. The tier describes only the assessed checks when `tier_scope` is `ASSESSED_CHECKS_ONLY`; `assessment_status: PARTIAL` means some checks could not be evaluated, and the tier must not be interpreted as a full multimodal certification.
 
 ```
 More than 30% of laws failed          → REJECTED
