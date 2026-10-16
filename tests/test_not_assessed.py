@@ -46,7 +46,7 @@ def test_empty_input_is_unverified_not_a_pass():
     result = PhysicsEngine().certify()
 
     assert result["tier"] == "UNVERIFIED"
-    assert result["status"] == "UNVERIFIED"
+    assert result["status"] == "FAIL"
     assert result["assessment_status"] == "UNVERIFIED"
     assert result["n_laws_assessed"] == 0
     assert result["physical_law_score"] == 0
