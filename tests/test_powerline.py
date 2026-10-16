@@ -24,4 +24,4 @@ def test_powerline_skips_low_hz():
     acc = [[0.1*i, 0.0, 9.81] for i in range(n)]
     ts  = [int(i*1e9/100) for i in range(n)]   # 100Hz < 125 threshold
     passed, conf, d = check_powerline_interference({"timestamps_ns": ts, "accel": acc})
-    assert passed and "skip" in d, f"Should skip at 100Hz: {d}"
+    assert passed is None and "skip" in d, f"Should be NOT_ASSESSED at 100Hz: {d}"
