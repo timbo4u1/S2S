@@ -36,7 +36,7 @@ def test_short_data_skips():
     acc = [[0.1, 0.0, 9.81]] * 32
     ts  = [int(i*1e9/100) for i in range(32)]
     passed, conf, detail = check_spectral_flatness({'accel':acc,'timestamps_ns':ts})
-    assert passed
+    assert passed is None
     assert detail.get('skip')
 
 
