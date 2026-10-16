@@ -133,6 +133,8 @@ Laws run on IMU-only data (no gyro hardware):
 
 With full sensor stack (IMU + EMG + PPG + gyro): all 16 laws run.
 
+**Interpreting certification status:** Each rule is `PASS`, `FAIL`, or `NOT_ASSESSED`. Missing modalities, insufficient samples, unsupported sample rates, and internal check errors are `NOT_ASSESSED`—never `PASS`—and do not contribute a neutral score. Results report `assessment_status`, `tier_scope`, assessed/not-assessed counts, and per-law statuses. A GOLD/SILVER/BRONZE tier describes only the checks that were assessed when `tier_scope=ASSESSED_CHECKS_ONLY`; it is not a claim that unavailable sensor modalities were validated.
+
 ## Platform Support
 
 S2S runs on any platform Python supports:
