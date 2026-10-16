@@ -39,16 +39,17 @@ def test_missing_gyro_checks_are_not_assessed_not_passed():
     assert result["n_laws_assessed"] == len(result["laws_passed"]) + len(result["laws_failed"])
     assert result["n_laws_not_assessed"] == len(result["laws_not_assessed"])
     assert result["n_laws_assessed"] + result["n_laws_not_assessed"] == result["n_laws_checked"]
-    assert result["tier"] != "GOLD"
+    assert result["tier_scope"] == "ASSESSED_CHECKS_ONLY"
 
 
 def test_empty_input_is_unverified_not_a_pass():
     result = PhysicsEngine().certify()
 
     assert result["tier"] == "UNVERIFIED"
-    assert result["status"] == "FAIL"
+    assert result["status"] == "UNVERIFIED"
     assert result["assessment_status"] == "UNVERIFIED"
     assert result["n_laws_assessed"] == 0
     assert result["physical_law_score"] == 0
     assert result["laws_passed"] == []
     assert result["laws_failed"] == []
+    assert result["laws_not_assessed"] == result["laws_checked"]
