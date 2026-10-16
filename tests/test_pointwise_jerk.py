@@ -63,7 +63,7 @@ def test_short_data_skips():
     """Less than 2 samples returns skip."""
     from s2s_standard_v1_3.s2s_physics_v1_3 import check_pointwise_jerk
     passed, conf, detail = check_pointwise_jerk({'accel':[[0,0,9.81]],'timestamps_ns':[0]})
-    assert passed
+    assert passed is None
     assert detail.get('skip')
 
 
