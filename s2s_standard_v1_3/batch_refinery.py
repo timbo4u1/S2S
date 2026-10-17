@@ -254,7 +254,23 @@ def build_summary(all_results, input_dir, segment, elapsed_s):
     quality = int(100 * usable / total)
     mean_sc = sum(scores) / len(scores)
 
-    if quality >= 85:
+    # Be conservative: a window is fully assessed only when the engine
+    # explicitly says every configured check was assessed. Missing/unknown
+    # scope must not be described as full-modality certification.
+    fully_assessed = sum(
+        1 for r in all_results
+        if r.get("assessment_status") == "ASSESSED"
+        and r.get("tier_scope") == "FULL_CONFIGURED_CHECKS"
+    )
+    partial_count = total - fully_assessed
+
+    if partial_count:
+        verdict = (
+            f"PARTIAL ASSESSMENT — {partial_count}/{total} windows are not "
+            "fully assessed; GOLD/SILVER tiers reflect assessed checks only, "
+            "not full-modality certification."
+        )
+    elif quality >= 85:
         verdict = "EXCELLENT — ready for robot training pipelines."
     elif quality >= 70:
         verdict = "GOOD — usable with minor preprocessing."
@@ -273,7 +289,9 @@ def build_summary(all_results, input_dir, segment, elapsed_s):
         f"  Windows:        {total}",
         f"  Processed in:   {elapsed_s:.1f}s",
         "",
-        f"  DATASET QUALITY SCORE: {quality}%",
+        f"  GOLD+SILVER TIER RATE: {quality}% (based on computed tiers)",
+        f"  Fully assessed:  {fully_assessed:5d}/{total}",
+        f"  Partial/unknown: {partial_count:5d}/{total}",
         f"  VERDICT: {verdict}",
         "",
         "  Tier distribution:",
@@ -281,7 +299,7 @@ def build_summary(all_results, input_dir, segment, elapsed_s):
         f"    SILVER:   {tiers['SILVER']:5d}  ({100*tiers['SILVER']//total}%)",
         f"    BRONZE:   {tiers['BRONZE']:5d}  ({100*tiers['BRONZE']//total}%)",
         f"    REJECTED: {tiers['REJECTED']:5d}  ({100*tiers['REJECTED']//total}%)",
-        f"    USABLE:   {usable:5d}  ({quality}%)",
+        f"    GOLD+SILVER: {usable:5d}  ({quality}%)",
         "",
         f"  Mean score:     {mean_sc:.1f}/100",
         "",
@@ -294,9 +312,15 @@ def build_summary(all_results, input_dir, segment, elapsed_s):
     lines += [
         "",
         "  Recommendation:",
-        f"    Use GOLD+SILVER windows for training ({usable}/{total}).",
+        f"    GOLD+SILVER tier windows: {usable}/{total}.",
         f"    Discard REJECTED windows ({tiers['REJECTED']}).",
         f"    Review BRONZE windows ({tiers['BRONZE']}) manually.",
+        *(
+            ["    IMPORTANT: These tiers are NOT full-modality certification; "
+             "provide missing sensor streams for full configured checks."]
+            if partial_count else
+            ["    Full configured checks were assessed for every window."]
+        ),
         "=" * 56,
     ]
     return "\n".join(lines)
