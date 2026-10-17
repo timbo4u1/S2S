@@ -64,3 +64,23 @@ def test_refinery_report_exposes_partial_assessment_scope(monkeypatch):
     assert result["laws_not_assessed"] == "rigid_body_kinematics"
     assert result["n_laws_assessed"] == 1
     assert result["n_laws_not_assessed"] == 1
+
+
+
+def test_summary_does_not_call_partial_tiers_fully_certified():
+    summary = refinery.build_summary(
+        [{
+            "tier": "GOLD",
+            "score": 95,
+            "laws_failed": "",
+            "assessment_status": "PARTIAL",
+            "tier_scope": "ASSESSED_CHECKS_ONLY",
+        }],
+        input_dir="dataset",
+        segment="forearm",
+        elapsed_s=0.1,
+    )
+
+    assert "PARTIAL ASSESSMENT" in summary
+    assert "Partial/unknown:" in summary
+    assert "NOT full-modality certification" in summary
