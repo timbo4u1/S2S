@@ -205,11 +205,14 @@ def certify_file_windows(fpath, segment=SEGMENT, accel_cols=None):
 
     for start in range(0, n - WIN + 1, WIN):
         chunk = acc[start:start+WIN]
-        ts    = [int(i * 1e9 / hz) for i in range(WIN)]
-        r     = pe.certify({"timestamps_ns": ts,
-                            "accel":         chunk,
-                            "gyro":          [[0,0,0]]*WIN},
-                           segment=segment)
+        # Reconstruct timestamps from absolute file sample indices. This keeps
+        # them monotonic across windows; loaders currently return accel + Hz,
+        # not the original acquisition-clock timestamps.
+        ts = [int((start + i) * 1e9 / hz) for i in range(WIN)]
+
+        # Do not fabricate a zero-valued gyro stream. Missing modalities must
+        # remain NOT_ASSESSED rather than being treated as measured zero motion.
+        r = pe.certify({"timestamps_ns": ts, "accel": chunk}, segment=segment)
         results.append({
             "file":        Path(fpath).name,
             "window":      win_idx,
@@ -218,8 +221,13 @@ def certify_file_windows(fpath, segment=SEGMENT, accel_cols=None):
             "hz":          hz,
             "tier":        r["tier"],
             "score":       r.get("score", r.get("physical_law_score", 0)),
+            "assessment_status": r.get("assessment_status", "UNKNOWN"),
+            "tier_scope":   r.get("tier_scope", "UNKNOWN"),
             "laws_passed": "|".join(r.get("laws_passed", [])),
             "laws_failed": "|".join(r.get("laws_failed", [])),
+            "laws_not_assessed": "|".join(r.get("laws_not_assessed", [])),
+            "n_laws_assessed": r.get("n_laws_assessed", 0),
+            "n_laws_not_assessed": r.get("n_laws_not_assessed", 0),
         })
         win_idx += 1
 
