@@ -1,6 +1,6 @@
 # S2S — Physics Certification for Motion Data
 
-**Bad robot and human motion training data costs you months. S2S finds it in seconds.**
+**S2S makes motion data quality measurable, explainable, and repeatable before that data is used to train a model.**
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
