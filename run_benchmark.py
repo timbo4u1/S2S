@@ -160,10 +160,10 @@ def load_pamap2(pamap2_dir, n_subjects=3, n_windows=3):
         try:
             arr = np.loadtxt(dat_path)
             arr = arr[~np.isnan(arr).any(axis=1)]
-            if arr.shape[0] < 300 or arr.shape[1] < 10:
+            if arr.shape[0] < 300 or arr.shape[1] < 13:  # need up to col 12 for gyro
                 continue
             acc_cols  = arr[:, 4:7]
-            gyro_cols = arr[:, 7:10]
+            gyro_cols = arr[:, 10:13]  # corrected: cols 7-9 are 16g accel, cols 10-12 are gyro
             hz = 100.0
             for w in range(n_windows):
                 start = w * 150

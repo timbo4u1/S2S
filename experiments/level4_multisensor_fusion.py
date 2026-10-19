@@ -372,13 +372,25 @@ class MLP:
         return loss/max(len(samples)-skips,1)
 
     def evaluate(self,samples):
-        correct=0; pc=defaultdict(lambda:[0,0])
+        correct=0
+        # Track true positives, false positives, false negatives per class
+        tp=defaultdict(int); fp=defaultdict(int); fn=defaultdict(int)
         for feat,label in samples:
             _,probs=self.forward(feat); pred=probs.index(max(probs))
-            pc[label][1]+=1
-            if pred==label: correct+=1; pc[label][0]+=1
+            if pred==label:
+                correct+=1; tp[label]+=1
+            else:
+                fp[pred]+=1; fn[label]+=1
         acc=correct/max(len(samples),1)
-        return acc,sum(pc[i][0]/max(pc[i][1],1) for i in range(len(DOMAINS)))/len(DOMAINS)
+        # Macro-F1: per-class F1 then average
+        f1s=[]
+        for i in range(len(DOMAINS)):
+            p=tp[i]/max(tp[i]+fp[i],1)
+            r=tp[i]/max(tp[i]+fn[i],1)
+            f1=2*p*r/max(p+r,1e-9)
+            f1s.append(f1)
+        macro_f1=sum(f1s)/len(f1s)
+        return acc, macro_f1
 
 
 # ══════════════════════════════════════════════════════════════════
