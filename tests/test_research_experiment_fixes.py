@@ -3,7 +3,7 @@ import pytest
 import os
 
 import run_benchmark
-from experiments.level4_multisensor_fusion import DOMAINS, MLP, load_pamap2_multisensor, WINDOW_SIZE, STEP_SIZE, ACTIVITY_LABELS
+from experiments.level4_multisensor_fusion import DOMAINS, MLP, load_pamap2_multisensor, WINDOW_SIZE, STEP_SIZE, ACTIVITY_LABELS, random_class_matched_subset
 
 
 def test_pamap2_loader_uses_gyro_columns_10_to_12(tmp_path, monkeypatch):
@@ -249,7 +249,7 @@ def test_loso_folds_isolate_subjects():
     original_run_fold = l4_module.run_fold
     fold_check_results = []
 
-    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         # Verify no subject overlap
         train_subjects = set(w['subject'] for w in train_w)
         test_subjects = set(w['subject'] for w in test_w)
@@ -266,12 +266,14 @@ def test_loso_folds_isolate_subjects():
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -330,19 +332,21 @@ def test_loso_each_subject_held_out_once():
 
     held_out_subjects = []
 
-    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         held_out_subjects.append(test_subject_id)
         dummy_results = {
             'A_single_sensor': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -531,19 +535,21 @@ def test_paired_comparison_labels_and_paired_folds():
 
     # Create fold results with known differences
     fold_idx = [0]
-    def fake_run_fold(train_w, test_w, fold_idx_arg, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx_arg, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         # B > A by 0.1, C > B by 0.05, D > C by 0.02, D > A by 0.17
         dummy_results = {
             'A_single_sensor': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.6, 'macro_f1_supported_classes': 0.6, 'weighted_f1': 0.6, 'per_class': {}},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.65, 'macro_f1_supported_classes': 0.65, 'weighted_f1': 0.65, 'per_class': {}},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.67, 'macro_f1_supported_classes': 0.67, 'weighted_f1': 0.67, 'per_class': {}},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.67, 'macro_f1_supported_classes': 0.67, 'weighted_f1': 0.67, 'per_class': {}},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -606,18 +612,20 @@ def test_aggregated_weighted_f1_present():
     original_loader = l4_module.load_pamap2_multisensor
     l4_module.load_pamap2_multisensor = lambda data_dir: windows
 
-    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         dummy_results = {
             'A_single_sensor': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -672,18 +680,20 @@ def test_run_legacy_five_value_return():
     original_loader = l4_module.load_pamap2_multisensor
     l4_module.load_pamap2_multisensor = lambda data_dir: windows
 
-    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         dummy_results = {
             'A_single_sensor': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}, 'train_n': len(train_w)},
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}, 'train_n': len(train_w)},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}, 'train_n': len(train_w)},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}, 'train_n': len(train_w)},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}, 'train_n': len(train_w)},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -981,19 +991,21 @@ def test_run_loso_passes_base_seed_to_run_fold():
     # Track what seed run_fold receives
     seeds_received = []
 
-    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+    def fake_run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
         seeds_received.append((fold_idx, seed))
         dummy_results = {
             'A_single_sensor': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'B_multi_naive': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'C_chain_filtered': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
             'D_chain_weighted': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
+            'E_random_class_matched': {'accuracy': 0.5, 'macro_f1_12class': 0.5, 'macro_f1_supported_classes': 0.5, 'weighted_f1': 0.5, 'per_class': {}},
         }
         dummy_predictions = {
             'A_single_sensor': [(0, 0)] * len(test_w),
             'B_multi_naive': [(0, 0)] * len(test_w),
             'C_chain_filtered': [(0, 0)] * len(test_w),
             'D_chain_weighted': [(0, 0)] * len(test_w),
+            'E_random_class_matched': [(0, 0)] * len(test_w),
         }
         return dummy_results, dummy_predictions, None, None, None
 
@@ -1014,3 +1026,52 @@ def test_run_loso_passes_base_seed_to_run_fold():
     for fold_idx, received_seed in seeds_received:
         assert received_seed == base_seed, \
             f"Fold {fold_idx} received seed {received_seed}, expected base seed {base_seed}"
+
+
+
+def test_random_class_matched_subset_matches_exact_class_counts_and_size():
+    from collections import Counter
+
+    candidates = []
+    for label, count in [(0, 12), (1, 9), (2, 7)]:
+        for idx in range(count):
+            candidates.append(([label, idx], label, 1.0))
+
+    targets = [
+        ([100, 0], 0, 1.0),
+        ([100, 1], 0, 1.0),
+        ([101, 0], 1, 1.0),
+        ([101, 1], 1, 1.0),
+        ([102, 0], 2, 1.0),
+    ]
+
+    selected = random_class_matched_subset(candidates, targets, seed=123)
+
+    assert len(selected) == len(targets)
+    assert Counter(label for _, label, _ in selected) == Counter(
+        label for _, label, _ in targets
+    )
+    candidate_features = {tuple(features) for features, _, _ in candidates}
+    assert all(tuple(features) in candidate_features for features, _, _ in selected)
+    assert all(weight == 1.0 for _, _, weight in selected)
+
+
+def test_random_class_matched_subset_is_deterministic():
+    candidates = [([label, idx], label, 1.0)
+                  for label in (0, 1)
+                  for idx in range(20)]
+    targets = [([99, 0], 0, 1.0), ([99, 1], 0, 1.0),
+               ([99, 2], 1, 1.0)]
+
+    a = random_class_matched_subset(candidates, targets, seed=42)
+    b = random_class_matched_subset(candidates, targets, seed=42)
+
+    assert a == b
+
+
+def test_random_class_matched_subset_rejects_impossible_class_count():
+    candidates = [([0.1], 0, 1.0), ([0.2], 0, 1.0)]
+    targets = [([1.0], 0, 1.0), ([1.1], 0, 1.0), ([1.2], 0, 1.0)]
+
+    with pytest.raises(ValueError, match="Cannot match class 0"):
+        random_class_matched_subset(candidates, targets, seed=7)
