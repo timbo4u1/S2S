@@ -12,12 +12,11 @@ Usage:
     python3.9 run_benchmark.py --wesad   ~/wesad_data/WESAD
     python3.9 run_benchmark.py --all --ninapro ~/ninapro_db5 --pamap2 ~/S2S_data/pamap2 --wesad ~/wesad_data/WESAD
 
-Expected output (full run):
-    real_human:       20/21 (95%)
-    corrupted_spikes:  0/3  (0%)   ← high-freq spikes average out at 2000Hz
-    pure_synthetic:    1/5  (20%)  ← Gaussian noise can satisfy individual laws
-
-    Overall: 21/29 (72%)
+The runner always evaluates 17 built-in synthetic cases (5 IID Gaussian, 7
+hard-negative perturbations, and 5 coupled-OU cases). Supplying dataset paths
+adds whatever real windows can be loaded from those files; full-run totals
+therefore depend on the local datasets and usable windows. See README.md for
+the distinction between the current runner and the historical v1.7.8 reference.
 """
 import sys, os, json, random, glob, argparse
 from pathlib import Path
@@ -50,13 +49,29 @@ def make_ts(n, hz, seed=0):
 
 
 def certify(acc, gyro, ts, segment="forearm"):
+    """Run certification without treating execution failures as detections."""
     try:
-        return engine.certify(
+        result = engine.certify(
             {"timestamps_ns": ts, "accel": acc, "gyro": gyro},
             segment=segment
         )
+        if not isinstance(result, dict):
+            raise TypeError(f"PhysicsEngine.certify returned {type(result).__name__}, expected dict")
+        result = dict(result)
+        result["execution_ok"] = not bool(result.get("error"))
+        return result
     except Exception as e:
-        return {"tier": "REJECTED", "physical_law_score": 0, "error": str(e)}
+        return {
+            "tier": "ERROR",
+            "physical_law_score": None,
+            "execution_ok": False,
+            "error": f"{type(e).__name__}: {e}",
+        }
+
+
+def tier_is_expected(result, expected_tiers):
+    """A case passes its expected-tier rule only if certification executed."""
+    return bool(result.get("execution_ok", True)) and result.get("tier") in expected_tiers
 
 
 def inject_spikes(acc, n_spikes=6, magnitude=200):
@@ -72,6 +87,8 @@ def inject_spikes(acc, n_spikes=6, magnitude=200):
 def print_result(w):
     icon = "✓" if w["pass"] else "✗"
     print(f"  {icon} {w['id']:<30} tier={w['tier']:<10} score={w['score']}")
+    if not w.get("execution_ok", True):
+        print(f"      EXECUTION ERROR: {w.get('error', 'unspecified error')}")
 
 
 # ---------------------------------------------------------------------------
@@ -123,7 +140,9 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
                 "expected": ["GOLD", "SILVER", "BRONZE"],
                 "tier": r["tier"],
                 "score": r["physical_law_score"],
-                "pass": r["tier"] in ("GOLD", "SILVER", "BRONZE"),
+                "pass": tier_is_expected(r, ("GOLD", "SILVER", "BRONZE")),
+                "execution_ok": r.get("execution_ok", True),
+                "error": r.get("error"),
             })
 
         # Corrupted version
@@ -138,7 +157,9 @@ def load_ninapro(ninapro_dir, n_subjects=3, n_windows=3):
             "expected": ["REJECTED", "BRONZE"],
             "tier": r["tier"],
             "score": r["physical_law_score"],
-            "pass": r["tier"] in ("REJECTED", "BRONZE"),
+            "pass": tier_is_expected(r, ("REJECTED", "BRONZE")),
+            "execution_ok": r.get("execution_ok", True),
+            "error": r.get("error"),
             "note": "spike injection at 2000Hz — spikes average out over window",
         })
 
@@ -179,7 +200,9 @@ def load_pamap2(pamap2_dir, n_subjects=3, n_windows=3):
                     "expected": ["GOLD", "SILVER"],
                     "tier": r["tier"],
                     "score": r["physical_law_score"],
-                    "pass": r["tier"] in ("GOLD", "SILVER"),
+                    "pass": tier_is_expected(r, ("GOLD", "SILVER")),
+                    "execution_ok": r.get("execution_ok", True),
+                    "error": r.get("error"),
                 })
         except Exception as e:
             print(f"  [PAMAP2] {Path(dat_path).name}: {e}")
@@ -220,7 +243,9 @@ def load_wesad(wesad_dir, n_subjects=2, n_windows=3):
                     "expected": ["GOLD", "SILVER", "BRONZE"],
                     "tier": r["tier"],
                     "score": r["physical_law_score"],
-                    "pass": r["tier"] in ("GOLD", "SILVER", "BRONZE"),
+                    "pass": tier_is_expected(r, ("GOLD", "SILVER", "BRONZE")),
+                    "execution_ok": r.get("execution_ok", True),
+                    "error": r.get("error"),
                 })
         except Exception as e:
             print(f"  [WESAD] {Path(pkl_path).name}: {e}")
@@ -243,7 +268,9 @@ def make_synthetic(n=5):
             "expected": ["REJECTED"],
             "tier": r["tier"],
             "score": r["physical_law_score"],
-            "pass": r["tier"] == "REJECTED",
+            "pass": tier_is_expected(r, ("REJECTED",)),
+            "execution_ok": r.get("execution_ok", True),
+            "error": r.get("error"),
             "note": "Gaussian noise with zero-jitter timestamps",
         })
     return windows
@@ -273,7 +300,20 @@ def make_coupled_ou():
 
     for (seed, kwargs), label in zip(configs, labels):
         imu = generate_window(seed=seed, **kwargs)
-        result = pe.certify(imu_raw=imu, segment="forearm")
+        try:
+            result = pe.certify(imu_raw=imu, segment="forearm")
+            if not isinstance(result, dict):
+                raise TypeError(f"PhysicsEngine.certify returned {type(result).__name__}, expected dict")
+            result = dict(result)
+            result["execution_ok"] = not bool(result.get("error"))
+        except Exception as e:
+            result = {
+                "tier": "ERROR",
+                "physical_law_score": None,
+                "laws_failed": [],
+                "execution_ok": False,
+                "error": f"{type(e).__name__}: {e}",
+            }
         tier = result["tier"]
         w = {
             "timestamps_ns": imu["timestamps_ns"],
@@ -288,7 +328,9 @@ def make_coupled_ou():
             # adversarial pass = Law 16 detected Gaussian innovations
             # (soft signal — lowers score but does not force REJECTED alone
             # because rest-state biological data overlaps with OU in kurtosis space)
-            "pass":          "innovation_kurtosis" in result.get("laws_failed", []),
+            "pass":          bool(result.get("execution_ok", True)) and "innovation_kurtosis" in result.get("laws_failed", []),
+            "execution_ok":  result.get("execution_ok", True),
+            "error":         result.get("error"),
             "id":            label,
         }
         cases.append(w)
@@ -325,7 +367,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "Accel time-shifted 50 samples vs gyro",
     })
 
@@ -341,7 +385,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "Accel axes permuted x→y→z→x",
     })
 
@@ -358,7 +404,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "5x amplitude scaling — superhuman acceleration",
     })
 
@@ -376,7 +424,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE", "SILVER"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE", "SILVER")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "Sensor clipping at 16g — IMU hardware limit exceeded",
     })
 
@@ -394,7 +444,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE", "SILVER"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE", "SILVER")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "Frozen samples (packet drop) — 100 identical values",
     })
 
@@ -415,7 +467,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE", "SILVER"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE", "SILVER"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE", "SILVER")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "60Hz power line noise — EM interference",
     })
 
@@ -434,7 +488,9 @@ def make_hard_negatives():
         "expected": ["REJECTED", "BRONZE"],
         "tier": r["tier"],
         "score": r["physical_law_score"],
-        "pass": r["tier"] in ["REJECTED", "BRONZE"],
+        "pass": tier_is_expected(r, ("REJECTED", "BRONZE")),
+        "execution_ok": r.get("execution_ok", True),
+        "error": r.get("error"),
         "note": "Motor stall oscillation at 150Hz — mechanical vibration",
     })
 
@@ -455,14 +511,31 @@ def main():
     parser.add_argument("--pamap2",  help="Path to PAMAP2 directory")
     parser.add_argument("--wesad",   help="Path to WESAD root directory")
     parser.add_argument("--all",     action="store_true",
-                        help="Run all categories (requires dataset paths)")
+                        help="Run the full dataset-backed set (requires all three dataset paths)")
     parser.add_argument("--compare", action="store_true",
                         help="Compare results to saved benchmark JSON")
     args = parser.parse_args()
 
+    if args.all:
+        missing = [
+            flag for flag, value in (
+                ("--ninapro", args.ninapro),
+                ("--pamap2", args.pamap2),
+                ("--wesad", args.wesad),
+            ) if not value
+        ]
+        if missing:
+            parser.error("--all requires all three dataset paths; missing " + ", ".join(missing))
+
+    dataset_backed = any((args.ninapro, args.pamap2, args.wesad))
+    run_mode = "dataset-backed" if dataset_backed else "synthetic-only"
+
     print("\n" + "═" * 60)
-    print("  S2S Reference Benchmark")
-    print("  pip install s2s-certify && python3.9 run_benchmark.py")
+    print("  S2S Data-Quality Benchmark")
+    print(f"  Mode: {run_mode}")
+    print("  Run: python3 run_benchmark.py [--all --ninapro PATH --pamap2 PATH --wesad PATH]")
+    if not dataset_backed:
+        print("  No real dataset paths supplied; only generated synthetic cases will run.")
     print("═" * 60)
 
     windows = []
@@ -516,22 +589,26 @@ def main():
     for w in windows:
         c = w["category"]
         if c not in cats:
-            cats[c] = {"pass": 0, "total": 0, "windows": []}
+            cats[c] = {"pass": 0, "total": 0, "execution_errors": 0, "windows": []}
         cats[c]["total"] += 1
         if w["pass"]:
             cats[c]["pass"] += 1
+        if not w.get("execution_ok", True):
+            cats[c]["execution_errors"] += 1
         cats[c]["windows"].append(w)
 
     for cat, s in cats.items():
         pct = s["pass"] / s["total"] * 100
-        print(f"\n  {cat} ({s['pass']}/{s['total']} — {pct:.0f}%)")
+        print(f"\n  {cat} ({s['pass']}/{s['total']} — {pct:.0f}%; execution errors: {s['execution_errors']})")
         for w in s["windows"]:
             print_result(w)
 
     total  = len(windows)
     passed = sum(1 for w in windows if w["pass"])
     print("\n" + "═" * 60)
+    execution_errors = sum(1 for w in windows if not w.get("execution_ok", True))
     print(f"  Overall: {passed}/{total} ({passed/total*100:.0f}%)")
+    print(f"  Execution errors: {execution_errors}")
     print("═" * 60)
 
     # Known limitations
@@ -542,37 +619,58 @@ def main():
   - pure_synthetic: iid Gaussian noise caught by dual coherence check
     (spatial+temporal independence). Correlated noise (OU process) was
     a known gap — closed in v1.7.9 by Law 16 (innovation_kurtosis).
-    Triple coherence firewall: spatial(L9) + temporal(L12) + distributional(L16).
-    No known synthetic generator passes all three simultaneously.
-  - coupled_ou: aggressive OU (rho=0.6) has 90% detection rate due to
-    statistical variance at 256 samples. Standard and slow OU: 100%.
+    Current runner evaluates these three checks against a finite set of generators;
+    results do not establish universal detection of arbitrary synthetic data.
+  - coupled_ou: inspect per-case Law 16 flags in this run. These five cases are
+    not included in the historical v1.7.8 reference JSON.
   - WESAD/NinaPro (no gyro): only 3 of 7 laws run (jerk, resonance, BCG).
     Rigid body kinematics and IMU consistency skip with score=50 (neutral).
     SILVER on these datasets means 3/7 laws passed, not 7/7.
 """)
 
-    # Compare to saved benchmark
+    # Compare overlapping case IDs only; aggregate rates are not comparable when
+    # the runner and historical reference contain different case sets.
     if args.compare:
         bench_path = Path("experiments/s2s_reference_benchmark.json")
         if bench_path.exists():
             saved = json.loads(bench_path.read_text())
-            print("  Comparison to saved benchmark:")
-            saved_rate = saved["summary"]["pass_rate"]
-            this_rate  = round(passed / total, 3)
-            match = "✓ MATCH" if abs(saved_rate - this_rate) < 0.05 else "✗ MISMATCH"
-            print(f"  Saved: {saved_rate:.1%}  |  This run: {this_rate:.1%}  |  {match}")
+            saved_by_id = {w["id"]: w for w in saved.get("windows", []) if "id" in w}
+            current_by_id = {w["id"]: w for w in windows if "id" in w}
+            common_ids = sorted(set(saved_by_id) & set(current_by_id))
+            mismatches = [
+                case_id for case_id in common_ids
+                if saved_by_id[case_id].get("pass") != current_by_id[case_id].get("pass")
+                or saved_by_id[case_id].get("tier") != current_by_id[case_id].get("tier")
+            ]
+            print("  Comparison to historical reference by overlapping case ID:")
+            print(f"  Shared cases: {len(common_ids)}; outcome mismatches: {len(mismatches)}")
+            print(f"  Current cases: {len(current_by_id)}; historical cases: {len(saved_by_id)}")
+            if len(current_by_id) != len(saved_by_id) or set(current_by_id) != set(saved_by_id):
+                print("  Case sets differ; aggregate pass rates are not directly comparable.")
         else:
             print("  No saved benchmark found at experiments/s2s_reference_benchmark.json")
 
     # Save this run
     out = {
-        "version": "1.0",
+        "version": "1.1",
+        "runner_version": "1.7.9",
         "summary": {
             "total": total,
             "passed": passed,
             "pass_rate": round(passed / total, 3),
+            "execution_errors": execution_errors,
+            "run_mode": run_mode,
+            "dataset_paths_supplied": {
+                "ninapro": bool(args.ninapro),
+                "pamap2": bool(args.pamap2),
+                "wesad": bool(args.wesad),
+            },
             "by_category": {
-                c: {"pass": s["pass"], "total": s["total"]}
+                c: {
+                    "pass": s["pass"],
+                    "total": s["total"],
+                    "execution_errors": s["execution_errors"],
+                }
                 for c, s in cats.items()
             },
         },
