@@ -17,8 +17,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install signing dependency
-        run: pip install cryptography
+      - name: Install test dependencies
+        run: python -m pip install -e . pytest "cryptography>=46.0.5" numpy scipy scikit-learn
 
       - name: Test PhysicsEngine import
         run: python3 -c "from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine; print('PhysicsEngine OK')"
@@ -158,12 +158,9 @@ jobs:
 
       - name: Security audit
         run: |
-          pip install pip-audit
-          pip install cryptography>=46.0.5
-          pip-audit --skip-editable || true
-          echo "Security audit complete"
+          python -m pip install --upgrade "setuptools>=84.1.0" pip-audit
+          python -m pip check
+          pip-audit --skip-editable
 
       - name: Run pytest test suite
-        run: |
-          pip install -e . pytest cryptography numpy scipy scikit-learn
-          pytest tests/ -v --tb=short -x --ignore=tests/test_semantic_mismatch.py
+        run: pytest tests/ -v --tb=short -x --ignore=tests/test_semantic_mismatch.py
