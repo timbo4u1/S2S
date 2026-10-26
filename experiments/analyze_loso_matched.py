@@ -13,7 +13,7 @@ import random
 import statistics
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 
 COMPARISONS = {
@@ -177,7 +177,7 @@ def analyze_results(
     return output
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("result_files", nargs="+", help="One LOSO JSON result per unique seed")
     parser.add_argument("--bootstrap-samples", type=int, default=10000)
