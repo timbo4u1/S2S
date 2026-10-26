@@ -67,6 +67,11 @@ If C−E is near zero or negative, conclude that a downstream benefit from the c
 
 Build an evaluation set by applying deterministic, documented corruptions to copies of real sensor windows. Preserve the clean source and record the corruption type, subject/source-window ID, random seed, parameters, and expected affected modality/law for each generated case.
 
+### Existing synthetic-only smoke evidence (not external validation)
+
+The current runner's five built-in coupled-OU cases have been exercised in CI. In the observed run, Law 16 flagged 3/3 standard OU cases and 1/2 aggressive OU cases; one aggressive case remained SILVER and was not flagged. The overall 16/17 expected-tier matches in that smoke run is **not** a detection-accuracy estimate: each case uses a case-specific expected-tier rule, and the generated set is small. This miss is a reason to measure per-family sensitivity and clean-rest false positives on a held-out dataset, not a reason to claim universal generator detection.
+
+
 Include distinct families rather than one generic “synthetic” class:
 
 - Timestamp resets, non-monotonic timestamps, gaps, and session splices.
