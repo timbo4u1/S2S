@@ -25,7 +25,7 @@ def test_certify_exception_is_not_reported_as_rejected(monkeypatch):
 
     monkeypatch.setattr(run_benchmark.engine, "certify", raise_sentinel)
     result = run_benchmark.certify(
-        accel=[[0.0, 0.0, 9.81]] * 8,
+        acc=[[0.0, 0.0, 9.81]] * 8,
         gyro=[[0.0, 0.0, 0.0]] * 8,
         ts=list(range(8)),
     )
@@ -45,7 +45,7 @@ def test_certify_marks_successful_execution(monkeypatch):
         },
     )
     result = run_benchmark.certify(
-        accel=[[0.0, 0.0, 9.81]] * 8,
+        acc=[[0.0, 0.0, 9.81]] * 8,
         gyro=[[0.0, 0.0, 0.0]] * 8,
         ts=list(range(8)),
     )
