@@ -163,4 +163,4 @@ jobs:
           pip-audit --skip-editable
 
       - name: Run pytest test suite
-        run: pytest tests/ -v --tb=short -x --ignore=tests/test_semantic_mismatch.py
+        run: pytest tests/ -v --tb=short -x
