@@ -681,6 +681,10 @@ def main():
         json.dumps(out, indent=2))
     print("  Saved → experiments/benchmark_run_latest.json\n")
 
+    if execution_errors:
+        print(f"ERROR: {execution_errors} benchmark case(s) failed to execute; run is not valid.")
+        raise SystemExit(2)
+
 
 if __name__ == "__main__":
     main()
