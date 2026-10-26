@@ -47,7 +47,6 @@ def test_c_minus_e_averages_seeds_within_subject_before_bootstrapping():
 
     # Subject-level means: 0.10, 0.10, -0.05 -> mean +0.05 = +5 pp.
     assert result["mean_delta_percentage_points"] == pytest.approx(5.0)
-    assert result["n_subjects"] if "n_subjects" in result else True
     assert result["per_subject_mean_delta_percentage_points"] == {
         "101": 10.0,
         "102": 10.0,
