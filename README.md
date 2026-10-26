@@ -312,8 +312,6 @@ RoboTurk teleoperation data:  21.9% rejected as physically invalid
 
 Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
 
-See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the pre-run plan for matched-control evaluation, known-corruption detection, and independent replication.
-
 ## Status & Roadmap
 
 The repository contains prototype components for a 7-layer pipeline; validation maturity varies by layer and input modality.
