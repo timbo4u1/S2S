@@ -14,6 +14,7 @@ Conditions:
   B — Multi-sensor naive concat (no consistency check)
   C — Multi-sensor + kinematic chain filter (Level 4 claim)
   D — Multi-sensor + chain filter + curriculum (Level 4 full)
+  E — Random retention control matched to C's per-activity training counts
 
 Run from ~/S2S:
   python3 experiments/level4_multisensor_fusion.py \
@@ -63,6 +64,38 @@ def derive_seed(base_seed, *components):
     hash_bytes = hashlib.sha256(seed_str.encode()).digest()
     seed_int = int.from_bytes(hash_bytes[:4], byteorder='big')
     return seed_int
+
+
+def random_class_matched_subset(candidate_records, target_records, seed):
+    """
+    Draw a deterministic random subset of candidate (features, label, weight)
+    records matching target_records exactly by class count and total size.
+
+    This is an evaluation control, not a deployable training rule. It isolates
+    the effect of the chain-based selection from the confound of simply
+    reducing training volume or changing the activity-class distribution.
+    """
+    target_counts = Counter(int(record[1]) for record in target_records)
+    candidates_by_class = defaultdict(list)
+    for record in candidate_records:
+        candidates_by_class[int(record[1])].append(record)
+
+    rng = random.Random(seed)
+    selected = []
+    for label in sorted(target_counts):
+        count = target_counts[label]
+        candidates = candidates_by_class.get(label, [])
+        if count > len(candidates):
+            raise ValueError(
+                f"Cannot match class {label}: requested {count} rows, "
+                f"only {len(candidates)} candidates available"
+            )
+        selected.extend(
+            (features, label, 1.0)
+            for features, _, _ in rng.sample(candidates, count)
+        )
+
+    return selected
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -532,7 +565,7 @@ def compute_detailed_metrics(model, test_data, n_classes):
     }
 
 
-def run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42):
+def run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, norm_m=None, chain_floor=None, seed=42, include_random_control=False):
     """
     Run a single fold of training/evaluation.
     If norm_s, norm_m, chain_floor are None, compute from train_w.
@@ -611,7 +644,24 @@ def run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, no
               for w in chain_kept if extract_features_multi(w) and tier_wt.get(w['chain_tier'], 0) > 0]
     sD = list(zip(nm([f for f, _, _ in sD_raw]), [l for _, l, _ in sD_raw], [wt for _, _, wt in sD_raw]))
 
-    print(f"  Condition sizes: A={len(sA)} B={len(sB)} C={len(sC)} D={len(sD)}")
+    sE_raw = []
+    sE = []
+    if include_random_control:
+        sE_raw = random_class_matched_subset(
+            sB_raw,
+            sC_raw,
+            derive_seed(seed, fold_idx, "random_class_matched")
+        )
+        sE = list(zip(
+            nm([f for f, _, _ in sE_raw]),
+            [l for _, l, _ in sE_raw],
+            [wt for _, _, wt in sE_raw]
+        ))
+
+    size_text = f"  Condition sizes: A={len(sA)} B={len(sB)} C={len(sC)} D={len(sD)}"
+    if include_random_control:
+        size_text += f" E_random_class_matched={len(sE)}"
+    print(size_text)
     print(f"  Chain filter removed: {len(train_w) - len(chain_kept)} ({(len(train_w)-len(chain_kept))/len(train_w)*100:.1f}%)")
 
     fold_results = {}
@@ -622,6 +672,13 @@ def run_fold(train_w, test_w, fold_idx, test_subject_id, epochs, norm_s=None, no
         ("C_chain_filtered", sC, test_m_n, "3 IMUs + chain filter"),
         ("D_chain_weighted", sD, test_m_n, "3 IMUs + filter + weights"),
     ]
+    if include_random_control:
+        conditions.append((
+            "E_random_class_matched",
+            sE,
+            test_m_n,
+            "3 IMUs + random subset matched to chain-filter class counts"
+        ))
 
     for cond, train_data, test_data, desc in conditions:
         if not train_data or not test_data:
@@ -778,7 +835,8 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
 
         # Pass base seed to run_fold; it will derive fold-specific seeds internally
         fold_results, fold_predictions, norm_s, norm_m, chain_floor = run_fold(
-            train_w, test_w, fold_idx, test_subject, epochs, seed=seed
+            train_w, test_w, fold_idx, test_subject, epochs, seed=seed,
+            include_random_control=True
         )
 
         fold_results['test_subject'] = test_subject
@@ -786,7 +844,7 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
         all_fold_results.append(fold_results)
 
         # Collect predictions for pooled metrics
-        for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted"]:
+        for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted", "E_random_class_matched"]:
             if fold_predictions[cond] is not None:
                 all_predictions[cond].extend(fold_predictions[cond])
 
@@ -796,7 +854,7 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
     print(f"{'='*62}")
 
     aggregated = {}
-    for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted"]:
+    for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted", "E_random_class_matched"]:
         values = [f[cond] for f in all_fold_results if f[cond] is not None]
         if not values:
             continue
@@ -828,12 +886,14 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
 
     # Paired comparisons
     print(f"\n  Paired comparisons (mean ± std across subjects):")
-    if all(c in aggregated for c in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted"]):
+    if all(c in aggregated for c in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted", "E_random_class_matched"]):
         gains = {}
         for pair, name, label in [("B_multi_naive", "A_single_sensor", "B-A"),
                            ("C_chain_filtered", "B_multi_naive", "C-B"),
                            ("D_chain_weighted", "C_chain_filtered", "D-C"),
-                           ("D_chain_weighted", "A_single_sensor", "D-A")]:
+                           ("D_chain_weighted", "A_single_sensor", "D-A"),
+                           ("C_chain_filtered", "E_random_class_matched", "C-E_random_matched"),
+                           ("E_random_class_matched", "B_multi_naive", "E-B_random_control")]:
             fold_diffs = []
             for f in all_fold_results:
                 if f[pair] and f[name]:
@@ -849,7 +909,7 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
     # Compute pooled metrics from all held-out predictions
     print(f"\n  Pooled metrics (all held-out samples):")
     pooled = {}
-    for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted"]:
+    for cond in ["A_single_sensor", "B_multi_naive", "C_chain_filtered", "D_chain_weighted", "E_random_class_matched"]:
         if cond in all_predictions and all_predictions[cond]:
             pooled[cond] = compute_pooled_metrics(all_predictions[cond], len(DOMAINS))
             print(f"    {cond}: acc={pooled[cond]['accuracy']:.4f} f1_12={pooled[cond]['macro_f1_12class']:.4f} "
@@ -871,6 +931,9 @@ def run_loso(data_dir, output_path, epochs=40, seed=42):
             "seed_policy": "derive_seed uses SHA256 for cross-process stability. run_loso passes base seed to run_fold. run_fold derives fold_model_seed=derive_seed(base_seed, fold_idx) and fold_shuffle_seed=derive_seed(base_seed, fold_idx, 'shuffle'). All conditions in same fold share model and shuffle seeds for paired comparisons.",
             "physics_laws": ["locomotion_coherence", "segment_coupling",
                            "gyro_accel_coupling", "cross_sensor_jerk_timing"],
+            "conditions": ["A_single_sensor", "B_multi_naive", "C_chain_filtered",
+                           "D_chain_weighted", "E_random_class_matched"],
+            "E_random_class_matched_policy": "Deterministic random sample from the full multi-sensor training set, matched exactly to C_chain_filtered by per-class training counts and total size; selection seed derived from base seed and fold index.",
         },
         "fold_results": all_fold_results,
         "aggregated": aggregated,
