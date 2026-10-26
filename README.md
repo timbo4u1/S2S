@@ -30,7 +30,7 @@ s2s-refinery --input /your/dataset --output report.csv
 | WESAD wrist | 200 | 95% | 4% | 32Hz structural limit — 86% SILVER expected |
 | PTT-PPG | 371 | 100% | 0% | High quality walking data |
 
-Run it on your dataset. Get a quality score in under 2 minutes.
+Run it on your dataset. Processing time and assessment coverage depend on the input format, sensor modalities, windowing, and enabled checks.
 
 ---
 
@@ -38,7 +38,7 @@ Run it on your dataset. Get a quality score in under 2 minutes.
 
 
 
-## Where S2S fits in the full physical AI pipeline
+## Where S2S fits in a physical-AI pipeline
 
 ```
 Human wears sensor
@@ -68,17 +68,15 @@ Robot / prosthetic actuator
         |
         v
 +-----------------------------------+
-|  S2S Real-time safety gate        |
-|  1.99ms latency, 3-strike logic   |
+|  S2S command-check prototype      |
+|  measured latency in one test*    |
 +-----------------------------------+
         |
         v
 Physical world
 ```
 
-S2S is the quality layer, not the model. It certifies data going in
-and validates commands coming out. The policy model in the middle
-trains on S2S-certified tokens, producing more reliable physical behavior.
+S2S is a quality-assessment layer, not the policy model. It assigns S2S-defined tiers to supported sensor data and includes experimental command-check wrappers. These outputs are not independent accreditation or safety guarantees; a downstream model's behavior must be validated separately.
 
 ---
 
@@ -95,7 +93,7 @@ For robotics and embodied AI pipelines, S2S provides separate checks for support
 **v1.7.9 added:** Law 16 innovation kurtosis as a soft screening signal for the evaluated coupled OU/Cholesky cases. The three documented checks cover spatial (L9), temporal (L12), and distributional (L16) coherence. Available tests cover specific generators and scenarios; they do not establish that all possible synthetic generators will be detected. Current CI status is reported by the live badge above.
 
 
-**Validated results across 7 datasets:**
+**Selected evaluation results across 8 datasets (separate experiments; metrics are not directly comparable):**
 
 | Dataset | Hz | Sensors | Result |
 |---|---|---|---|
@@ -116,11 +114,11 @@ Certified on real NinaPro DB5 data (2000Hz, 500-sample windows):
 
 | Metric | Value |
 |---|---|
-| Mean latency | 1.99ms (v1.7.9, 16 laws, 256-sample window, 2000Hz) |
+| Observed mean latency | 1.99ms in this specific test configuration (v1.7.9, 16 laws, 256-sample window, 2000Hz); not a worst-case guarantee |
 | Window duration | 250ms |
 | CPU overhead | 1.1% |
-| Real-time feasible | ✅ Yes (89× faster than real-time) |
-| Prosthetics safety threshold | 50ms — S2S is 16× below |
+| Compared with window interval | 89× faster than the 250ms window duration in this benchmark; not a worst-case guarantee |
+| Safety certification | Not safety-certified; separate hardware-specific validation is required |
 
 Laws run on IMU-only data (no gyro hardware):
 - resonance_frequency: RUNS (conf=26)
@@ -131,7 +129,8 @@ Laws run on IMU-only data (no gyro hardware):
 - ballistocardiography: skipped (needs PPG)
 - joule_heating: skipped (needs thermal)
 
-With full sensor stack (IMU + EMG + PPG + gyro): all 16 laws run.
+With a full sensor stack (IMU + EMG + PPG + gyro), all 16 checks can run, subject to implementation-specific input requirements. This does not imply that every law passes or that the system is safety-certified.
+
 
 **Interpreting certification status:** Each rule is `PASS`, `FAIL`, or `NOT_ASSESSED`. Missing modalities, insufficient samples, unsupported sample rates, and internal check errors are `NOT_ASSESSED`—never `PASS`—and do not contribute a neutral score. Results report `assessment_status`, `tier_scope`, assessed/not-assessed counts, and per-law statuses. A GOLD/SILVER/BRONZE tier describes only the checks that were assessed when `tier_scope=ASSESSED_CHECKS_ONLY`; it is not a claim that unavailable sensor modalities were validated.
 
@@ -313,9 +312,11 @@ RoboTurk teleoperation data:  21.9% rejected as physically invalid
 
 Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
 
+See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the pre-run plan for matched-control evaluation, known-corruption detection, and independent replication.
+
 ## Status & Roadmap
 
-The core 7-layer pipeline is complete and working.
+The repository contains prototype components for a 7-layer pipeline; validation maturity varies by layer and input modality.
 Next development direction depends on what real users need.
 
 If you are using S2S on your data — even just experimenting —
@@ -626,9 +627,9 @@ For datasets with real IMU/acceleration streams. Standard simulation datasets
 (PushT, ALOHA) use joint positions — pass `accel_cols` explicitly for those.
 See [adapters/lerobot.py](s2s_standard_v1_3/adapters/lerobot.py) for details.
 
-## Real-Time Safety Gate
+## Real-Time Command-Check Prototype (Experimental)
 
-Monitor sensor data quality in real-time — 2.8ms latency at 2000Hz:
+Example stream-checking wrapper. A 2.8ms latency was observed in one 2000Hz configuration; this is not a worst-case execution-time guarantee or a safety certification.
 
 ```python
 from s2s_standard_v1_3 import RealTimeSafetyGate
@@ -698,10 +699,9 @@ For documented datasets, specify columns explicitly for highest accuracy.
 
 ---
 
-## VLA Safety Wrapper — Real-time physics gate for robot commands
+## VLA Command-Check Wrapper (Experimental)
 
-Sits between any VLA model (RT-2, Pi-0, etc.) and robot motors.
-Certifies every action command before execution:
+Prototype wrapper for evaluating configured checks on outputs from a VLA model (RT-2, Pi-0, etc.). It is not a certified safety controller and must not be the sole protection between a policy model and hardware actuators:
 
 ```python
 from s2s_standard_v1_3.adapters.vla_wrapper import VLASafetyWrapper
@@ -724,8 +724,7 @@ for step in robot_episode:
 # Three-strike logic prevents false triggers
 ```
 
-Validated on NYU Robot dataset (erasing board, pouring, hanging tasks):
-all 14 episodes certified SILVER — robot motion within human biomechanical limits.
+On the tested NYU Robot dataset subset (erasing-board, pouring, and hanging tasks), all 14 episodes received SILVER under S2S's configured checks. This result describes those episodes only; it does not establish that all robot motion is safe or within validated human biomechanical limits.
 
 ---
 
