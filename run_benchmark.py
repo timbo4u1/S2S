@@ -2,8 +2,10 @@
 """
 run_benchmark.py — S2S Reproducible Benchmark
 
-Reproduces the S2S reference benchmark results from scratch.
-Uses only publicly available datasets or generates controlled synthetic data.
+Runs a mix of explicit real-data cases (when paths are provided) and generated
+synthetic perturbations. A case "pass" means its output tier met the case-specific
+expected-tier rule; it is not a sensitivity/specificity estimate or universal
+synthetic-data detection score.
 
 Usage:
     python3.9 run_benchmark.py                    # synthetic only (no datasets needed)
@@ -599,7 +601,7 @@ def main():
 
     for cat, s in cats.items():
         pct = s["pass"] / s["total"] * 100
-        print(f"\n  {cat} ({s['pass']}/{s['total']} — {pct:.0f}%; execution errors: {s['execution_errors']})")
+        print(f"\n  {cat} ({s['pass']}/{s['total']} expected-tier matches — {pct:.0f}%; execution errors: {s['execution_errors']})")
         for w in s["windows"]:
             print_result(w)
 
@@ -607,7 +609,7 @@ def main():
     passed = sum(1 for w in windows if w["pass"])
     print("\n" + "═" * 60)
     execution_errors = sum(1 for w in windows if not w.get("execution_ok", True))
-    print(f"  Overall: {passed}/{total} ({passed/total*100:.0f}%)")
+    print(f"  Overall expected-tier matches: {passed}/{total} ({passed/total*100:.0f}%)")
     print(f"  Execution errors: {execution_errors}")
     print("═" * 60)
 
@@ -658,6 +660,7 @@ def main():
             "total": total,
             "passed": passed,
             "pass_rate": round(passed / total, 3),
+            "pass_definition": "Case-specific expected-tier match. This is not a sensitivity/specificity estimate or a universal detection rate.",
             "execution_errors": execution_errors,
             "run_mode": run_mode,
             "dataset_paths_supplied": {
