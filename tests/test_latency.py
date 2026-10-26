@@ -62,21 +62,34 @@ class TestLatency:
             f"Max latency {max_ms:.2f}ms exceeds 100ms hard ceiling"
 
     def test_certify_real_time_feasible(self):
-        """At 200Hz (5ms between windows), certify() must complete
-        before the next window arrives."""
+        """Certification throughput should fit the cadence of overlapping windows.
+
+        At 200Hz with 256-sample windows and 50% overlap, a new window arrives
+        every 128 samples (640ms), not every 5ms. This is a throughput smoke
+        test on the current CI machine, not a worst-case execution-time proof.
+        """
         pe = PhysicsEngine()
-        WINDOW_INTERVAL_MS = 1000.0 / 200.0  # 5ms at 200Hz
+        sample_rate_hz = 200.0
+        window_size = 256
+        window_stride = window_size // 2
+        window_interval_ms = 1000.0 * window_stride / sample_rate_hz
+
+        # Warm up the engine before measuring.
+        for i in range(3):
+            pe.certify(imu_raw=_make_window(hz=sample_rate_hz, seed=100 + i), segment="forearm")
 
         times = []
         for i in range(30):
-            w = _make_window(hz=200.0, seed=i)
+            w = _make_window(hz=sample_rate_hz, seed=i)
             t0 = time.perf_counter()
             pe.certify(imu_raw=w, segment="forearm")
             times.append((time.perf_counter() - t0) * 1000)
 
-        mean_ms = statistics.mean(times)
-        assert mean_ms < WINDOW_INTERVAL_MS, \
-            f"Mean {mean_ms:.2f}ms > window interval {WINDOW_INTERVAL_MS:.1f}ms — not real-time at 200Hz"
+        max_ms = max(times)
+        assert max_ms < window_interval_ms, (
+            f"Observed max {max_ms:.2f}ms exceeds the {window_interval_ms:.1f}ms "
+            "window-stride interval at 200Hz"
+        )
 
     def test_latency_report(self):
         """Print latency report — not a pass/fail test, informational."""
