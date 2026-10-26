@@ -306,7 +306,7 @@ python3 run_benchmark.py --all \
   --wesad "$HOME/wesad_data/WESAD"
 ```
 
-The runner adds five Gaussian-noise cases, seven hard-negative perturbations, and five coupled-OU cases. Dataset-backed totals depend on the available files and usable windows, so do not compare aggregate pass rates when the case sets differ.
+The runner adds five Gaussian-noise cases, seven hard-negative perturbations, and five coupled-OU cases. Dataset-backed totals depend on the available files and usable windows, so do not compare aggregate pass rates when the case sets differ. Its `pass` metric means the output tier met the case-specific expected-tier rule; it is not a detection-accuracy or sensitivity estimate. In the latest CI smoke run, 16/17 cases met their expected-tier rules with zero execution errors. Law 16 flagged all 3 standard OU cases but only 1 of 2 aggressive OU cases; one aggressive case remained SILVER and was not flagged.
 
 ### Historical reference result (v1.7.8)
 
@@ -447,8 +447,8 @@ The table below summarizes specific test scenarios only; it is not a guarantee f
 |---|---|---|---|---|
 | Gaussian noise | FAIL | — | — | — |
 | Pure sine wave | FAIL | — | — | — |
-| Coupled OU (standard) | SOFT (detected, score penalty) | — | — | — |
-| Coupled OU (aggressive) | SOFT (80% detected) | — | — | — |
+| Coupled OU (standard; 3 built-in cases) | Law 16 soft flag: 3/3 flagged in current smoke run | — | — | — |
+| Coupled OU (aggressive; 2 built-in cases) | Law 16 soft flag: 1/2 flagged in current smoke run; one remained SILVER | — | — | — |
 | Frozen signal (zero gyro) | PASS | FAIL (H≈1) | — | — |
 | Replay wrong label | PASS | PASS | FAIL (soft) | FAIL (if video) |
 | Replay correct label | PASS | PASS | PASS | PASS |
