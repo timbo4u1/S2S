@@ -163,6 +163,12 @@ jobs:
           pip-audit --skip-editable || true
           echo "Security audit complete"
 
+      - name: Install benchmark smoke-test dependencies
+        run: python -m pip install numpy scipy
+
+      - name: Synthetic-only benchmark smoke test
+        run: python run_benchmark.py --compare
+
       - name: Run pytest test suite
         run: |
           pip install -e . pytest cryptography numpy scipy scikit-learn
