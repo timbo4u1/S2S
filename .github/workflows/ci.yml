@@ -162,5 +162,8 @@ jobs:
           python -m pip check
           pip-audit --skip-editable
 
+      - name: Synthetic-only benchmark smoke test
+        run: python run_benchmark.py --compare
+
       - name: Run pytest test suite
         run: pytest tests/ -v --tb=short -x

@@ -4,7 +4,7 @@
 
 > **Using S2S on your data?** Open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) — I will personally help you integrate it with your dataset for free. Looking for the first 5 research partners.
 
-[![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22912004.svg)](https://doi.org/10.5281/zenodo.22912004) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![tests](https://img.shields.io/badge/tests-187%2F187-brightgreen)](tests/)
+[![PyPI](https://img.shields.io/pypi/v/s2s-certify)](https://pypi.org/project/s2s-certify/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22912004.svg)](https://doi.org/10.5281/zenodo.22912004) [![License](https://img.shields.io/badge/License-BSL--1.1-blue)](LICENSE) [![python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml) [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml) [![CI](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml/badge.svg)](https://github.com/timbo4u1/S2S/actions/workflows/ci.yml)
 
 ```bash
 ## Demo — Real Human EMG → S2S Certified → Prosthetic Hand
@@ -26,7 +26,7 @@ s2s-refinery --input /your/dataset --output report.csv
 | Dataset | Windows | Usable | Rejected | Finding |
 |---|---|---|---|---|
 | NinaPro DB5 | 24,802 | 99% | 0% | Clean lab data — sensor_freeze 16% (Delsys hardware). No gyro — Law 16 skips. Confirmed valid v1.7.9. |
-| PAMAP2 | 9,746 | 77% | 19% | Rest/transition windows rejected — explains +4.23% F1 |
+| PAMAP2 | 9,746 | 77% | 19% | Legacy certification summary (separate from classifier evaluation). Updated 9-subject, 3-seed LOSO: three IMUs vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1; chain-filter effect +0.02 pp mean and inconsistent by seed. |
 | WESAD wrist | 200 | 95% | 4% | 32Hz structural limit — 86% SILVER expected |
 | PTT-PPG | 371 | 100% | 0% | High quality walking data |
 
@@ -86,13 +86,13 @@ trains on S2S-certified tokens, producing more reliable physical behavior.
 
 Most motion datasets contain bad data — corrupted recordings, synthetic signals that violate physics, mislabeled actions. You cannot see it by looking at the numbers. Your model trains on it anyway.
 
-S2S asks: does this data *obey the physics of human movement?* A perfect statistical fake fails if it violates Newton's Second Law, segment resonance, or rigid body kinematics. Coupled OU generators — the most sophisticated known synthetic IMU signal — are caught by Law 16 (innovation kurtosis): their Gaussian innovations are mathematically unavoidable.
+S2S evaluates supported motion streams against biomechanical and signal-quality checks, such as Newton's Second Law, segment resonance, and rigid-body kinematics when the required inputs are present. Law 16 (innovation kurtosis) has been evaluated as a soft signal on coupled OU/Cholesky synthetic cases; it is not a universal synthetic-data detector, and biological rest windows can overlap with OU signals in kurtosis space. This validation is separate from the Level 4 PAMAP2 LOSO evaluation, which uses four kinematic-chain laws.
 
-S2S does not replace existing AI systems. It adds a physics reality-check to any visual or physical AI pipeline. Camera, VR render, AR overlay, simulation frame — all go through the same 16-law certification before becoming training data.
+S2S does not replace existing AI systems. It adds quality checks for supported motion streams. The 16-law set is input-dependent: camera/video, VR/AR, or simulation frames do not automatically receive the same sensor-physics certification and require modality-specific checks.
 
-For robotics and embodied AI pipelines, S2S covers the full data trust checklist: synchronized stream alignment (±50ms enforcement), physical consistency (16 laws), provenance (Ed25519 signing), biological origin validation (Hurst exponent), segment-level quality control (GOLD/SILVER/BRONZE/REJECTED), rejection of fake or corrupted windows, and 2D wavelet-based synthetic data detection.
+For robotics and embodied AI pipelines, S2S provides separate checks for supported inputs: stream alignment where timestamps are available, physical consistency across assessable laws, Ed25519 provenance signing when configured, Hurst-exponent biological-origin screening, segment-level quality tiers, and a separate 2D wavelet/spectral synthetic-data screening experiment. These checks are not all enabled or assessed for every input, and they were not jointly evaluated in the Level 4 LOSO benchmark.
 
-**v1.7.9 adds:** Law 16 innovation kurtosis — closes the coupled OU generator gap. Triple coherence firewall now complete: spatial (L9) + temporal (L12) + distributional (L16). 187/187 tests. No known synthetic generator passes all three simultaneously.
+**v1.7.9 added:** Law 16 innovation kurtosis as a soft screening signal for the evaluated coupled OU/Cholesky cases. The three documented checks cover spatial (L9), temporal (L12), and distributional (L16) coherence. Available tests cover specific generators and scenarios; they do not establish that all possible synthetic generators will be detected. Current CI status is reported by the live badge above.
 
 
 **Validated results across 7 datasets:**
@@ -100,7 +100,7 @@ For robotics and embodied AI pipelines, S2S covers the full data trust checklist
 | Dataset | Hz | Sensors | Result |
 |---|---|---|---|
 | UCI HAR | 50Hz | IMU | −5.83% F1 vs clean baseline (artificial 35% corruption — filtering reduces training set more than noise; not a valid S2S use case) |
-| PAMAP2 | 100Hz | IMU ×3 | +4.23% F1 kinematic chain vs single sensor |
+| PAMAP2 | 100Hz | IMU ×3 | Three-seed LOSO: multi-sensor vs chest-only +4.41 pp mean paired per-subject fixed 12-class macro-F1. Chain-filter effect: +0.02 pp mean across seeds, inconsistent by seed. |
 | WISDM 2019 | 20Hz | IMU | +1.74% F1 vs corrupted baseline |
 | WESAD | 700Hz | IMU + BVP | +3.1% F1 stress classification |
 | RoboTurk Open-X | 15Hz | Robot arm | 97.7% pass rate (v1.7.9, 216 episodes, 1143 windows). Note: v1.5.0 showed 78.1% pass under 8-law set — not directly comparable due to law set change |
@@ -285,32 +285,40 @@ An irrelevant command scores 41% lower on the same scene. Zero-shot, no fine-tun
 
 ## Reproducible benchmark
 
-Run in one command:
+### Synthetic-only smoke run
+
+The default command runs generated cases only. It does not load NinaPro, PAMAP2, or WESAD.
 
 ```bash
-pip install s2s-certify
 git clone https://github.com/timbo4u1/S2S
 cd S2S
-python3.9 run_benchmark.py
+python3 run_benchmark.py
 ```
 
-Expected output:
+### Dataset-backed run
 
+Provide paths to datasets you are authorized to use:
+
+```bash
+python3 run_benchmark.py --all \
+  --ninapro "$HOME/ninapro_db5" \
+  --pamap2 "$HOME/S2S_data/pamap2" \
+  --wesad "$HOME/wesad_data/WESAD"
 ```
-real_human (NinaPro/PAMAP2/WESAD): 21/21 certified (100%)
-corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
-pure_synthetic (Gaussian noise):     5/5 rejected — 12-law dual coherence firewall
-Overall: 36/36 (100%) — first clean sweep, v1.7.8
 
-Note: WESAD/NinaPro run 8/15 laws (no gyro, no EMG). PAMAP2 runs 12/15 laws.
+The runner adds five Gaussian-noise cases, seven hard-negative perturbations, and five coupled-OU cases. Dataset-backed totals depend on the available files and usable windows, so do not compare aggregate pass rates when the case sets differ. Its `pass` metric means the output tier met the case-specific expected-tier rule; it is not a detection-accuracy or sensitivity estimate. In the latest CI smoke run, 16/17 cases met their expected-tier rules with zero execution errors. Law 16 flagged all 3 standard OU cases but only 1 of 2 aggressive OU cases; one aggressive case remained SILVER and was not flagged.
 
-PAMAP2 without S2S filtering: baseline F1
-PAMAP2 with S2S filtering:    +4.23% F1
-WESAD stress classification:  +3.1% F1
-RoboTurk teleoperation data:  21.9% rejected as physically invalid
-```
+### Historical reference result (v1.7.8)
+
+[experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json) records a fixed 36-case v1.7.8 set: 21 real-data windows, 3 spike-injected windows, 5 IID Gaussian windows, and 7 hard negatives. It predates the current runner's five coupled-OU cases and is not the expected output for the current runner.
+
+The historical spike-injection checks allowed either BRONZE or REJECTED; they did not require every case to be BRONZE. The 36-case result is a fixed test set, not evidence of universal detection or validation across arbitrary data.
+
+Updated PAMAP2 LOSO (9 subjects, seeds 42/43/44): multi-sensor vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1. Chain-filter effect: +0.02 pp mean across seeds, inconsistent by seed.
 
 Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
+
+See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the plan for matched-control evaluation, known-corruption detection, and independent replication.
 
 ## Status & Roadmap
 
@@ -322,14 +330,14 @@ open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email
 One sentence about your use case helps more than you think.
 
 **Completed in v1.7.9:**
-- Law 16: Innovation Kurtosis — detects coupled OU / Cholesky synthetic generators
+- Law 16: Innovation Kurtosis — soft screening signal for evaluated coupled OU / Cholesky cases; not a universal synthetic-data detector
 - Calibrated on real PAMAP2 data (6,547 windows, 3 subjects): soft signal, not hard reject
   (rest-state biological windows overlap with OU in kurtosis space, p5=0.10 < threshold 0.63)
 - Law 16 penalizes OU score and flags detection — combined with dual coherence firewall
 - Fixed cross_axis_cohesion duplicate registration (was running 12× per window)
 - Fixed version strings: CLI 1.4.0→1.7.9, tool v1_5→v1_9, docstring 7→16 laws
 - NaN guard added to check_innovation_kurtosis
-- 187/187 tests passing
+- Test status is tracked by the live CI badge; the suite has changed since v1.7.9.
 - docs/S2S_pipeline_guide.md — full architecture reference
 
 **Completed in v1.7.8:**
@@ -405,7 +413,7 @@ Layer 5  Visual Understanding     CLIP ViT-B/32, frame-synced at 15Hz
 | Sensor Freeze (soft) | consecutive identical > 10 (active) / 25 (rest) | IMU | Hardware fault vs legitimate static posture — state-conditioned |
 | Powerline (soft) | FFT spike > 8× local mean at 50/60Hz | IMU | Mains interference in sensor cables — battery-powered sensors clean |
 | Splice (soft) | half-window mean diff > 8 m/s² | IMU | Session concatenation artifact — sustained level shift mid-window |
-| Innovation Kurtosis (soft) | excess_kurtosis(AR1_residuals) > 0.63 | IMU + gyro | Coupled OU / Cholesky synthetic generators — Gaussian innovations are mathematically unavoidable in all OU processes. Soft flag: rest-state biological windows overlap with OU in kurtosis space (PAMAP2 p5=0.10) |
+| Innovation Kurtosis (soft) | excess_kurtosis(AR1_residuals) > 0.63 | IMU + gyro | Soft flag evaluated on coupled OU / Cholesky cases, not proof of synthetic origin. Rest-state biological windows overlap with OU in kurtosis space (PAMAP2 p5=0.10). |
 
 Missing or insufficient inputs are marked `NOT_ASSESSED`; they are excluded from `laws_passed`, `laws_failed`, and the quality-score average. The output includes per-law `PASS` / `FAIL` / `NOT_ASSESSED`, assessment coverage, and `assessment_status`. A tier describes assessed checks only when `tier_scope` is `ASSESSED_CHECKS_ONLY`; it must not be interpreted as a complete assessment of unavailable sensor modalities.
 
@@ -433,17 +441,19 @@ Missing or insufficient inputs are marked `NOT_ASSESSED`; they are excluded from
 
 ## What passes each layer — complete picture
 
+The table below summarizes specific test scenarios only; it is not a guarantee for arbitrary synthetic generators or biological sessions.
+
 | Signal type | L1 Physics | L2 Biology | L3 Semantic | L5 CLIP |
 |---|---|---|---|---|
 | Gaussian noise | FAIL | — | — | — |
 | Pure sine wave | FAIL | — | — | — |
-| Coupled OU (standard) | SOFT (detected, score penalty) | — | — | — |
-| Coupled OU (aggressive) | SOFT (80% detected) | — | — | — |
+| Coupled OU (standard; 3 built-in cases) | Law 16 soft flag: 3/3 flagged in current smoke run | — | — | — |
+| Coupled OU (aggressive; 2 built-in cases) | Law 16 soft flag: 1/2 flagged in current smoke run; one remained SILVER | — | — | — |
 | Frozen signal (zero gyro) | PASS | FAIL (H≈1) | — | — |
 | Replay wrong label | PASS | PASS | FAIL (soft) | FAIL (if video) |
 | Replay correct label | PASS | PASS | PASS | PASS |
 
-The only input that passes all layers with correct labels is real biological data used correctly.
+In the test scenarios above, only the correctly labelled real biological example passed all listed layers. This is a result for those test cases, not a universal guarantee about all possible inputs.
 That is the intended behavior — the system certifies quality, not identity.
 
 ---
