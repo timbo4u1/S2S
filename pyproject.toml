@@ -1,5 +1,12 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+# setuptools 84.1.0 fixes the current CI audit findings but requires Python >=3.10.
+# Keep source-build compatibility on Python 3.9, whose compatible setuptools line
+# predates these fixes; Python >=3.10 uses the patched build backend.
+requires = [
+  "setuptools>=84.1.0; python_version >= '3.10'",
+  "setuptools>=68; python_version < '3.10'",
+  "wheel",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
