@@ -285,33 +285,40 @@ An irrelevant command scores 41% lower on the same scene. Zero-shot, no fine-tun
 
 ## Reproducible benchmark
 
-Run in one command:
+### Synthetic-only smoke run
+
+The default command runs generated cases only. It does not load NinaPro, PAMAP2, or WESAD.
 
 ```bash
-pip install s2s-certify
 git clone https://github.com/timbo4u1/S2S
 cd S2S
-python3.9 run_benchmark.py
+python3 run_benchmark.py
 ```
 
-Expected output:
+### Dataset-backed run
 
+Provide paths to datasets you are authorized to use:
+
+```bash
+python3 run_benchmark.py --all \
+  --ninapro "$HOME/ninapro_db5" \
+  --pamap2 "$HOME/S2S_data/pamap2" \
+  --wesad "$HOME/wesad_data/WESAD"
 ```
-real_human (NinaPro/PAMAP2/WESAD): 21/21 certified (100%)
-corrupted_spikes (NinaPro+injected): 3/3 correctly downgraded to BRONZE
-pure_synthetic (Gaussian noise):     5/5 rejected in this fixed test set — not a universal guarantee
-Overall: 36/36 passed on this fixed test set (v1.7.8; not a generalization guarantee)
 
-Note: WESAD/NinaPro run 8/15 laws (no gyro, no EMG). PAMAP2 runs 12/15 laws.
+The runner adds five Gaussian-noise cases, seven hard-negative perturbations, and five coupled-OU cases. Dataset-backed totals depend on the available files and usable windows, so do not compare aggregate pass rates when the case sets differ. Its `pass` metric means the output tier met the case-specific expected-tier rule; it is not a detection-accuracy or sensitivity estimate. In the latest CI smoke run, 16/17 cases met their expected-tier rules with zero execution errors. Law 16 flagged all 3 standard OU cases but only 1 of 2 aggressive OU cases; one aggressive case remained SILVER and was not flagged.
 
-Legacy single-split PAMAP2 result: historically reported +4.23% F1; not directly comparable to the subject-held-out evaluation and does not isolate chain filtering from sensor fusion.
-Updated PAMAP2 LOSO (9 subjects, seeds 42/43/44): multi-sensor vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1.
-Chain filter vs unfiltered three-sensor baseline: +0.02 pp mean across seeds; per-seed changes (+0.64, −0.25, −0.34 pp) are inconsistent.
-WESAD stress classification: +3.1% F1
-RoboTurk teleoperation data:  21.9% rejected as physically invalid
-```
+### Historical reference result (v1.7.8)
+
+[experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json) records a fixed 36-case v1.7.8 set: 21 real-data windows, 3 spike-injected windows, 5 IID Gaussian windows, and 7 hard negatives. It predates the current runner's five coupled-OU cases and is not the expected output for the current runner.
+
+The historical spike-injection checks allowed either BRONZE or REJECTED; they did not require every case to be BRONZE. The 36-case result is a fixed test set, not evidence of universal detection or validation across arbitrary data.
+
+Updated PAMAP2 LOSO (9 subjects, seeds 42/43/44): multi-sensor vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1. Chain-filter effect: +0.02 pp mean across seeds, inconsistent by seed.
 
 Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
+
+See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the plan for matched-control evaluation, known-corruption detection, and independent replication.
 
 ## Status & Roadmap
 
@@ -440,8 +447,8 @@ The table below summarizes specific test scenarios only; it is not a guarantee f
 |---|---|---|---|---|
 | Gaussian noise | FAIL | — | — | — |
 | Pure sine wave | FAIL | — | — | — |
-| Coupled OU (standard) | SOFT (detected, score penalty) | — | — | — |
-| Coupled OU (aggressive) | SOFT (80% detected) | — | — | — |
+| Coupled OU (standard; 3 built-in cases) | Law 16 soft flag: 3/3 flagged in current smoke run | — | — | — |
+| Coupled OU (aggressive; 2 built-in cases) | Law 16 soft flag: 1/2 flagged in current smoke run; one remained SILVER | — | — | — |
 | Frozen signal (zero gyro) | PASS | FAIL (H≈1) | — | — |
 | Replay wrong label | PASS | PASS | FAIL (soft) | FAIL (if video) |
 | Replay correct label | PASS | PASS | PASS | PASS |
