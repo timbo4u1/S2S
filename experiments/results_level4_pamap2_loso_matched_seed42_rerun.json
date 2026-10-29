@@ -1,0 +1,4483 @@
+{
+  "meta": {
+    "experiment": "s2s_level4_pamap2",
+    "dataset": "PAMAP2",
+    "evaluation_mode": "leave_one_subject_out",
+    "sensors": [
+      "hand",
+      "chest",
+      "ankle"
+    ],
+    "hz": 100,
+    "window_size": 256,
+    "epochs": 40,
+    "n_subjects": 9,
+    "subjects": [
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109
+    ],
+    "seed": 42,
+    "seed_policy": "derive_seed uses SHA256 for cross-process stability. run_loso passes base seed to run_fold. run_fold derives fold_model_seed=derive_seed(base_seed, fold_idx) and fold_shuffle_seed=derive_seed(base_seed, fold_idx, 'shuffle'). All conditions in same fold share model and shuffle seeds for paired comparisons.",
+    "physics_laws": [
+      "locomotion_coherence",
+      "segment_coupling",
+      "gyro_accel_coupling",
+      "cross_sensor_jerk_timing"
+    ],
+    "conditions": [
+      "A_single_sensor",
+      "B_multi_naive",
+      "C_chain_filtered",
+      "D_chain_weighted",
+      "E_random_class_matched"
+    ],
+    "E_random_class_matched_policy": "Deterministic random sample from the full multi-sensor training set, matched exactly to C_chain_filtered by per-class training counts and total size; selection seed derived from base seed and fold index."
+  },
+  "fold_results": [
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 13098,
+        "test_n": 1158,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.6943,
+        "macro_f1_12class": 0.3802,
+        "macro_f1_supported_classes": 0.6517,
+        "weighted_f1": 0.6712,
+        "per_class": {
+          "0": {
+            "support": 211,
+            "precision": 1.0,
+            "recall": 0.7725,
+            "f1": 0.8717
+          },
+          "1": {
+            "support": 183,
+            "precision": 0.5447,
+            "recall": 0.6995,
+            "f1": 0.6124
+          },
+          "2": {
+            "support": 168,
+            "precision": 0.4935,
+            "recall": 0.2262,
+            "f1": 0.3102
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 122,
+            "precision": 0.6059,
+            "recall": 0.8443,
+            "f1": 0.7055
+          },
+          "8": {
+            "support": 113,
+            "precision": 1.0,
+            "recall": 0.2743,
+            "f1": 0.4306
+          },
+          "9": {
+            "support": 178,
+            "precision": 0.7692,
+            "recall": 0.8989,
+            "f1": 0.829
+          },
+          "10": {
+            "support": 183,
+            "precision": 0.6754,
+            "recall": 0.9891,
+            "f1": 0.8027
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 13098,
+        "test_n": 1158,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7798,
+        "macro_f1_12class": 0.4592,
+        "macro_f1_supported_classes": 0.7872,
+        "weighted_f1": 0.7805,
+        "per_class": {
+          "0": {
+            "support": 211,
+            "precision": 0.9939,
+            "recall": 0.7725,
+            "f1": 0.8693
+          },
+          "1": {
+            "support": 183,
+            "precision": 0.6465,
+            "recall": 0.6995,
+            "f1": 0.6719
+          },
+          "2": {
+            "support": 168,
+            "precision": 0.7043,
+            "recall": 0.4821,
+            "f1": 0.5724
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 122,
+            "precision": 0.9292,
+            "recall": 0.8607,
+            "f1": 0.8936
+          },
+          "8": {
+            "support": 113,
+            "precision": 0.989,
+            "recall": 0.7965,
+            "f1": 0.8824
+          },
+          "9": {
+            "support": 178,
+            "precision": 0.7371,
+            "recall": 0.882,
+            "f1": 0.8031
+          },
+          "10": {
+            "support": 183,
+            "precision": 0.702,
+            "recall": 0.9781,
+            "f1": 0.8174
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 10258,
+        "test_n": 1158,
+        "chain_removed": 2840,
+        "removal_rate": 21.68,
+        "accuracy": 0.7867,
+        "macro_f1_12class": 0.4654,
+        "macro_f1_supported_classes": 0.7978,
+        "weighted_f1": 0.7888,
+        "per_class": {
+          "0": {
+            "support": 211,
+            "precision": 0.9878,
+            "recall": 0.7678,
+            "f1": 0.864
+          },
+          "1": {
+            "support": 183,
+            "precision": 0.7222,
+            "recall": 0.5683,
+            "f1": 0.6361
+          },
+          "2": {
+            "support": 168,
+            "precision": 0.6646,
+            "recall": 0.6369,
+            "f1": 0.6505
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 122,
+            "precision": 0.964,
+            "recall": 0.877,
+            "f1": 0.9185
+          },
+          "8": {
+            "support": 113,
+            "precision": 0.9792,
+            "recall": 0.8319,
+            "f1": 0.8995
+          },
+          "9": {
+            "support": 178,
+            "precision": 0.7327,
+            "recall": 0.8933,
+            "f1": 0.8051
+          },
+          "10": {
+            "support": 183,
+            "precision": 0.6953,
+            "recall": 0.9727,
+            "f1": 0.8109
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 10258,
+        "test_n": 1158,
+        "chain_removed": 2840,
+        "removal_rate": 21.68,
+        "accuracy": 0.7902,
+        "macro_f1_12class": 0.4686,
+        "macro_f1_supported_classes": 0.8032,
+        "weighted_f1": 0.7943,
+        "per_class": {
+          "0": {
+            "support": 211,
+            "precision": 1.0,
+            "recall": 0.7678,
+            "f1": 0.8686
+          },
+          "1": {
+            "support": 183,
+            "precision": 0.7297,
+            "recall": 0.5902,
+            "f1": 0.6526
+          },
+          "2": {
+            "support": 168,
+            "precision": 0.6728,
+            "recall": 0.6488,
+            "f1": 0.6606
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 122,
+            "precision": 0.9722,
+            "recall": 0.8607,
+            "f1": 0.913
+          },
+          "8": {
+            "support": 113,
+            "precision": 1.0,
+            "recall": 0.8407,
+            "f1": 0.9135
+          },
+          "9": {
+            "support": 178,
+            "precision": 0.7215,
+            "recall": 0.8876,
+            "f1": 0.796
+          },
+          "10": {
+            "support": 183,
+            "precision": 0.7063,
+            "recall": 0.9727,
+            "f1": 0.8184
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 10258,
+        "test_n": 1158,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7737,
+        "macro_f1_12class": 0.4548,
+        "macro_f1_supported_classes": 0.7796,
+        "weighted_f1": 0.7699,
+        "per_class": {
+          "0": {
+            "support": 211,
+            "precision": 0.9937,
+            "recall": 0.7488,
+            "f1": 0.8541
+          },
+          "1": {
+            "support": 183,
+            "precision": 0.6436,
+            "recall": 0.7104,
+            "f1": 0.6753
+          },
+          "2": {
+            "support": 168,
+            "precision": 0.7363,
+            "recall": 0.3988,
+            "f1": 0.5174
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 122,
+            "precision": 0.9558,
+            "recall": 0.8852,
+            "f1": 0.9191
+          },
+          "8": {
+            "support": 113,
+            "precision": 1.0,
+            "recall": 0.823,
+            "f1": 0.9029
+          },
+          "9": {
+            "support": 178,
+            "precision": 0.7349,
+            "recall": 0.8876,
+            "f1": 0.8041
+          },
+          "10": {
+            "support": 183,
+            "precision": 0.6477,
+            "recall": 0.9945,
+            "f1": 0.7845
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "test_subject": 101,
+      "train_subjects": [
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12218,
+        "test_n": 2038,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.4161,
+        "macro_f1_12class": 0.3686,
+        "macro_f1_supported_classes": 0.3686,
+        "weighted_f1": 0.3501,
+        "per_class": {
+          "0": {
+            "support": 182,
+            "precision": 1.0,
+            "recall": 0.9341,
+            "f1": 0.9659
+          },
+          "1": {
+            "support": 173,
+            "precision": 0.4315,
+            "recall": 0.4913,
+            "f1": 0.4595
+          },
+          "2": {
+            "support": 198,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 253,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 71,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 195,
+            "precision": 0.2409,
+            "recall": 0.7128,
+            "f1": 0.3601
+          },
+          "6": {
+            "support": 231,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 133,
+            "precision": 0.1779,
+            "recall": 0.5338,
+            "f1": 0.2669
+          },
+          "8": {
+            "support": 116,
+            "precision": 0.8605,
+            "recall": 0.319,
+            "f1": 0.4654
+          },
+          "9": {
+            "support": 160,
+            "precision": 0.5303,
+            "recall": 0.4375,
+            "f1": 0.4795
+          },
+          "10": {
+            "support": 224,
+            "precision": 0.4717,
+            "recall": 0.9286,
+            "f1": 0.6256
+          },
+          "11": {
+            "support": 102,
+            "precision": 1.0,
+            "recall": 0.6667,
+            "f1": 0.8
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12218,
+        "test_n": 2038,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.501,
+        "macro_f1_12class": 0.4975,
+        "macro_f1_supported_classes": 0.4975,
+        "weighted_f1": 0.4342,
+        "per_class": {
+          "0": {
+            "support": 182,
+            "precision": 1.0,
+            "recall": 0.8901,
+            "f1": 0.9419
+          },
+          "1": {
+            "support": 173,
+            "precision": 0.436,
+            "recall": 0.4335,
+            "f1": 0.4348
+          },
+          "2": {
+            "support": 198,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 253,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 71,
+            "precision": 0.764,
+            "recall": 0.9577,
+            "f1": 0.85
+          },
+          "5": {
+            "support": 195,
+            "precision": 0.562,
+            "recall": 0.7436,
+            "f1": 0.6402
+          },
+          "6": {
+            "support": 231,
+            "precision": 0.7143,
+            "recall": 0.0433,
+            "f1": 0.0816
+          },
+          "7": {
+            "support": 133,
+            "precision": 0.2105,
+            "recall": 0.812,
+            "f1": 0.3344
+          },
+          "8": {
+            "support": 116,
+            "precision": 0.9821,
+            "recall": 0.4741,
+            "f1": 0.6395
+          },
+          "9": {
+            "support": 160,
+            "precision": 0.45,
+            "recall": 0.6188,
+            "f1": 0.5211
+          },
+          "10": {
+            "support": 224,
+            "precision": 0.4664,
+            "recall": 0.9598,
+            "f1": 0.6277
+          },
+          "11": {
+            "support": 102,
+            "precision": 0.9882,
+            "recall": 0.8235,
+            "f1": 0.8984
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9408,
+        "test_n": 2038,
+        "chain_removed": 2810,
+        "removal_rate": 23.0,
+        "accuracy": 0.5211,
+        "macro_f1_12class": 0.529,
+        "macro_f1_supported_classes": 0.529,
+        "weighted_f1": 0.4679,
+        "per_class": {
+          "0": {
+            "support": 182,
+            "precision": 0.9936,
+            "recall": 0.8516,
+            "f1": 0.9172
+          },
+          "1": {
+            "support": 173,
+            "precision": 0.4714,
+            "recall": 0.3815,
+            "f1": 0.4217
+          },
+          "2": {
+            "support": 198,
+            "precision": 0.1034,
+            "recall": 0.0152,
+            "f1": 0.0264
+          },
+          "3": {
+            "support": 253,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 71,
+            "precision": 0.8095,
+            "recall": 0.9577,
+            "f1": 0.8774
+          },
+          "5": {
+            "support": 195,
+            "precision": 0.6383,
+            "recall": 0.7692,
+            "f1": 0.6977
+          },
+          "6": {
+            "support": 231,
+            "precision": 0.8372,
+            "recall": 0.1558,
+            "f1": 0.2628
+          },
+          "7": {
+            "support": 133,
+            "precision": 0.2193,
+            "recall": 0.8195,
+            "f1": 0.346
+          },
+          "8": {
+            "support": 116,
+            "precision": 0.9545,
+            "recall": 0.5431,
+            "f1": 0.6923
+          },
+          "9": {
+            "support": 160,
+            "precision": 0.4758,
+            "recall": 0.7375,
+            "f1": 0.5784
+          },
+          "10": {
+            "support": 224,
+            "precision": 0.458,
+            "recall": 0.9241,
+            "f1": 0.6124
+          },
+          "11": {
+            "support": 102,
+            "precision": 0.9886,
+            "recall": 0.8529,
+            "f1": 0.9158
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9408,
+        "test_n": 2038,
+        "chain_removed": 2810,
+        "removal_rate": 23.0,
+        "accuracy": 0.5476,
+        "macro_f1_12class": 0.5516,
+        "macro_f1_supported_classes": 0.5516,
+        "weighted_f1": 0.4991,
+        "per_class": {
+          "0": {
+            "support": 182,
+            "precision": 0.9936,
+            "recall": 0.8571,
+            "f1": 0.9204
+          },
+          "1": {
+            "support": 173,
+            "precision": 0.5649,
+            "recall": 0.4277,
+            "f1": 0.4868
+          },
+          "2": {
+            "support": 198,
+            "precision": 0.1923,
+            "recall": 0.0253,
+            "f1": 0.0446
+          },
+          "3": {
+            "support": 253,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 71,
+            "precision": 0.7234,
+            "recall": 0.9577,
+            "f1": 0.8242
+          },
+          "5": {
+            "support": 195,
+            "precision": 0.6725,
+            "recall": 0.7897,
+            "f1": 0.7264
+          },
+          "6": {
+            "support": 231,
+            "precision": 0.77,
+            "recall": 0.3333,
+            "f1": 0.4653
+          },
+          "7": {
+            "support": 133,
+            "precision": 0.2552,
+            "recall": 0.8271,
+            "f1": 0.3901
+          },
+          "8": {
+            "support": 116,
+            "precision": 1.0,
+            "recall": 0.5086,
+            "f1": 0.6743
+          },
+          "9": {
+            "support": 160,
+            "precision": 0.456,
+            "recall": 0.7125,
+            "f1": 0.5561
+          },
+          "10": {
+            "support": 224,
+            "precision": 0.4459,
+            "recall": 0.9375,
+            "f1": 0.6043
+          },
+          "11": {
+            "support": 102,
+            "precision": 0.9889,
+            "recall": 0.8725,
+            "f1": 0.9271
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9408,
+        "test_n": 2038,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.5123,
+        "macro_f1_12class": 0.5052,
+        "macro_f1_supported_classes": 0.5052,
+        "weighted_f1": 0.4517,
+        "per_class": {
+          "0": {
+            "support": 182,
+            "precision": 1.0,
+            "recall": 0.8956,
+            "f1": 0.9449
+          },
+          "1": {
+            "support": 173,
+            "precision": 0.4574,
+            "recall": 0.341,
+            "f1": 0.3907
+          },
+          "2": {
+            "support": 198,
+            "precision": 0.0833,
+            "recall": 0.0101,
+            "f1": 0.018
+          },
+          "3": {
+            "support": 253,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 71,
+            "precision": 0.6538,
+            "recall": 0.9577,
+            "f1": 0.7771
+          },
+          "5": {
+            "support": 195,
+            "precision": 0.5559,
+            "recall": 0.8154,
+            "f1": 0.6611
+          },
+          "6": {
+            "support": 231,
+            "precision": 0.8222,
+            "recall": 0.1602,
+            "f1": 0.2681
+          },
+          "7": {
+            "support": 133,
+            "precision": 0.2471,
+            "recall": 0.8045,
+            "f1": 0.3781
+          },
+          "8": {
+            "support": 116,
+            "precision": 0.8986,
+            "recall": 0.5345,
+            "f1": 0.6703
+          },
+          "9": {
+            "support": 160,
+            "precision": 0.4016,
+            "recall": 0.6375,
+            "f1": 0.4928
+          },
+          "10": {
+            "support": 224,
+            "precision": 0.4615,
+            "recall": 0.9375,
+            "f1": 0.6186
+          },
+          "11": {
+            "support": 102,
+            "precision": 0.9868,
+            "recall": 0.7353,
+            "f1": 0.8427
+          }
+        }
+      },
+      "test_subject": 102,
+      "train_subjects": [
+        101,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12910,
+        "test_n": 1346,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8165,
+        "macro_f1_12class": 0.5541,
+        "macro_f1_supported_classes": 0.8312,
+        "weighted_f1": 0.8337,
+        "per_class": {
+          "0": {
+            "support": 171,
+            "precision": 0.9938,
+            "recall": 0.9298,
+            "f1": 0.9607
+          },
+          "1": {
+            "support": 224,
+            "precision": 0.7546,
+            "recall": 0.9062,
+            "f1": 0.8235
+          },
+          "2": {
+            "support": 159,
+            "precision": 0.6226,
+            "recall": 0.6226,
+            "f1": 0.6226
+          },
+          "3": {
+            "support": 225,
+            "precision": 0.9526,
+            "recall": 0.8044,
+            "f1": 0.8723
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 79,
+            "precision": 1.0,
+            "recall": 0.6709,
+            "f1": 0.803
+          },
+          "8": {
+            "support": 114,
+            "precision": 1.0,
+            "recall": 0.8158,
+            "f1": 0.8986
+          },
+          "9": {
+            "support": 157,
+            "precision": 0.8036,
+            "recall": 0.8599,
+            "f1": 0.8308
+          },
+          "10": {
+            "support": 217,
+            "precision": 0.867,
+            "recall": 0.8111,
+            "f1": 0.8381
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12910,
+        "test_n": 1346,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.76,
+        "macro_f1_12class": 0.5229,
+        "macro_f1_supported_classes": 0.7844,
+        "weighted_f1": 0.793,
+        "per_class": {
+          "0": {
+            "support": 171,
+            "precision": 1.0,
+            "recall": 0.9298,
+            "f1": 0.9636
+          },
+          "1": {
+            "support": 224,
+            "precision": 0.7567,
+            "recall": 0.8884,
+            "f1": 0.8172
+          },
+          "2": {
+            "support": 159,
+            "precision": 0.6481,
+            "recall": 0.6604,
+            "f1": 0.6542
+          },
+          "3": {
+            "support": 225,
+            "precision": 0.9167,
+            "recall": 0.5378,
+            "f1": 0.6779
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 79,
+            "precision": 0.9706,
+            "recall": 0.4177,
+            "f1": 0.5841
+          },
+          "8": {
+            "support": 114,
+            "precision": 0.9505,
+            "recall": 0.8421,
+            "f1": 0.893
+          },
+          "9": {
+            "support": 157,
+            "precision": 0.8155,
+            "recall": 0.8726,
+            "f1": 0.8431
+          },
+          "10": {
+            "support": 217,
+            "precision": 0.8918,
+            "recall": 0.7972,
+            "f1": 0.8418
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 10040,
+        "test_n": 1346,
+        "chain_removed": 2870,
+        "removal_rate": 22.23,
+        "accuracy": 0.7459,
+        "macro_f1_12class": 0.5132,
+        "macro_f1_supported_classes": 0.7698,
+        "weighted_f1": 0.7822,
+        "per_class": {
+          "0": {
+            "support": 171,
+            "precision": 1.0,
+            "recall": 0.9357,
+            "f1": 0.9668
+          },
+          "1": {
+            "support": 224,
+            "precision": 0.7989,
+            "recall": 0.6562,
+            "f1": 0.7206
+          },
+          "2": {
+            "support": 159,
+            "precision": 0.498,
+            "recall": 0.7799,
+            "f1": 0.6078
+          },
+          "3": {
+            "support": 225,
+            "precision": 0.9404,
+            "recall": 0.6311,
+            "f1": 0.7553
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 79,
+            "precision": 0.9667,
+            "recall": 0.3671,
+            "f1": 0.5321
+          },
+          "8": {
+            "support": 114,
+            "precision": 0.9583,
+            "recall": 0.807,
+            "f1": 0.8762
+          },
+          "9": {
+            "support": 157,
+            "precision": 0.8784,
+            "recall": 0.828,
+            "f1": 0.8525
+          },
+          "10": {
+            "support": 217,
+            "precision": 0.8654,
+            "recall": 0.8295,
+            "f1": 0.8471
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 10040,
+        "test_n": 1346,
+        "chain_removed": 2870,
+        "removal_rate": 22.23,
+        "accuracy": 0.7407,
+        "macro_f1_12class": 0.5104,
+        "macro_f1_supported_classes": 0.7656,
+        "weighted_f1": 0.7769,
+        "per_class": {
+          "0": {
+            "support": 171,
+            "precision": 1.0,
+            "recall": 0.924,
+            "f1": 0.9605
+          },
+          "1": {
+            "support": 224,
+            "precision": 0.7452,
+            "recall": 0.692,
+            "f1": 0.7176
+          },
+          "2": {
+            "support": 159,
+            "precision": 0.4931,
+            "recall": 0.673,
+            "f1": 0.5691
+          },
+          "3": {
+            "support": 225,
+            "precision": 0.932,
+            "recall": 0.6089,
+            "f1": 0.7366
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 79,
+            "precision": 0.9655,
+            "recall": 0.3544,
+            "f1": 0.5185
+          },
+          "8": {
+            "support": 114,
+            "precision": 0.9798,
+            "recall": 0.8509,
+            "f1": 0.9108
+          },
+          "9": {
+            "support": 157,
+            "precision": 0.8859,
+            "recall": 0.8408,
+            "f1": 0.8627
+          },
+          "10": {
+            "support": 217,
+            "precision": 0.8551,
+            "recall": 0.8433,
+            "f1": 0.8492
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 10040,
+        "test_n": 1346,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7504,
+        "macro_f1_12class": 0.5182,
+        "macro_f1_supported_classes": 0.7773,
+        "weighted_f1": 0.7841,
+        "per_class": {
+          "0": {
+            "support": 171,
+            "precision": 0.9937,
+            "recall": 0.924,
+            "f1": 0.9576
+          },
+          "1": {
+            "support": 224,
+            "precision": 0.7611,
+            "recall": 0.8393,
+            "f1": 0.7983
+          },
+          "2": {
+            "support": 159,
+            "precision": 0.6333,
+            "recall": 0.5975,
+            "f1": 0.6149
+          },
+          "3": {
+            "support": 225,
+            "precision": 0.9225,
+            "recall": 0.5289,
+            "f1": 0.6723
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 79,
+            "precision": 0.9459,
+            "recall": 0.443,
+            "f1": 0.6034
+          },
+          "8": {
+            "support": 114,
+            "precision": 0.9231,
+            "recall": 0.8421,
+            "f1": 0.8807
+          },
+          "9": {
+            "support": 157,
+            "precision": 0.859,
+            "recall": 0.8535,
+            "f1": 0.8562
+          },
+          "10": {
+            "support": 217,
+            "precision": 0.8186,
+            "recall": 0.8525,
+            "f1": 0.8352
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "test_subject": 103,
+      "train_subjects": [
+        101,
+        102,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12463,
+        "test_n": 1793,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.6715,
+        "macro_f1_12class": 0.5548,
+        "macro_f1_supported_classes": 0.6657,
+        "weighted_f1": 0.664,
+        "per_class": {
+          "0": {
+            "support": 179,
+            "precision": 0.9943,
+            "recall": 0.9665,
+            "f1": 0.9802
+          },
+          "1": {
+            "support": 198,
+            "precision": 0.2652,
+            "recall": 0.1768,
+            "f1": 0.2121
+          },
+          "2": {
+            "support": 192,
+            "precision": 0.351,
+            "recall": 0.5521,
+            "f1": 0.4291
+          },
+          "3": {
+            "support": 248,
+            "precision": 0.6667,
+            "recall": 0.9274,
+            "f1": 0.7757
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.805,
+            "recall": 0.9148,
+            "f1": 0.8564
+          },
+          "6": {
+            "support": 214,
+            "precision": 0.9462,
+            "recall": 0.5748,
+            "f1": 0.7151
+          },
+          "7": {
+            "support": 128,
+            "precision": 0.8361,
+            "recall": 0.3984,
+            "f1": 0.5397
+          },
+          "8": {
+            "support": 109,
+            "precision": 0.6719,
+            "recall": 0.789,
+            "f1": 0.7257
+          },
+          "9": {
+            "support": 155,
+            "precision": 0.6784,
+            "recall": 0.871,
+            "f1": 0.7627
+          },
+          "10": {
+            "support": 194,
+            "precision": 0.8595,
+            "recall": 0.5361,
+            "f1": 0.6603
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12463,
+        "test_n": 1793,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7434,
+        "macro_f1_12class": 0.626,
+        "macro_f1_supported_classes": 0.7512,
+        "weighted_f1": 0.7391,
+        "per_class": {
+          "0": {
+            "support": 179,
+            "precision": 0.9886,
+            "recall": 0.9665,
+            "f1": 0.9774
+          },
+          "1": {
+            "support": 198,
+            "precision": 0.4153,
+            "recall": 0.2475,
+            "f1": 0.3101
+          },
+          "2": {
+            "support": 192,
+            "precision": 0.4537,
+            "recall": 0.7656,
+            "f1": 0.5698
+          },
+          "3": {
+            "support": 248,
+            "precision": 0.7698,
+            "recall": 0.9032,
+            "f1": 0.8312
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.8306,
+            "recall": 0.8636,
+            "f1": 0.8468
+          },
+          "6": {
+            "support": 214,
+            "precision": 0.9404,
+            "recall": 0.6636,
+            "f1": 0.7781
+          },
+          "7": {
+            "support": 128,
+            "precision": 0.8699,
+            "recall": 0.8359,
+            "f1": 0.8526
+          },
+          "8": {
+            "support": 109,
+            "precision": 0.9412,
+            "recall": 0.8807,
+            "f1": 0.91
+          },
+          "9": {
+            "support": 155,
+            "precision": 0.6601,
+            "recall": 0.8645,
+            "f1": 0.7486
+          },
+          "10": {
+            "support": 194,
+            "precision": 0.8862,
+            "recall": 0.5619,
+            "f1": 0.6877
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9516,
+        "test_n": 1793,
+        "chain_removed": 2947,
+        "removal_rate": 23.65,
+        "accuracy": 0.7429,
+        "macro_f1_12class": 0.6297,
+        "macro_f1_supported_classes": 0.7557,
+        "weighted_f1": 0.7431,
+        "per_class": {
+          "0": {
+            "support": 179,
+            "precision": 0.9613,
+            "recall": 0.9721,
+            "f1": 0.9667
+          },
+          "1": {
+            "support": 198,
+            "precision": 0.4471,
+            "recall": 0.3838,
+            "f1": 0.413
+          },
+          "2": {
+            "support": 192,
+            "precision": 0.4721,
+            "recall": 0.6615,
+            "f1": 0.551
+          },
+          "3": {
+            "support": 248,
+            "precision": 0.7346,
+            "recall": 0.9153,
+            "f1": 0.8151
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.8197,
+            "recall": 0.8523,
+            "f1": 0.8357
+          },
+          "6": {
+            "support": 214,
+            "precision": 0.942,
+            "recall": 0.6075,
+            "f1": 0.7386
+          },
+          "7": {
+            "support": 128,
+            "precision": 0.8974,
+            "recall": 0.8203,
+            "f1": 0.8571
+          },
+          "8": {
+            "support": 109,
+            "precision": 0.9505,
+            "recall": 0.8807,
+            "f1": 0.9143
+          },
+          "9": {
+            "support": 155,
+            "precision": 0.6789,
+            "recall": 0.8323,
+            "f1": 0.7478
+          },
+          "10": {
+            "support": 194,
+            "precision": 0.8741,
+            "recall": 0.6082,
+            "f1": 0.7173
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9516,
+        "test_n": 1793,
+        "chain_removed": 2947,
+        "removal_rate": 23.65,
+        "accuracy": 0.7579,
+        "macro_f1_12class": 0.6411,
+        "macro_f1_supported_classes": 0.7694,
+        "weighted_f1": 0.7576,
+        "per_class": {
+          "0": {
+            "support": 179,
+            "precision": 0.9719,
+            "recall": 0.9665,
+            "f1": 0.9692
+          },
+          "1": {
+            "support": 198,
+            "precision": 0.4832,
+            "recall": 0.3636,
+            "f1": 0.415
+          },
+          "2": {
+            "support": 192,
+            "precision": 0.4787,
+            "recall": 0.7031,
+            "f1": 0.5696
+          },
+          "3": {
+            "support": 248,
+            "precision": 0.7459,
+            "recall": 0.9113,
+            "f1": 0.8203
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.8736,
+            "recall": 0.8636,
+            "f1": 0.8686
+          },
+          "6": {
+            "support": 214,
+            "precision": 0.9375,
+            "recall": 0.6308,
+            "f1": 0.7542
+          },
+          "7": {
+            "support": 128,
+            "precision": 0.8908,
+            "recall": 0.8281,
+            "f1": 0.8583
+          },
+          "8": {
+            "support": 109,
+            "precision": 0.9406,
+            "recall": 0.8716,
+            "f1": 0.9048
+          },
+          "9": {
+            "support": 155,
+            "precision": 0.6954,
+            "recall": 0.8839,
+            "f1": 0.7784
+          },
+          "10": {
+            "support": 194,
+            "precision": 0.8828,
+            "recall": 0.6598,
+            "f1": 0.7552
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9516,
+        "test_n": 1793,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7529,
+        "macro_f1_12class": 0.6339,
+        "macro_f1_supported_classes": 0.7607,
+        "weighted_f1": 0.7502,
+        "per_class": {
+          "0": {
+            "support": 179,
+            "precision": 0.9884,
+            "recall": 0.9497,
+            "f1": 0.9687
+          },
+          "1": {
+            "support": 198,
+            "precision": 0.4711,
+            "recall": 0.2879,
+            "f1": 0.3574
+          },
+          "2": {
+            "support": 192,
+            "precision": 0.4613,
+            "recall": 0.7448,
+            "f1": 0.5697
+          },
+          "3": {
+            "support": 248,
+            "precision": 0.7872,
+            "recall": 0.8952,
+            "f1": 0.8377
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.8547,
+            "recall": 0.8693,
+            "f1": 0.862
+          },
+          "6": {
+            "support": 214,
+            "precision": 0.9423,
+            "recall": 0.6869,
+            "f1": 0.7946
+          },
+          "7": {
+            "support": 128,
+            "precision": 0.8359,
+            "recall": 0.8359,
+            "f1": 0.8359
+          },
+          "8": {
+            "support": 109,
+            "precision": 0.9327,
+            "recall": 0.8899,
+            "f1": 0.9108
+          },
+          "9": {
+            "support": 155,
+            "precision": 0.6618,
+            "recall": 0.8839,
+            "f1": 0.7569
+          },
+          "10": {
+            "support": 194,
+            "precision": 0.8731,
+            "recall": 0.6031,
+            "f1": 0.7134
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "test_subject": 104,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        105,
+        106,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12147,
+        "test_n": 2109,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7814,
+        "macro_f1_12class": 0.7591,
+        "macro_f1_supported_classes": 0.7591,
+        "weighted_f1": 0.7693,
+        "per_class": {
+          "0": {
+            "support": 184,
+            "precision": 0.8782,
+            "recall": 0.9402,
+            "f1": 0.9081
+          },
+          "1": {
+            "support": 209,
+            "precision": 0.8093,
+            "recall": 0.7512,
+            "f1": 0.7792
+          },
+          "2": {
+            "support": 172,
+            "precision": 0.6338,
+            "recall": 0.5233,
+            "f1": 0.5732
+          },
+          "3": {
+            "support": 249,
+            "precision": 0.9046,
+            "recall": 0.9518,
+            "f1": 0.9276
+          },
+          "4": {
+            "support": 191,
+            "precision": 0.9677,
+            "recall": 0.1571,
+            "f1": 0.2703
+          },
+          "5": {
+            "support": 191,
+            "precision": 0.9873,
+            "recall": 0.8115,
+            "f1": 0.8908
+          },
+          "6": {
+            "support": 204,
+            "precision": 1.0,
+            "recall": 0.9559,
+            "f1": 0.9774
+          },
+          "7": {
+            "support": 109,
+            "precision": 0.4016,
+            "recall": 0.8991,
+            "f1": 0.5552
+          },
+          "8": {
+            "support": 96,
+            "precision": 0.9855,
+            "recall": 0.7083,
+            "f1": 0.8242
+          },
+          "9": {
+            "support": 189,
+            "precision": 0.8864,
+            "recall": 0.8254,
+            "f1": 0.8548
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.6431,
+            "recall": 0.9219,
+            "f1": 0.7576
+          },
+          "11": {
+            "support": 59,
+            "precision": 0.7067,
+            "recall": 0.8983,
+            "f1": 0.791
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12147,
+        "test_n": 2109,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8426,
+        "macro_f1_12class": 0.8468,
+        "macro_f1_supported_classes": 0.8468,
+        "weighted_f1": 0.8443,
+        "per_class": {
+          "0": {
+            "support": 184,
+            "precision": 0.8838,
+            "recall": 0.9511,
+            "f1": 0.9162
+          },
+          "1": {
+            "support": 209,
+            "precision": 0.8389,
+            "recall": 0.7225,
+            "f1": 0.7763
+          },
+          "2": {
+            "support": 172,
+            "precision": 0.5503,
+            "recall": 0.5407,
+            "f1": 0.5455
+          },
+          "3": {
+            "support": 249,
+            "precision": 0.9716,
+            "recall": 0.8233,
+            "f1": 0.8913
+          },
+          "4": {
+            "support": 191,
+            "precision": 0.989,
+            "recall": 0.9372,
+            "f1": 0.9624
+          },
+          "5": {
+            "support": 191,
+            "precision": 0.9877,
+            "recall": 0.8429,
+            "f1": 0.9096
+          },
+          "6": {
+            "support": 204,
+            "precision": 0.8986,
+            "recall": 0.9559,
+            "f1": 0.9264
+          },
+          "7": {
+            "support": 109,
+            "precision": 0.7638,
+            "recall": 0.8899,
+            "f1": 0.822
+          },
+          "8": {
+            "support": 96,
+            "precision": 0.9425,
+            "recall": 0.8542,
+            "f1": 0.8962
+          },
+          "9": {
+            "support": 189,
+            "precision": 0.8722,
+            "recall": 0.8307,
+            "f1": 0.8509
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.6744,
+            "recall": 0.9141,
+            "f1": 0.7761
+          },
+          "11": {
+            "support": 59,
+            "precision": 0.9796,
+            "recall": 0.8136,
+            "f1": 0.8889
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9282,
+        "test_n": 2109,
+        "chain_removed": 2865,
+        "removal_rate": 23.59,
+        "accuracy": 0.8483,
+        "macro_f1_12class": 0.8483,
+        "macro_f1_supported_classes": 0.8483,
+        "weighted_f1": 0.8493,
+        "per_class": {
+          "0": {
+            "support": 184,
+            "precision": 0.8821,
+            "recall": 0.9348,
+            "f1": 0.9077
+          },
+          "1": {
+            "support": 209,
+            "precision": 0.7949,
+            "recall": 0.7416,
+            "f1": 0.7673
+          },
+          "2": {
+            "support": 172,
+            "precision": 0.5577,
+            "recall": 0.5058,
+            "f1": 0.5305
+          },
+          "3": {
+            "support": 249,
+            "precision": 0.9697,
+            "recall": 0.8996,
+            "f1": 0.9333
+          },
+          "4": {
+            "support": 191,
+            "precision": 0.9836,
+            "recall": 0.9424,
+            "f1": 0.9626
+          },
+          "5": {
+            "support": 191,
+            "precision": 0.9817,
+            "recall": 0.8429,
+            "f1": 0.907
+          },
+          "6": {
+            "support": 204,
+            "precision": 0.9466,
+            "recall": 0.9559,
+            "f1": 0.9512
+          },
+          "7": {
+            "support": 109,
+            "precision": 0.8151,
+            "recall": 0.8899,
+            "f1": 0.8509
+          },
+          "8": {
+            "support": 96,
+            "precision": 0.9643,
+            "recall": 0.8438,
+            "f1": 0.9
+          },
+          "9": {
+            "support": 189,
+            "precision": 0.8814,
+            "recall": 0.8254,
+            "f1": 0.8525
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.6714,
+            "recall": 0.9258,
+            "f1": 0.7783
+          },
+          "11": {
+            "support": 59,
+            "precision": 0.9565,
+            "recall": 0.7458,
+            "f1": 0.8381
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9282,
+        "test_n": 2109,
+        "chain_removed": 2865,
+        "removal_rate": 23.59,
+        "accuracy": 0.8464,
+        "macro_f1_12class": 0.8474,
+        "macro_f1_supported_classes": 0.8474,
+        "weighted_f1": 0.8465,
+        "per_class": {
+          "0": {
+            "support": 184,
+            "precision": 0.8827,
+            "recall": 0.9402,
+            "f1": 0.9105
+          },
+          "1": {
+            "support": 209,
+            "precision": 0.7876,
+            "recall": 0.7273,
+            "f1": 0.7562
+          },
+          "2": {
+            "support": 172,
+            "precision": 0.5347,
+            "recall": 0.4477,
+            "f1": 0.4873
+          },
+          "3": {
+            "support": 249,
+            "precision": 0.9702,
+            "recall": 0.9157,
+            "f1": 0.9421
+          },
+          "4": {
+            "support": 191,
+            "precision": 0.9836,
+            "recall": 0.9424,
+            "f1": 0.9626
+          },
+          "5": {
+            "support": 191,
+            "precision": 0.9758,
+            "recall": 0.8429,
+            "f1": 0.9045
+          },
+          "6": {
+            "support": 204,
+            "precision": 0.9655,
+            "recall": 0.9608,
+            "f1": 0.9631
+          },
+          "7": {
+            "support": 109,
+            "precision": 0.8291,
+            "recall": 0.8899,
+            "f1": 0.8584
+          },
+          "8": {
+            "support": 96,
+            "precision": 0.9643,
+            "recall": 0.8438,
+            "f1": 0.9
+          },
+          "9": {
+            "support": 189,
+            "precision": 0.8587,
+            "recall": 0.836,
+            "f1": 0.8472
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.6592,
+            "recall": 0.9219,
+            "f1": 0.7687
+          },
+          "11": {
+            "support": 59,
+            "precision": 0.9787,
+            "recall": 0.7797,
+            "f1": 0.8679
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9282,
+        "test_n": 2109,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8345,
+        "macro_f1_12class": 0.8361,
+        "macro_f1_supported_classes": 0.8361,
+        "weighted_f1": 0.8354,
+        "per_class": {
+          "0": {
+            "support": 184,
+            "precision": 0.8776,
+            "recall": 0.9348,
+            "f1": 0.9053
+          },
+          "1": {
+            "support": 209,
+            "precision": 0.8551,
+            "recall": 0.5646,
+            "f1": 0.6801
+          },
+          "2": {
+            "support": 172,
+            "precision": 0.474,
+            "recall": 0.5291,
+            "f1": 0.5
+          },
+          "3": {
+            "support": 249,
+            "precision": 0.9696,
+            "recall": 0.8956,
+            "f1": 0.9311
+          },
+          "4": {
+            "support": 191,
+            "precision": 0.9783,
+            "recall": 0.9424,
+            "f1": 0.96
+          },
+          "5": {
+            "support": 191,
+            "precision": 0.9817,
+            "recall": 0.8429,
+            "f1": 0.907
+          },
+          "6": {
+            "support": 204,
+            "precision": 0.9378,
+            "recall": 0.9608,
+            "f1": 0.9492
+          },
+          "7": {
+            "support": 109,
+            "precision": 0.7951,
+            "recall": 0.8899,
+            "f1": 0.8398
+          },
+          "8": {
+            "support": 96,
+            "precision": 0.9213,
+            "recall": 0.8542,
+            "f1": 0.8865
+          },
+          "9": {
+            "support": 189,
+            "precision": 0.8109,
+            "recall": 0.8624,
+            "f1": 0.8359
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.6864,
+            "recall": 0.9062,
+            "f1": 0.7811
+          },
+          "11": {
+            "support": 59,
+            "precision": 0.9783,
+            "recall": 0.7627,
+            "f1": 0.8571
+          }
+        }
+      },
+      "test_subject": 105,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        104,
+        106,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12321,
+        "test_n": 1935,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.738,
+        "macro_f1_12class": 0.6666,
+        "macro_f1_supported_classes": 0.6666,
+        "weighted_f1": 0.7396,
+        "per_class": {
+          "0": {
+            "support": 181,
+            "precision": 0.9885,
+            "recall": 0.9503,
+            "f1": 0.969
+          },
+          "1": {
+            "support": 179,
+            "precision": 0.701,
+            "recall": 0.7598,
+            "f1": 0.7292
+          },
+          "2": {
+            "support": 189,
+            "precision": 0.5438,
+            "recall": 0.6243,
+            "f1": 0.5813
+          },
+          "3": {
+            "support": 199,
+            "precision": 0.5946,
+            "recall": 0.4422,
+            "f1": 0.5072
+          },
+          "4": {
+            "support": 177,
+            "precision": 0.9538,
+            "recall": 0.9322,
+            "f1": 0.9429
+          },
+          "5": {
+            "support": 159,
+            "precision": 0.7683,
+            "recall": 0.7925,
+            "f1": 0.7802
+          },
+          "6": {
+            "support": 207,
+            "precision": 0.8938,
+            "recall": 0.6908,
+            "f1": 0.7793
+          },
+          "7": {
+            "support": 101,
+            "precision": 0.6667,
+            "recall": 0.6733,
+            "f1": 0.67
+          },
+          "8": {
+            "support": 85,
+            "precision": 0.4493,
+            "recall": 0.7294,
+            "f1": 0.5561
+          },
+          "9": {
+            "support": 163,
+            "precision": 0.6899,
+            "recall": 0.6687,
+            "f1": 0.6791
+          },
+          "10": {
+            "support": 294,
+            "precision": 0.7902,
+            "recall": 0.8197,
+            "f1": 0.8047
+          },
+          "11": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12321,
+        "test_n": 1935,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.83,
+        "macro_f1_12class": 0.7597,
+        "macro_f1_supported_classes": 0.7597,
+        "weighted_f1": 0.833,
+        "per_class": {
+          "0": {
+            "support": 181,
+            "precision": 0.9885,
+            "recall": 0.9503,
+            "f1": 0.969
+          },
+          "1": {
+            "support": 179,
+            "precision": 0.7004,
+            "recall": 0.8883,
+            "f1": 0.7833
+          },
+          "2": {
+            "support": 189,
+            "precision": 0.598,
+            "recall": 0.6455,
+            "f1": 0.6209
+          },
+          "3": {
+            "support": 199,
+            "precision": 0.8571,
+            "recall": 0.9648,
+            "f1": 0.9078
+          },
+          "4": {
+            "support": 177,
+            "precision": 0.9706,
+            "recall": 0.9322,
+            "f1": 0.951
+          },
+          "5": {
+            "support": 159,
+            "precision": 0.9929,
+            "recall": 0.8805,
+            "f1": 0.9333
+          },
+          "6": {
+            "support": 207,
+            "precision": 0.9427,
+            "recall": 0.8744,
+            "f1": 0.9073
+          },
+          "7": {
+            "support": 101,
+            "precision": 0.8706,
+            "recall": 0.7327,
+            "f1": 0.7957
+          },
+          "8": {
+            "support": 85,
+            "precision": 0.7867,
+            "recall": 0.6941,
+            "f1": 0.7375
+          },
+          "9": {
+            "support": 163,
+            "precision": 0.7714,
+            "recall": 0.6626,
+            "f1": 0.7129
+          },
+          "10": {
+            "support": 294,
+            "precision": 0.7986,
+            "recall": 0.7959,
+            "f1": 0.7973
+          },
+          "11": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9493,
+        "test_n": 1935,
+        "chain_removed": 2828,
+        "removal_rate": 22.95,
+        "accuracy": 0.8341,
+        "macro_f1_12class": 0.7647,
+        "macro_f1_supported_classes": 0.7647,
+        "weighted_f1": 0.8367,
+        "per_class": {
+          "0": {
+            "support": 181,
+            "precision": 0.9773,
+            "recall": 0.9503,
+            "f1": 0.9636
+          },
+          "1": {
+            "support": 179,
+            "precision": 0.6625,
+            "recall": 0.8883,
+            "f1": 0.7589
+          },
+          "2": {
+            "support": 189,
+            "precision": 0.623,
+            "recall": 0.6032,
+            "f1": 0.6129
+          },
+          "3": {
+            "support": 199,
+            "precision": 0.8458,
+            "recall": 0.9648,
+            "f1": 0.9014
+          },
+          "4": {
+            "support": 177,
+            "precision": 1.0,
+            "recall": 0.9322,
+            "f1": 0.9649
+          },
+          "5": {
+            "support": 159,
+            "precision": 1.0,
+            "recall": 0.9308,
+            "f1": 0.9642
+          },
+          "6": {
+            "support": 207,
+            "precision": 0.9415,
+            "recall": 0.8551,
+            "f1": 0.8962
+          },
+          "7": {
+            "support": 101,
+            "precision": 0.8736,
+            "recall": 0.7525,
+            "f1": 0.8085
+          },
+          "8": {
+            "support": 85,
+            "precision": 0.7949,
+            "recall": 0.7294,
+            "f1": 0.7607
+          },
+          "9": {
+            "support": 163,
+            "precision": 0.8308,
+            "recall": 0.6626,
+            "f1": 0.7372
+          },
+          "10": {
+            "support": 294,
+            "precision": 0.7954,
+            "recall": 0.8197,
+            "f1": 0.8074
+          },
+          "11": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9493,
+        "test_n": 1935,
+        "chain_removed": 2828,
+        "removal_rate": 22.95,
+        "accuracy": 0.8253,
+        "macro_f1_12class": 0.7584,
+        "macro_f1_supported_classes": 0.7584,
+        "weighted_f1": 0.8288,
+        "per_class": {
+          "0": {
+            "support": 181,
+            "precision": 0.9451,
+            "recall": 0.9503,
+            "f1": 0.9477
+          },
+          "1": {
+            "support": 179,
+            "precision": 0.6713,
+            "recall": 0.8101,
+            "f1": 0.7342
+          },
+          "2": {
+            "support": 189,
+            "precision": 0.5877,
+            "recall": 0.6561,
+            "f1": 0.62
+          },
+          "3": {
+            "support": 199,
+            "precision": 0.824,
+            "recall": 0.9648,
+            "f1": 0.8889
+          },
+          "4": {
+            "support": 177,
+            "precision": 1.0,
+            "recall": 0.9322,
+            "f1": 0.9649
+          },
+          "5": {
+            "support": 159,
+            "precision": 0.9934,
+            "recall": 0.9434,
+            "f1": 0.9677
+          },
+          "6": {
+            "support": 207,
+            "precision": 0.9351,
+            "recall": 0.8357,
+            "f1": 0.8827
+          },
+          "7": {
+            "support": 101,
+            "precision": 0.8851,
+            "recall": 0.7624,
+            "f1": 0.8191
+          },
+          "8": {
+            "support": 85,
+            "precision": 0.8,
+            "recall": 0.7059,
+            "f1": 0.75
+          },
+          "9": {
+            "support": 163,
+            "precision": 0.84,
+            "recall": 0.6442,
+            "f1": 0.7292
+          },
+          "10": {
+            "support": 294,
+            "precision": 0.7959,
+            "recall": 0.7959,
+            "f1": 0.7959
+          },
+          "11": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9493,
+        "test_n": 1935,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8243,
+        "macro_f1_12class": 0.7561,
+        "macro_f1_supported_classes": 0.7561,
+        "weighted_f1": 0.8283,
+        "per_class": {
+          "0": {
+            "support": 181,
+            "precision": 0.9829,
+            "recall": 0.9503,
+            "f1": 0.9663
+          },
+          "1": {
+            "support": 179,
+            "precision": 0.6927,
+            "recall": 0.8436,
+            "f1": 0.7607
+          },
+          "2": {
+            "support": 189,
+            "precision": 0.58,
+            "recall": 0.6138,
+            "f1": 0.5964
+          },
+          "3": {
+            "support": 199,
+            "precision": 0.8391,
+            "recall": 0.9698,
+            "f1": 0.8998
+          },
+          "4": {
+            "support": 177,
+            "precision": 1.0,
+            "recall": 0.9153,
+            "f1": 0.9558
+          },
+          "5": {
+            "support": 159,
+            "precision": 1.0,
+            "recall": 0.8868,
+            "f1": 0.94
+          },
+          "6": {
+            "support": 207,
+            "precision": 0.9312,
+            "recall": 0.8502,
+            "f1": 0.8889
+          },
+          "7": {
+            "support": 101,
+            "precision": 0.8523,
+            "recall": 0.7426,
+            "f1": 0.7937
+          },
+          "8": {
+            "support": 85,
+            "precision": 0.7821,
+            "recall": 0.7176,
+            "f1": 0.7485
+          },
+          "9": {
+            "support": 163,
+            "precision": 0.7842,
+            "recall": 0.6687,
+            "f1": 0.7219
+          },
+          "10": {
+            "support": 294,
+            "precision": 0.7914,
+            "recall": 0.8129,
+            "f1": 0.802
+          },
+          "11": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "test_subject": 106,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        107,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12455,
+        "test_n": 1801,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7885,
+        "macro_f1_12class": 0.7073,
+        "macro_f1_supported_classes": 0.7716,
+        "weighted_f1": 0.796,
+        "per_class": {
+          "0": {
+            "support": 199,
+            "precision": 1.0,
+            "recall": 0.9497,
+            "f1": 0.9742
+          },
+          "1": {
+            "support": 94,
+            "precision": 0.0446,
+            "recall": 0.0532,
+            "f1": 0.0485
+          },
+          "2": {
+            "support": 200,
+            "precision": 0.4895,
+            "recall": 0.585,
+            "f1": 0.533
+          },
+          "3": {
+            "support": 262,
+            "precision": 0.7736,
+            "recall": 0.9389,
+            "f1": 0.8483
+          },
+          "4": {
+            "support": 27,
+            "precision": 1.0,
+            "recall": 0.8148,
+            "f1": 0.898
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.9874,
+            "recall": 0.892,
+            "f1": 0.9373
+          },
+          "6": {
+            "support": 223,
+            "precision": 1.0,
+            "recall": 0.6951,
+            "f1": 0.8201
+          },
+          "7": {
+            "support": 136,
+            "precision": 0.9104,
+            "recall": 0.8971,
+            "f1": 0.9037
+          },
+          "8": {
+            "support": 88,
+            "precision": 0.8684,
+            "recall": 0.75,
+            "f1": 0.8049
+          },
+          "9": {
+            "support": 167,
+            "precision": 0.8758,
+            "recall": 0.8443,
+            "f1": 0.8598
+          },
+          "10": {
+            "support": 229,
+            "precision": 0.8475,
+            "recall": 0.8734,
+            "f1": 0.8602
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12455,
+        "test_n": 1801,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7063,
+        "macro_f1_12class": 0.6517,
+        "macro_f1_supported_classes": 0.7109,
+        "weighted_f1": 0.72,
+        "per_class": {
+          "0": {
+            "support": 199,
+            "precision": 1.0,
+            "recall": 0.9698,
+            "f1": 0.9847
+          },
+          "1": {
+            "support": 94,
+            "precision": 0.0884,
+            "recall": 0.1383,
+            "f1": 0.1079
+          },
+          "2": {
+            "support": 200,
+            "precision": 0.4416,
+            "recall": 0.435,
+            "f1": 0.4383
+          },
+          "3": {
+            "support": 262,
+            "precision": 0.7136,
+            "recall": 0.5802,
+            "f1": 0.64
+          },
+          "4": {
+            "support": 27,
+            "precision": 0.9545,
+            "recall": 0.7778,
+            "f1": 0.8571
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.9875,
+            "recall": 0.8977,
+            "f1": 0.9405
+          },
+          "6": {
+            "support": 223,
+            "precision": 0.838,
+            "recall": 0.5336,
+            "f1": 0.6521
+          },
+          "7": {
+            "support": 136,
+            "precision": 0.4275,
+            "recall": 0.8015,
+            "f1": 0.5575
+          },
+          "8": {
+            "support": 88,
+            "precision": 0.9861,
+            "recall": 0.8068,
+            "f1": 0.8875
+          },
+          "9": {
+            "support": 167,
+            "precision": 0.9103,
+            "recall": 0.8503,
+            "f1": 0.8793
+          },
+          "10": {
+            "support": 229,
+            "precision": 0.8484,
+            "recall": 0.9039,
+            "f1": 0.8753
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9642,
+        "test_n": 1801,
+        "chain_removed": 2813,
+        "removal_rate": 22.59,
+        "accuracy": 0.7196,
+        "macro_f1_12class": 0.6665,
+        "macro_f1_supported_classes": 0.7271,
+        "weighted_f1": 0.7308,
+        "per_class": {
+          "0": {
+            "support": 199,
+            "precision": 1.0,
+            "recall": 0.9698,
+            "f1": 0.9847
+          },
+          "1": {
+            "support": 94,
+            "precision": 0.1603,
+            "recall": 0.2234,
+            "f1": 0.1867
+          },
+          "2": {
+            "support": 200,
+            "precision": 0.5094,
+            "recall": 0.54,
+            "f1": 0.5243
+          },
+          "3": {
+            "support": 262,
+            "precision": 0.7,
+            "recall": 0.5611,
+            "f1": 0.6229
+          },
+          "4": {
+            "support": 27,
+            "precision": 1.0,
+            "recall": 0.8148,
+            "f1": 0.898
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.9875,
+            "recall": 0.8977,
+            "f1": 0.9405
+          },
+          "6": {
+            "support": 223,
+            "precision": 0.8278,
+            "recall": 0.5605,
+            "f1": 0.6684
+          },
+          "7": {
+            "support": 136,
+            "precision": 0.428,
+            "recall": 0.7868,
+            "f1": 0.5544
+          },
+          "8": {
+            "support": 88,
+            "precision": 0.9861,
+            "recall": 0.8068,
+            "f1": 0.8875
+          },
+          "9": {
+            "support": 167,
+            "precision": 0.878,
+            "recall": 0.8623,
+            "f1": 0.8701
+          },
+          "10": {
+            "support": 229,
+            "precision": 0.8475,
+            "recall": 0.8734,
+            "f1": 0.8602
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9642,
+        "test_n": 1801,
+        "chain_removed": 2813,
+        "removal_rate": 22.59,
+        "accuracy": 0.7229,
+        "macro_f1_12class": 0.6715,
+        "macro_f1_supported_classes": 0.7325,
+        "weighted_f1": 0.7361,
+        "per_class": {
+          "0": {
+            "support": 199,
+            "precision": 1.0,
+            "recall": 0.9698,
+            "f1": 0.9847
+          },
+          "1": {
+            "support": 94,
+            "precision": 0.2148,
+            "recall": 0.3404,
+            "f1": 0.2634
+          },
+          "2": {
+            "support": 200,
+            "precision": 0.5255,
+            "recall": 0.515,
+            "f1": 0.5202
+          },
+          "3": {
+            "support": 262,
+            "precision": 0.692,
+            "recall": 0.5916,
+            "f1": 0.6379
+          },
+          "4": {
+            "support": 27,
+            "precision": 0.9565,
+            "recall": 0.8148,
+            "f1": 0.88
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.9937,
+            "recall": 0.8977,
+            "f1": 0.9433
+          },
+          "6": {
+            "support": 223,
+            "precision": 0.8905,
+            "recall": 0.5471,
+            "f1": 0.6778
+          },
+          "7": {
+            "support": 136,
+            "precision": 0.412,
+            "recall": 0.7574,
+            "f1": 0.5337
+          },
+          "8": {
+            "support": 88,
+            "precision": 0.9861,
+            "recall": 0.8068,
+            "f1": 0.8875
+          },
+          "9": {
+            "support": 167,
+            "precision": 0.8875,
+            "recall": 0.8503,
+            "f1": 0.8685
+          },
+          "10": {
+            "support": 229,
+            "precision": 0.8445,
+            "recall": 0.8777,
+            "f1": 0.8608
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9642,
+        "test_n": 1801,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.6996,
+        "macro_f1_12class": 0.6435,
+        "macro_f1_supported_classes": 0.702,
+        "weighted_f1": 0.7141,
+        "per_class": {
+          "0": {
+            "support": 199,
+            "precision": 1.0,
+            "recall": 0.9598,
+            "f1": 0.9795
+          },
+          "1": {
+            "support": 94,
+            "precision": 0.0385,
+            "recall": 0.0532,
+            "f1": 0.0446
+          },
+          "2": {
+            "support": 200,
+            "precision": 0.4512,
+            "recall": 0.485,
+            "f1": 0.4675
+          },
+          "3": {
+            "support": 262,
+            "precision": 0.7179,
+            "recall": 0.5344,
+            "f1": 0.6127
+          },
+          "4": {
+            "support": 27,
+            "precision": 0.9545,
+            "recall": 0.7778,
+            "f1": 0.8571
+          },
+          "5": {
+            "support": 176,
+            "precision": 0.9875,
+            "recall": 0.8977,
+            "f1": 0.9405
+          },
+          "6": {
+            "support": 223,
+            "precision": 0.8951,
+            "recall": 0.574,
+            "f1": 0.6995
+          },
+          "7": {
+            "support": 136,
+            "precision": 0.4029,
+            "recall": 0.8088,
+            "f1": 0.5379
+          },
+          "8": {
+            "support": 88,
+            "precision": 0.9467,
+            "recall": 0.8068,
+            "f1": 0.8712
+          },
+          "9": {
+            "support": 167,
+            "precision": 0.8488,
+            "recall": 0.8743,
+            "f1": 0.8614
+          },
+          "10": {
+            "support": 229,
+            "precision": 0.8578,
+            "recall": 0.8428,
+            "f1": 0.8502
+          },
+          "11": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        }
+      },
+      "test_subject": 107,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        108,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 12228,
+        "test_n": 2028,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.7811,
+        "macro_f1_12class": 0.785,
+        "macro_f1_supported_classes": 0.785,
+        "weighted_f1": 0.7843,
+        "per_class": {
+          "0": {
+            "support": 187,
+            "precision": 0.9837,
+            "recall": 0.9679,
+            "f1": 0.9757
+          },
+          "1": {
+            "support": 178,
+            "precision": 0.6265,
+            "recall": 0.9045,
+            "f1": 0.7402
+          },
+          "2": {
+            "support": 196,
+            "precision": 0.4686,
+            "recall": 0.5714,
+            "f1": 0.5149
+          },
+          "3": {
+            "support": 245,
+            "precision": 0.9408,
+            "recall": 0.649,
+            "f1": 0.7681
+          },
+          "4": {
+            "support": 128,
+            "precision": 0.9231,
+            "recall": 0.75,
+            "f1": 0.8276
+          },
+          "5": {
+            "support": 198,
+            "precision": 0.9497,
+            "recall": 0.8586,
+            "f1": 0.9019
+          },
+          "6": {
+            "support": 224,
+            "precision": 0.7162,
+            "recall": 0.9464,
+            "f1": 0.8154
+          },
+          "7": {
+            "support": 89,
+            "precision": 0.9365,
+            "recall": 0.6629,
+            "f1": 0.7763
+          },
+          "8": {
+            "support": 72,
+            "precision": 0.7792,
+            "recall": 0.8333,
+            "f1": 0.8054
+          },
+          "9": {
+            "support": 188,
+            "precision": 0.8407,
+            "recall": 0.8138,
+            "f1": 0.827
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.84,
+            "recall": 0.6562,
+            "f1": 0.7368
+          },
+          "11": {
+            "support": 67,
+            "precision": 0.6795,
+            "recall": 0.791,
+            "f1": 0.731
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 12228,
+        "test_n": 2028,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8185,
+        "macro_f1_12class": 0.8192,
+        "macro_f1_supported_classes": 0.8192,
+        "weighted_f1": 0.8228,
+        "per_class": {
+          "0": {
+            "support": 187,
+            "precision": 0.9945,
+            "recall": 0.9679,
+            "f1": 0.981
+          },
+          "1": {
+            "support": 178,
+            "precision": 0.5612,
+            "recall": 0.8764,
+            "f1": 0.6842
+          },
+          "2": {
+            "support": 196,
+            "precision": 0.4258,
+            "recall": 0.4541,
+            "f1": 0.4395
+          },
+          "3": {
+            "support": 245,
+            "precision": 0.9176,
+            "recall": 0.9551,
+            "f1": 0.936
+          },
+          "4": {
+            "support": 128,
+            "precision": 0.9344,
+            "recall": 0.8906,
+            "f1": 0.912
+          },
+          "5": {
+            "support": 198,
+            "precision": 0.9683,
+            "recall": 0.9242,
+            "f1": 0.9457
+          },
+          "6": {
+            "support": 224,
+            "precision": 0.9533,
+            "recall": 0.9107,
+            "f1": 0.9315
+          },
+          "7": {
+            "support": 89,
+            "precision": 0.8923,
+            "recall": 0.6517,
+            "f1": 0.7532
+          },
+          "8": {
+            "support": 72,
+            "precision": 0.7073,
+            "recall": 0.8056,
+            "f1": 0.7532
+          },
+          "9": {
+            "support": 188,
+            "precision": 0.9249,
+            "recall": 0.8511,
+            "f1": 0.8864
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.8333,
+            "recall": 0.6641,
+            "f1": 0.7391
+          },
+          "11": {
+            "support": 67,
+            "precision": 0.9636,
+            "recall": 0.791,
+            "f1": 0.8689
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 9507,
+        "test_n": 2028,
+        "chain_removed": 2721,
+        "removal_rate": 22.25,
+        "accuracy": 0.8166,
+        "macro_f1_12class": 0.8181,
+        "macro_f1_supported_classes": 0.8181,
+        "weighted_f1": 0.8214,
+        "per_class": {
+          "0": {
+            "support": 187,
+            "precision": 1.0,
+            "recall": 0.9679,
+            "f1": 0.9837
+          },
+          "1": {
+            "support": 178,
+            "precision": 0.5498,
+            "recall": 0.8371,
+            "f1": 0.6637
+          },
+          "2": {
+            "support": 196,
+            "precision": 0.4272,
+            "recall": 0.4643,
+            "f1": 0.445
+          },
+          "3": {
+            "support": 245,
+            "precision": 0.939,
+            "recall": 0.9429,
+            "f1": 0.9409
+          },
+          "4": {
+            "support": 128,
+            "precision": 0.9426,
+            "recall": 0.8984,
+            "f1": 0.92
+          },
+          "5": {
+            "support": 198,
+            "precision": 0.9579,
+            "recall": 0.9192,
+            "f1": 0.9381
+          },
+          "6": {
+            "support": 224,
+            "precision": 0.9369,
+            "recall": 0.9286,
+            "f1": 0.9327
+          },
+          "7": {
+            "support": 89,
+            "precision": 0.9077,
+            "recall": 0.6629,
+            "f1": 0.7662
+          },
+          "8": {
+            "support": 72,
+            "precision": 0.6932,
+            "recall": 0.8472,
+            "f1": 0.7625
+          },
+          "9": {
+            "support": 188,
+            "precision": 0.9153,
+            "recall": 0.8617,
+            "f1": 0.8877
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.8267,
+            "recall": 0.6523,
+            "f1": 0.7293
+          },
+          "11": {
+            "support": 67,
+            "precision": 0.9804,
+            "recall": 0.7463,
+            "f1": 0.8475
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 9507,
+        "test_n": 2028,
+        "chain_removed": 2721,
+        "removal_rate": 22.25,
+        "accuracy": 0.8102,
+        "macro_f1_12class": 0.8156,
+        "macro_f1_supported_classes": 0.8156,
+        "weighted_f1": 0.8165,
+        "per_class": {
+          "0": {
+            "support": 187,
+            "precision": 0.9945,
+            "recall": 0.9679,
+            "f1": 0.981
+          },
+          "1": {
+            "support": 178,
+            "precision": 0.5484,
+            "recall": 0.764,
+            "f1": 0.6385
+          },
+          "2": {
+            "support": 196,
+            "precision": 0.4153,
+            "recall": 0.5,
+            "f1": 0.4537
+          },
+          "3": {
+            "support": 245,
+            "precision": 0.9167,
+            "recall": 0.9429,
+            "f1": 0.9296
+          },
+          "4": {
+            "support": 128,
+            "precision": 0.9426,
+            "recall": 0.8984,
+            "f1": 0.92
+          },
+          "5": {
+            "support": 198,
+            "precision": 0.9479,
+            "recall": 0.9192,
+            "f1": 0.9333
+          },
+          "6": {
+            "support": 224,
+            "precision": 0.9318,
+            "recall": 0.9152,
+            "f1": 0.9234
+          },
+          "7": {
+            "support": 89,
+            "precision": 0.9365,
+            "recall": 0.6629,
+            "f1": 0.7763
+          },
+          "8": {
+            "support": 72,
+            "precision": 0.7262,
+            "recall": 0.8472,
+            "f1": 0.7821
+          },
+          "9": {
+            "support": 188,
+            "precision": 0.9281,
+            "recall": 0.8245,
+            "f1": 0.8732
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.8057,
+            "recall": 0.6641,
+            "f1": 0.7281
+          },
+          "11": {
+            "support": 67,
+            "precision": 0.9804,
+            "recall": 0.7463,
+            "f1": 0.8475
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 9507,
+        "test_n": 2028,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.8151,
+        "macro_f1_12class": 0.8172,
+        "macro_f1_supported_classes": 0.8172,
+        "weighted_f1": 0.82,
+        "per_class": {
+          "0": {
+            "support": 187,
+            "precision": 0.9945,
+            "recall": 0.9626,
+            "f1": 0.9783
+          },
+          "1": {
+            "support": 178,
+            "precision": 0.5756,
+            "recall": 0.7697,
+            "f1": 0.6587
+          },
+          "2": {
+            "support": 196,
+            "precision": 0.4126,
+            "recall": 0.4694,
+            "f1": 0.4391
+          },
+          "3": {
+            "support": 245,
+            "precision": 0.9433,
+            "recall": 0.951,
+            "f1": 0.9472
+          },
+          "4": {
+            "support": 128,
+            "precision": 0.9426,
+            "recall": 0.8984,
+            "f1": 0.92
+          },
+          "5": {
+            "support": 198,
+            "precision": 0.9381,
+            "recall": 0.9192,
+            "f1": 0.9286
+          },
+          "6": {
+            "support": 224,
+            "precision": 0.9462,
+            "recall": 0.942,
+            "f1": 0.9441
+          },
+          "7": {
+            "support": 89,
+            "precision": 0.8696,
+            "recall": 0.6742,
+            "f1": 0.7595
+          },
+          "8": {
+            "support": 72,
+            "precision": 0.6782,
+            "recall": 0.8194,
+            "f1": 0.7421
+          },
+          "9": {
+            "support": 188,
+            "precision": 0.9133,
+            "recall": 0.8404,
+            "f1": 0.8753
+          },
+          "10": {
+            "support": 256,
+            "precision": 0.7936,
+            "recall": 0.6758,
+            "f1": 0.73
+          },
+          "11": {
+            "support": 67,
+            "precision": 1.0,
+            "recall": 0.791,
+            "f1": 0.8833
+          }
+        }
+      },
+      "test_subject": 108,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        109
+      ]
+    },
+    {
+      "A_single_sensor": {
+        "description": "Chest IMU only",
+        "train_n": 14208,
+        "test_n": 48,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.4583,
+        "macro_f1_12class": 0.0524,
+        "macro_f1_supported_classes": 0.6286,
+        "weighted_f1": 0.6286,
+        "per_class": {
+          "0": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "1": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "2": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "8": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "9": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "10": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "11": {
+            "support": 48,
+            "precision": 1.0,
+            "recall": 0.4583,
+            "f1": 0.6286
+          }
+        }
+      },
+      "B_multi_naive": {
+        "description": "3 IMUs no chain check",
+        "train_n": 14208,
+        "test_n": 48,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.6875,
+        "macro_f1_12class": 0.0679,
+        "macro_f1_supported_classes": 0.8148,
+        "weighted_f1": 0.8148,
+        "per_class": {
+          "0": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "1": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "2": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "8": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "9": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "10": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "11": {
+            "support": 48,
+            "precision": 1.0,
+            "recall": 0.6875,
+            "f1": 0.8148
+          }
+        }
+      },
+      "C_chain_filtered": {
+        "description": "3 IMUs + chain filter",
+        "train_n": 10966,
+        "test_n": 48,
+        "chain_removed": 3242,
+        "removal_rate": 22.82,
+        "accuracy": 0.7917,
+        "macro_f1_12class": 0.0736,
+        "macro_f1_supported_classes": 0.8837,
+        "weighted_f1": 0.8837,
+        "per_class": {
+          "0": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "1": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "2": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "8": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "9": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "10": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "11": {
+            "support": 48,
+            "precision": 1.0,
+            "recall": 0.7917,
+            "f1": 0.8837
+          }
+        }
+      },
+      "D_chain_weighted": {
+        "description": "3 IMUs + filter + weights",
+        "train_n": 10966,
+        "test_n": 48,
+        "chain_removed": 3242,
+        "removal_rate": 22.82,
+        "accuracy": 0.8125,
+        "macro_f1_12class": 0.0747,
+        "macro_f1_supported_classes": 0.8966,
+        "weighted_f1": 0.8966,
+        "per_class": {
+          "0": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "1": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "2": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "8": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "9": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "10": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "11": {
+            "support": 48,
+            "precision": 1.0,
+            "recall": 0.8125,
+            "f1": 0.8966
+          }
+        }
+      },
+      "E_random_class_matched": {
+        "description": "3 IMUs + random subset matched to chain-filter class counts",
+        "train_n": 10966,
+        "test_n": 48,
+        "chain_removed": 0,
+        "removal_rate": 0,
+        "accuracy": 0.75,
+        "macro_f1_12class": 0.0714,
+        "macro_f1_supported_classes": 0.8571,
+        "weighted_f1": 0.8571,
+        "per_class": {
+          "0": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "1": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "2": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "3": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "4": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "5": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "6": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "7": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "8": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "9": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "10": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "11": {
+            "support": 48,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.8571
+          }
+        }
+      },
+      "test_subject": 109,
+      "train_subjects": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+      ]
+    }
+  ],
+  "aggregated": {
+    "A_single_sensor": {
+      "mean_accuracy": 0.6829,
+      "std_accuracy": 0.1388,
+      "mean_macro_f1_12class": 0.5365,
+      "std_macro_f1_12class": 0.2224,
+      "mean_macro_f1_supported_classes": 0.6809,
+      "std_macro_f1_supported_classes": 0.1288,
+      "mean_weighted_f1": 0.693,
+      "std_weighted_f1": 0.1373,
+      "n_folds": 9
+    },
+    "B_multi_naive": {
+      "mean_accuracy": 0.741,
+      "std_accuracy": 0.0988,
+      "mean_macro_f1_12class": 0.5834,
+      "std_macro_f1_12class": 0.2248,
+      "mean_macro_f1_supported_classes": 0.7524,
+      "std_macro_f1_supported_classes": 0.0979,
+      "mean_weighted_f1": 0.7535,
+      "std_weighted_f1": 0.1196,
+      "n_folds": 9
+    },
+    "C_chain_filtered": {
+      "mean_accuracy": 0.7563,
+      "std_accuracy": 0.0927,
+      "mean_macro_f1_12class": 0.5898,
+      "std_macro_f1_12class": 0.2232,
+      "mean_macro_f1_supported_classes": 0.766,
+      "std_macro_f1_supported_classes": 0.0955,
+      "mean_weighted_f1": 0.7671,
+      "std_weighted_f1": 0.1156,
+      "n_folds": 9
+    },
+    "D_chain_weighted": {
+      "mean_accuracy": 0.7615,
+      "std_accuracy": 0.0848,
+      "mean_macro_f1_12class": 0.5933,
+      "std_macro_f1_12class": 0.2218,
+      "mean_macro_f1_supported_classes": 0.7711,
+      "std_macro_f1_supported_classes": 0.091,
+      "mean_weighted_f1": 0.7725,
+      "std_weighted_f1": 0.1069,
+      "n_folds": 9
+    },
+    "E_random_class_matched": {
+      "mean_accuracy": 0.7459,
+      "std_accuracy": 0.0921,
+      "mean_macro_f1_12class": 0.5818,
+      "std_macro_f1_12class": 0.222,
+      "mean_macro_f1_supported_classes": 0.7546,
+      "std_macro_f1_supported_classes": 0.0984,
+      "mean_weighted_f1": 0.7568,
+      "std_weighted_f1": 0.1161,
+      "n_folds": 9
+    }
+  },
+  "paired_comparisons": {
+    "B-A": {
+      "mean": 0.047,
+      "std": 0.0576,
+      "n_paired_folds": 9
+    },
+    "C-B": {
+      "mean": 0.0064,
+      "std": 0.0108,
+      "n_paired_folds": 9
+    },
+    "D-C": {
+      "mean": 0.0034,
+      "std": 0.0083,
+      "n_paired_folds": 9
+    },
+    "D-A": {
+      "mean": 0.0568,
+      "std": 0.0671,
+      "n_paired_folds": 9
+    },
+    "C-E_random_matched": {
+      "mean": 0.008,
+      "std": 0.01,
+      "n_paired_folds": 9
+    },
+    "E-B_random_control": {
+      "mean": -0.0016,
+      "std": 0.0062,
+      "n_paired_folds": 9
+    }
+  },
+  "pooled_metrics": {
+    "A_single_sensor": {
+      "accuracy": 0.7055,
+      "macro_f1_12class": 0.7016,
+      "macro_f1_supported_classes": 0.7016,
+      "weighted_f1": 0.7066,
+      "per_class": {
+        "0": {
+          "support": 1494,
+          "precision": 0.978,
+          "recall": 0.9237,
+          "f1": 0.9501
+        },
+        "1": {
+          "support": 1438,
+          "precision": 0.5723,
+          "recall": 0.6328,
+          "f1": 0.6011
+        },
+        "2": {
+          "support": 1474,
+          "precision": 0.4928,
+          "recall": 0.4613,
+          "f1": 0.4765
+        },
+        "3": {
+          "support": 1681,
+          "precision": 0.7957,
+          "recall": 0.6788,
+          "f1": 0.7326
+        },
+        "4": {
+          "support": 594,
+          "precision": 0.867,
+          "recall": 0.5269,
+          "f1": 0.6555
+        },
+        "5": {
+          "support": 1095,
+          "precision": 0.6297,
+          "recall": 0.8292,
+          "f1": 0.7158
+        },
+        "6": {
+          "support": 1303,
+          "precision": 0.8415,
+          "recall": 0.6355,
+          "f1": 0.7241
+        },
+        "7": {
+          "support": 897,
+          "precision": 0.5098,
+          "recall": 0.6968,
+          "f1": 0.5888
+        },
+        "8": {
+          "support": 793,
+          "precision": 0.7668,
+          "recall": 0.6343,
+          "f1": 0.6943
+        },
+        "9": {
+          "support": 1357,
+          "precision": 0.7652,
+          "recall": 0.7804,
+          "f1": 0.7727
+        },
+        "10": {
+          "support": 1853,
+          "precision": 0.7068,
+          "recall": 0.8171,
+          "f1": 0.7579
+        },
+        "11": {
+          "support": 277,
+          "precision": 0.7967,
+          "recall": 0.7076,
+          "f1": 0.7495
+        }
+      },
+      "n_pooled_samples": 14256
+    },
+    "B_multi_naive": {
+      "accuracy": 0.7455,
+      "macro_f1_12class": 0.7638,
+      "macro_f1_supported_classes": 0.7638,
+      "weighted_f1": 0.7479,
+      "per_class": {
+        "0": {
+          "support": 1494,
+          "precision": 0.9794,
+          "recall": 0.9224,
+          "f1": 0.95
+        },
+        "1": {
+          "support": 1438,
+          "precision": 0.5875,
+          "recall": 0.6467,
+          "f1": 0.6157
+        },
+        "2": {
+          "support": 1474,
+          "precision": 0.5216,
+          "recall": 0.4912,
+          "f1": 0.5059
+        },
+        "3": {
+          "support": 1681,
+          "precision": 0.8507,
+          "recall": 0.671,
+          "f1": 0.7502
+        },
+        "4": {
+          "support": 594,
+          "precision": 0.9026,
+          "recall": 0.9209,
+          "f1": 0.9117
+        },
+        "5": {
+          "support": 1095,
+          "precision": 0.8505,
+          "recall": 0.8575,
+          "f1": 0.854
+        },
+        "6": {
+          "support": 1303,
+          "precision": 0.8151,
+          "recall": 0.6531,
+          "f1": 0.7252
+        },
+        "7": {
+          "support": 897,
+          "precision": 0.5227,
+          "recall": 0.7703,
+          "f1": 0.6228
+        },
+        "8": {
+          "support": 793,
+          "precision": 0.9087,
+          "recall": 0.7654,
+          "f1": 0.8309
+        },
+        "9": {
+          "support": 1357,
+          "precision": 0.7529,
+          "recall": 0.8062,
+          "f1": 0.7786
+        },
+        "10": {
+          "support": 1853,
+          "precision": 0.7168,
+          "recall": 0.8208,
+          "f1": 0.7653
+        },
+        "11": {
+          "support": 277,
+          "precision": 0.9356,
+          "recall": 0.787,
+          "f1": 0.8549
+        }
+      },
+      "n_pooled_samples": 14256
+    },
+    "C_chain_filtered": {
+      "accuracy": 0.7507,
+      "macro_f1_12class": 0.7695,
+      "macro_f1_supported_classes": 0.7695,
+      "weighted_f1": 0.7533,
+      "per_class": {
+        "0": {
+          "support": 1494,
+          "precision": 0.9737,
+          "recall": 0.9163,
+          "f1": 0.9441
+        },
+        "1": {
+          "support": 1438,
+          "precision": 0.5946,
+          "recall": 0.6099,
+          "f1": 0.6021
+        },
+        "2": {
+          "support": 1474,
+          "precision": 0.517,
+          "recall": 0.5163,
+          "f1": 0.5166
+        },
+        "3": {
+          "support": 1681,
+          "precision": 0.8464,
+          "recall": 0.6919,
+          "f1": 0.7614
+        },
+        "4": {
+          "support": 594,
+          "precision": 0.9167,
+          "recall": 0.9259,
+          "f1": 0.9213
+        },
+        "5": {
+          "support": 1095,
+          "precision": 0.869,
+          "recall": 0.8667,
+          "f1": 0.8679
+        },
+        "6": {
+          "support": 1303,
+          "precision": 0.8391,
+          "recall": 0.6685,
+          "f1": 0.7441
+        },
+        "7": {
+          "support": 897,
+          "precision": 0.537,
+          "recall": 0.7681,
+          "f1": 0.6321
+        },
+        "8": {
+          "support": 793,
+          "precision": 0.9091,
+          "recall": 0.7818,
+          "f1": 0.8407
+        },
+        "9": {
+          "support": 1357,
+          "precision": 0.7622,
+          "recall": 0.815,
+          "f1": 0.7877
+        },
+        "10": {
+          "support": 1853,
+          "precision": 0.712,
+          "recall": 0.8246,
+          "f1": 0.7642
+        },
+        "11": {
+          "support": 277,
+          "precision": 0.9241,
+          "recall": 0.7906,
+          "f1": 0.8521
+        }
+      },
+      "n_pooled_samples": 14256
+    },
+    "D_chain_weighted": {
+      "accuracy": 0.7543,
+      "macro_f1_12class": 0.7736,
+      "macro_f1_supported_classes": 0.7736,
+      "weighted_f1": 0.7564,
+      "per_class": {
+        "0": {
+          "support": 1494,
+          "precision": 0.9716,
+          "recall": 0.9157,
+          "f1": 0.9428
+        },
+        "1": {
+          "support": 1438,
+          "precision": 0.6061,
+          "recall": 0.6078,
+          "f1": 0.6069
+        },
+        "2": {
+          "support": 1474,
+          "precision": 0.5142,
+          "recall": 0.5142,
+          "f1": 0.5142
+        },
+        "3": {
+          "support": 1681,
+          "precision": 0.8386,
+          "recall": 0.6954,
+          "f1": 0.7603
+        },
+        "4": {
+          "support": 594,
+          "precision": 0.8972,
+          "recall": 0.9259,
+          "f1": 0.9114
+        },
+        "5": {
+          "support": 1095,
+          "precision": 0.8828,
+          "recall": 0.874,
+          "f1": 0.8784
+        },
+        "6": {
+          "support": 1303,
+          "precision": 0.8369,
+          "recall": 0.6969,
+          "f1": 0.7605
+        },
+        "7": {
+          "support": 897,
+          "precision": 0.5661,
+          "recall": 0.7637,
+          "f1": 0.6502
+        },
+        "8": {
+          "support": 793,
+          "precision": 0.9239,
+          "recall": 0.7806,
+          "f1": 0.8462
+        },
+        "9": {
+          "support": 1357,
+          "precision": 0.7588,
+          "recall": 0.8113,
+          "f1": 0.7842
+        },
+        "10": {
+          "support": 1853,
+          "precision": 0.7051,
+          "recall": 0.8311,
+          "f1": 0.7629
+        },
+        "11": {
+          "support": 277,
+          "precision": 0.9295,
+          "recall": 0.8087,
+          "f1": 0.8649
+        }
+      },
+      "n_pooled_samples": 14256
+    },
+    "E_random_class_matched": {
+      "accuracy": 0.7438,
+      "macro_f1_12class": 0.7605,
+      "macro_f1_supported_classes": 0.7605,
+      "weighted_f1": 0.7451,
+      "per_class": {
+        "0": {
+          "support": 1494,
+          "precision": 0.9771,
+          "recall": 0.913,
+          "f1": 0.9439
+        },
+        "1": {
+          "support": 1438,
+          "precision": 0.5938,
+          "recall": 0.5876,
+          "f1": 0.5907
+        },
+        "2": {
+          "support": 1474,
+          "precision": 0.5004,
+          "recall": 0.4769,
+          "f1": 0.4884
+        },
+        "3": {
+          "support": 1681,
+          "precision": 0.8606,
+          "recall": 0.6722,
+          "f1": 0.7548
+        },
+        "4": {
+          "support": 594,
+          "precision": 0.8878,
+          "recall": 0.9192,
+          "f1": 0.9032
+        },
+        "5": {
+          "support": 1095,
+          "precision": 0.842,
+          "recall": 0.8712,
+          "f1": 0.8564
+        },
+        "6": {
+          "support": 1303,
+          "precision": 0.8295,
+          "recall": 0.6869,
+          "f1": 0.7515
+        },
+        "7": {
+          "support": 897,
+          "precision": 0.5513,
+          "recall": 0.7793,
+          "f1": 0.6457
+        },
+        "8": {
+          "support": 793,
+          "precision": 0.8871,
+          "recall": 0.7831,
+          "f1": 0.8319
+        },
+        "9": {
+          "support": 1357,
+          "precision": 0.7297,
+          "recall": 0.8158,
+          "f1": 0.7704
+        },
+        "10": {
+          "support": 1853,
+          "precision": 0.7023,
+          "recall": 0.8262,
+          "f1": 0.7592
+        },
+        "11": {
+          "support": 277,
+          "precision": 0.9207,
+          "recall": 0.7545,
+          "f1": 0.8294
+        }
+      },
+      "n_pooled_samples": 14256
+    }
+  }
+}
