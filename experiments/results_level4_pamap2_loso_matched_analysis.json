@@ -1,0 +1,202 @@
+{
+  "experiment": "s2s_level4_pamap2_matched_retention_analysis",
+  "metric": "fixed 12-class macro-F1",
+  "primary_comparison": "C-E",
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_seeds": 5,
+  "subjects": [
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109
+  ],
+  "n_subjects": 9,
+  "bootstrap": {
+    "unit": "held-out subject",
+    "samples": 10000,
+    "seed": 2026,
+    "interval": "percentile 95%; exploratory because only nine subjects are available"
+  },
+  "comparisons": {
+    "B-A": {
+      "left_condition": "B_multi_naive",
+      "right_condition": "A_single_sensor",
+      "mean_delta_percentage_points": 4.7876,
+      "subject_bootstrap_95ci_percentage_points": [
+        1.1998,
+        8.4911
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": 4.6978,
+        "43": 3.9356,
+        "44": 4.5989,
+        "45": 5.1733,
+        "46": 5.5322
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": 7.672,
+        "102": 14.794,
+        "103": -2.77,
+        "104": 6.64,
+        "105": 5.466,
+        "106": 8.984,
+        "107": -4.578,
+        "108": 3.29,
+        "109": 3.59
+      },
+      "seed_mean_spread_pp": 1.5966
+    },
+    "C-B": {
+      "left_condition": "C_chain_filtered",
+      "right_condition": "B_multi_naive",
+      "mean_delta_percentage_points": -0.1613,
+      "subject_bootstrap_95ci_percentage_points": [
+        -0.5084,
+        0.2782
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": 0.64,
+        "43": -0.2533,
+        "44": -0.3422,
+        "45": -0.3789,
+        "46": -0.4722
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": -0.512,
+        "102": 1.192,
+        "103": -0.688,
+        "104": -0.304,
+        "105": -0.316,
+        "106": -0.668,
+        "107": 0.674,
+        "108": -0.376,
+        "109": -0.454
+      },
+      "seed_mean_spread_pp": 1.1122
+    },
+    "C-E": {
+      "left_condition": "C_chain_filtered",
+      "right_condition": "E_random_class_matched",
+      "mean_delta_percentage_points": 0.0824,
+      "subject_bootstrap_95ci_percentage_points": [
+        -0.304,
+        0.5029
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": 0.8011,
+        "43": -0.2889,
+        "44": -0.0011,
+        "45": 0.3433,
+        "46": -0.4422
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": -0.674,
+        "102": 1.166,
+        "103": -0.144,
+        "104": -0.216,
+        "105": 0.172,
+        "106": -0.21,
+        "107": 1.106,
+        "108": 0.152,
+        "109": -0.61
+      },
+      "seed_mean_spread_pp": 1.2433
+    },
+    "D-C": {
+      "left_condition": "D_chain_weighted",
+      "right_condition": "C_chain_filtered",
+      "mean_delta_percentage_points": 0.2709,
+      "subject_bootstrap_95ci_percentage_points": [
+        -0.116,
+        0.6531
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": 0.3422,
+        "43": 0.0422,
+        "44": 0.3756,
+        "45": 0.2933,
+        "46": 0.3011
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": 0.566,
+        "102": 0.878,
+        "103": -0.522,
+        "104": 0.97,
+        "105": -0.406,
+        "106": -0.288,
+        "107": 1.096,
+        "108": -0.094,
+        "109": 0.238
+      },
+      "seed_mean_spread_pp": 0.3334
+    },
+    "E-B": {
+      "left_condition": "E_random_class_matched",
+      "right_condition": "B_multi_naive",
+      "mean_delta_percentage_points": -0.2438,
+      "subject_bootstrap_95ci_percentage_points": [
+        -0.426,
+        -0.0458
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": -0.1611,
+        "43": 0.0356,
+        "44": -0.3411,
+        "45": -0.7222,
+        "46": -0.03
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": 0.162,
+        "102": 0.026,
+        "103": -0.544,
+        "104": -0.088,
+        "105": -0.488,
+        "106": -0.458,
+        "107": -0.432,
+        "108": -0.528,
+        "109": 0.156
+      },
+      "seed_mean_spread_pp": 0.7578
+    },
+    "D-A": {
+      "left_condition": "D_chain_weighted",
+      "right_condition": "A_single_sensor",
+      "mean_delta_percentage_points": 4.8971,
+      "subject_bootstrap_95ci_percentage_points": [
+        1.2312,
+        8.8054
+      ],
+      "per_seed_mean_delta_percentage_points": {
+        "42": 5.68,
+        "43": 3.7244,
+        "44": 4.6322,
+        "45": 5.0878,
+        "46": 5.3611
+      },
+      "per_subject_mean_delta_percentage_points": {
+        "101": 7.726,
+        "102": 16.864,
+        "103": -3.98,
+        "104": 7.306,
+        "105": 4.744,
+        "106": 8.028,
+        "107": -2.808,
+        "108": 2.82,
+        "109": 3.374
+      },
+      "seed_mean_spread_pp": 1.9556
+    }
+  },
+  "interpretation_limit": "Seeds are repeated runs on the same held-out subjects, not independent subjects. Subject-bootstrap intervals are exploratory and are not a formal significance test."
+}
