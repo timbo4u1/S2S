@@ -1,4 +1,4 @@
-# S2S — Physics Certification for Motion Data
+# S2S — Motion Data Quality Diagnostics & Audit
 
 **S2S makes motion data quality measurable, explainable, and repeatable before that data is used to train a model.**
 
@@ -26,9 +26,11 @@ s2s-refinery --input /your/dataset --output report.csv
 | Dataset | Windows | Usable | Rejected | Finding |
 |---|---|---|---|---|
 | NinaPro DB5 | 24,802 | 99% | 0% | Clean lab data — sensor_freeze 16% (Delsys hardware). No gyro — Law 16 skips. Confirmed valid v1.7.9. |
-| PAMAP2 | 9,746 | 77% | 19% | Legacy certification summary (separate from classifier evaluation). Updated 9-subject, 3-seed LOSO: three IMUs vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1; chain-filter effect +0.02 pp mean and inconsistent by seed. |
+| PAMAP2 | 9,746 | 77% | 19% | Legacy certification summary (separate from classifier evaluation). Updated five-seed, 9-subject LOSO: three IMUs vs chest-only +4.79 pp fixed 12-class macro-F1. Physics-based chain filtering vs a matched-size random subset: +0.08 pp (exploratory 95% subject-bootstrap interval −0.30 to +0.50 pp); no downstream classification advantage demonstrated. |
 | WESAD wrist | 200 | 95% | 4% | 32Hz structural limit — 86% SILVER expected |
 | PTT-PPG | 371 | 100% | 0% | High quality walking data |
+
+S2S audits motion sensor datasets and produces explainable, window-level diagnostic reports for supported checks such as sensor freeze, powerline interference, splice artifacts, and physically inconsistent recordings. Reports support review and decisions by data owners; they do not guarantee that filtering improves downstream model performance. In the five-seed, 9-subject PAMAP2 LOSO evaluation, chain filtering removed 23.8% of training windows. Against a matched random subset of equivalent size, physics-based selection showed no demonstrated downstream classification advantage (+0.08 pp; exploratory 95% subject-bootstrap interval −0.30 to +0.50 pp). Multi-sensor fusion independently contributed +4.79 pp macro-F1 versus chest-only input.
 
 Run it on your dataset. Processing time and assessment coverage depend on the input format, sensor modalities, windowing, and enabled checks.
 
@@ -98,7 +100,7 @@ For robotics and embodied AI pipelines, S2S provides separate checks for support
 | Dataset | Hz | Sensors | Result |
 |---|---|---|---|
 | UCI HAR | 50Hz | IMU | −5.83% F1 vs clean baseline (artificial 35% corruption — filtering reduces training set more than noise; not a valid S2S use case) |
-| PAMAP2 | 100Hz | IMU ×3 | Three-seed LOSO: multi-sensor vs chest-only +4.41 pp mean paired per-subject fixed 12-class macro-F1. Chain-filter effect: +0.02 pp mean across seeds, inconsistent by seed. |
+| PAMAP2 | 100Hz | IMU ×3 | Five-seed, 9-subject LOSO: multi-sensor vs chest-only +4.79 pp fixed 12-class macro-F1. Physics-based chain filtering vs matched-size random subset: +0.08 pp (exploratory 95% subject-bootstrap interval −0.30 to +0.50 pp); no demonstrated downstream advantage. |
 | WISDM 2019 | 20Hz | IMU | +1.74% F1 vs corrupted baseline |
 | WESAD | 700Hz | IMU + BVP | +3.1% F1 stress classification |
 | RoboTurk Open-X | 15Hz | Robot arm | 97.7% pass rate (v1.7.9, 216 episodes, 1143 windows). Note: v1.5.0 showed 78.1% pass under 8-law set — not directly comparable due to law set change |
@@ -313,11 +315,11 @@ The runner adds five Gaussian-noise cases, seven hard-negative perturbations, an
 
 The historical spike-injection checks allowed either BRONZE or REJECTED; they did not require every case to be BRONZE. The 36-case result is a fixed test set, not evidence of universal detection or validation across arbitrary data.
 
-Updated PAMAP2 LOSO (9 subjects, seeds 42/43/44): multi-sensor vs chest-only +4.41 percentage points mean paired per-subject fixed 12-class macro-F1. Chain-filter effect: +0.02 pp mean across seeds, inconsistent by seed.
+Updated PAMAP2 LOSO (9 subjects, five seeds 42–46; fixed 12-class macro-F1): multi-sensor fusion vs chest-only was +4.79 pp. The primary matched-control comparison, physics-filtered data vs an equivalent-size random subset, was +0.08 pp with an exploratory 95% subject-bootstrap interval of −0.30 to +0.50 pp. The interval crosses zero and seed-level effects had mixed signs; this experiment does not demonstrate downstream classification benefit from physics-based filtering. Chain filtering removed 23.8% of training windows in this evaluation. The interval is exploratory, based on nine held-out subjects, and is not formal significance testing.
 
-Full results: [experiments/s2s_reference_benchmark.json](experiments/s2s_reference_benchmark.json)
+Full reproducible five-seed analysis: [experiments/results_level4_pamap2_loso_matched_analysis.json](experiments/results_level4_pamap2_loso_matched_analysis.json). Individual runs and the corrected seed-42 rerun are preserved separately.
 
-See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the plan for matched-control evaluation, known-corruption detection, and independent replication.
+See the [S2S value validation protocol](docs/S2S_value_validation_protocol.md) for the evaluation design and follow-up validation of known-corruption detection and independent replication.
 
 ## Status & Roadmap
 
