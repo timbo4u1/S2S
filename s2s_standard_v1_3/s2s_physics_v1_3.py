@@ -717,7 +717,10 @@ def check_cross_axis_cohesion(imu_raw: Dict) -> Tuple[Optional[bool], int, Dict]
 # Law 2: Resonance  ω = sqrt(K/I)
 # ---------------------------------------------------------------------------
 def check_resonance(imu_raw: Dict, segment: str = "forearm") -> Tuple[Optional[bool], int, Dict]:
-    I, K, f_lo, f_hi = SEGMENT_PARAMS.get(segment, SEGMENT_PARAMS["forearm"])
+    if segment not in SEGMENT_PARAMS:
+        return None, 0, {"law": "Resonance_Frequency", "segment": segment,
+                         "skip": f"SEGMENT_NOT_CALIBRATED:{segment}"}
+    I, K, f_lo, f_hi = SEGMENT_PARAMS[segment]
     omega = math.sqrt(K / I)
     f_fund = omega / (2 * math.pi)
     d = {"law": "Resonance_Frequency", "equation": "omega=sqrt(K/I)",
