@@ -100,3 +100,31 @@ Supersedes the matching items above; everything else stands.
 6. Part B windows remain stride 128, fresh engine per window.
    Fault injection and original certification use identical source
    windows and paired comparisons.
+
+## Amendment 3 — Part A reporting (before first certification run)
+
+1. A Part A window is flagged if one or more laws return FAIL.
+   Overall tier or engine status alone does not define a flagged window.
+
+2. Report gap and non-gap groups with:
+   - pooled flagged-window count and total window count;
+   - pooled observed flag rate;
+   - equal-weighted mean of eligible subject-specific flag rates;
+   - descriptive 95% percentile interval from 10,000 subject-level
+     bootstrap replicates.
+   Only subjects with at least one window in the relevant group
+   are eligible for that group's bootstrap.
+
+3. Bootstrap uses subjects as resampling units, not individual windows.
+   Seed: 20261101. Report eligible subject count and individual
+   subject rates. These intervals are descriptive; do not infer
+   a causal relationship between timestamp gaps and failures.
+
+4. Define assessed coverage per window as:
+   n_laws_assessed / n_laws_checked.
+   Report min, p05, p25, median, mean, p75, p95 and max.
+
+5. The previously reported acceleration magnitude of approximately
+   11.4 m/s^2 is based on the quietest 20% of gyro-magnitude samples
+   in each trial. This is a low-angular-motion proxy, not verified
+   rest and not sensor-calibration ground truth.
