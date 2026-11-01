@@ -320,7 +320,7 @@ def main() -> int:
             bootstrap_input, "gap_flagged", "gap_windows", seed_offset=0
         ),
         "non_gap_windows": subject_bootstrap_rate(
-            bootstrap_input, "non_gap_flagged", "non_gap_windows", seed_offset=1
+            bootstrap_input, "non_gap_flagged", "non_gap_windows", seed_offset=0
         ),
         "interpretation": (
             "Descriptive only. Gap windows are sparse and there are no independent "
