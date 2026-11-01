@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 
 ROOT = os.path.expanduser("~/S2S_data/c-mhad/raw/subjects")
-WIN, STRIDE = 256, 128
+WIN = 256
+PART_A_STRIDE = 256
+PART_B_STRIDE = 128
 
 
 def load_trial(path):
@@ -33,10 +35,15 @@ def trial_files():
     return sorted(glob.glob(ROOT + "/Subject*/InertialData/inertial_*.xls"), key=trial_ids)
 
 
-def iter_windows(tr):
-    for s in range(0, len(tr["ts_ns"]) - WIN + 1, STRIDE):
+def iter_windows(tr, stride=PART_A_STRIDE):
+    if stride not in (PART_A_STRIDE, PART_B_STRIDE):
+        raise ValueError(f"Unsupported stride: {stride}")
+
+    for s in range(0, len(tr["ts_ns"]) - WIN + 1, stride):
         e = s + WIN
-        yield s, e, bool(((tr["gap_at"] > s) & (tr["gap_at"] < e)).any())
+        # Assign a dropout to the window containing its first post-gap sample.
+        has_gap = bool(((tr["gap_at"] >= s) & (tr["gap_at"] < e)).any())
+        yield s, e, has_gap
 
 
 if __name__ == "__main__":
@@ -48,7 +55,7 @@ if __name__ == "__main__":
         for _, _, g in iter_windows(tr):
             n_win += 1
             n_gap += g
-    print(f"trials={n_tr} windows={n_win} gap_windows={n_gap} clean_windows={n_win - n_gap}")
+    print(f"trials={n_tr} windows={n_win} gap_windows={n_gap} non_gap_windows={n_win - n_gap}")
     tr = load_trial(trial_files()[0])
     gm = np.linalg.norm(tr["gyro"], axis=1)
     print("first trial: n=%d step=%.3f ms gaps=%d | gyro rad/s p50=%.3f p99=%.3f"
