@@ -62,3 +62,41 @@ Supersedes the matching items above; everything else stands.
 4. Windows stay 256 samples. gap: take 256+m samples, delete m consecutive ones inside. freeze: k = total identical consecutive samples.
 5. Detection denominators exclude pairs where detection is impossible by construction (original already fails the target law, or is already REJECTED). Report the excluded count per cell.
 6. Added predictions from the documented freeze thresholds (10 identical samples in motion, 25 at rest): k=16 detected only in windows judged in motion; k=32 detected in both; k=8 missed.
+
+## Amendment 2 (before any C-MHAD certification run)
+
+1. Part B uses overlapping stride-128 windows with a fresh engine per
+   window. These are correlated observations; no window-level independent
+   confidence intervals will be reported.
+
+2. Bootstrap aggregation: calculate detection proportions per subject
+   first, then use the equally weighted mean across eligible subjects.
+   Resample subjects with replacement for 10,000 bootstrap replicates.
+   Report the number of eligible subjects and their individual results.
+
+3. Detection denominators:
+   - Primary new-failure detection: a pair is detected if any law
+     transitions from PASS in the original to FAIL in the faulted copy.
+     Overall REJECTED status alone does not exclude a pair.
+   - Targeted detection: include only pairs where the target law is
+     PASS in the original and assessable in the faulted copy.
+   - Tier deterioration: include only pairs where the original tier is
+     GOLD, SILVER or BRONZE. Treat UNVERIFIED separately.
+   - Report eligible and excluded pair counts for every fault/severity.
+
+4. Unit-error injections:
+   - Acceleration: divide the correctly loaded m/s^2 values by 9.81,
+     then pass them to the engine as if they were still m/s^2.
+   - Gyroscope: multiply correctly converted rad/s values by 180/pi,
+     simulating degrees/s passed as rad/s.
+   Evaluate these as separate fault conditions.
+
+5. Axis permutation:
+   - Swapping X and Z in both accelerometer and gyroscope is an
+     invariance control, not a corruption-detection target.
+   - Add a separate accelerometer-only X/Z swap as a sensor-axis
+     mismatch fault. Report it separately.
+
+6. Part B windows remain stride 128, fresh engine per window.
+   Fault injection and original certification use identical source
+   windows and paired comparisons.
