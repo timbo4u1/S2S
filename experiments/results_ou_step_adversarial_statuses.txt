@@ -1,0 +1,31 @@
+REPOSITORY HEAD: aaf34abe4dd1f0d1b3cdc9ac9f5cc0ef5551fb1e
+ENGINE LAST-TOUCH COMMIT: d8476daea7b9e0a84e6cc96e70d9285785fa89a3
+ENGINE FILE BLOB: ecfa13722b181182cc89f30205807b4b64543844
+/Users/timbo/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+WINDOWS: 300
+TIERS BEFORE: {'SILVER': 300}
+TIERS AFTER: {'SILVER': 219, 'GOLD': 81}
+TIER TRANSITIONS: {('SILVER', 'SILVER'): 219, ('SILVER', 'GOLD'): 81}
+MEAN SCORE DELTA: 3.6067
+
+LAW: cross_axis_cohesion
+STATUS TRANSITIONS: {'PASS->PASS': 300}
+METRIC: n=300 before=0.66378 after=0.86324 delta=+0.19946
+
+LAW: temporal_autocorrelation
+STATUS TRANSITIONS: {'PASS->PASS': 300}
+METRIC: n=300 before=0.94801 after=0.97326 delta=+0.02525
+
+LAW: innovation_kurtosis
+STATUS TRANSITIONS: {'FAIL->PASS': 298, 'PASS->PASS': 2}
+METRIC: n=300 before=-0.02035 after=19.93195 delta=+19.95230
+
+COMPLETE FIREWALL STATES BEFORE:
+('PASS', 'PASS', 'FAIL') 298
+('PASS', 'PASS', 'PASS') 2
+
+COMPLETE FIREWALL STATES AFTER:
+('PASS', 'PASS', 'PASS') 300
+
+No source files modified.
