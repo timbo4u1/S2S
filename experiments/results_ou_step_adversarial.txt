@@ -1,0 +1,6 @@
+engine commit: 3f56054429a3fac49316ac8d63bfb9e5445d1af6
+tiers before: {'SILVER': 300}
+tiers after:  {'SILVER': 219, 'GOLD': 81}
+cross_axis_cohesion        flagged in   0 windows, cleared by the step in   0
+temporal_autocorrelation   flagged in   0 windows, cleared by the step in   0
+innovation_kurtosis        flagged in 298 windows, cleared by the step in 298
