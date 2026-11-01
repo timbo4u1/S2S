@@ -53,3 +53,12 @@ Report recall per fault x severity with 95% intervals from a subject-level boots
 - No threshold or engine tuning on C-MHAD.
 - Originals are never modified. Faulted copies exist only in memory.
 - Null and negative results are reported as they come out.
+
+## Amendment 1 (committed before any S2S run on C-MHAD)
+Supersedes the matching items above; everything else stands.
+1. Part A: non-overlapping windows (stride 256), one engine per trial, so continuity compares adjacent windows. Part B keeps stride 128 with a fresh engine per window.
+2. Part A gap vs non-gap: only about 50 gap windows. Report counts and intervals, draw no conclusion. The dropout question is answered by the Part B gap fault.
+3. Added Part B faults, the unit errors this project has actually hit: accel divided by 9.81 (g read as m/s^2); gyro left in deg/s (x57.2958, conversion skipped).
+4. Windows stay 256 samples. gap: take 256+m samples, delete m consecutive ones inside. freeze: k = total identical consecutive samples.
+5. Detection denominators exclude pairs where detection is impossible by construction (original already fails the target law, or is already REJECTED). Report the excluded count per cell.
+6. Added predictions from the documented freeze thresholds (10 identical samples in motion, 25 at rest): k=16 detected only in windows judged in motion; k=32 detected in both; k=8 missed.
