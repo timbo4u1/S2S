@@ -1724,7 +1724,11 @@ class PhysicsEngine:
             for k, (ok, _, _) in results.items()
         }
         assessed_confs = [c for (ok, c, _) in results.values() if ok is not None]
-        score = int(sum(assessed_confs) / len(assessed_confs)) if assessed_confs else 0
+        # A FAILED law earns 0 points: its confidence says how sure the check is
+        # that a violation exists, so it must never raise the quality score.
+        # The denominator stays at the number of assessed laws.
+        pass_points = sum(c for (ok, c, _) in results.values() if ok is True)
+        score = int(pass_points / len(assessed_confs)) if assessed_confs else 0
         n, np_ = len(assessed_confs), len(passed)
 
         if n == 0:
@@ -1738,7 +1742,7 @@ class PhysicsEngine:
         # but does not force REJECTED alone (rest segments overlap with OU)
         # The tier describes the checks that were assessed. Completeness is
         # reported separately so missing optional sensors do not bias the score.
-        elif score >= 75 and np_ >= max(n - 1, 1):
+        elif score >= 75 and not failed:
             tier = "GOLD"
         elif score >= 55:
             tier = "SILVER"
@@ -1772,7 +1776,8 @@ class PhysicsEngine:
             "assessment_status":  "UNVERIFIED" if not n else ("PARTIAL" if not_assessed else "ASSESSED"),
             "sensor_type":        "PHYSICS",
             "physical_law_score": score,
-            "score_basis":        "mean confidence over assessed laws only",
+            "score_basis":        "PASS-law confidence summed over assessed laws; FAIL contributes 0",
+            "scoring_version":    2,
             "laws_checked":       list(results.keys()),
             "n_laws_checked":     len(results),
             "laws_assessed":      [k for k, (ok, _, _) in results.items() if ok is not None],
