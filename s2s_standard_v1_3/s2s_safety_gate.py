@@ -106,7 +106,7 @@ class RealTimeSafetyGate:
         """
         self._ts_buf.append(ts_ns)
         self._acc_buf.append(accel)
-        self._gyro_buf.append(gyro or [0.0, 0.0, 0.0])
+        self._gyro_buf.append(gyro)
         self._frames_since += 1
         self._total_frames += 1
 
@@ -123,11 +123,25 @@ class RealTimeSafetyGate:
 
         # Evaluate window
         self._frames_since = 0
+        gyro_samples = list(self._gyro_buf)
+        gyro_present = [sample is not None for sample in gyro_samples]
+
         imu_raw = {
             "timestamps_ns": list(self._ts_buf),
             "accel":         list(self._acc_buf),
-            "gyro":          list(self._gyro_buf),
         }
+
+        # Pass gyro only when every frame in this window has a real sample.
+        # A measured zero vector is valid; None means unavailable.
+        if gyro_present and all(gyro_present):
+            imu_raw["gyro"] = [list(sample) for sample in gyro_samples]
+
+        if gyro_present and all(gyro_present):
+            gyro_availability = "complete"
+        elif any(gyro_present):
+            gyro_availability = "partial"
+        else:
+            gyro_availability = "absent"
 
         try:
             t0   = time.perf_counter()
@@ -137,6 +151,11 @@ class RealTimeSafetyGate:
         except Exception as e:
             cert = {"tier": "REJECTED", "physical_law_score": 0,
                     "_error": str(e), "_latency_ms": 0}
+
+        # Preserve modality availability even when the engine cannot assess it.
+        cert["_gyro_availability"] = gyro_availability
+        cert["_gyro_samples_present"] = sum(gyro_present)
+        cert["_gyro_samples_expected"] = len(gyro_samples)
 
         self._total_certs += 1
         self._last_cert = cert

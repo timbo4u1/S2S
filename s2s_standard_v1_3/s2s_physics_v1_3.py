@@ -1613,7 +1613,8 @@ class PhysicsEngine:
                 thermal_cert: Optional[Dict] = None,
                 segment:      str = "forearm",
                 device_id:    str = "unknown",
-                session_id:   Optional[str] = None) -> Dict[str, Any]:
+                session_id:   Optional[str] = None,
+                source_type:  str = "HIL_BIOLOGICAL") -> Dict[str, Any]:
         """
         Certify sensor data against 16 biomechanical laws (13 hard + 3 soft flags).
 
@@ -1788,7 +1789,7 @@ class PhysicsEngine:
             "laws_passed":        passed,
             "laws_failed":        failed,
             "body_segment":       segment,
-            "source_type": "HIL_BIOLOGICAL",
+            "source_type": source_type,
             "law_details":        {k: {**det, "status": law_statuses[k]} for k, (_, _, det) in results.items()},
             "flags":              flags,
             "physical_constants": {
