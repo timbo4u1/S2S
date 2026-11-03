@@ -196,6 +196,7 @@ class VLASafetyWrapper:
             'action': 'EXECUTE',
             'strikes': 0, 'reason': reason,
             'issues': [], 'laws_passed': [], 'laws_failed': [],
+            'source_type': self.SOURCE_TYPE,
         }
 
     def reset(self):

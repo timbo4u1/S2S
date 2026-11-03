@@ -6,12 +6,15 @@ from s2s_standard_v1_3.adapters import lerobot
 class RecordingPhysicsEngine:
     def __init__(self):
         self.calls = []
+        self.source_types = []
 
-    def certify(self, imu_raw, segment):
+    def certify(self, imu_raw, segment, source_type=None):
         self.calls.append((imu_raw, segment))
+        self.source_types.append(source_type)
         return {
             "tier": "SILVER",
             "physical_law_score": 80,
+            "source_type": source_type,
         }
 
 
@@ -66,6 +69,9 @@ def test_absent_gyro_is_not_manufactured(monkeypatch):
 
     assert "gyro" not in imu_raw
     assert result["windows"][0]["_gyro_availability"] == "absent"
+    assert engine.source_types == ["ROBOT_SENSOR_MEASURED"]
+    assert result["source_type"] == "ROBOT_SENSOR_MEASURED"
+    assert result["windows"][0]["source_type"] == "ROBOT_SENSOR_MEASURED"
 
 
 def test_partial_gyro_window_is_omitted_without_padding(monkeypatch):

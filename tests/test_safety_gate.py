@@ -1,3 +1,4 @@
+import pytest
 import s2s_standard_v1_3.s2s_safety_gate as safety_gate
 
 
@@ -64,3 +65,24 @@ def test_partial_gyro_window_does_not_fabricate_samples(monkeypatch):
     evaluate_two_frames(gate, [0.1, 0.2, 0.3], None)
 
     assert "gyro" not in recorded_imu()
+
+
+
+@pytest.mark.parametrize("invalid", [
+    [0.1, 0.2],
+    [0.1, 0.2, 0.3, 0.4],
+    [0.1, float("nan"), 0.3],
+    [0.1, float("inf"), 0.3],
+    ["0.1", 0.2, 0.3],
+    [True, 0.2, 0.3],
+    [10**400, 0.2, 0.3],
+])
+def test_invalid_gyro_vectors_are_not_passed_to_engine(monkeypatch, invalid):
+    gate = make_gate(monkeypatch)
+
+    evaluate_two_frames(gate, invalid, [0.1, 0.2, 0.3])
+
+    imu_raw = recorded_imu()
+    assert "gyro" not in imu_raw
+    assert gate._last_cert["_gyro_availability"] == "partial"
+    assert gate._last_cert["_gyro_samples_present"] == 1

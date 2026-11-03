@@ -21,10 +21,44 @@ Strikes:  3 consecutive REJECTED windows required before is_safe=False
 """
 from __future__ import annotations
 from collections import deque
+from numbers import Real
 from typing import Dict, List, Optional, Tuple, Any
+import math
 import time
 
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+
+
+def _validated_gyro_sample(sample):
+    """Return a finite numeric 3-vector, or None if unavailable/invalid."""
+    if sample is None:
+        return None
+
+    if hasattr(sample, "tolist"):
+        try:
+            sample = sample.tolist()
+        except Exception:
+            return None
+
+    if not isinstance(sample, (list, tuple)) or len(sample) != 3:
+        return None
+
+    result = []
+    for value in sample:
+        if isinstance(value, bool) or not isinstance(value, Real):
+            return None
+
+        try:
+            number = float(value)
+        except (TypeError, ValueError, OverflowError):
+            return None
+
+        if not math.isfinite(number):
+            return None
+
+        result.append(number)
+
+    return result
 
 
 class RealTimeSafetyGate:
@@ -106,7 +140,7 @@ class RealTimeSafetyGate:
         """
         self._ts_buf.append(ts_ns)
         self._acc_buf.append(accel)
-        self._gyro_buf.append(gyro)
+        self._gyro_buf.append(_validated_gyro_sample(gyro))
         self._frames_since += 1
         self._total_frames += 1
 

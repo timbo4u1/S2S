@@ -27,6 +27,7 @@ def test_vla_wrapper_buffering():
     assert result['tier'] == 'PENDING'
     assert result['safe'] == True
     assert result['action'] == 'EXECUTE'
+    assert result['source_type'] == 'ROBOT_COMMAND_DERIVED'
 
 
 def test_vla_wrapper_certifies_after_window():
