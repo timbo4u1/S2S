@@ -18,6 +18,7 @@ import time
 from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
 _engine = PhysicsEngine()
+SOURCE_TYPE = "ROBOT_SENSOR_MEASURED"
 
 
 def _normalize_keys(keys):
@@ -84,6 +85,7 @@ def _extract_vector(frame: Dict, keys) -> Optional[List[float]]:
 def _empty_result(error: str) -> Dict[str, Any]:
     return {
         "error": error,
+        "source_type": SOURCE_TYPE,
         "total_windows": 0,
         "certified": 0,
         "rejected": 0,
@@ -214,7 +216,11 @@ def certify_lerobot_episode(
 
         t0 = time.perf_counter()
         cert = dict(
-            _engine.certify(imu_raw, segment=segment)
+            _engine.certify(
+                imu_raw,
+                segment=segment,
+                source_type=SOURCE_TYPE,
+            )
         )
         latency_ms = (time.perf_counter() - t0) * 1000.0
 
@@ -249,6 +255,7 @@ def certify_lerobot_episode(
         summary = "BRONZE"
 
     return {
+        "source_type": SOURCE_TYPE,
         "total_windows": len(results),
         "certified": certified,
         "rejected": rejected,
