@@ -83,3 +83,82 @@ def test_vla_wrapper_states():
     assert VLASafetyWrapper.SAFE == 'SAFE'
     assert VLASafetyWrapper.DEGRADED == 'DEGRADED'
     assert VLASafetyWrapper.UNSAFE == 'UNSAFE'
+
+
+class RecordingCommandEngine:
+    def __init__(self):
+        self.calls = []
+
+    def certify(self, imu_raw, segment, source_type=None):
+        self.calls.append((imu_raw, segment, source_type))
+        return {
+            "tier": "SILVER",
+            "physical_law_score": 80,
+            "laws_passed": ["jerk_bounds"],
+            "laws_failed": [],
+            "source_type": source_type,
+        }
+
+
+def install_command_engine(wrapper):
+    engine = RecordingCommandEngine()
+    wrapper._engine = engine
+    wrapper._audit_report = lambda result: {
+        "issues": [],
+        "verdict": "MONITORED",
+        "recommendation": "",
+    }
+    return engine
+
+
+def test_direct_acceleration_is_command_derived_without_fake_gyro():
+    from s2s_standard_v1_3.adapters.vla_wrapper import VLASafetyWrapper
+
+    wrapper = VLASafetyWrapper(hz=10.0, window_size=2)
+    engine = install_command_engine(wrapper)
+
+    wrapper.check_acceleration([0.1, 0.0, 9.81])
+    decision = wrapper.check_acceleration([0.2, 0.0, 9.81])
+
+    assert len(engine.calls) == 1
+    imu_raw, segment, source_type = engine.calls[0]
+
+    assert "gyro" not in imu_raw
+    assert source_type == "ROBOT_COMMAND_DERIVED"
+    assert decision["source_type"] == "ROBOT_COMMAND_DERIVED"
+
+
+def test_position_derived_acceleration_has_command_provenance():
+    from s2s_standard_v1_3.adapters.vla_wrapper import VLASafetyWrapper
+
+    wrapper = VLASafetyWrapper(hz=10.0, window_size=1)
+    engine = install_command_engine(wrapper)
+
+    wrapper.check_position([0.0, 0.0, 0.0])
+    wrapper.check_position([0.1, 0.0, 0.0])
+    decision = wrapper.check_position([0.25, 0.0, 0.0])
+
+    assert len(engine.calls) == 1
+    imu_raw, segment, source_type = engine.calls[0]
+
+    assert "gyro" not in imu_raw
+    assert source_type == "ROBOT_COMMAND_DERIVED"
+    assert decision["source_type"] == "ROBOT_COMMAND_DERIVED"
+
+
+def test_physics_engine_preserves_biological_default_source_type():
+    from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+
+    result = PhysicsEngine().certify()
+
+    assert result["source_type"] == "HIL_BIOLOGICAL"
+
+
+def test_physics_engine_accepts_explicit_command_source_type():
+    from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
+
+    result = PhysicsEngine().certify(
+        source_type="ROBOT_COMMAND_DERIVED"
+    )
+
+    assert result["source_type"] == "ROBOT_COMMAND_DERIVED"

@@ -131,7 +131,6 @@ def certify_file(filepath: str, segment: str = "forearm",
     import sys
     sys.path.insert(0, ".")
     from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
-    import random
 
     detection = detect_from_file(filepath, delimiter)
     _delim = delimiter if delimiter else detection.get("_delim", " ")
@@ -166,80 +165,168 @@ def certify_file(filepath: str, segment: str = "forearm",
         return {"error": "No accelerometer columns detected",
                 "detected": detection, "tier": "N/A"}
 
-    acc_raw = data[:, acc_cols]
-    if gyro_cols:
-        gyro_raw = data[:, gyro_cols]
-        valid = (~np.isnan(acc_raw).any(axis=1) &
-                 ~np.isnan(gyro_raw).any(axis=1))
-        # Auto-detect accel unit from median absolute value
-        acc_med = float(np.nanmedian(np.abs(acc_raw[valid])))
-        if 5.0 <= acc_med <= 15.0:
-            acc = acc_raw[valid]              # already m/s2
-        elif 500 <= acc_med <= 1500:
-            acc = acc_raw[valid] * 0.00981    # milli-g → m/s2
-        elif 0.5 <= acc_med <= 1.5:
-            acc = acc_raw[valid] * 9.81       # g → m/s2
-        else:
-            acc = acc_raw[valid] * 0.00981    # assume milli-g
+    # Keep the original row sequence. Never remove acceleration rows
+    # because a separate gyro channel is missing.
+    acc_raw = np.asarray(data[:, acc_cols], dtype=float)
+    accel_valid_rows = np.isfinite(acc_raw).all(axis=1)
 
-        # Auto-detect gyro unit
-        gyro_med = float(np.nanmedian(np.abs(gyro_raw[valid])))
-        if gyro_med < 20.0:
-            gyro = gyro_raw[valid]            # already rad/s
-        else:
-            gyro = gyro_raw[valid] / 1000.0   # scaled → rad/s
+    if not np.any(accel_valid_rows):
+        return {
+            "error": "No complete accelerometer rows found",
+            "detected": detection,
+            "tier": "N/A",
+        }
+
+    # Infer accelerometer units using only complete acceleration rows.
+    acc_med = float(np.median(np.abs(acc_raw[accel_valid_rows])))
+    if 5.0 <= acc_med <= 15.0:
+        acc_scale = 1.0                 # already m/s2
+    elif 500 <= acc_med <= 1500:
+        acc_scale = 0.00981             # milli-g -> m/s2
+    elif 0.5 <= acc_med <= 1.5:
+        acc_scale = 9.81                # g -> m/s2
     else:
-        valid = ~np.isnan(acc_raw).any(axis=1)
-        acc_med = float(np.nanmedian(np.abs(acc_raw[valid])))
-        if 5.0 <= acc_med <= 15.0:
-            acc = acc_raw[valid]
-        elif 500 <= acc_med <= 1500:
-            acc = acc_raw[valid] * 0.00981
-        elif 0.5 <= acc_med <= 1.5:
-            acc = acc_raw[valid] * 9.81
+        acc_scale = 0.00981             # assume milli-g
+
+    # Scale the full original array; invalid rows remain invalid and are
+    # handled at window level rather than silently removed.
+    acc = acc_raw * acc_scale
+
+    # A usable gyro stream requires all three axes. Missing or incomplete
+    # gyro data must not be replaced with zero-valued measurements.
+    gyro = None
+    if len(gyro_cols) == 3:
+        gyro_raw = np.asarray(data[:, gyro_cols], dtype=float)
+        gyro_valid_rows = np.isfinite(gyro_raw).all(axis=1)
+
+        if np.any(gyro_valid_rows):
+            gyro_med = float(np.median(np.abs(gyro_raw[gyro_valid_rows])))
+            gyro_scale = 1.0 if gyro_med < 20.0 else 0.001
         else:
-            acc = acc_raw[valid] * 0.00981
-        gyro = np.zeros_like(acc)
+            gyro_scale = 1.0
+
+        gyro = gyro_raw * gyro_scale
 
     engine = PhysicsEngine()
-    r = random.Random(42)
     window = 256
     step   = 256
 
-    # Auto-detect Hz from timestamp column
-    hz = 30.0  # default
-    # Use lowest-index timestamp column (most likely the primary clock)
-    ts_candidates = [v[0] for v in detection.get("_votes",[]) if "timestamp" in v[1]]
+    # Detect timestamp units from adjacent source rows.
+    # Preserve the source clock; do not reset it to zero.
+    ts_candidates = [
+        v[0] for v in detection.get("_votes", [])
+        if "timestamp" in v[1]
+    ]
     ts_col = min(ts_candidates) if ts_candidates else None
-    if ts_col is not None:
-        try:
-            ts_vals = data[:50, ts_col]
-            ts_vals = ts_vals[~np.isnan(ts_vals)]
-            if len(ts_vals) > 2:
-                diffs = np.diff(ts_vals)
-                med_diff = float(np.median(diffs[diffs > 0]))
-                if med_diff > 1e6:        # nanoseconds
-                    hz = round(1e9 / med_diff, 1)
-                elif med_diff > 1000:     # microseconds
-                    hz = round(1e6 / med_diff, 1)
-                elif med_diff > 1:        # milliseconds
-                    hz = round(1e3 / med_diff, 1)
-                elif 0 < med_diff <= 1:   # seconds
-                    hz = round(1.0 / med_diff, 1)
-                hz = max(1.0, min(hz, 10000.0))  # sanity clamp
-        except Exception:
-            hz = 30.0
 
-    tiers  = []
+    timestamp_scale = None
+    timestamp_source = "synthesized_row_index"
+    timestamp_unit = "synthesized"
+    hz = 30.0
+
+    if ts_col is not None:
+        ts_sample = np.asarray(data[:500, ts_col], dtype=float)
+
+        if len(ts_sample) >= 3:
+            adjacent_valid = (
+                np.isfinite(ts_sample[:-1]) &
+                np.isfinite(ts_sample[1:])
+            )
+            diffs = np.diff(ts_sample)[adjacent_valid]
+            positive_diffs = diffs[diffs > 0]
+
+            if len(positive_diffs):
+                med_diff = float(np.median(positive_diffs))
+
+                if med_diff > 1e6:
+                    timestamp_scale = 1.0
+                    timestamp_unit = "nanoseconds"
+                    hz = 1e9 / med_diff
+                elif med_diff > 1000:
+                    timestamp_scale = 1e3
+                    timestamp_unit = "microseconds"
+                    hz = 1e6 / med_diff
+                elif med_diff > 1:
+                    timestamp_scale = 1e6
+                    timestamp_unit = "milliseconds"
+                    hz = 1e3 / med_diff
+                else:
+                    timestamp_scale = 1e9
+                    timestamp_unit = "seconds"
+                    hz = 1.0 / med_diff
+
+                timestamp_source = "source_column"
+
+    hz = max(1.0, min(round(hz, 1), 10000.0))
+
+    tiers = []
     scores = []
-    for start in range(0, min(len(acc) - window, max_windows * step), step):
-        chunk_a = acc[start:start+window].tolist()
-        chunk_g = gyro[start:start+window].tolist()
-        ts = [int(i * 1e9 / hz) for i in range(window)]
-        cert = engine.certify(
-            {"timestamps_ns": ts, "accel": chunk_a, "gyro": chunk_g},
-            segment=segment
-        )
+    skipped_invalid_accel = 0
+    skipped_invalid_timestamps = 0
+    gyro_window_counts = {
+        "complete": 0,
+        "partial": 0,
+        "absent": 0,
+    }
+
+    # +1 includes a final window when the input contains exactly
+    # window samples remaining.
+    n_starts = min(len(data) - window + 1, max_windows * step)
+
+    for start in range(0, max(0, n_starts), step):
+        end = start + window
+
+        chunk_a_raw = acc[start:end]
+        if len(chunk_a_raw) != window or not np.isfinite(chunk_a_raw).all():
+            # Do not compress the stream by deleting invalid accel rows.
+            skipped_invalid_accel += 1
+            continue
+
+        chunk_a = chunk_a_raw.tolist()
+
+        if timestamp_source == "source_column":
+            source_ts = np.asarray(data[start:end, ts_col], dtype=float)
+
+            if not np.isfinite(source_ts).all():
+                skipped_invalid_timestamps += 1
+                continue
+
+            timestamps_ns = np.rint(
+                source_ts * timestamp_scale
+            ).astype(np.int64).tolist()
+        else:
+            timestamps_ns = np.rint(
+                np.arange(start, end, dtype=float) * (1e9 / hz)
+            ).astype(np.int64).tolist()
+
+        imu_raw = {
+            "timestamps_ns": timestamps_ns,
+            "accel": chunk_a,
+        }
+
+        gyro_samples_present = 0
+        gyro_availability = "absent"
+
+        if gyro is not None:
+            chunk_g_raw = gyro[start:end]
+            gyro_valid = np.isfinite(chunk_g_raw).all(axis=1)
+            gyro_samples_present = int(gyro_valid.sum())
+
+            if gyro_samples_present == window:
+                imu_raw["gyro"] = chunk_g_raw.tolist()
+                gyro_availability = "complete"
+            elif gyro_samples_present > 0:
+                # Omit the entire gyro stream for this window. Do not
+                # fabricate values or pass a shortened, misaligned stream.
+                gyro_availability = "partial"
+
+        cert = engine.certify(imu_raw, segment=segment)
+
+        cert["_gyro_availability"] = gyro_availability
+        cert["_gyro_samples_present"] = gyro_samples_present
+        cert["_gyro_samples_expected"] = window
+
+        gyro_window_counts[gyro_availability] += 1
         tiers.append(cert["tier"])
         scores.append(cert["physical_law_score"])
 
@@ -276,4 +363,11 @@ def certify_file(filepath: str, segment: str = "forearm",
         },
         "detected_hz":      hz,
         "segment":          segment,
+        "gyro_window_availability": gyro_window_counts,
+        "windows_skipped_invalid_accel": skipped_invalid_accel,
+        "gyro_columns_usable": len(gyro_cols) == 3,
+        "timestamp_source": timestamp_source,
+        "timestamp_unit": timestamp_unit,
+        "timestamp_column": ts_col,
+        "windows_skipped_invalid_timestamps": skipped_invalid_timestamps,
     }

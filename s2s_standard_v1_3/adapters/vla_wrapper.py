@@ -50,6 +50,7 @@ class VLASafetyWrapper:
     SAFE      = "SAFE"
     DEGRADED  = "DEGRADED"
     UNSAFE    = "UNSAFE"
+    SOURCE_TYPE = "ROBOT_COMMAND_DERIVED"
 
     def __init__(self, hz: float = 10.0, segment: str = "forearm",
                  window_size: int = 10, strikes: int = 3):
@@ -131,12 +132,11 @@ class VLASafetyWrapper:
         # Use global step count for timestamps to avoid regression
         base = (self._step_count - len(acc)) 
         ts  = [int((base + i) * 1e9 / self.hz) for i in range(len(acc))]
-        gyro = [[0.0, 0.0, 0.0]] * len(acc)
-
         try:
             result = self._engine.certify(
-                {'timestamps_ns': ts, 'accel': acc, 'gyro': gyro},
-                segment=self.segment
+                {'timestamps_ns': ts, 'accel': acc},
+                segment=self.segment,
+                source_type=self.SOURCE_TYPE,
             )
             report = self._audit_report(result)
             self._last_result = result
@@ -174,6 +174,7 @@ class VLASafetyWrapper:
                 'laws_passed':  result['laws_passed'],
                 'laws_failed':  result['laws_failed'],
                 'recommendation': report.get('recommendation',''),
+                'source_type': self.SOURCE_TYPE,
             }
 
         except Exception as e:
@@ -185,6 +186,7 @@ class VLASafetyWrapper:
                 'reason': f'Certification error: {e}',
                 'issues': [str(e)],
                 'laws_passed': [], 'laws_failed': [],
+                'source_type': self.SOURCE_TYPE,
             }
 
     def _safe_result(self, reason: str) -> Dict:
