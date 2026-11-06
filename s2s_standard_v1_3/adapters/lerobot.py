@@ -180,6 +180,7 @@ def certify_lerobot_episode(
         "complete": 0,
         "partial": 0,
         "absent": 0,
+        "invalid": 0,
     }
 
     # +1 ensures an episode with exactly one window is processed.
@@ -211,6 +212,10 @@ def certify_lerobot_episode(
             imu_raw["gyro"] = gyro_win
         elif gyro_present > 0:
             gyro_availability = "partial"
+        elif gyro_keys:
+            # Gyro keys were supplied but all extracted vectors are invalid.
+            # This is distinct from 'absent' (no gyro keys at all).
+            gyro_availability = "invalid"
         else:
             gyro_availability = "absent"
 
