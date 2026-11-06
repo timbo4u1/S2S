@@ -3,7 +3,190 @@ Smart column detector for any sensor dataset.
 No column names needed — detects sensor type from data statistics.
 """
 import numpy as np
+import re
 from typing import Dict, List, Tuple
+
+
+_UNIT_SCALES = {
+    "accel": {
+        "m/s2": 1.0,
+        "g": 9.80665,
+        "milli-g": 0.00980665,
+    },
+    "gyro": {
+        "rad/s": 1.0,
+        "deg/s": np.pi / 180.0,
+        "mrad/s": 0.001,
+        "mdps": np.pi / 180000.0,
+    },
+}
+
+
+def _canonical_unit(unit, sensor):
+    """Normalize a caller-supplied unit to a supported canonical unit."""
+    if unit is None or sensor not in _UNIT_SCALES:
+        return None
+
+    value = str(unit).strip().lower()
+    value = value.replace("²", "2").replace("^", "")
+    value = re.sub(r"[\s_-]+", "", value)
+
+    aliases = {
+        "accel": {
+            "m/s2": "m/s2",
+            "m/sec2": "m/s2",
+            "mps2": "m/s2",
+            "ms2": "m/s2",
+            "g": "g",
+            "mg": "milli-g",
+            "millig": "milli-g",
+            "milligravity": "milli-g",
+        },
+        "gyro": {
+            "rad/s": "rad/s",
+            "rads": "rad/s",
+            "radsec": "rad/s",
+            "radian/s": "rad/s",
+            "radians/s": "rad/s",
+            "deg/s": "deg/s",
+            "degree/s": "deg/s",
+            "degrees/s": "deg/s",
+            "dps": "deg/s",
+            "degsec": "deg/s",
+            "mrad/s": "mrad/s",
+            "mrads": "mrad/s",
+            "millirad/s": "mrad/s",
+            "mdps": "mdps",
+            "millideg/s": "mdps",
+            "millidegree/s": "mdps",
+            "millidegrees/s": "mdps",
+        },
+    }
+
+    return aliases[sensor].get(value)
+
+
+def _unit_from_header(header, sensor):
+    """Recognize an explicit unit token in one column header."""
+    value = str(header).strip().lower()
+    value = value.replace("²", "2").replace("°", "deg")
+
+    if sensor == "accel":
+        if re.search(
+            r"(?<![a-z0-9])(?:milli[\s_-]*g|mg)(?![a-z0-9])",
+            value,
+        ):
+            return "milli-g"
+
+        if re.search(
+            r"m\s*/\s*s\s*\^?\s*2|mps2|msec2|m\s+s\s*\^\s*\(?\s*-?\s*2\s*\)?",
+            value,
+        ):
+            return "m/s2"
+
+        if re.search(r"(?<![a-z0-9])g(?![a-z0-9])", value):
+            return "g"
+
+    elif sensor == "gyro":
+        if re.search(
+            r"(?<![a-z0-9])(?:mdps|milli[\s_-]*degrees?[\s/_-]*s)"
+            r"(?![a-z0-9])",
+            value,
+        ):
+            return "mdps"
+
+        if re.search(
+            r"(?<![a-z0-9])(?:mrad[\s/_-]*s|millirad[\s/_-]*s)"
+            r"(?![a-z0-9])",
+            value,
+        ):
+            return "mrad/s"
+
+        if re.search(
+            r"(?<![a-z0-9])(?:dps|deg(?:ree)?s?[\s/_-]*s)"
+            r"(?![a-z0-9])",
+            value,
+        ):
+            return "deg/s"
+
+        if re.search(
+            r"(?<![a-z0-9])rad[\s/_-]*s(?![a-z0-9])",
+            value,
+        ):
+            return "rad/s"
+
+    return None
+
+
+def _resolve_unit(explicit_unit, header_names, columns, sensor):
+    """
+    Resolve units from explicit caller input or consistent axis headers.
+
+    Magnitude-based inference is deliberately not used.
+    """
+    if sensor not in _UNIT_SCALES:
+        raise ValueError("Unknown sensor type: {}".format(sensor))
+
+    if sensor == "gyro" and not columns:
+        return {
+            "unit": "not_present",
+            "status": "not_detected",
+            "source": None,
+            "scale_to_si": None,
+        }
+
+    if len(columns) != 3:
+        return {
+            "unit": "unit_unknown",
+            "status": "unit_unknown",
+            "source": None,
+            "scale_to_si": None,
+        }
+
+    if explicit_unit is not None:
+        canonical = _canonical_unit(explicit_unit, sensor)
+        if canonical is None:
+            return {
+                "unit": "unit_unknown",
+                "status": "invalid_explicit",
+                "source": "argument",
+                "scale_to_si": None,
+            }
+
+        return {
+            "unit": canonical,
+            "status": "explicit",
+            "source": "argument",
+            "scale_to_si": float(_UNIT_SCALES[sensor][canonical]),
+        }
+
+    if header_names and all(
+        0 <= column < len(header_names) for column in columns
+    ):
+        header_units = [
+            _unit_from_header(header_names[column], sensor)
+            for column in columns
+        ]
+
+        if (
+            all(unit is not None for unit in header_units)
+            and len(set(header_units)) == 1
+        ):
+            canonical = header_units[0]
+            return {
+                "unit": canonical,
+                "status": "inferred_from_header",
+                "source": "column_headers",
+                "scale_to_si": float(_UNIT_SCALES[sensor][canonical]),
+            }
+
+    return {
+        "unit": "unit_unknown",
+        "status": "unit_unknown",
+        "source": None,
+        "scale_to_si": None,
+    }
+
 
 def detect_columns(data: np.ndarray, col_names: List[str] = None) -> Dict:
     """
@@ -85,23 +268,185 @@ def detect_columns(data: np.ndarray, col_names: List[str] = None) -> Dict:
     return result
 
 
+def _sniff_delimiter(filepath, max_lines=20):
+    """
+    Detect the field delimiter from file contents using quote-aware CSV parsing.
+    Returns one of ',', ';', '\\t', ' ', or None if undetermined.
+    """
+    import csv
+    import io
+    from collections import Counter
+
+    candidates = [',', ';', '\\t']
+
+    # Read sample lines for analysis
+    sample_lines = []
+    ws_lines = 0
+    n_lines = 0
+
+    try:
+        with open(filepath, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                n_lines += 1
+                if n_lines > max_lines:
+                    break
+                sample_lines.append(line)
+                if len(line.split()) > 1:
+                    ws_lines += 1
+    except (IOError, OSError):
+        return None
+
+    if n_lines == 0:
+        return None
+
+    # For each candidate delimiter, parse with csv.reader and analyze field counts
+    best_delim = None
+    best_score = 0.0
+
+    for delim in candidates:
+        try:
+            content = '\n'.join(sample_lines)
+            reader = csv.reader(io.StringIO(content), delimiter=delim)
+            field_counts = [len(row) for row in reader]
+        except Exception:
+            continue
+
+        if not field_counts:
+            continue
+
+        # Check for multi-column structure: EVERY row must have at least 2 fields
+        # This ensures the delimiter produces consistent structure across all rows
+        # (including header). Wrong delimiters often produce single-column rows
+        # for some records (e.g., header without the competing delimiter).
+        min_fields = min(field_counts)
+        if min_fields < 2:
+            continue
+
+        # Find most common field count for consistency check
+        most_common_count, most_common_freq = Counter(field_counts).most_common(1)[0]
+
+        # Require 80% consistency (retain existing threshold)
+        consistency = most_common_freq / len(field_counts)
+        if consistency < 0.8:
+            continue
+
+        # Score: prefer more fields (minimum) and higher consistency
+        # Use minimum field count to ensure robust multi-column structure
+        score = min_fields * consistency
+
+        if score > best_score:
+            best_score = score
+            best_delim = delim
+
+    # Require minimum viable score (at least 2 fields minimum with consistency)
+    if best_delim is not None and best_score >= 2.0:
+        return best_delim
+
+    # Fallback to whitespace
+    if ws_lines >= n_lines * 0.8:
+        return ' '
+
+    return None
+
+
+def _resolve_delimiter(filepath, delimiter=None):
+    """
+    Resolve the delimiter for file parsing.
+    Returns (delimiter, error_message).
+    If delimiter is explicitly provided, it is used as-is.
+    If None, auto-detects from file contents.
+    """
+    if delimiter is not None:
+        return delimiter, None
+
+    detected = _sniff_delimiter(filepath)
+    if detected is None:
+        return None, (
+            "Could not determine field delimiter from file contents. "
+            "Please provide the delimiter explicitly."
+        )
+    return detected, None
+
+
+def _numpy_delimiter(delim):
+    """Convert internal delimiter to np.genfromtxt format."""
+    if delim == ' ':
+        return None  # numpy whitespace mode handles repeated spaces
+    return delim
+
+
+def _is_numeric_field(field):
+    """
+    Check if a field is numeric or a recognized numeric special value.
+
+    Returns True for:
+    - Standard numeric values (int, float)
+    - Scientific notation (lowercase 'e' and uppercase 'E')
+    - NaN, Inf, +Inf, -Inf (case-insensitive)
+    - Empty fields (treated as missing numeric values)
+
+    Returns False for genuine text (column names, labels, etc.).
+    """
+    field = field.strip().strip('"').strip("'")
+    if not field:
+        return True  # Empty field = missing numeric value
+    try:
+        float(field)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+def _has_header_row(filepath, delimiter):
+    """
+    Determine if the first row is a header by parsing fields and checking
+    if they are numeric. Returns True if header, False if numeric data.
+
+    Uses the resolved delimiter for consistent field parsing.
+    For whitespace-delimited data, splits on whitespace.
+    For comma/semicolon/tab, splits on the delimiter character.
+    """
+    # Read first line
+    with open(filepath) as f:
+        first_line = f.readline().strip()
+
+    if not first_line:
+        return False
+
+    # Parse fields based on delimiter
+    if delimiter == ' ':
+        fields = first_line.split()
+    elif isinstance(delimiter, str) and len(delimiter) == 1:
+        fields = first_line.split(delimiter)
+    else:
+        fields = first_line.split(str(delimiter))
+
+    # A row is a header if ANY field is non-numeric
+    # A row is numeric data if ALL fields are numeric or missing
+    return not all(_is_numeric_field(f) for f in fields)
+
+
 def detect_from_file(filepath: str, delimiter: str = None) -> Dict:
     """Auto-detect sensor columns from any CSV or space-delimited file."""
-    import os
-    ext = os.path.splitext(filepath)[1].lower()
-    
-    if delimiter is None:
-        delimiter = ',' if ext == '.csv' else ' '
-    
+    delim, err = _resolve_delimiter(filepath, delimiter)
+    if err:
+        return {
+            'accel': [], 'gyro': [], 'emg': [], 'ppg': [],
+            'timestamp': None, 'unknown': [], 'confidence': 0.0,
+            'file': filepath, 'shape': (0, 0), 'error': err,
+        }
+
+    np_delim = _numpy_delimiter(delim)
+
     # Read first 500 rows for speed
-    with open(filepath) as _f:
-        _first = _f.readline().strip()
-    _has_hdr = any(c.isalpha() for c in _first.replace('nan','').replace('NaN',''))
-    data = np.genfromtxt(filepath, delimiter=delimiter, max_rows=500,
-                         skip_header=1 if _has_hdr else 0)
-    if data.ndim == 1:
-        data = data.reshape(-1, 1)
-    
+    # Use numeric-aware header detection to avoid discarding scientific notation
+    _has_hdr = _has_header_row(filepath, delim)
+    data = np.genfromtxt(filepath, delimiter=np_delim, max_rows=500,
+                         skip_header=1 if _has_hdr else 0, ndmin=2)
+
     result = detect_columns(data)
     result['file'] = filepath
     result['shape'] = data.shape
@@ -109,7 +454,10 @@ def detect_from_file(filepath: str, delimiter: str = None) -> Dict:
 
 
 def certify_file(filepath: str, segment: str = "forearm",
-                 delimiter: str = None, max_windows: int = 100) -> dict:
+                 delimiter: str = None, max_windows: int = 100,
+                 accel_unit: str = None, gyro_unit: str = None,
+                 accel_columns: List[int] = None,
+                 gyro_columns: List[int] = None) -> dict:
     """
     Certify any sensor file with zero configuration.
     Auto-detects accel, gyro, EMG columns from data statistics.
@@ -132,38 +480,165 @@ def certify_file(filepath: str, segment: str = "forearm",
     sys.path.insert(0, ".")
     from s2s_standard_v1_3.s2s_physics_v1_3 import PhysicsEngine
 
-    detection = detect_from_file(filepath, delimiter)
-    _delim = delimiter if delimiter else detection.get("_delim", " ")
-    # Detect if first row is a header (contains non-numeric text)
-    with open(filepath) as _f:
-        _first = _f.readline().strip()
-    _has_header = any(c.isalpha() for c in _first.replace('nan','').replace('NaN',''))
+    # Resolve delimiter ONCE for consistent use across detection,
+    # header parsing, data loading, and certification.
+    _delim, _delim_err = _resolve_delimiter(filepath, delimiter)
+    if _delim_err:
+        return {
+            "error": _delim_err,
+            "tier": "N/A",
+        }
+
+    np_delim = _numpy_delimiter(_delim)
+
+    # Pass resolved delimiter to detection so both use the same value.
+    detection = detect_from_file(filepath, _delim)
+
+    # Detect if first row is a header using numeric-aware detection
+    # This ensures both detect_from_file and certify_file make identical decisions
+    _has_header = _has_header_row(filepath, _delim)
     skip = 1 if _has_header else 0
+
+    # Read column labels only when the file actually has a header.
+    header_names = []
+    if _has_header:
+        # Re-read first line for header names
+        with open(filepath) as _f:
+            _first = _f.readline().strip()
+        if _delim == " ":
+            header_names = _first.split()
+        elif isinstance(_delim, str) and len(_delim) == 1:
+            import csv
+            header_names = next(csv.reader([_first], delimiter=_delim))
+        else:
+            header_names = _first.split(str(_delim))
+
+        header_names = [
+            str(name).strip().strip('"').strip("'")
+            for name in header_names
+        ]
 
     # Streaming chunk reader — works on files of any size, low RAM usage
     # Reads chunk_size rows at a time instead of loading entire file
     chunk_size = max_windows * 256  # 256 samples per window
     data = np.genfromtxt(filepath,
-                         delimiter=_delim,
+                         delimiter=np_delim,
                          skip_header=skip,
-                         max_rows=chunk_size)
-    if data.ndim == 1:
-        data = data.reshape(1, -1)
+                         max_rows=chunk_size,
+                         ndmin=2)
 
-    acc_cols  = detection["accel"][:3]
-    gyro_cols = detection["gyro"][:3]
+    def _validate_columns(columns, label, allow_empty=False,
+                          require_three=True):
+        if not isinstance(columns, (list, tuple)):
+            raise ValueError(
+                "{}_columns must be a list or tuple".format(label)
+            )
 
-    # Fallback: if fewer than 3 accel cols detected, try consecutive columns
-    # near detected ones (handles near-zero X/Y axes misidentified as gyro)
-    if len(acc_cols) < 3 and acc_cols:
-        first = acc_cols[0]
-        candidates = [first, first+1, first+2]
-        if all(c < data.shape[1] for c in candidates):
-            acc_cols = candidates
+        if not columns and allow_empty:
+            return []
 
-    if not acc_cols:
-        return {"error": "No accelerometer columns detected",
-                "detected": detection, "tier": "N/A"}
+        if require_three and len(columns) != 3:
+            raise ValueError(
+                "{} requires exactly three distinct axis columns".format(
+                    label.capitalize()
+                )
+            )
+
+        normalized = []
+
+        for column in columns:
+            if (
+                isinstance(column, (bool, np.bool_))
+                or not isinstance(column, (int, np.integer))
+            ):
+                raise ValueError(
+                    "{} column indices must be integers".format(label)
+                )
+
+            column = int(column)
+
+            if column < 0 or column >= data.shape[1]:
+                raise ValueError(
+                    "{} column index {} is outside the data width {}".format(
+                        label, column, data.shape[1]
+                    )
+                )
+
+            if column in normalized:
+                raise ValueError(
+                    "{} column indices must be distinct".format(label)
+                )
+
+            normalized.append(column)
+
+        return normalized
+
+    try:
+        if accel_columns is None:
+            detected_accel = list(detection.get("accel", []))
+
+            if not detected_accel:
+                return {
+                    "error": "No accelerometer columns detected",
+                    "detected": detection,
+                    "tier": "N/A",
+                }
+
+            if len(detected_accel) != 3:
+                return {
+                    "error": (
+                        "Auto-detection found {} accelerometer column(s). "
+                        "Provide accel_columns=[x_column, y_column, "
+                        "z_column] explicitly."
+                    ).format(len(detected_accel)),
+                    "detected": detection,
+                    "tier": "N/A",
+                }
+
+            acc_cols = _validate_columns(
+                detected_accel, "accel"
+            )
+        else:
+            acc_cols = _validate_columns(
+                accel_columns, "accel"
+            )
+
+        if gyro_columns is None:
+            # Use automatic gyro detection only as a candidate.
+            # An incomplete or ambiguous set remains unit_unknown.
+            detected_gyro = list(detection.get("gyro", []))
+            gyro_cols = _validate_columns(
+                detected_gyro,
+                "gyro",
+                allow_empty=True,
+                require_three=False,
+            )
+        else:
+            gyro_cols = _validate_columns(
+                gyro_columns,
+                "gyro",
+                allow_empty=True,
+            )
+
+    except ValueError as exc:
+        return {
+            "error": str(exc),
+            "detected": detection,
+            "tier": "N/A",
+        }
+
+    # Reject cross-sensor column overlap: a source column cannot be
+    # assigned to both accelerometer and gyroscope axes.
+    overlap = sorted(set(acc_cols) & set(gyro_cols))
+    if overlap:
+        return {
+            "error": (
+                "Accelerometer and gyroscope columns overlap: "
+                f"{overlap}"
+            ),
+            "detected": detection,
+            "tier": "N/A",
+        }
 
     # Keep the original row sequence. Never remove acceleration rows
     # because a separate gyro channel is missing.
@@ -177,35 +652,61 @@ def certify_file(filepath: str, segment: str = "forearm",
             "tier": "N/A",
         }
 
-    # Infer accelerometer units using only complete acceleration rows.
-    acc_med = float(np.median(np.abs(acc_raw[accel_valid_rows])))
-    if 5.0 <= acc_med <= 15.0:
-        acc_scale = 1.0                 # already m/s2
-    elif 500 <= acc_med <= 1500:
-        acc_scale = 0.00981             # milli-g -> m/s2
-    elif 0.5 <= acc_med <= 1.5:
-        acc_scale = 9.81                # g -> m/s2
-    else:
-        acc_scale = 0.00981             # assume milli-g
+    unit_metadata = {
+        "accel": _resolve_unit(
+            accel_unit, header_names, acc_cols, "accel"
+        ),
+        "gyro": _resolve_unit(
+            gyro_unit, header_names, gyro_cols, "gyro"
+        ),
+    }
 
-    # Scale the full original array; invalid rows remain invalid and are
-    # handled at window level rather than silently removed.
-    acc = acc_raw * acc_scale
+    invalid_explicit = [
+        name for name, metadata in unit_metadata.items()
+        if metadata["status"] == "invalid_explicit"
+    ]
+    if invalid_explicit:
+        return {
+            "error": (
+                "Unsupported explicit unit for: "
+                + ", ".join(invalid_explicit)
+            ),
+            "detected": detection,
+            "tier": "N/A",
+            "unit_metadata": unit_metadata,
+        }
 
-    # A usable gyro stream requires all three axes. Missing or incomplete
-    # gyro data must not be replaced with zero-valued measurements.
+    accel_metadata = unit_metadata["accel"]
+    if accel_metadata["status"] not in (
+        "explicit", "inferred_from_header"
+    ):
+        return {
+            "error": (
+                "Accelerometer unit unknown. Pass accel_unit='m/s2', "
+                "'g', or 'milli-g', or provide the same recognized unit "
+                "in all three selected acceleration column headers."
+            ),
+            "detected": detection,
+            "tier": "N/A",
+            "unit_metadata": unit_metadata,
+        }
+
+    # Convert acceleration only after its unit has been established.
+    acc = acc_raw * accel_metadata["scale_to_si"]
+
+    # Unknown gyro units are not converted or passed to the physics engine.
+    # Acceleration-only assessment remains possible.
     gyro = None
-    if len(gyro_cols) == 3:
+    gyro_metadata = unit_metadata["gyro"]
+
+    if (
+        len(gyro_cols) == 3
+        and gyro_metadata["status"] in (
+            "explicit", "inferred_from_header"
+        )
+    ):
         gyro_raw = np.asarray(data[:, gyro_cols], dtype=float)
-        gyro_valid_rows = np.isfinite(gyro_raw).all(axis=1)
-
-        if np.any(gyro_valid_rows):
-            gyro_med = float(np.median(np.abs(gyro_raw[gyro_valid_rows])))
-            gyro_scale = 1.0 if gyro_med < 20.0 else 0.001
-        else:
-            gyro_scale = 1.0
-
-        gyro = gyro_raw * gyro_scale
+        gyro = gyro_raw * gyro_metadata["scale_to_si"]
 
     engine = PhysicsEngine()
     window = 256
@@ -267,6 +768,8 @@ def certify_file(filepath: str, segment: str = "forearm",
         "complete": 0,
         "partial": 0,
         "absent": 0,
+        "invalid": 0,
+        "unit_unknown": 0,
     }
 
     # +1 includes a final window when the input contains exactly
@@ -307,7 +810,11 @@ def certify_file(filepath: str, segment: str = "forearm",
         gyro_samples_present = 0
         gyro_availability = "absent"
 
-        if gyro is not None:
+        if gyro_metadata["status"] == "unit_unknown":
+            # Sensor columns exist, but their physical unit is unverified.
+            gyro_availability = "unit_unknown"
+
+        elif gyro is not None:
             chunk_g_raw = gyro[start:end]
             gyro_valid = np.isfinite(chunk_g_raw).all(axis=1)
             gyro_samples_present = int(gyro_valid.sum())
@@ -319,6 +826,10 @@ def certify_file(filepath: str, segment: str = "forearm",
                 # Omit the entire gyro stream for this window. Do not
                 # fabricate values or pass a shortened, misaligned stream.
                 gyro_availability = "partial"
+            else:
+                # Gyro columns exist with known units, but no valid samples.
+                # This is distinct from 'absent' (no gyro columns at all).
+                gyro_availability = "invalid"
 
         cert = engine.certify(imu_raw, segment=segment)
 
@@ -331,7 +842,11 @@ def certify_file(filepath: str, segment: str = "forearm",
         scores.append(cert["physical_law_score"])
 
     if not tiers:
-        return {"error": "No windows processed", "tier": "N/A"}
+        return {
+            "error": "No windows processed",
+            "tier": "N/A",
+            "unit_metadata": unit_metadata,
+        }
 
     from collections import Counter
     counts = Counter(tiers)
@@ -361,11 +876,12 @@ def certify_file(filepath: str, segment: str = "forearm",
             "gyro":       gyro_cols,
             "confidence": detection["confidence"]
         },
+        "unit_metadata": unit_metadata,
         "detected_hz":      hz,
         "segment":          segment,
         "gyro_window_availability": gyro_window_counts,
         "windows_skipped_invalid_accel": skipped_invalid_accel,
-        "gyro_columns_usable": len(gyro_cols) == 3,
+        "gyro_columns_usable": gyro is not None,
         "timestamp_source": timestamp_source,
         "timestamp_unit": timestamp_unit,
         "timestamp_column": ts_col,

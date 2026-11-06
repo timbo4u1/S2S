@@ -177,3 +177,139 @@ def test_latency_reports_elapsed_certification_time(monkeypatch):
 
     assert len(engine.calls) == 1
     assert result["windows"][0]["_latency_ms"] == 12.5
+
+
+# ---------------------------------------------------------------------------
+# Invalid gyro vector regression tests
+#
+# Tests for _extract_vector() validation of gyro data.
+# ---------------------------------------------------------------------------
+
+
+def test_gyro_nan_values_rejected(monkeypatch):
+    """NaN values in gyro vectors are rejected, not converted to zero."""
+    engine = install_engine(monkeypatch)
+    frames = make_frames(n=4)
+
+    # Inject NaN into gyro
+    for frame in frames:
+        frame["imu_gyro"] = [float("nan"), 0.2, 0.3]
+
+    result = lerobot.certify_lerobot_episode(
+        frames,
+        accel_keys=("imu_accel",),
+        gyro_keys=("imu_gyro",),
+        window=4,
+        step=4,
+    )
+
+    # Gyro should not be passed to engine
+    imu_raw, _ = engine.calls[0]
+    assert "gyro" not in imu_raw
+    # Gyro keys supplied but all invalid -> 'invalid', not 'absent'
+    assert result["windows"][0]["_gyro_availability"] == "invalid"
+
+
+def test_gyro_inf_values_rejected(monkeypatch):
+    """Inf values in gyro vectors are rejected, not converted to zero."""
+    engine = install_engine(monkeypatch)
+    frames = make_frames(n=4)
+
+    # Inject Inf into gyro
+    for frame in frames:
+        frame["imu_gyro"] = [float("inf"), 0.2, 0.3]
+
+    result = lerobot.certify_lerobot_episode(
+        frames,
+        accel_keys=("imu_accel",),
+        gyro_keys=("imu_gyro",),
+        window=4,
+        step=4,
+    )
+
+    # Gyro should not be passed to engine
+    imu_raw, _ = engine.calls[0]
+    assert "gyro" not in imu_raw
+    # Gyro keys supplied but all invalid -> 'invalid', not 'absent'
+    assert result["windows"][0]["_gyro_availability"] == "invalid"
+
+
+def test_gyro_wrong_vector_length_rejected(monkeypatch):
+    """Wrong vector length in gyro is rejected."""
+    engine = install_engine(monkeypatch)
+    frames = make_frames(n=4)
+
+    # Inject wrong length gyro
+    for frame in frames:
+        frame["imu_gyro"] = [0.1, 0.2]  # Only 2 elements
+
+    result = lerobot.certify_lerobot_episode(
+        frames,
+        accel_keys=("imu_accel",),
+        gyro_keys=("imu_gyro",),
+        window=4,
+        step=4,
+    )
+
+    # Gyro should not be passed to engine
+    imu_raw, _ = engine.calls[0]
+    assert "gyro" not in imu_raw
+    # Gyro keys supplied but all invalid -> 'invalid', not 'absent'
+    assert result["windows"][0]["_gyro_availability"] == "invalid"
+
+
+def test_gyro_non_numeric_values_rejected(monkeypatch):
+    """Non-numeric values in gyro are rejected."""
+    engine = install_engine(monkeypatch)
+    frames = make_frames(n=4)
+
+    # Inject non-numeric gyro
+    for frame in frames:
+        frame["imu_gyro"] = ["0.1", 0.2, 0.3]  # String instead of float
+
+    result = lerobot.certify_lerobot_episode(
+        frames,
+        accel_keys=("imu_accel",),
+        gyro_keys=("imu_gyro",),
+        window=4,
+        step=4,
+    )
+
+    # Gyro should not be passed to engine
+    imu_raw, _ = engine.calls[0]
+    assert "gyro" not in imu_raw
+    # Gyro keys supplied but all invalid -> 'invalid', not 'absent'
+    assert result["windows"][0]["_gyro_availability"] == "invalid"
+
+
+def test_all_invalid_gyro_vectors_classified_as_invalid(monkeypatch):
+    """All-invalid gyro vectors with known keys should be 'invalid', not 'absent'.
+
+    This test distinguishes between:
+    - No gyro keys supplied -> 'absent'
+    - Gyro keys supplied but all vectors invalid -> 'invalid'
+    """
+    engine = install_engine(monkeypatch)
+    frames = make_frames(n=4)
+
+    # Inject NaN into all gyro vectors (keys are present but data is invalid)
+    for frame in frames:
+        frame["imu_gyro"] = [float("nan"), float("nan"), float("nan")]
+
+    result = lerobot.certify_lerobot_episode(
+        frames,
+        accel_keys=("imu_accel",),
+        gyro_keys=("imu_gyro",),  # Keys ARE supplied
+        window=4,
+        step=4,
+    )
+
+    # Gyro should not be passed to engine
+    imu_raw, _ = engine.calls[0]
+    assert "gyro" not in imu_raw
+
+    # Should be classified as 'invalid', not 'absent'
+    # This will FAIL until production code is updated
+    assert result["windows"][0]["_gyro_availability"] == "invalid"
+    assert result["gyro_window_availability"]["invalid"] == 1
+    assert result["gyro_window_availability"]["absent"] == 0
