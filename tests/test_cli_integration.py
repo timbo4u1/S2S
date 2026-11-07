@@ -212,3 +212,53 @@ class TestRefineryCLI:
         # May exit non-zero but must not produce a Python traceback
         assert "Traceback" not in err, \
             f"s2s-refinery crashed on empty folder:\n{err}"
+
+
+# ── Version consistency tests ─────────────────────────────────────────────────
+
+class TestVersionConsistency:
+    """Verify package version alignment across pyproject, __init__, and CLI."""
+
+    def test_package_version_is_1_8_0(self):
+        """Package __version__ must be 1.8.0."""
+        from s2s_standard_v1_3 import __version__
+        assert __version__ == "1.8.0", \
+            f"Expected __version__='1.8.0', got '{__version__}'"
+
+    def test_cli_banner_shows_package_version(self):
+        """CLI banner must display the package __version__."""
+        from s2s_standard_v1_3 import __version__
+        from s2s_standard_v1_3.cli import print_banner
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            print_banner()
+        output = buf.getvalue()
+        assert __version__ in output, \
+            f"CLI banner does not contain version '{__version__}'"
+
+    def test_cli_banner_no_hardcoded_version(self):
+        """CLI banner must not contain hardcoded version strings."""
+        from s2s_standard_v1_3.cli import print_banner
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            print_banner()
+        output = buf.getvalue()
+        # Should not contain old hardcoded versions
+        assert "v1.6.4" not in output, "CLI banner contains hardcoded v1.6.4"
+        assert "v1.7.9" not in output, "CLI banner contains hardcoded v1.7.9"
+
+    def test_entry_points_importable(self):
+        """Both CLI entry points must be importable."""
+        # Test s2s-certify entry point
+        from s2s_standard_v1_3.cli import main as certify_main
+        assert callable(certify_main), "s2s-certify entry point not callable"
+
+        # Test s2s-refinery entry point
+        from s2s_standard_v1_3.batch_refinery import main as refinery_main
+        assert callable(refinery_main), "s2s-refinery entry point not callable"

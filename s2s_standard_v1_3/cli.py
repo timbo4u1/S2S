@@ -7,6 +7,8 @@ Usage:  s2s-certify yourfile.csv
 """
 import sys, csv, json, os, time
 
+from s2s_standard_v1_3 import __version__
+
 TIER_COLORS = {
     "GOLD":     "\033[93m",
     "SILVER":   "\033[96m",
@@ -104,7 +106,7 @@ def load_csv(path):
 def print_banner():
     print(f"""
 {BOLD}╔══════════════════════════════════════════╗
-║   S2S Physics Certification  v1.6.4      ║
+║   S2S Physics Certification  v{__version__:<10}║
 ║   github.com/timbo4u1/S2S                ║
 ╚══════════════════════════════════════════╝{RESET}""")
 
