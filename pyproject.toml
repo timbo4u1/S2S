@@ -4,17 +4,18 @@
 # predates these fixes; Python >=3.10 uses the patched build backend.
 requires = [
   "setuptools>=84.1.0; python_version >= '3.10'",
-  "setuptools>=68; python_version < '3.10'",
+  "setuptools>=77.0.3; python_version < '3.10'",
   "wheel",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "s2s-certify"
-version = "1.7.9"
+version = "1.8.0"
 description = "Physics-certified motion data toolkit for Physical AI training"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "BUSL-1.1"
+license-files = ["LICENSE"]
 authors = [
   { name = "Timur Davkarayev", email = "timur.davkarayev@gmail.com" }
 ]

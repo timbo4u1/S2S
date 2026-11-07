@@ -330,6 +330,16 @@ If you are using S2S on your data — even just experimenting —
 open a [GitHub Discussion](https://github.com/timbo4u1/S2S/discussions) or email **s2s.physical@proton.me**.
 One sentence about your use case helps more than you think.
 
+**Completed in v1.8.0:**
+- Content-based delimiter detection for comma, semicolon and tab files
+- Numeric-aware header detection preserving scientific notation and NaN/Inf values
+- Explicit sensor-unit normalization and SI conversion for supported units
+- Sensor-column validation: cardinality, type, bounds, duplicate axes, cross-sensor overlap rejection
+- PAMAP2 six-mapping regression coverage for all hand, chest and ankle accelerometer/gyroscope mappings
+- Explicit gyro availability states: complete, partial, absent, invalid, unit_unknown
+- LeRobot adapter invalid gyro state alignment with column adapter
+- Preservation of sensor provenance and no fabricated gyro measurements
+
 **Completed in v1.7.9:**
 - Law 16: Innovation Kurtosis — soft screening signal for evaluated coupled OU / Cholesky cases; not a universal synthetic-data detector
 - Calibrated on real PAMAP2 data (6,547 windows, 3 subjects): soft signal, not hard reject
