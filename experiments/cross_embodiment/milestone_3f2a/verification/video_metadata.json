@@ -1,0 +1,45 @@
+{
+  "file": "video/w19_rgb.mp4",
+  "pts_export": {
+    "path": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv",
+    "sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d",
+    "rows": 52561,
+    "derivation": "ffprobe -show_entries frame=pts,pkt_dts,best_effort_timestamp_time -of csv=p=0",
+    "parser": "first/last numeric CSV token per line; SEI strings and empty fields tolerated"
+  },
+  "pts_first": 0.0,
+  "pts_last": 1752.0,
+  "pts_counter_first": 0,
+  "pts_counter_last": 26910720,
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "nb_frames": "52561"
+      }
+    ],
+    "format": {
+      "duration": "1752.033333",
+      "size": "415360385"
+    }
+  },
+  "pts_rows": 52561,
+  "pts_min": 0.0,
+  "pts_max": 1752.0,
+  "pts_strictly_increasing": true,
+  "pts_duplicate_count": 0,
+  "pts_interval_s_median": 0.03333300000008421,
+  "pts_interval_s_min": 0.03333299999985684,
+  "pts_interval_s_max": 0.033334000000195374,
+  "pts_interval_s_std": 4.714045267358279e-07,
+  "decode_check": "ffprobe frame dump completed without error; full decode not performed",
+  "frame_index_domain": "0-based MP4 frame index; nb_frames=52561 -> indices 0..52560",
+  "note": "PTS export regenerated deterministically via ffprobe into verification dir; original 0-byte placeholder at data root superseded"
+}

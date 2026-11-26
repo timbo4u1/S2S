@@ -1,0 +1,71 @@
+{
+  "milestone": "3F.2A_mmfit_bounded_acquisition_sync_verification",
+  "created_for": "S2S human multimodal acquisition audit",
+  "mode": "bounded_acquisition_read_only_no_engine_changes",
+  "budget": {"cap_bytes": 3221225472, "acquired_bytes_approx": 500000000, "note": "zip accessed via HTTP range member extraction; only session w19 wearable/label members pulled (~72MB uncompressed) + one 415MB video"},
+  "storage": "~/S2S_data/mmfit_3f2/ (outside git tree)",
+  "sources": {
+    "wearable_archive": {"url": "https://s3.eu-west-2.amazonaws.com/vradu.uk/mm-fit.zip", "bytes": 1742309258, "etag": "c72b4cb675f8947c448aa57622f86af3-102", "last_modified": "2020-12-27", "method": "zip central-directory range fetch; per-member range extraction", "license": "CC-BY-4.0 (dataset); cite Stromback et al. IMWUT 2020"},
+    "video": {"zenodo_record": "7672767", "version": "v2", "doi": "10.5281/zenodo.7672767", "file": "w19_rgb.mp4", "declared_bytes": 415360385, "declared_md5": "5d5f8dd6434deffba8842cfefe0101db", "actual_md5_verified": true, "license": "CC-BY-4.0"},
+    "format_reference": "github.com/KDMStromback/mm-fit utils/dataset.py + EDA.ipynb"
+  },
+  "acquired_files_sha256": {
+    "note": "full list in ~/S2S_data/mmfit_3f2/w19_sha256.txt; key entries:",
+    "w19_sw_l_acc.npy": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+    "w19_sw_l_gyr.npy": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+    "w19_sw_l_hr.npy": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+    "w19_sw_r_acc.npy": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+    "w19_sw_r_gyr.npy": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+    "w19_sp_r_acc.npy": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+    "w19_sp_r_gyr.npy": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+    "w19_sp_r_mag.npy": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+    "w19_eb_l_acc.npy": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+    "w19_eb_l_gyr.npy": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+    "w19_labels.csv": "b3e4467df3aaaa2349a0fdfc6bad8fb86e09858bbf3af3fa0bdeb5001ae60887",
+    "video/w19_rgb.mp4": "8f387910a830757ce91df0301ed4d8b607c589d355ba3158917185823635fd36"
+  },
+  "wearable_field_inventory": {
+    "layout": "inertial/mag: (N,5) float64 = Frame,Timestamp,X,Y,Z; hr: (N,3) = Frame,Timestamp,BPM",
+    "timestamp": "unix epoch milliseconds, shared clock across all devices",
+    "frame": "left RGB-D camera frame index, span 898-52561 (HR 1118-52540)",
+    "streams": {
+      "sw_l_acc/gyr": {"n": 177577, "measured_hz": 103.2, "nominal_hz": 100},
+      "sw_r_acc/gyr": {"n": 179263, "measured_hz": 104.2, "nominal_hz": 100},
+      "sw_l_hr": {"n": 1642, "measured_hz": 0.96, "nominal_hz": 1, "semantics": "derived BPM NOT raw PPG"},
+      "sp_r_acc/gyr": {"n": 365571, "measured_hz": 212.4, "nominal_hz": 210},
+      "sp_r_mag": {"n": 172766, "measured_hz": 100.4, "nominal_hz": "65-100 device unresolved"},
+      "eb_l_acc/gyr": {"n": 137448, "measured_hz": 79.9, "nominal_hz": 90}
+    },
+    "absent_in_w19": ["sw_r_hr", "sp_l_acc", "sp_l_gyr", "sp_l_mag", "EMG", "raw PPG"],
+    "data_quality": {"nonfinite_values": 0, "timestamp_strictly_monotonic": false, "note": "duplicate epoch-ms timestamps present in high-rate streams; HR strictly monotonic", "frame_gaps": "present (unique frames < span)"}
+  },
+  "video_inventory": {
+    "file": "w19_rgb.mp4", "codec": "h264", "width": 1280, "height": 720, "pix_fmt": "yuv420p",
+    "fps": 30, "nb_frames": 52561, "duration_s": 1752.03,
+    "md5_verified": true, "depth_stream": "not present in this artifact - unresolved",
+    "frame_index_alignment": "sensor Frame col max 52561 ~ video nb_frames 52561; labels use same frame domain"
+  },
+  "clock_sync_matrix": {
+    "wearable_to_wearable": {"mapping": "VERIFIED", "domain": "shared unix epoch ms", "offset_ms_mean_range": [-7.4, 15.1], "offset_ms_std_max": 13.3, "extremes_ms": [-48, 73], "drift": "bounded by ms quantization; unquantified", "decision": "CAN_ALIGN"},
+    "wearable_to_rgb_video": {"mapping": "VERIFIED mechanism (frame index + epoch ms)", "evidence": "EDA doc: left RGB-D camera is reference device; frame span matches video duration*30fps", "decision": "CAN_ALIGN with bounded uncertainty"},
+    "wearable_to_depth": {"mapping": "UNVERIFIED", "decision": "NOT_ASSESSED"},
+    "rgb_to_depth": {"mapping": "UNVERIFIED", "decision": "NOT_ASSESSED"},
+    "hr_to_all": {"mapping": "VERIFIED", "offset_ms_mean": 15.1, "decision": "CAN_ALIGN"}
+  },
+  "labels": {"file": "w19_labels.csv", "format": "start_frame,end_frame,reps,activity", "n_sets": 25, "frame_domain": "video frame index", "activities": ["squats","pushups","dumbbell_shoulder_press","lunges","dumbbell_rows","situps","tricep_extensions","bicep_curls","lateral_shoulder_raises"]},
+  "s2s_compatibility": {
+    "ready_for_physics_engine": ["sw_l_acc","sw_l_gyr","sw_r_acc","sw_r_gyr","sw_l_hr","sp_r_acc","sp_r_gyr","sp_r_mag","eb_l_acc","eb_l_gyr"],
+    "hr_rule": "derived BPM only; never raw-PPG checks",
+    "not_for_physics_engine": ["rgb video", "depth", "pose_2d", "pose_3d"],
+    "engine_modifications": "none required or made"
+  },
+  "readiness": {
+    "READY_FOR_TEST": ["IMU accel/gyro x5 streams", "magnetometer", "derived HR"],
+    "NEEDS_EVIDENCE": ["RGB video integrity checks", "pose 2d/3d (acquisition finishing)", "depth"],
+    "NOT_ASSESSED": ["depth sync", "rgb-depth sync", "drift quantification"],
+    "NOT_APPLICABLE": ["EMG", "raw PPG"]
+  },
+  "unresolved": ["depth stream location/format", "sp_r device identity (mag rate suggests S7@100Hz not Huawei@65Hz)", "timestamp drift over session", "pose_2d/pose_3d acquisition completing at cutoff", "per-session device completeness varies"],
+  "decision": "CONDITIONAL GO for 3F.2B adapter: wearables verified READY_FOR_TEST with demonstrated shared epoch-ms clock + frame-index sync; video NEEDS_EVIDENCE for integrity checks; depth unresolved; EMG/raw PPG absent; sync is verified mechanism with bounded uncertainty not sample-exact",
+  "integrity_notes": ["no engine/adapter/schema changes", "no bulk video population downloaded", "no sync invented", "BPM not represented as PPG", "no staging or commits", "original files unmodified"]
+}

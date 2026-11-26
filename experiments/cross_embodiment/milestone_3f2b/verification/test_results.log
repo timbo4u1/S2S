@@ -1,0 +1,115 @@
+=== S2S Milestone 3F.2B.2.1 Verification ===
+Wed Nov 25 11:05:09 +05 2026
+
+=== Focused MM-Fit, Schema and Human Adapter Tests ===
+Command: python3 -m pytest -q tests/test_mmfit_adapter.py tests/test_cross_embodiment_schema.py tests/test_cross_embodiment_human_adapter.py
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0
+rootdir: /Users/timbo/S2S
+configfile: pyproject.toml
+plugins: asyncio-1.2.0, anyio-4.9.0
+asyncio: mode=strict, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 69 items
+
+tests/test_mmfit_adapter.py ........................................     [ 57%]
+tests/test_cross_embodiment_schema.py ......................             [ 89%]
+tests/test_cross_embodiment_human_adapter.py .......                     [100%]
+
+=============================== warnings summary ===============================
+../Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35
+  /Users/timbo/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 69 passed, 1 warning in 9.00s =========================
+
+=== Full S2S Test Suite ===
+Command: python3 -m pytest -q
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0
+rootdir: /Users/timbo/S2S
+configfile: pyproject.toml
+testpaths: tests
+plugins: asyncio-1.2.0, anyio-4.9.0
+asyncio: mode=strict, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 565 items
+
+tests/test_analyze_loso_matched.py ....                                  [  0%]
+tests/test_autocorrelation.py ........                                   [  2%]
+tests/test_batch_refinery.py ...                                         [  2%]
+tests/test_certify_session.py ......                                     [  3%]
+tests/test_cli_integration.py ....................                       [  7%]
+tests/test_column_detect.py ............................................ [ 15%]
+........................................................                 [ 24%]
+tests/test_cross_axis_cohesion.py ......                                 [ 26%]
+tests/test_cross_dataset_robot.py ..........                             [ 27%]
+tests/test_cross_embodiment_human_adapter.py .......                     [ 29%]
+tests/test_cross_embodiment_schema.py ......................             [ 32%]
+tests/test_emg_ppg.py ...............................                    [ 38%]
+tests/test_fusion.py ..................................................  [ 47%]
+tests/test_latency.py ...                                                [ 47%]
+tests/test_law16_innovation_kurtosis.py ..............                   [ 50%]
+tests/test_lerobot_adapter.py ............                               [ 52%]
+tests/test_mmfit_adapter.py ........................................     [ 59%]
+tests/test_not_assessed.py ..                                            [ 59%]
+tests/test_physics_laws.py .............................                 [ 64%]
+tests/test_pointwise_jerk.py ......                                      [ 66%]
+tests/test_powerline.py ...                                              [ 66%]
+tests/test_research_experiment_fixes.py .........................        [ 70%]
+tests/test_resonance_segment.py ..                                       [ 71%]
+tests/test_robot_aloha_adapter.py ..............................         [ 76%]
+tests/test_robot_assessment.py ......................                    [ 80%]
+tests/test_robot_data_testbench.py ..................                    [ 83%]
+tests/test_robot_generic_interface.py .................................. [ 89%]
+.                                                                        [ 89%]
+tests/test_run_benchmark.py ....                                         [ 90%]
+tests/test_safety_gate.py ..........                                     [ 92%]
+tests/test_sample_entropy.py ........                                    [ 93%]
+tests/test_scoring_invariants.py ..                                      [ 94%]
+tests/test_semantic_mismatch.py ........                                 [ 95%]
+tests/test_sensor_freeze.py ....F                                        [ 96%]
+tests/test_spectral_flatness.py ......                                   [ 97%]
+tests/test_splice.py ..                                                  [ 97%]
+tests/test_vla_wrapper.py ...........                                    [ 99%]
+tests/test_wavelet_2d.py .                                               [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_latency_budget ______________________________
+tests/test_sensor_freeze.py:78: in test_latency_budget
+    assert avg_ms < 5.0, f"Latency {avg_ms:.2f}ms exceeds 5ms budget"
+E   AssertionError: Latency 5.12ms exceeds 5ms budget
+E   assert 5.118927500000154 < 5.0
+----------------------------- Captured stdout call -----------------------------
+
+  Law 13 latency: 5.12ms/window
+=============================== warnings summary ===============================
+../Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35
+  /Users/timbo/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+    warnings.warn(
+
+tests/test_column_detect.py::test_detect_from_file_nan_inf_first_row
+  /Users/timbo/Library/Python/3.9/lib/python/site-packages/numpy/core/_methods.py:173: RuntimeWarning: invalid value encountered in subtract
+    x = asanyarray(arr - arrmean)
+
+tests/test_law16_innovation_kurtosis.py::TestLaw16Integration::test_acc_only_not_rejected_by_law16
+tests/test_physics_laws.py::TestJerkBounds::test_zero_motion_edge_case
+tests/test_physics_laws.py::TestIMUCoupling::test_all_zeros_gyro_scores_lower
+tests/test_physics_laws.py::TestFullPipeline::test_mismatched_lengths_raises_or_rejects
+tests/test_sensor_freeze.py::test_sensor_freeze_detected
+tests/test_sensor_freeze.py::test_low_motion_with_noise_not_frozen
+tests/test_wavelet_2d.py::test_3d_firewall
+  /Users/timbo/Library/Python/3.9/lib/python/site-packages/numpy/lib/function_base.py:2897: RuntimeWarning: invalid value encountered in divide
+    c /= stddev[:, None]
+
+tests/test_law16_innovation_kurtosis.py::TestLaw16Integration::test_acc_only_not_rejected_by_law16
+tests/test_physics_laws.py::TestIMUCoupling::test_all_zeros_gyro_scores_lower
+tests/test_sensor_freeze.py::test_sensor_freeze_detected
+tests/test_sensor_freeze.py::test_low_motion_with_noise_not_frozen
+tests/test_wavelet_2d.py::test_3d_firewall
+  /Users/timbo/Library/Python/3.9/lib/python/site-packages/numpy/lib/function_base.py:2898: RuntimeWarning: invalid value encountered in divide
+    c /= stddev[None, :]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_sensor_freeze.py::test_latency_budget - AssertionError: Lat...
+============ 1 failed, 564 passed, 14 warnings in 316.56s (0:05:16) ============

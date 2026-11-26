@@ -1,0 +1,47 @@
+{
+  "absolute_clock": false,
+  "clock_domain": "relative_pts_seconds",
+  "depth_status": "RAW_UNAVAILABLE_LOCALLY (source: Zenodo 7607736 w19_depth.mp4 19014084B, not acquired)",
+  "file": "video/w19_rgb.mp4",
+  "probe": {
+    "format": {
+      "duration": "1752.033333",
+      "size": "415360385"
+    },
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "height": 720,
+        "nb_frames": "52561",
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "width": 1280
+      }
+    ]
+  },
+  "pts_export": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv",
+  "pts_export_sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d",
+  "sha256": "8f387910a830757ce91df0301ed4d8b607c589d355ba3158917185823635fd36",
+  "stats": {
+    "derived_fps_from_pts": 30.000300002924238,
+    "duplicate_pts": 0,
+    "empty": false,
+    "insufficient": false,
+    "interval_s_max": 0.033334000000195374,
+    "interval_s_median": 0.03333300000008421,
+    "interval_s_min": 0.03333299999985684,
+    "interval_s_p1": 0.03333299999985684,
+    "interval_s_p99": 0.033334000000195374,
+    "interval_s_std": 4.714045267358279e-07,
+    "pts_counter_first": 0,
+    "pts_counter_last": 26910720,
+    "pts_first": 0.0,
+    "pts_last": 1752.0,
+    "reversals": 0,
+    "rows": 52561,
+    "strictly_increasing": true
+  }
+}

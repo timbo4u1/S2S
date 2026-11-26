@@ -1,0 +1,11 @@
+filename,device,sensor,frame_min,frame_max,frame_unique,frame_span,frame_gaps,frame_reversals
+w19_eb_l_acc.npy,Nokia eSense earbud left,acc,898.0,52561.0,38375,51664,13289,0
+w19_eb_l_gyr.npy,Nokia eSense earbud left,gyr,898.0,52561.0,38375,51664,13289,0
+w19_sp_r_acc.npy,smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz),acc,898.0,52561.0,51609,51664,55,0
+w19_sp_r_gyr.npy,smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz),gyr,898.0,52561.0,51591,51664,73,0
+w19_sp_r_mag.npy,smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz),mag,898.0,52561.0,51544,51664,120,0
+w19_sw_l_acc.npy,TicWatch Pro left (smartwatch),acc,898.0,52561.0,51654,51664,10,0
+w19_sw_l_gyr.npy,TicWatch Pro left (smartwatch),gyr,898.0,52561.0,51656,51664,8,0
+w19_sw_l_hr.npy,TicWatch Pro left (smartwatch),hr,1118.0,52540.0,1642,51423,49781,0
+w19_sw_r_acc.npy,TicWatch Pro right (smartwatch),acc,898.0,52561.0,51658,51664,6,0
+w19_sw_r_gyr.npy,TicWatch Pro right (smartwatch),gyr,898.0,52561.0,51660,51664,4,0

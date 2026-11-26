@@ -1,0 +1,89 @@
+{
+  "milestone": "3F.2B.2.1_mmfit_final_integrity_reproducibility",
+  "adapter": "experiments/cross_embodiment/milestone_3f2b/mmfit_adapter.py",
+  "adapter_version": "3f.2b.2",
+  "scope": "MM-Fit session w19 only (bounded acquisition); full population NOT claimed",
+  "inputs": {
+    "data_root": "~/S2S_data/mmfit_3f2/",
+    "wearable_streams": "mm-fit/w19/*.npy (9 inertial/mag + 1 derived HR = 10 files)",
+    "labels": "mm-fit/w19/w19_labels.csv (26 sets, 258 reps, 9 activities)",
+    "video": "video/w19_rgb.mp4 (h264 1280x720 30fps 52561 frames, md5-verified)",
+    "pts_export": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv (sha256 1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d)",
+    "source_manifest": "experiments/cross_embodiment/milestone_3f2a/reproducibility_manifest.json",
+    "verification_reports": [
+      "experiments/cross_embodiment/MILESTONE_3F2A_INDEPENDENT_VERIFICATION.md",
+      "experiments/cross_embodiment/MILESTONE_3F2A1_EVIDENCE_RECONCILIATION.md"
+    ],
+    "verification_reports_note": "repo-relative paths; reports are bundled in the repository review package and not duplicated under milestone_3f2b"
+  },
+  "outputs": "experiments/cross_embodiment/milestone_3f2b/outputs/w19/ (7 JSON artifacts, deterministic sort_keys, no wall-clock fields)",
+  "assessment_summary": {
+    "PASS": 22,
+    "WARNING": 10,
+    "NOT_ASSESSED": 24,
+    "checks": 56,
+    "note": "unchanged findings preserved"
+  },
+  "unchanged_components": [
+    "s2s_standard_v1_3/s2s_physics_v1_3.py",
+    "experiments/cross_embodiment/human_adapter.py",
+    "experiments/cross_embodiment/quality_schema.py",
+    "robot engine/adapters"
+  ],
+  "constraints_honored": [
+    "no downloads",
+    "no stream merging",
+    "no invented units/sync",
+    "BPM not PPG",
+    "no EMG/raw-PPG claims",
+    "no universal score/tier",
+    "no staging/commits"
+  ],
+  "key_limitations": [
+    "axis units UNKNOWN except documentary smartwatch example (m/s^2, rad/s)",
+    "sp_r device identity UNKNOWN (Samsung S7 plausible only)",
+    "per-sample timestamp quality DEGRADED on high-rate streams (quantization + held/batch)",
+    "frame association +/-1 frame (~33ms) boundary uncertainty; zero/one-based unresolved",
+    "video PTS relative; no absolute video clock; drift NOT_MEASURED",
+    "depth RAW_UNAVAILABLE locally (source zenodo:7607736 w19_depth.mp4 19014084B not acquired)",
+    "pose_2d/pose_3d PARTIAL (incomplete acquisition)"
+  ],
+  "reproduce": "python3 experiments/cross_embodiment/milestone_3f2b/run_mmfit_assessment.py",
+  "revision_notes": [
+    "video check renamed MMFIT_RGB_VIDEO_METADATA_PTS_INTEGRITY; 30fps enforced via fractions.Fraction; PTS-derived fps cross-checked; empty/invalid PTS handled",
+    "frame-association finding now cites all 10 wearable streams + labels + mp4 + pts export (relative paths, sha256)",
+    "stream_stats validates Frame/Timestamp finiteness+integer-valuedness before int64 cast; malformed arrays raise ValueError",
+    "record-rate renamed observed_record_rate_hz; verified_nominal_hz=None; candidate_reference_hz marked unverified (sp_r hardware UNKNOWN)",
+    "duplicate mechanism split into observed pattern vs causal interpretation (LOW confidence, not proven)",
+    "PTS export referenced by relative path with sha256 in evidence refs",
+    "3f.2b.2 aligned everywhere; int64 range validation on timestamps; PTS <3 rows -> pts_insufficient_rows WARNING; bare nominal_hz removed from persisted inventory; sample_count_convention documented in provenance"
+  ],
+  "tests": {
+    "focused": {
+      "command": "python3 -m pytest -q tests/test_mmfit_adapter.py tests/test_cross_embodiment_schema.py tests/test_cross_embodiment_human_adapter.py",
+      "result": "69 passed, 1 warning, 9.00s"
+    },
+    "full_suite": {
+      "command": "python3 -m pytest -q",
+      "result": "564 passed, 1 failed, 14 warnings, 316.56s",
+      "status": "NOT_A_CLEAN_PASS"
+    },
+    "full_suite_failure": {
+      "test": "tests/test_sensor_freeze.py::test_latency_budget",
+      "measured_ms": 5.12,
+      "threshold": "<5ms strict",
+      "log": "experiments/cross_embodiment/milestone_3f2b/verification/test_results.log"
+    },
+    "isolated_latency_recheck": {
+      "command": "python3 -m pytest -q tests/test_sensor_freeze.py::test_latency_budget (x5)",
+      "result": "5 consecutive passes",
+      "log": "experiments/cross_embodiment/milestone_3f2b/verification/test_latency_budget_recheck.log",
+      "note": "isolated passes do NOT change the original full-suite result"
+    },
+    "mmfit_adapter_only": "40 passed"
+  },
+  "prior_verification": [
+    "experiments/cross_embodiment/MILESTONE_3F2A_INDEPENDENT_VERIFICATION.md",
+    "experiments/cross_embodiment/MILESTONE_3F2A1_EVIDENCE_RECONCILIATION.md"
+  ]
+}

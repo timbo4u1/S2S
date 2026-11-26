@@ -1,0 +1,204 @@
+{
+  "milestone": "3F.2A_independent_verification",
+  "data_root": "/Users/timbo/S2S_data/mmfit_3f2",
+  "session": "w19",
+  "n_streams_inspected": 10,
+  "files": [
+    {
+      "path": "mm-fit/w19/w19_eb_l_acc.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_labels.csv",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_r_acc.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_r_mag.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_l_acc.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_l_hr.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_r_acc.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "video/w19_rgb.mp4",
+      "status": "AVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_rgb_frame_timestamps.csv",
+      "status": "RAW_UNAVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_pose_2d.npy",
+      "status": "PARTIAL"
+    },
+    {
+      "path": "mm-fit/w19/w19_pose_3d.npy",
+      "status": "PARTIAL"
+    },
+    {
+      "path": "mm-fit/w19/w19_sw_r_hr.npy",
+      "status": "RAW_UNAVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_l_acc.npy",
+      "status": "RAW_UNAVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_l_gyr.npy",
+      "status": "RAW_UNAVAILABLE"
+    },
+    {
+      "path": "mm-fit/w19/w19_sp_l_mag.npy",
+      "status": "RAW_UNAVAILABLE"
+    },
+    {
+      "path": "depth stream (any)",
+      "status": "UNKNOWN"
+    }
+  ],
+  "key_reproduced_metrics": {
+    "wearable_clock": "unix epoch ms shared across devices",
+    "frame_column": "camera frame index 898-52561",
+    "metric_terminology": "offset_* columns = first_sample_ts_diff_per_shared_frame_ms; NOT direct clock offsets",
+    "first_sample_ts_diff_mean_ms_range": [
+      -7.40146565595859,
+      15.134591961023142
+    ],
+    "first_sample_ts_diff_std_ms_max": 13.28060710956285,
+    "max_abs_first_sample_ts_diff_ms": 73.0,
+    "video": {
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "frames": 52561,
+      "pts_export_sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d"
+    },
+    "labels": {
+      "n_sets": 26,
+      "total_reps": 258,
+      "n_activities": 9
+    },
+    "npy_streams": {
+      "inertial_mag": 9,
+      "heart_rate": 1,
+      "note": "10 total acquired wearable NPY files; pose PARTIAL not counted"
+    }
+  },
+  "timestamp_duplication": {
+    "w19_eb_l_acc.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.4545533914890831,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_eb_l_gyr.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.4545533914890831,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sp_r_acc.npy": {
+      "mechanism": "MIXED_QUANTIZATION_AND_HELD",
+      "zero_dt_fraction": 0.06229176354733704,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sp_r_gyr.npy": {
+      "mechanism": "MIXED_QUANTIZATION_AND_HELD",
+      "zero_dt_fraction": 0.14643159996717456,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sp_r_mag.npy": {
+      "mechanism": "MIXED_QUANTIZATION_AND_HELD",
+      "zero_dt_fraction": 0.006257054380227477,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sw_l_acc.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.004110915889534622,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sw_l_gyr.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.002291976393206289,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sw_l_hr.npy": {
+      "mechanism": "NONE",
+      "zero_dt_fraction": 0.0,
+      "per_sample_ts_quality": "OK"
+    },
+    "w19_sw_r_acc.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.008557307181667057,
+      "per_sample_ts_quality": "DEGRADED"
+    },
+    "w19_sw_r_gyr.npy": {
+      "mechanism": "QUANTIZATION_ONLY",
+      "zero_dt_fraction": 0.003609242338030369,
+      "per_sample_ts_quality": "DEGRADED"
+    }
+  },
+  "depth_source_record": {
+    "zenodo_record": "7607736",
+    "title": "MM-Fit Dataset - physical exercise workout sessions (video and depth)",
+    "w19_depth_mp4_bytes": 19014084,
+    "status": "SOURCE_AVAILABLE_NOT_ACQUIRED_NOT_DECODED_NOT_TIMESTAMP_ASSESSED_NOT_SYNC_ASSESSED"
+  },
+  "unit_evidence": {
+    "sw_l_sw_r_acc_gyr": "PLAUSIBLE m/s^2 and rad/s per MM-Fit paper example (left-worn smartwatch trace, Fig.1); not file-verified -> treat as DOCUMENTED_EXAMPLE_ONLY",
+    "sp_r": "device model UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+    "eb_l": "UNKNOWN",
+    "sp_r_mag": "UNKNOWN",
+    "hr": "bpm derived"
+  },
+  "supersedes": "prior verification counted 25 label sets / ambiguous stream counts; corrected to 26 sets, 258 reps, 9 activities, 9 inertial+mag NPY + 1 HR NPY = 10 total acquired wearable streams",
+  "new_findings_vs_prior_audit": [
+    "timestamp duplication is MIXED mechanism: ms quantization (different values sharing ms) AND held/batch duplicates (identical values sharing ms); per-sample ts quality DEGRADED for sp_r_gyr and eb_l streams",
+    "video PTS has NO absolute clock - wearable-video alignment is frame-index only, not timestamp-based",
+    "wearable frame max 52561 exceeds video max index 52560 by 1 -> bounded +/-1 frame (~33ms) indexing uncertainty",
+    "w19_rgb_frame_timestamps.csv regenerated deterministically into verification dir (sha256 recorded); 0-byte placeholder superseded",
+    "pose_2d/pose_3d range downloads incomplete - classified PARTIAL not absent",
+    "depth video exists in separate Zenodo record 7607736 (w19_depth.mp4 19,014,084 B) - NOT acquired this milestone",
+    "partial mm-fit.zip (1.63GB) remains from killed full-download attempt; unused"
+  ],
+  "constraints_honored": [
+    "read-only sources",
+    "no downloads",
+    "no engine changes",
+    "no BPM-as-PPG",
+    "no invented units/sync"
+  ],
+  "npy_streams": {
+    "inertial_mag": 9,
+    "heart_rate": 1,
+    "note": "10 total acquired wearable NPY files; pose_2d/pose_3d PARTIAL (not counted)"
+  }
+}

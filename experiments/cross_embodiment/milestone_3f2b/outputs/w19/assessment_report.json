@@ -1,0 +1,2282 @@
+{
+  "acquisition_availability": "PARTIAL",
+  "adapter_name": "mmfit_adapter",
+  "adapter_version": "3f.2b.2",
+  "checks": [
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Nokia eSense earbud left accelerometer: 137448 rows, 137448 finite, frame reversals=0, frame gaps=13289 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 137448,
+        "frame_gaps": 13289,
+        "n_records": 137448,
+        "shape": [
+          137448,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_eb_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Nokia eSense earbud left accelerometer: epoch-ms timestamps; 62477 duplicate ts (45.5% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 90.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 43.56145121554409,
+        "observed_record_rate_hz": 79.86333844652071,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 62477,
+        "unique_ts": 74971,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.4545533914890831
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_eb_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (m/s^2 plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 90.0,
+          "verified_for_this_device": false
+        },
+        "device": "Nokia eSense earbud left",
+        "device_unit_evidence": "UNKNOWN",
+        "observed_record_rate_hz": 79.86333844652071,
+        "units": "UNKNOWN (m/s^2 plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_eb_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "Nokia eSense earbud left",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "accelerometer"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_eb_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_eb_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Nokia eSense earbud left gyroscope: 137448 rows, 137448 finite, frame reversals=0, frame gaps=13289 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 137448,
+        "frame_gaps": 13289,
+        "n_records": 137448,
+        "shape": [
+          137448,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_eb_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Nokia eSense earbud left gyroscope: epoch-ms timestamps; 62477 duplicate ts (45.5% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 90.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 43.56145121554409,
+        "observed_record_rate_hz": 79.86333844652071,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 62477,
+        "unique_ts": 74971,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.4545533914890831
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_eb_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (rad/s plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 90.0,
+          "verified_for_this_device": false
+        },
+        "device": "Nokia eSense earbud left",
+        "device_unit_evidence": "UNKNOWN",
+        "observed_record_rate_hz": 79.86333844652071,
+        "units": "UNKNOWN (rad/s plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_eb_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "Nokia eSense earbud left",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "gyroscope"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_eb_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_eb_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket accelerometer: 365571 rows, 365571 finite, frame reversals=0, frame gaps=55 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 365571,
+        "frame_gaps": 55,
+        "n_records": 365571,
+        "shape": [
+          365571,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sp_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket accelerometer: epoch-ms timestamps; 22772 duplicate ts (6.2% zero-dt), observed_pattern=MIXED_DUP_GROUP_VALUE_PATTERNS (cause: both patterns present; causal mechanism unresolved), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 210.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+        "observed_distinct_ts_rate_hz": 199.17714267121266,
+        "observed_record_rate_hz": 212.4084003263075,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 22772,
+        "unique_ts": 342799,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.06229176354733704
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sp_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (m/s^2 plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 210.0,
+          "verified_for_this_device": false
+        },
+        "device": "smartphone right pocket",
+        "device_unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+        "observed_record_rate_hz": 212.4084003263075,
+        "units": "UNKNOWN (m/s^2 plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "smartphone right pocket",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "accelerometer"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sp_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket gyroscope: 365571 rows, 365571 finite, frame reversals=0, frame gaps=73 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 365571,
+        "frame_gaps": 73,
+        "n_records": 365571,
+        "shape": [
+          365571,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sp_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket gyroscope: epoch-ms timestamps; 53531 duplicate ts (14.6% zero-dt), observed_pattern=MIXED_DUP_GROUP_VALUE_PATTERNS (cause: both patterns present; causal mechanism unresolved), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 210.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+        "observed_distinct_ts_rate_hz": 181.3049728135506,
+        "observed_record_rate_hz": 212.4081534944959,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 53531,
+        "unique_ts": 312040,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.14643159996717456
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sp_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (rad/s plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 210.0,
+          "verified_for_this_device": false
+        },
+        "device": "smartphone right pocket",
+        "device_unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+        "observed_record_rate_hz": 212.4081534944959,
+        "units": "UNKNOWN (rad/s plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "smartphone right pocket",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "gyroscope"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sp_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket magnetometer: 172766 rows, 172766 finite, frame reversals=0, frame gaps=120 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 172766,
+        "frame_gaps": 120,
+        "n_records": 172766,
+        "shape": [
+          172766,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sp_r_mag.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "smartphone right pocket magnetometer: epoch-ms timestamps; 1081 duplicate ts (0.6% zero-dt), observed_pattern=MIXED_DUP_GROUP_VALUE_PATTERNS (cause: both patterns present; causal mechanism unresolved), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+        "observed_distinct_ts_rate_hz": 99.75468777599079,
+        "observed_record_rate_hz": 100.38278468303477,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 1081,
+        "unique_ts": 171685,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.006257054380227477
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sp_r_mag.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "device": "smartphone right pocket",
+        "device_unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+        "observed_record_rate_hz": 100.38278468303477,
+        "units": "UNKNOWN"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_mag.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Magnetometer/HR have no documented imu_raw path; HR is derived BPM, never raw PPG.",
+      "limitations": [],
+      "not_assessed_reason": "NO_DOCUMENTED_ENGINE_PATH",
+      "observed_value": {
+        "device": "smartphone right pocket",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "magnetometer"
+      },
+      "reason_code": "NO_ENGINE_PATH",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_mag.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sp_r_mag.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left accelerometer: 177577 rows, 177577 finite, frame reversals=0, frame gaps=10 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 177577,
+        "frame_gaps": 10,
+        "n_records": 177577,
+        "shape": [
+          177577,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left accelerometer: epoch-ms timestamps; 730 duplicate ts (0.4% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 102.75398123959951,
+        "observed_record_rate_hz": 103.17813548764957,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 730,
+        "unique_ts": 176847,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.004110915889534622
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sw_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (m/s^2 plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "device": "TicWatch Pro left",
+        "device_unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+        "observed_record_rate_hz": 103.17813548764957,
+        "units": "UNKNOWN (m/s^2 plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "TicWatch Pro left",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "accelerometer"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left gyroscope: 177577 rows, 177577 finite, frame reversals=0, frame gaps=8 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 177577,
+        "frame_gaps": 8,
+        "n_records": 177577,
+        "shape": [
+          177577,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left gyroscope: epoch-ms timestamps; 407 duplicate ts (0.2% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 102.9417147810869,
+        "observed_record_rate_hz": 103.17819543760834,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 407,
+        "unique_ts": 177170,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.002291976393206289
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sw_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (rad/s plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "device": "TicWatch Pro left",
+        "device_unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+        "observed_record_rate_hz": 103.17819543760834,
+        "units": "UNKNOWN (rad/s plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "TicWatch Pro left",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "gyroscope"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left heart_rate_derived_bpm: 1642 rows, 1642 finite, frame reversals=0, frame gaps=49781 of span 51423.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 1642,
+        "frame_gaps": 49781,
+        "n_records": 1642,
+        "shape": [
+          1642,
+          3
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_hr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro left heart_rate_derived_bpm: epoch-ms timestamps; 0 duplicate ts (0.0% zero-dt), observed_pattern=NO_DUPLICATE_GROUPS (cause: no duplication observed), quality=OK. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 1.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "no duplication observed",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "NO_DUPLICATE_GROUPS",
+        "observed_distinct_ts_rate_hz": 0.9585399370235759,
+        "observed_record_rate_hz": 0.9585399370235759,
+        "per_sample_ts_quality": "OK",
+        "ts_duplicates": 0,
+        "unique_ts": 1642,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.0
+      },
+      "reason_code": "TIMESTAMPS_CLEAN",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_hr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Derived heart-rate stream (bpm). Explicitly NOT raw PPG; must not enter PPG-specific PhysicsEngine checks.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 1.0,
+          "verified_for_this_device": false
+        },
+        "device": "TicWatch Pro left",
+        "device_unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+        "observed_record_rate_hz": 0.9585399370235759,
+        "units": "bpm (derived; NOT raw PPG)"
+      },
+      "reason_code": "DERIVED_BPM_NOT_PPG",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_l_hr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Magnetometer/HR have no documented imu_raw path; HR is derived BPM, never raw PPG.",
+      "limitations": [],
+      "not_assessed_reason": "NO_DOCUMENTED_ENGINE_PATH",
+      "observed_value": {
+        "device": "TicWatch Pro left",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "heart_rate_derived_bpm"
+      },
+      "reason_code": "NO_ENGINE_PATH",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_hr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "derived semantics"
+      },
+      "reason_code": "DERIVED_SIGNAL_NO_LAW",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_l_hr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro right accelerometer: 179263 rows, 179263 finite, frame reversals=0, frame gaps=6 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 179263,
+        "frame_gaps": 6,
+        "n_records": 179263,
+        "shape": [
+          179263,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro right accelerometer: epoch-ms timestamps; 1534 duplicate ts (0.9% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 103.26645253655862,
+        "observed_record_rate_hz": 104.15775749068024,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 1534,
+        "unique_ts": 177729,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.008557307181667057
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sw_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (m/s^2 plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "device": "TicWatch Pro right",
+        "device_unit_evidence": "DOCUMENTED_EXAMPLE_ONLY",
+        "observed_record_rate_hz": 104.15775749068024,
+        "units": "UNKNOWN (m/s^2 plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "TicWatch Pro right",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "accelerometer"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_r_acc.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_STREAM_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro right gyroscope: 179263 rows, 179263 finite, frame reversals=0, frame gaps=4 of span 51664.",
+      "limitations": [
+        "frame gaps present; per-frame coverage incomplete"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "finite_rows": 179263,
+        "frame_gaps": 4,
+        "n_records": 179263,
+        "shape": [
+          179263,
+          5
+        ]
+      },
+      "reason_code": "STREAM_FINITE_ORDERED",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_TIMESTAMP_QUALITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": "wearable_epoch_ms",
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "TicWatch Pro right gyroscope: epoch-ms timestamps; 647 duplicate ts (0.4% zero-dt), observed_pattern=ALL_DUP_GROUPS_DIFFER_IN_VALUES (cause: consistent with ms quantization of distinct samples; not proven), quality=DEGRADED. No resampling applied.",
+      "limitations": [
+        "ms-quantized timestamps; duplicate-group causal mechanism inferred not proven",
+        "record-rate estimate is not proof of physical sensor rate"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+        "dup_confidence": "LOW (pattern measured; cause inferred, not proven)",
+        "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+        "observed_distinct_ts_rate_hz": 103.78182899960025,
+        "observed_record_rate_hz": 104.15775749068024,
+        "per_sample_ts_quality": "DEGRADED",
+        "ts_duplicates": 647,
+        "unique_ts": 178616,
+        "verified_nominal_hz": null,
+        "zero_dt_fraction": 0.003609242338030369
+      },
+      "reason_code": "TIMESTAMP_QUANTIZATION_OR_HELD",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "sample_id": "w19_sw_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": "ms"
+    },
+    {
+      "check_id": "MMFIT_UNIT_SEMANTICS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Units unresolved (UNKNOWN (rad/s plausible for sw_*)). Documentary example evidence exists for smartwatch acc/gyro only; physical-law evaluation NOT_ASSESSED.",
+      "limitations": [
+        "coordinate convention undocumented",
+        "no calibration data acquired"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS",
+      "observed_value": {
+        "candidate_reference_hz": {
+          "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+          "source": "MM-Fit dataset documentation (device-class nominal)",
+          "value_hz": 100.0,
+          "verified_for_this_device": false
+        },
+        "device": "TicWatch Pro right",
+        "device_unit_evidence": "DOCUMENTED_EXAMPLE_ONLY",
+        "observed_record_rate_hz": 104.15775749068024,
+        "units": "UNKNOWN (rad/s plausible for sw_*)"
+      },
+      "reason_code": "UNITS_UNKNOWN",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_SCHEMA_COMPAT",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "imu_raw schema {timestamps_ns, accel, gyro} structurally compatible; epoch-ms -> ns is mechanical. Per-device only; no merging.",
+      "limitations": [],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "device": "TicWatch Pro right",
+        "engine": "PhysicsEngine.certify v1.8",
+        "schema": "imu_raw",
+        "sensor": "gyroscope"
+      },
+      "reason_code": "SCHEMA_COMPATIBLE",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_sw_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_PHYSICS_LAWS",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "HUMAN",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Physical-law evaluation withheld: axis units unverified for this stream; existing v1.8 thresholds/laws unchanged.",
+      "limitations": [
+        "no law-level certification claimed"
+      ],
+      "not_assessed_reason": "UNVERIFIED_UNITS_OR_DERIVED_SEMANTICS",
+      "observed_value": {
+        "blocked_by": "units UNKNOWN"
+      },
+      "reason_code": "UNVERIFIED_UNITS",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_sw_r_gyr.npy",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_RGB_VIDEO_METADATA_PTS_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "video/w19_rgb.mp4",
+          "sha256": "8f387910a830757ce91df0301ed4d8b607c589d355ba3158917185823635fd36",
+          "type": "file"
+        },
+        {
+          "path": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv",
+          "sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "w19_rgb.mp4 metadata+PTS: h264 1280x720 reported_fps=30/1 (30.0), pts_derived_fps=30.0, frames=52561, PTS monotonic=True. Problems: none. Pixel-level decode NOT exhaustively verified.",
+      "limitations": [
+        "pixel-level decode not exhaustively verified",
+        "metadata/PTS consistency only; no frame-content checks",
+        "no depth stream in this artifact"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "codec": "h264",
+        "duration_s": 1752.033333,
+        "expected_fps": 30.0,
+        "frames_meta": "52561",
+        "frames_pts": 52561,
+        "height": 720,
+        "problems": [],
+        "pts_derived_fps": 30.000300002924238,
+        "pts_duplicate_count": 0,
+        "pts_fps_consistent": true,
+        "reported_fps_parsed": 30.0,
+        "reported_r_frame_rate": "30/1",
+        "width": 1280
+      },
+      "reason_code": "METADATA_PTS_CONSISTENT",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_rgb.mp4",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_VIDEO_CLOCK_DOMAIN",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv",
+          "sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Video PTS is relative (starts at 0.0s) and carries no absolute wall-clock mapping. It must not be assigned the wearable epoch-ms clock. Wearable-video association is via camera frame index only.",
+      "limitations": [
+        "no absolute video clock exists in acquired artifacts"
+      ],
+      "not_assessed_reason": "NO_ABSOLUTE_VIDEO_CLOCK",
+      "observed_value": {
+        "pts_first_s": 0.0,
+        "pts_last_s": 1752.0,
+        "time_base": "1/15360"
+      },
+      "reason_code": "RELATIVE_PTS_NO_ABSOLUTE_CLOCK",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_rgb.mp4",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_FRAME_VIDEO_ASSOCIATION",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_eb_l_acc.npy",
+          "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_eb_l_gyr.npy",
+          "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sp_r_acc.npy",
+          "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sp_r_gyr.npy",
+          "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sp_r_mag.npy",
+          "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sw_l_acc.npy",
+          "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sw_l_gyr.npy",
+          "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sw_l_hr.npy",
+          "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sw_r_acc.npy",
+          "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_sw_r_gyr.npy",
+          "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+          "type": "file"
+        },
+        {
+          "path": "mm-fit/w19/w19_labels.csv",
+          "sha256": "b3e4467df3aaaa2349a0fdfc6bad8fb86e09858bbf3af3fa0bdeb5001ae60887",
+          "type": "file"
+        },
+        {
+          "path": "video/w19_rgb.mp4",
+          "sha256": "8f387910a830757ce91df0301ed4d8b607c589d355ba3158917185823635fd36",
+          "type": "file"
+        },
+        {
+          "path": "experiments/cross_embodiment/milestone_3f2a/verification/w19_rgb_frame_timestamps.csv",
+          "sha256": "1b76b8926ce59a3882132fbfa37fee9f246ced45b7ed7885f2fc553d8d934c0d",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Wearable Frame column associates to camera frame index; video indices 0-52560 vs wearable max 52561 -> +/-1 frame (~33ms) boundary ambiguity (zero- vs one-based unresolved). No offset applied; no sample-exact join.",
+      "limitations": [
+        "frame-index association only; video PTS is relative",
+        "first/last boundary mapping unresolved",
+        "drift NOT_MEASURED"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "boundary_uncertainty_frames": 1,
+        "boundary_uncertainty_ms_approx": 33.3,
+        "drift": "NOT_MEASURED",
+        "n_total_evidence_refs": 13,
+        "n_wearable_stream_refs": 10,
+        "sample_exact_sync_claimed": false,
+        "zero_vs_one_based": "AMBIGUOUS: wearable max 52561 vs video max index 52560; labels max 52560 consistent with 0-based video indexing; no offset applied"
+      },
+      "reason_code": "FRAME_INDEX_ASSOCIATION_WITH_BOUNDARY_UNCERTAINTY",
+      "scope": "EPISODE",
+      "status": "WARNING",
+      "subject": {
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_DEPTH_ACQUISITION",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "file": "w19_depth.mp4",
+          "record": "zenodo:7607736",
+          "type": "source_record"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "Depth video not locally acquired. Source exists: Zenodo record 7607736 w19_depth.mp4 (19,014,084 bytes declared). Not decoded, not timestamp-assessed, not sync-assessed. RGB assessed independently.",
+      "limitations": [
+        "depth modality cannot be assessed until acquired"
+      ],
+      "not_assessed_reason": "DEPTH_NOT_ACQUIRED",
+      "observed_value": {
+        "declared_bytes": 19014084,
+        "local_state": "RAW_UNAVAILABLE",
+        "source_record": "zenodo:7607736"
+      },
+      "reason_code": "RAW_UNAVAILABLE_LOCALLY",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "sample_id": "w19_depth.mp4",
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_LABEL_INTEGRITY",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [
+        {
+          "path": "mm-fit/w19/w19_labels.csv",
+          "sha256": "b3e4467df3aaaa2349a0fdfc6bad8fb86e09858bbf3af3fa0bdeb5001ae60887",
+          "type": "file"
+        }
+      ],
+      "expected_bounds": null,
+      "explanation": "26 exercise sets, 258 reps, 9 activities, 0 overlaps; frame-index domain shared with wearable Frame column.",
+      "limitations": [
+        "frame-index domain; +/-1 frame boundary uncertainty",
+        "participant id for w19 undocumented"
+      ],
+      "not_assessed_reason": null,
+      "observed_value": {
+        "n_activities": 9,
+        "n_sets": 26,
+        "overlapping_pairs": 0,
+        "total_repetitions": 258
+      },
+      "reason_code": "LABELS_CONSISTENT",
+      "scope": "EPISODE",
+      "status": "PASS",
+      "subject": {
+        "sample_id": "w19_labels.csv",
+        "session_id": "w19"
+      },
+      "threshold_source": "DEVICE_METADATA",
+      "unit": null
+    },
+    {
+      "check_id": "MMFIT_MODALITY_ABSENCE",
+      "check_version": "3f.2b.2",
+      "clock_domain": null,
+      "domain": "COMMON",
+      "evidence_refs": [],
+      "expected_bounds": null,
+      "explanation": "Not present in this bounded acquisition: depth video (source exists), pose_2d/pose_3d (PARTIAL), sw_r_hr, sp_l_*, EMG, raw PPG. Other MM-Fit sessions not assessed; no full-population claim.",
+      "limitations": [
+        "bounded w19 acquisition only"
+      ],
+      "not_assessed_reason": "NOT_ACQUIRED_IN_BOUNDED_SCOPE",
+      "observed_value": {
+        "absent": [
+          "depth_video",
+          "pose_2d",
+          "pose_3d",
+          "sw_r_hr",
+          "sp_l_acc",
+          "sp_l_gyr",
+          "sp_l_mag",
+          "emg",
+          "raw_ppg"
+        ]
+      },
+      "reason_code": "MODALITIES_NOT_ACQUIRED",
+      "scope": "EPISODE",
+      "status": "NOT_ASSESSED",
+      "subject": {
+        "session_id": "w19"
+      },
+      "threshold_source": "NOT_APPLICABLE",
+      "unit": null
+    }
+  ],
+  "metadata": {
+    "bounded_scope": "session w19 only; full MM-Fit population NOT acquired",
+    "frame_boundary_uncertainty": 1,
+    "no_universal_score": true,
+    "physics_engine": "v1.8 unchanged; law-level eval NOT_ASSESSED pending unit verification"
+  },
+  "modality_availability": {
+    "depth_video": "RAW_UNAVAILABLE",
+    "eb_l_acc": "AVAILABLE",
+    "eb_l_gyr": "AVAILABLE",
+    "emg": "RAW_UNAVAILABLE",
+    "labels": "AVAILABLE",
+    "pose_2d": "PARTIAL",
+    "pose_3d": "PARTIAL",
+    "raw_ppg": "RAW_UNAVAILABLE",
+    "rgb_video": "AVAILABLE",
+    "sp_l_sensors": "RAW_UNAVAILABLE",
+    "sp_r_acc": "AVAILABLE",
+    "sp_r_gyr": "AVAILABLE",
+    "sp_r_mag": "AVAILABLE",
+    "sw_l_acc": "AVAILABLE",
+    "sw_l_gyr": "AVAILABLE",
+    "sw_l_hr": "AVAILABLE",
+    "sw_r_acc": "AVAILABLE",
+    "sw_r_gyr": "AVAILABLE",
+    "sw_r_hr": "RAW_UNAVAILABLE"
+  },
+  "profile_name": "mmfit_multimodal_evidence",
+  "profile_version": "3f.2b.2",
+  "record": {
+    "clock_domains": {
+      "camera_frame_index": {
+        "boundary_uncertainty_frames": 1,
+        "scope": "wearable Frame col + labels + video frames",
+        "unit": "frame_index"
+      },
+      "video_relative_pts": {
+        "absolute": false,
+        "scope": "MP4 PTS only; NOT an absolute clock",
+        "unit": "seconds_relative"
+      },
+      "wearable_epoch_ms": {
+        "absolute": true,
+        "scope": "all wearable Timestamp columns",
+        "unit": "unix_epoch_milliseconds"
+      }
+    },
+    "dataset_id": "mmfit",
+    "embodiment": "HUMAN",
+    "episode_id": null,
+    "modalities_expected": [
+      "imu_accel",
+      "imu_gyro",
+      "magnetometer",
+      "heart_rate_derived",
+      "rgb_video",
+      "depth_video",
+      "pose_2d",
+      "pose_3d",
+      "labels"
+    ],
+    "modalities_present": [
+      "eb_l_acc",
+      "eb_l_gyr",
+      "heart_rate_derived",
+      "imu_accel",
+      "imu_gyro",
+      "labels",
+      "magnetometer",
+      "rgb_video",
+      "sp_r_acc",
+      "sp_r_gyr",
+      "sp_r_mag",
+      "sw_l_acc",
+      "sw_l_gyr",
+      "sw_l_hr",
+      "sw_r_acc",
+      "sw_r_gyr"
+    ],
+    "original_index_range": null,
+    "provenance": {
+      "acquisition": "bounded range-member extraction; see milestone_3f2a manifest",
+      "dataset": "MM-Fit",
+      "depth_source_record": "7607736",
+      "doi": "10.1145/3432701",
+      "license": "CC-BY-4.0",
+      "prior_verification": "MILESTONE_3F2A_INDEPENDENT_VERIFICATION.md + 3F2A1 reconciliation",
+      "sample_count_convention": "sum of record counts across acquired modality streams; NOT unique synchronized timestamps",
+      "zenodo_record": "7672767"
+    },
+    "record_id": "mmfit_w19",
+    "sample_count": 1894126,
+    "schema_version": "1.0.0",
+    "session_id": "w19",
+    "source_type": "MMFIT_NPY_CSV_MP4"
+  },
+  "report_id": "mmfit_w19_assessment",
+  "schema_version": "1.0.0",
+  "summary": {
+    "domain_counts": {
+      "COMMON": 26,
+      "HUMAN": 30
+    },
+    "scope_counts": {
+      "EPISODE": 56
+    },
+    "status_counts": {
+      "NOT_ASSESSED": 24,
+      "PASS": 22,
+      "WARNING": 10
+    }
+  }
+}

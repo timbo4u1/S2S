@@ -1,0 +1,118 @@
+{
+  "boundary_uncertainty_frames": 1,
+  "boundary_uncertainty_ms_approx": 33.3,
+  "drift": "NOT_MEASURED",
+  "frame_index_domain": "camera_frame_index",
+  "frame_span_covered": [
+    898,
+    52561
+  ],
+  "label_frame_max": 52560,
+  "label_frame_min": 1014,
+  "method": "wearable Frame column == left RGB-D camera frame index (dataset convention); video frame index is MP4 decode order 0..52560",
+  "per_stream": [
+    {
+      "device": "Nokia eSense earbud left",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 38375,
+      "max_minus_video_max": 1,
+      "sensor": "accelerometer",
+      "stream": "w19_eb_l_acc.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "Nokia eSense earbud left",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 38375,
+      "max_minus_video_max": 1,
+      "sensor": "gyroscope",
+      "stream": "w19_eb_l_gyr.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "smartphone right pocket",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51609,
+      "max_minus_video_max": 1,
+      "sensor": "accelerometer",
+      "stream": "w19_sp_r_acc.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "smartphone right pocket",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51591,
+      "max_minus_video_max": 1,
+      "sensor": "gyroscope",
+      "stream": "w19_sp_r_gyr.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "smartphone right pocket",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51544,
+      "max_minus_video_max": 1,
+      "sensor": "magnetometer",
+      "stream": "w19_sp_r_mag.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "TicWatch Pro left",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51654,
+      "max_minus_video_max": 1,
+      "sensor": "accelerometer",
+      "stream": "w19_sw_l_acc.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "TicWatch Pro left",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51656,
+      "max_minus_video_max": 1,
+      "sensor": "gyroscope",
+      "stream": "w19_sw_l_gyr.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "TicWatch Pro left",
+      "frame_max": 52540,
+      "frame_min": 1118,
+      "frame_unique": 1642,
+      "max_minus_video_max": -20,
+      "sensor": "heart_rate_derived_bpm",
+      "stream": "w19_sw_l_hr.npy",
+      "video_index_in_range_0based": true
+    },
+    {
+      "device": "TicWatch Pro right",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51658,
+      "max_minus_video_max": 1,
+      "sensor": "accelerometer",
+      "stream": "w19_sw_r_acc.npy",
+      "video_index_in_range_0based": false
+    },
+    {
+      "device": "TicWatch Pro right",
+      "frame_max": 52561,
+      "frame_min": 898,
+      "frame_unique": 51660,
+      "max_minus_video_max": 1,
+      "sensor": "gyroscope",
+      "stream": "w19_sw_r_gyr.npy",
+      "video_index_in_range_0based": false
+    }
+  ],
+  "sample_exact_sync_claimed": false,
+  "video_has_absolute_clock": false,
+  "zero_vs_one_based": "AMBIGUOUS: wearable max 52561 vs video max index 52560; labels max 52560 consistent with 0-based video indexing; no offset applied"
+}

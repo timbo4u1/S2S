@@ -1,0 +1,88 @@
+{
+  "engine": "s2s_standard_v1_3/s2s_physics_v1_3.py PhysicsEngine.certify",
+  "imu_raw_schema": {
+    "timestamps_ns": "list[int]",
+    "accel": "[[ax,ay,az]...]",
+    "gyro": "[[gx,gy,gz]...]"
+  },
+  "required_transformations": [
+    "epoch-ms timestamps -> timestamps_ns (x1e6) - mechanical, supported",
+    "accel/gyro units UNKNOWN in MM-Fit files; engine expects documented units (verify constants before use)",
+    "per-device streams must NOT be merged into synthetic IMU; certify per device",
+    "mag has no accel/gyro pair semantics for imu_raw; no gyro-only path documented",
+    "HR is derived BPM - no raw-PPG channel exists; do not feed PPG checks"
+  ],
+  "per_stream": {
+    "w19_eb_l_acc.npy": {
+      "device": "Nokia eSense earbud left",
+      "sensor": "acc",
+      "units": "UNKNOWN (m/s^2 plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_eb_l_gyr.npy": {
+      "device": "Nokia eSense earbud left",
+      "sensor": "gyr",
+      "units": "UNKNOWN (rad/s plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sp_r_acc.npy": {
+      "device": "smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz)",
+      "sensor": "acc",
+      "units": "UNKNOWN (m/s^2 plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sp_r_gyr.npy": {
+      "device": "smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz)",
+      "sensor": "gyr",
+      "units": "UNKNOWN (rad/s plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sp_r_mag.npy": {
+      "device": "smartphone right pocket (model unresolved; mag rate ~100Hz suggests Samsung S7 not Huawei P20@65Hz)",
+      "sensor": "mag",
+      "units": "UNKNOWN (uT plausible, undocumented)",
+      "engine_compatible": false,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sw_l_acc.npy": {
+      "device": "TicWatch Pro left (smartwatch)",
+      "sensor": "acc",
+      "units": "UNKNOWN (m/s^2 plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sw_l_gyr.npy": {
+      "device": "TicWatch Pro left (smartwatch)",
+      "sensor": "gyr",
+      "units": "UNKNOWN (rad/s plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sw_l_hr.npy": {
+      "device": "TicWatch Pro left (smartwatch)",
+      "sensor": "hr",
+      "units": "bpm (derived, not raw PPG)",
+      "engine_compatible": false,
+      "blocker": "derived BPM; no raw PPG path"
+    },
+    "w19_sw_r_acc.npy": {
+      "device": "TicWatch Pro right (smartwatch)",
+      "sensor": "acc",
+      "units": "UNKNOWN (m/s^2 plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    },
+    "w19_sw_r_gyr.npy": {
+      "device": "TicWatch Pro right (smartwatch)",
+      "sensor": "gyr",
+      "units": "UNKNOWN (rad/s plausible, undocumented)",
+      "engine_compatible": true,
+      "blocker": "units UNKNOWN"
+    }
+  },
+  "verdict": "imu_raw path exists and schema is simple, BUT axis units are undocumented; running physics laws on assumed units would invent semantics -> mark law-level results NOT_ASSESSED until units confirmed or laws made unit-agnostic"
+}
