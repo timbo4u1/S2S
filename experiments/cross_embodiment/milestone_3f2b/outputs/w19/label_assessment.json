@@ -1,0 +1,27 @@
+{
+  "activities": [
+    "bicep_curls",
+    "dumbbell_rows",
+    "dumbbell_shoulder_press",
+    "lateral_shoulder_raises",
+    "lunges",
+    "pushups",
+    "situps",
+    "squats",
+    "tricep_extensions"
+  ],
+  "boundary_uncertainty_frames": 1,
+  "caveats": [
+    "set-level annotations, not per-rep",
+    "frame-exactness not guaranteed",
+    "not aligned to absolute wearable timestamps"
+  ],
+  "clock_domain": "camera_frame_index (same domain as wearable Frame col)",
+  "frame_max": 52560,
+  "frame_min": 1014,
+  "n_activities": 9,
+  "n_sets": 26,
+  "overlapping_pairs": 0,
+  "sorted_by_start": true,
+  "total_repetitions": 258
+}

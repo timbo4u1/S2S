@@ -1,0 +1,51 @@
+{
+  "milestone": "3F.1_human_multimodal_video_wearable_audit",
+  "created_for": "S2S human multimodal evidence audit",
+  "mode": "read_only_no_downloads_no_engine_changes",
+  "existing_architecture": {
+    "engine": "s2s_pipeline.py PhysicsEngine certify() laws",
+    "adapter": "experiments/cross_embodiment/human_adapter.py human_certify_result_to_assessment",
+    "schema": "experiments/cross_embodiment/quality_schema.py",
+    "applicability": "numeric wearable signals (IMU/EMG/PPG-derived) applicable; RGB/depth video NOT applicable to PhysicsEngine"
+  },
+  "datasets": {
+    "mmfit": {
+      "url": "https://mmfit.github.io/",
+      "zenodo": "https://zenodo.org/records/7672767",
+      "zenodo_version": "v2",
+      "license": "CC-BY-4.0",
+      "sessions": 21, "participants": 10, "minutes": 809,
+      "labels": 11,
+      "video": {"type": "RGB-D", "device": "Orbbec Astra Pro", "fps": 30, "population_bytes_approx": 39100000000, "per_session_mp4_md5_listed": true},
+      "wearables": {
+        "ticwatch_pro_x2": {"accel_hz": 100, "gyro_hz": 100, "bpm_hz": 1, "bpm_is_derived": true},
+        "samsung_s7": {"accel_hz": 210, "gyro_hz": 210, "mag_hz": 100},
+        "huawei_p20": {"accel_hz": 500, "gyro_hz": 500, "mag_hz": 65},
+        "nokia_esense_earbud": {"accel_hz": 90, "gyro_hz": 90}
+      },
+      "pose": "2D and 3D pose estimates provided (derived)",
+      "absent": ["raw PPG", "EMG"],
+      "sync_claim": "time-synchronised per documentation; per-stream clock recoverability NEEDS_EVIDENCE",
+      "benchmark_resample_hz": 50
+    },
+    "tnt15": {
+      "url": "https://www.tnt.uni-hannover.de/de/project/TNT15/",
+      "doc": "TNT15_documentation.pdf v1.2 2016-01",
+      "license": "research purposes only; citation required",
+      "cameras": 8, "imus": 10, "actors": 4, "activities": 5,
+      "duration": "~4.5 min", "frames": "~13000 @50Hz",
+      "extras": ["silhouettes", "projection matrices", "3D meshes"],
+      "fit": "secondary video+IMU cross-check only"
+    }
+  },
+  "field_mapping_summary": "see MILESTONE_3F1_HUMAN_MULTIMODAL_AUDIT.md section 4",
+  "diagnostic_classification": {
+    "READY_FOR_TEST": ["accelerometer", "gyroscope", "BPM (derived)", "magnetometer (pending units)"],
+    "NEEDS_EVIDENCE": ["RGB video", "depth", "2D/3D pose", "cross-modal sync", "temporal alignment"],
+    "NOT_APPLICABLE": ["raw PPG (absent)", "EMG (absent)"]
+  },
+  "acquisition_plan": "metadata + all wearable files + ONE representative RGB-D session (~1-2GB); <3GB total; no bulk video download without approval",
+  "unresolved": ["per-stream clock/timestamp representation", "depth units/storage", "pose estimator provenance", "revision pinning for non-video files", "TNT15 acquisition mechanics"],
+  "decision": "CONDITIONAL GO for MM-Fit human multimodal adapter development",
+  "integrity_notes": ["read-only", "no downloads", "no engine/adapter/schema modifications", "no thresholds invented", "no sync claimed without evidence", "no staging or commits"]
+}

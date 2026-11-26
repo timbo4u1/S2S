@@ -1,0 +1,18 @@
+{
+  "depth_video": "RAW_UNAVAILABLE (source: zenodo 7607736, not acquired)",
+  "frame_level_wearable_video_association": "CONDITIONAL (+/-1 frame uncertainty)",
+  "labels": "READY_FOR_TEST (26 sets, 258 reps)",
+  "multimodal_model_training": "NOT_ASSESSED until 3F.3 experiments",
+  "rgb_video_integrity": "READY_FOR_TEST (independent checks implemented)",
+  "sample_level_wearable_video_sync": "NOT_ASSESSED (no absolute video clock; degraded per-sample ts)",
+  "w19_eb_l_acc.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_eb_l_gyr.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sp_r_acc.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sp_r_gyr.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sp_r_mag.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sw_l_acc.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sw_l_gyr.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sw_l_hr.npy": "READY_FOR_TEST (derived BPM; not PPG)",
+  "w19_sw_r_acc.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)",
+  "w19_sw_r_gyr.npy": "CONDITIONAL (schema OK; units unverified -> laws NOT_ASSESSED)"
+}

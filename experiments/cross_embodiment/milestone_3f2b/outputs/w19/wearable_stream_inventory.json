@@ -1,0 +1,403 @@
+{
+  "session": "w19",
+  "streams": [
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 90.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "eb_l",
+      "device_kind": "earbud",
+      "device_label": "Nokia eSense earbud left",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_eb_l_acc.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 43.56145121554409,
+      "observed_record_rate_hz": 79.86333844652071,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "accelerometer",
+      "sensor_kind": "acc",
+      "session_id": "w19",
+      "sha256": "19e3a32cb2ab5d582e4b479eafb4bd1fd2445b9cad03fc94026ba4b377d78df3",
+      "shape": [
+        137448,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_eb_l_acc.npy",
+      "unit_evidence": "UNKNOWN",
+      "units": "UNKNOWN (m/s^2 plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 90.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "eb_l",
+      "device_kind": "earbud",
+      "device_label": "Nokia eSense earbud left",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_eb_l_gyr.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 43.56145121554409,
+      "observed_record_rate_hz": 79.86333844652071,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "gyroscope",
+      "sensor_kind": "gyr",
+      "session_id": "w19",
+      "sha256": "90bb65fe465c3d3c8cb292a55f85e44b37ee4943bd2754f553adb09f8b7bf1ee",
+      "shape": [
+        137448,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_eb_l_gyr.npy",
+      "unit_evidence": "UNKNOWN",
+      "units": "UNKNOWN (rad/s plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 210.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sp_r",
+      "device_kind": "phone",
+      "device_label": "smartphone right pocket",
+      "dtype": "float64",
+      "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+      "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+      "filename": "w19_sp_r_acc.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 199.17714267121266,
+      "observed_record_rate_hz": 212.4084003263075,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "accelerometer",
+      "sensor_kind": "acc",
+      "session_id": "w19",
+      "sha256": "a825145d3774e533b716c889fdafef2c2da3b2af19a02768ec093ff23a41c93b",
+      "shape": [
+        365571,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sp_r_acc.npy",
+      "unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+      "units": "UNKNOWN (m/s^2 plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 210.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sp_r",
+      "device_kind": "phone",
+      "device_label": "smartphone right pocket",
+      "dtype": "float64",
+      "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+      "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+      "filename": "w19_sp_r_gyr.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 181.3049728135506,
+      "observed_record_rate_hz": 212.4081534944959,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "gyroscope",
+      "sensor_kind": "gyr",
+      "session_id": "w19",
+      "sha256": "dbd7fad75b4fcdc04bb8a4e2adde4f9de4adecc2bf528ccea6c7f79cfd4beb02",
+      "shape": [
+        365571,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sp_r_gyr.npy",
+      "unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+      "units": "UNKNOWN (rad/s plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 100.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sp_r",
+      "device_kind": "phone",
+      "device_label": "smartphone right pocket",
+      "dtype": "float64",
+      "dup_causal_interpretation": "both patterns present; causal mechanism unresolved",
+      "dup_observed_pattern": "MIXED_DUP_GROUP_VALUE_PATTERNS",
+      "filename": "w19_sp_r_mag.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 99.75468777599079,
+      "observed_record_rate_hz": 100.38278468303477,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "magnetometer",
+      "sensor_kind": "mag",
+      "session_id": "w19",
+      "sha256": "04e02556b19128340c837db1c793463e06fbc146c81480e1f75c001d932161a2",
+      "shape": [
+        172766,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sp_r_mag.npy",
+      "unit_evidence": "UNKNOWN; Samsung S7 plausible by 210/100Hz profile, NOT verified",
+      "units": "UNKNOWN",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 100.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sw_l",
+      "device_kind": "smartwatch",
+      "device_label": "TicWatch Pro left",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_sw_l_acc.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 102.75398123959951,
+      "observed_record_rate_hz": 103.17813548764957,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "accelerometer",
+      "sensor_kind": "acc",
+      "session_id": "w19",
+      "sha256": "203f557cfe2fa07b3a8fff101f1c535c0e274525d3d45d4217153d2fd1c8762b",
+      "shape": [
+        177577,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sw_l_acc.npy",
+      "unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+      "units": "UNKNOWN (m/s^2 plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 100.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sw_l",
+      "device_kind": "smartwatch",
+      "device_label": "TicWatch Pro left",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_sw_l_gyr.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 102.9417147810869,
+      "observed_record_rate_hz": 103.17819543760834,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "gyroscope",
+      "sensor_kind": "gyr",
+      "session_id": "w19",
+      "sha256": "2f2ee05696fe197cc76909335cb8b640d7fd6af55a9bc875538fe38f422139fa",
+      "shape": [
+        177577,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sw_l_gyr.npy",
+      "unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+      "units": "UNKNOWN (rad/s plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 1.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "Heart-rate"
+      ],
+      "device_key": "sw_l",
+      "device_kind": "smartwatch",
+      "device_label": "TicWatch Pro left",
+      "dtype": "float64",
+      "dup_causal_interpretation": "no duplication observed",
+      "dup_observed_pattern": "NO_DUPLICATE_GROUPS",
+      "filename": "w19_sw_l_hr.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 0.9585399370235759,
+      "observed_record_rate_hz": 0.9585399370235759,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "OK",
+      "sensor": "heart_rate_derived_bpm",
+      "sensor_kind": "hr",
+      "session_id": "w19",
+      "sha256": "5e236b0b6f989f9e352bcc76ea2ed93214780faa6b536591d89829213eab73b4",
+      "shape": [
+        1642,
+        3
+      ],
+      "source_path": "mm-fit/w19/w19_sw_l_hr.npy",
+      "unit_evidence": "DOCUMENTED_EXAMPLE_ONLY (paper shows m/s^2, rad/s for a left-worn smartwatch)",
+      "units": "bpm (derived; NOT raw PPG)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 100.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sw_r",
+      "device_kind": "smartwatch",
+      "device_label": "TicWatch Pro right",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_sw_r_acc.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 103.26645253655862,
+      "observed_record_rate_hz": 104.15775749068024,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "accelerometer",
+      "sensor_kind": "acc",
+      "session_id": "w19",
+      "sha256": "a85847b33156af55640e0f95c1361df494fd3b92042edb000932db97c9c7523a",
+      "shape": [
+        179263,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sw_r_acc.npy",
+      "unit_evidence": "DOCUMENTED_EXAMPLE_ONLY",
+      "units": "UNKNOWN (m/s^2 plausible for sw_*)",
+      "verified_nominal_hz": null
+    },
+    {
+      "candidate_reference_hz": {
+        "confidence": "LOW for sp_r (hardware UNKNOWN); MODERATE for documented device classes",
+        "source": "MM-Fit dataset documentation (device-class nominal)",
+        "value_hz": 100.0,
+        "verified_for_this_device": false
+      },
+      "clock_domain": "unix_epoch_ms",
+      "columns": [
+        "Frame",
+        "Timestamp",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "device_key": "sw_r",
+      "device_kind": "smartwatch",
+      "device_label": "TicWatch Pro right",
+      "dtype": "float64",
+      "dup_causal_interpretation": "consistent with ms quantization of distinct samples; not proven",
+      "dup_observed_pattern": "ALL_DUP_GROUPS_DIFFER_IN_VALUES",
+      "filename": "w19_sw_r_gyr.npy",
+      "frame_domain": "left_rgbd_camera_frame_index",
+      "observed_distinct_ts_rate_hz": 103.78182899960025,
+      "observed_record_rate_hz": 104.15775749068024,
+      "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
+      "per_sample_ts_quality": "DEGRADED",
+      "sensor": "gyroscope",
+      "sensor_kind": "gyr",
+      "session_id": "w19",
+      "sha256": "a8f858e13e8d71b20c7f2b00a3434c0a99c386529eda8583537d0b91722f5647",
+      "shape": [
+        179263,
+        5
+      ],
+      "source_path": "mm-fit/w19/w19_sw_r_gyr.npy",
+      "unit_evidence": "DOCUMENTED_EXAMPLE_ONLY",
+      "units": "UNKNOWN (rad/s plausible for sw_*)",
+      "verified_nominal_hz": null
+    }
+  ]
+}

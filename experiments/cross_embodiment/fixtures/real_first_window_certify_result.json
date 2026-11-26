@@ -1,0 +1,293 @@
+{
+  "status": "PASS",
+  "tier": "SILVER",
+  "tier_scope": "ASSESSED_CHECKS_ONLY",
+  "assessment_status": "PARTIAL",
+  "sensor_type": "PHYSICS",
+  "physical_law_score": 68,
+  "score_basis": "PASS-law confidence summed over assessed laws; FAIL contributes 0",
+  "scoring_version": 2,
+  "laws_checked": [
+    "inter_window_continuity",
+    "newton_second_law",
+    "resonance_frequency",
+    "rigid_body_kinematics",
+    "jerk_bounds",
+    "imu_internal_consistency",
+    "cross_axis_cohesion",
+    "pointwise_jerk",
+    "spectral_flatness",
+    "temporal_autocorrelation",
+    "sensor_freeze",
+    "powerline_interference",
+    "intra_window_splice",
+    "innovation_kurtosis",
+    "ballistocardiography",
+    "joule_heating"
+  ],
+  "n_laws_checked": 16,
+  "laws_assessed": [
+    "resonance_frequency",
+    "rigid_body_kinematics",
+    "jerk_bounds",
+    "imu_internal_consistency",
+    "cross_axis_cohesion",
+    "pointwise_jerk",
+    "spectral_flatness",
+    "temporal_autocorrelation",
+    "sensor_freeze",
+    "intra_window_splice",
+    "innovation_kurtosis"
+  ],
+  "n_laws_assessed": 11,
+  "laws_not_assessed": [
+    "inter_window_continuity",
+    "newton_second_law",
+    "powerline_interference",
+    "ballistocardiography",
+    "joule_heating"
+  ],
+  "n_laws_not_assessed": 5,
+  "law_statuses": {
+    "inter_window_continuity": "NOT_ASSESSED",
+    "newton_second_law": "NOT_ASSESSED",
+    "resonance_frequency": "PASS",
+    "rigid_body_kinematics": "PASS",
+    "jerk_bounds": "PASS",
+    "imu_internal_consistency": "PASS",
+    "cross_axis_cohesion": "PASS",
+    "pointwise_jerk": "PASS",
+    "spectral_flatness": "PASS",
+    "temporal_autocorrelation": "PASS",
+    "sensor_freeze": "PASS",
+    "powerline_interference": "NOT_ASSESSED",
+    "intra_window_splice": "PASS",
+    "innovation_kurtosis": "FAIL",
+    "ballistocardiography": "NOT_ASSESSED",
+    "joule_heating": "NOT_ASSESSED"
+  },
+  "laws_passed": [
+    "resonance_frequency",
+    "rigid_body_kinematics",
+    "jerk_bounds",
+    "imu_internal_consistency",
+    "cross_axis_cohesion",
+    "pointwise_jerk",
+    "spectral_flatness",
+    "temporal_autocorrelation",
+    "sensor_freeze",
+    "intra_window_splice"
+  ],
+  "laws_failed": [
+    "innovation_kurtosis"
+  ],
+  "body_segment": "forearm",
+  "source_type": "HIL_BIOLOGICAL",
+  "law_details": {
+    "inter_window_continuity": {
+      "law": "Inter_Window_Continuity",
+      "equation": "|accel_delta| <= V_max * dt * scale",
+      "physical_meaning": "Human limb cannot teleport between consecutive windows",
+      "info": "FIRST_WINDOW_INITIALIZED",
+      "status": "NOT_ASSESSED"
+    },
+    "newton_second_law": {
+      "law": "Newton_Second_Law",
+      "skip": "MISSING_IMU_OR_EMG",
+      "required": [
+        "imu_raw",
+        "emg_raw"
+      ],
+      "status": "NOT_ASSESSED"
+    },
+    "resonance_frequency": {
+      "law": "Resonance_Frequency",
+      "equation": "omega=sqrt(K/I)",
+      "segment": "forearm",
+      "I_kgm2": 0.02,
+      "K_Nm_rad": 1.5,
+      "omega_rad_s": 8.66,
+      "f_fundamental_hz": 1.378,
+      "f_tremor_range_hz": [
+        8.0,
+        12.0
+      ],
+      "derivation": "\u03c9=\u221a(1.5/0.02)=8.66rad/s \u2192 neuromuscular loop delay \u2192 tremor 8.0\u201312.0Hz",
+      "measured_peak_hz": 5.0,
+      "measured_peak_energy": 0.00035,
+      "wavelet": {
+        "energy_drift_cv": 0.34,
+        "spectral_entropy": 0.625,
+        "tile_energies": [
+          1e-05,
+          5e-06,
+          4e-06,
+          8e-06
+        ],
+        "synthetic_flag": false,
+        "signal_type": "uncertain"
+      },
+      "note": "NO_SIGNIFICANT_TREMOR",
+      "confidence": 60,
+      "status": "PASS"
+    },
+    "rigid_body_kinematics": {
+      "law": "Rigid_Body_Kinematics",
+      "equation": "a=alpha*r+omega^2*r",
+      "sensor_offset_m": 0.05,
+      "physical_meaning": "Gyro angular velocity must predict accelerometer via rigid body mechanics",
+      "dt_s": 0.01,
+      "pearson_r_measured_vs_predicted": -0.1219,
+      "rms_measured_ms2": 0.0741,
+      "rms_predicted_ms2": 0.0224,
+      "gyro_accel_scale_ratio": 0.3018,
+      "note": "WEAK_KINEMATIC_COUPLING (near-static motion \u2014 valid)",
+      "confidence": 45,
+      "status": "PASS"
+    },
+    "jerk_bounds": {
+      "law": "Motor_Control_Jerk",
+      "equation": "d3x/dt3 <= 500 m/s3",
+      "reference": "Flash & Hogan (1985) minimum-jerk model",
+      "implementation": "Signal smoothed with w=7 window BEFORE differentiation to separate motion from sensor noise",
+      "sample_rate_hz": 100.0,
+      "rate_normalization_factor": 8.0,
+      "gravity_removed_m_s2": 9.76389245526992,
+      "window_samples": 256,
+      "n_windows": 6,
+      "peak_jerk_ms3": 40.4,
+      "rms_jerk_ms3": 16.3,
+      "p95_jerk_ms3": 14.7,
+      "peak_jerk_normalized_ms3": 5.1,
+      "rms_jerk_normalized_ms3": 2.041065,
+      "p95_jerk_normalized_ms3": 1.8,
+      "human_limit_ms3": 500.0,
+      "normalization_note": "raw jerk divided by (hz/50)^3 to compare at any sample rate to 50Hz baseline",
+      "smooth_window_samples": 7,
+      "result": "JERK_WITHIN_HUMAN_MOTOR_CONTROL: 2 m/s\u00b3",
+      "confidence": 92,
+      "status": "PASS"
+    },
+    "imu_internal_consistency": {
+      "law": "IMU_Internal_Consistency",
+      "equation": "Var(accel) co-varies with Var(gyro)",
+      "physical_meaning": "Same motion event causes both angular velocity and linear acceleration",
+      "pearson_r_var_coupling": 0.2398,
+      "expected_r_range": [
+        0.1,
+        1.0
+      ],
+      "result": "IMU_INTERNALLY_CONSISTENT",
+      "confidence": 61,
+      "status": "PASS"
+    },
+    "cross_axis_cohesion": {
+      "law": "Cross_Axis_Cohesion",
+      "equation": "max(r_xy, r_yz, r_xz) > 0.15",
+      "description": "Human motion couples IMU axes via bone/muscle constraints",
+      "r_xy": 0.042,
+      "r_yz": 0.185,
+      "r_xz": 0.062,
+      "max_r": 0.185,
+      "threshold": 0.115,
+      "result": "COHESION_CONFIRMED: max_r=0.185 > 0.115",
+      "status": "PASS"
+    },
+    "pointwise_jerk": {
+      "law": "Pointwise_Jerk",
+      "equation": "|a_i - a_{i-1}| / dt <= human_limit",
+      "hz": 100.0,
+      "max_delta_ms2": 0.08,
+      "max_allowed_ms2": 100.0,
+      "spike_count": 0,
+      "result": "NO_SPIKES: max_delta=0.08 <= 100.00",
+      "status": "PASS"
+    },
+    "spectral_flatness": {
+      "law": "Spectral_Flatness",
+      "equation": "geometric_mean(PSD)/arithmetic_mean(PSD)",
+      "flatness": 0.0043,
+      "threshold": 0.54,
+      "result": "STRUCTURED_SPECTRUM: flatness=0.004 < 0.54",
+      "status": "PASS"
+    },
+    "temporal_autocorrelation": {
+      "law": "Temporal_Autocorrelation",
+      "equation": "ACF[lag=1] > 0.20",
+      "physics": "Neuromuscular time constant >100ms \u2014 persistent motion structure at any Hz",
+      "acf1": 0.9974,
+      "threshold": 0.2,
+      "gaussian_3sigma_n256": 0.19,
+      "result": "TEMPORAL_COHERENCE: ACF[1]=0.997 > 0.2",
+      "status": "PASS"
+    },
+    "sensor_freeze": {
+      "law": "Sensor_Freeze",
+      "equation": "max_consecutive_identical \u2264 10",
+      "physics": "MEMS ADC noise floor \u2265 0.001 m/s\u00b2 \u2014 zero variance = hardware fault",
+      "max_consecutive_identical": 0,
+      "threshold": 25,
+      "frozen_axis": null,
+      "result": "SENSOR_LIVE: max_run=0 \u2264 25",
+      "status": "PASS"
+    },
+    "powerline_interference": {
+      "law": "powerline_interference",
+      "result": "",
+      "conf": 0,
+      "skip": "HZ_TOO_LOW",
+      "status": "NOT_ASSESSED"
+    },
+    "intra_window_splice": {
+      "law": "intra_window_splice",
+      "result": "SPLICE_CLEAN:diff=0.004ms2",
+      "conf": 75,
+      "status": "PASS"
+    },
+    "innovation_kurtosis": {
+      "excess_kurtosis": 0.6171,
+      "threshold": 0.63,
+      "reason": "GAUSSIAN_INNOVATIONS_DETECTED",
+      "law": "innovation_kurtosis",
+      "status": "FAIL"
+    },
+    "ballistocardiography": {
+      "law": "Ballistocardiography",
+      "skip": "MISSING_IMU_OR_PPG_CERT",
+      "required": [
+        "imu_raw",
+        "ppg_cert"
+      ],
+      "status": "NOT_ASSESSED"
+    },
+    "joule_heating": {
+      "law": "Joule_Heating",
+      "skip": "MISSING_EMG_OR_THERMAL_CERT",
+      "required": [
+        "emg_cert",
+        "thermal_cert"
+      ],
+      "status": "NOT_ASSESSED"
+    }
+  },
+  "flags": [
+    "PHYSICS_VIOLATION:innovation_kurtosis"
+  ],
+  "physical_constants": {
+    "forearm_I_kgm2": 0.02,
+    "forearm_K_Nm_rad": 1.5,
+    "forearm_resonance_hz": 1.378,
+    "tremor_band_hz": [
+      8.0,
+      12.0
+    ],
+    "emg_delay_ms": 75.0,
+    "jerk_max_ms3": 500.0,
+    "muscle_thermal_eff": 0.25
+  },
+  "device_id": "audit-dev",
+  "session_id": "audit-session",
+  "tool": "s2s_physics_v1_9",
+  "numpy_enabled": true,
+  "issued_at_ns": 1795007137883901000
+}

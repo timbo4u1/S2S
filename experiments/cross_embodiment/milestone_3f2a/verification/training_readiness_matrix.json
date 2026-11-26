@@ -1,0 +1,45 @@
+{
+  "A_imu_only": {
+    "required": "acc+gyro per device",
+    "available": "5 acc + 5 gyr streams (w19)",
+    "missing": "units documentation",
+    "sync": "verified epoch-ms",
+    "labels": "25 sets",
+    "split": "10 participants; w19 participant id undocumented - leakage risk until mapping confirmed",
+    "verdict": "CONDITIONAL_GO"
+  },
+  "B_video_only": {
+    "required": "rgb frames + labels",
+    "available": "one 415MB session verified h264 720p30",
+    "missing": "full 21-session population; pose derived files incomplete",
+    "sync": "frame-index verified w/ boundary uncertainty",
+    "labels": "yes",
+    "split": "same caveat",
+    "verdict": "CONDITIONAL_GO (single session only)"
+  },
+  "C_imu_video": {
+    "required": "both + sync",
+    "available": "w19 has both",
+    "missing": "depth; multi-session coverage",
+    "sync": "frame-index + epoch-ms verified mechanism",
+    "labels": "yes",
+    "verdict": "CONDITIONAL_GO"
+  },
+  "D_imu_video_mag": {
+    "required": "mag stream",
+    "available": "sp_r_mag only in w19",
+    "missing": "other devices' mag absent this session",
+    "verdict": "CONDITIONAL_GO (sparse)"
+  },
+  "E_imu_hr": {
+    "required": "hr stream",
+    "available": "sw_l_hr only in w19",
+    "missing": "sw_r_hr absent",
+    "verdict": "CONDITIONAL_GO"
+  },
+  "F_full_multimodal": {
+    "required": "all wearables + video + pose",
+    "available": "partial (no depth, pose incomplete, asymmetric devices)",
+    "verdict": "NEEDS_EVIDENCE"
+  }
+}
