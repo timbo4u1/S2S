@@ -11,15 +11,37 @@ from experiments.cross_embodiment.milestone_3f2b import (
 from experiments.cross_embodiment.milestone_3f2b.run_mmfit_assessment import (
     label_audit, main as run_main, OUT_DIR)
 
-DATA = ma.DEFAULT_DATA_ROOT
 PTS = (Path(__file__).resolve().parents[1]
        / "experiments/cross_embodiment/milestone_3f2a/verification"
        / "w19_rgb_frame_timestamps.csv")
 
 
+@pytest.fixture(scope="session")
+def mmfit_data_root():
+    """Real w19 wearable acquisition; skipped only when genuinely absent."""
+    root = ma.resolve_data_root()
+    wdir = root / "mm-fit" / ma.SESSION_ID
+    if not wdir.is_dir():
+        pytest.skip(
+            f"MM-Fit w19 wearable acquisition unavailable at {wdir}; "
+            f"set {ma.DATA_ROOT_ENV_VAR} to the external data root")
+    return root
+
+
+@pytest.fixture(scope="session")
+def mmfit_full_data_root(mmfit_data_root):
+    """Real w19 acquisition including RGB video for full-runner tests."""
+    video = mmfit_data_root / "video" / "w19_rgb.mp4"
+    if not video.is_file():
+        pytest.skip(
+            f"MM-Fit w19 RGB video unavailable at {video}; "
+            f"set {ma.DATA_ROOT_ENV_VAR} to the external data root")
+    return mmfit_data_root
+
+
 @pytest.fixture(scope="module")
-def streams():
-    return ma.load_wearable_streams(DATA)
+def streams(mmfit_data_root):
+    return ma.load_wearable_streams(mmfit_data_root)
 
 
 @pytest.fixture(scope="module")
@@ -28,8 +50,8 @@ def stats(streams):
 
 
 @pytest.fixture(scope="module")
-def labels():
-    return ma.load_labels(DATA)
+def labels(mmfit_data_root):
+    return ma.load_labels(mmfit_data_root)
 
 
 def test_a_all_streams_load(streams):
@@ -103,10 +125,10 @@ def test_j_frame_association_uncertainty(streams, labels):
     assert payload["drift"] == "NOT_MEASURED"
 
 
-def test_k_no_sample_exact_sync(streams, stats):
+def test_k_no_sample_exact_sync(streams, stats, labels):
     checks = wearable_assessment.wearable_checks(streams, stats)
     fa = frame_association.frame_checks(
-        frame_association.frame_association(streams, ma.load_labels(DATA), 52561), streams)
+        frame_association.frame_association(streams, labels, 52561), streams)
     allc = checks + fa
     assert all("sample-exact" not in c.explanation.lower() or "no" in c.explanation.lower() for c in allc)
 
@@ -125,7 +147,7 @@ def test_m_labels_26_258(labels):
     assert la["n_activities"] == 9 and la["overlapping_pairs"] == 0
 
 
-def test_n_report_roundtrip(tmp_path):
+def test_n_report_roundtrip(mmfit_full_data_root):
     run_main()
     data = json.loads((OUT_DIR / "assessment_report.json").read_text())
     report = qs.AssessmentReport.from_dict(data)
@@ -133,7 +155,7 @@ def test_n_report_roundtrip(tmp_path):
     assert report.to_json() == qs.AssessmentReport.from_json(report.to_json()).to_json()
 
 
-def test_o_deterministic(tmp_path):
+def test_o_deterministic(mmfit_full_data_root):
     run_main()
     first = (OUT_DIR / "assessment_report.json").read_text()
     run_main()
@@ -153,6 +175,72 @@ def test_p_engine_and_adapter_unchanged():
         assert "s2s_physics" not in text
         assert not any(line.strip().startswith(("import", "from")) and "physics" in line.lower()
                        for line in text.splitlines())
+
+
+# ---------- synthetic loader fixtures (structure only; not real MM-Fit data) ----------
+
+_SYNTHETIC_STREAMS = [
+    ("w19_eb_l_acc.npy", "acc"), ("w19_eb_l_gyr.npy", "gyr"),
+    ("w19_sp_r_acc.npy", "acc"), ("w19_sp_r_gyr.npy", "gyr"),
+    ("w19_sp_r_mag.npy", "mag"), ("w19_sw_l_acc.npy", "acc"),
+    ("w19_sw_l_gyr.npy", "gyr"), ("w19_sw_l_hr.npy", "hr"),
+    ("w19_sw_r_acc.npy", "acc"), ("w19_sw_r_gyr.npy", "gyr"),
+]
+
+
+def _write_synthetic_mmfit(root: Path, session: str = "w19") -> Path:
+    """Write tiny structurally valid NPY files for loader tests only."""
+    wdir = root / "mm-fit" / session
+    wdir.mkdir(parents=True)
+    for i, (filename, kind) in enumerate(_SYNTHETIC_STREAMS):
+        n = 5
+        frame = np.arange(n, dtype=np.float64) + i
+        ts = 1_700_000_000_000.0 + np.arange(n, dtype=np.float64) * 10.0
+        if kind == "hr":
+            arr = np.column_stack([frame, ts, 60.0 + np.arange(n)])
+        else:
+            arr = np.column_stack([frame, ts, np.zeros((n, 3))])
+        np.save(wdir / filename, arr)
+    return root
+
+
+def test_synthetic_loader_loads_ten_independent_streams(tmp_path):
+    root = _write_synthetic_mmfit(tmp_path)
+    streams = ma.load_wearable_streams(root)
+    assert len(streams) == 10
+    assert {s["sensor_kind"] for s in streams.values()} == {"acc", "gyr", "mag", "hr"}
+    assert {s["device_key"] for s in streams.values()} == {"sw_l", "sw_r", "sp_r", "eb_l"}
+    assert streams["w19_sp_r_mag.npy"]["sensor_kind"] == "mag"
+    assert streams["w19_sw_l_hr.npy"]["sensor_kind"] == "hr"
+    assert len({(s["device_key"], s["sensor_kind"]) for s in streams.values()}) == 10
+    assert len({id(s["array"]) for s in streams.values()}) == 10
+    assert all(len(s["sha256"]) == 64 for s in streams.values())
+    assert all(s["source_path"].startswith("mm-fit/w19/") for s in streams.values())
+
+
+def test_synthetic_loader_env_var_missing_dir_and_user_expansion(tmp_path, monkeypatch):
+    root = _write_synthetic_mmfit(tmp_path / "acquisition")
+    monkeypatch.setenv(ma.DATA_ROOT_ENV_VAR, str(root))
+    assert ma.resolve_data_root() == root
+    assert len(ma.load_wearable_streams()) == 10
+
+    missing = tmp_path / "missing"
+    monkeypatch.setenv(ma.DATA_ROOT_ENV_VAR, str(missing))
+    with pytest.raises(FileNotFoundError) as excinfo:
+        ma.load_wearable_streams()
+    assert str(missing / "mm-fit" / "w19") in str(excinfo.value)
+
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.setenv(ma.DATA_ROOT_ENV_VAR, "~/mmfit_s2s")
+    assert ma.resolve_data_root() == tmp_path / "mmfit_s2s"
+
+
+def test_synthetic_loader_rejects_invalid_shape(tmp_path):
+    wdir = tmp_path / "mm-fit" / "w19"
+    wdir.mkdir(parents=True)
+    np.save(wdir / "w19_sw_l_acc.npy", np.zeros((5, 4)))
+    with pytest.raises(ValueError, match="expected"):
+        ma.load_wearable_streams(tmp_path)
 
 
 # ---------- 3F.2B.1 review-fix regressions ----------

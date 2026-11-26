@@ -1,7 +1,8 @@
 """MM-Fit w19 multimodal evidence adapter.
 
-Loads the bounded MM-Fit acquisition (~/S2S_data/mmfit_3f2/) and produces a
-shared-schema AssessmentReport plus modality-specific evidence artifacts.
+Loads the bounded MM-Fit acquisition (default ~/S2S_data/mmfit_3f2/,
+overridable with S2S_MMFIT_DATA_ROOT) and produces a shared-schema
+AssessmentReport plus modality-specific evidence artifacts.
 
 Honesty constraints baked in:
 - Per-device streams are never merged into a synthetic IMU.
@@ -12,8 +13,9 @@ Honesty constraints baked in:
 """
 import hashlib
 import json
+import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -23,6 +25,7 @@ ADAPTER_NAME = "mmfit_adapter"
 ADAPTER_VERSION = "3f.2b.2"
 SESSION_ID = "w19"
 DATASET_ID = "mmfit"
+DATA_ROOT_ENV_VAR = "S2S_MMFIT_DATA_ROOT"
 DEFAULT_DATA_ROOT = Path.home() / "S2S_data" / "mmfit_3f2"
 
 DEVICE_INFO = {
@@ -83,10 +86,32 @@ def _nominal_hz(device: str, kind: str) -> Optional[float]:
     return NOMINAL_HZ.get(device.split("_")[0])
 
 
-def load_wearable_streams(data_root: Path = DEFAULT_DATA_ROOT,
+def resolve_data_root(data_root: Optional[Union[str, Path]] = None) -> Path:
+    """Resolve the MM-Fit acquisition root.
+
+    Explicit arguments win; otherwise S2S_MMFIT_DATA_ROOT is used when set,
+    falling back to the local default. User paths are expanded.
+    """
+    if data_root is None:
+        env_root = os.environ.get(DATA_ROOT_ENV_VAR)
+        data_root = Path(env_root) if env_root else DEFAULT_DATA_ROOT
+    return Path(data_root).expanduser()
+
+
+def _session_dir(data_root: Optional[Union[str, Path]], session: str) -> Tuple[Path, Path]:
+    root = resolve_data_root(data_root)
+    wdir = root / "mm-fit" / session
+    if not wdir.is_dir():
+        raise FileNotFoundError(
+            f"MM-Fit {session} data directory not found: {wdir} "
+            f"(set {DATA_ROOT_ENV_VAR} to the acquisition root)")
+    return root, wdir
+
+
+def load_wearable_streams(data_root: Optional[Union[str, Path]] = None,
                            session: str = SESSION_ID) -> Dict[str, Dict[str, Any]]:
     """Load every acquired wearable .npy stream independently (no merging)."""
-    wdir = data_root / "mm-fit" / session
+    root, wdir = _session_dir(data_root, session)
     streams: Dict[str, Dict[str, Any]] = {}
     for f in sorted(wdir.glob("*.npy")):
         kind, dev = _kind(f.name), _device(f.name)
@@ -112,16 +137,17 @@ def load_wearable_streams(data_root: Path = DEFAULT_DATA_ROOT,
             "participant_id": "UNKNOWN (w19 participant mapping undocumented)",
             "session_id": session,
             "array": arr,
-            "source_path": str(f.relative_to(data_root)),
+            "source_path": str(f.relative_to(root)),
             "sha256": _sha256(f),
         }
     return streams
 
 
-def load_labels(data_root: Path = DEFAULT_DATA_ROOT,
+def load_labels(data_root: Optional[Union[str, Path]] = None,
                 session: str = SESSION_ID) -> List[Dict[str, Any]]:
     import csv
-    path = data_root / "mm-fit" / session / f"{session}_labels.csv"
+    _, wdir = _session_dir(data_root, session)
+    path = wdir / f"{session}_labels.csv"
     rows = []
     with open(path, newline="") as f:
         for r in csv.reader(f):

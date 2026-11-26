@@ -8,7 +8,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from experiments.cross_embodiment.milestone_3f2b import (
     frame_association, mmfit_adapter as ma, video_assessment, wearable_assessment)
 
-DATA_ROOT = ma.DEFAULT_DATA_ROOT
 PTS_CSV = (Path(__file__).resolve().parent.parent / "milestone_3f2a" / "verification"
            / "w19_rgb_frame_timestamps.csv")
 OUT_DIR = Path(__file__).resolve().parent / "outputs" / "w19"
@@ -38,13 +37,14 @@ def label_audit(labels):
     }
 
 
-def main():
-    streams = ma.load_wearable_streams(DATA_ROOT)
+def main(data_root=None):
+    data_root = ma.resolve_data_root(data_root)
+    streams = ma.load_wearable_streams(data_root)
     stats = {n: ma.stream_stats(r) for n, r in streams.items()}
-    labels = ma.load_labels(DATA_ROOT)
+    labels = ma.load_labels(data_root)
     la = label_audit(labels)
 
-    video_path = DATA_ROOT / "video" / "w19_rgb.mp4"
+    video_path = data_root / "video" / "w19_rgb.mp4"
     probe = video_assessment.probe_video(video_path)
     pts_rows = ma.load_video_pts(PTS_CSV)
     pts_sha = sha256_file(PTS_CSV)
@@ -56,7 +56,7 @@ def main():
     # Aggregate frame-association finding cites ALL contributing evidence.
     fa_extra_refs = [
         ma.evidence_ref("mm-fit/w19/w19_labels.csv",
-                        sha256_file(DATA_ROOT / "mm-fit/w19/w19_labels.csv")),
+                        sha256_file(data_root / "mm-fit/w19/w19_labels.csv")),
         ma.evidence_ref("video/w19_rgb.mp4", vpayload["sha256"]),
         ma.evidence_ref("experiments/cross_embodiment/milestone_3f2a/verification/"
                         "w19_rgb_frame_timestamps.csv", vpayload["pts_export_sha256"]),
@@ -77,7 +77,7 @@ def main():
                   "n_activities": la["n_activities"],
                   "overlapping_pairs": la["overlapping_pairs"]},
         refs=[ma.evidence_ref("mm-fit/w19/w19_labels.csv",
-                              sha256_file(DATA_ROOT / "mm-fit/w19/w19_labels.csv"))],
+                              sha256_file(data_root / "mm-fit/w19/w19_labels.csv"))],
         limitations=["frame-index domain; +/-1 frame boundary uncertainty",
                      "participant id for w19 undocumented"],
         subject={"session_id": "w19", "sample_id": "w19_labels.csv"})]
